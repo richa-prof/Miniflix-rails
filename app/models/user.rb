@@ -8,4 +8,5 @@ class User < ActiveRecord::Base
   #Association
   has_many :user_payment_methods
   has_one :user_email_notification
+  has_one :logged_in_user, dependent: :destroy
 end

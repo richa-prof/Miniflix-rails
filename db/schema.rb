@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180205125224) do
+ActiveRecord::Schema.define(version: 20180205131141) do
 
   create_table "contact_us", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -33,6 +33,16 @@ ActiveRecord::Schema.define(version: 20180205125224) do
     t.string "email", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "logged_in_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "user_id"
+    t.string "device_type"
+    t.string "device_token"
+    t.string "notification_from"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_logged_in_users_on_user_id"
   end
 
   create_table "user_email_notifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -120,6 +130,7 @@ ActiveRecord::Schema.define(version: 20180205125224) do
   end
 
   add_foreign_key "contact_user_replies", "contact_us", column: "contact_us_id"
+  add_foreign_key "logged_in_users", "users"
   add_foreign_key "user_email_notifications", "users"
   add_foreign_key "user_payment_methods", "users"
 end
