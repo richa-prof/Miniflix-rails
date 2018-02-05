@@ -7,4 +7,5 @@ class User < ActiveRecord::Base
 
   #Association
   has_many :user_payment_methods
+  has_one :user_email_notification
 end

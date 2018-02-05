@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180205072130) do
+ActiveRecord::Schema.define(version: 20180205112850) do
+
+  create_table "user_email_notifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "user_id"
+    t.boolean "product_updates", default: false
+    t.boolean "films_added", default: false
+    t.boolean "special_offers_and_promotions", default: false
+    t.boolean "better_product", default: false
+    t.boolean "do_not_send", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_email_notifications_on_user_id"
+  end
 
   create_table "user_payment_methods", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "user_id"
@@ -84,5 +96,6 @@ ActiveRecord::Schema.define(version: 20180205072130) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "user_email_notifications", "users"
   add_foreign_key "user_payment_methods", "users"
 end
