@@ -1,0 +1,2 @@
+class FreeMember < ApplicationRecord
+end
