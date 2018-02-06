@@ -10,13 +10,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180205141330) do
+ActiveRecord::Schema.define(version: 20180206074747) do
 
   create_table "admin_genres", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "color"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "admin_movies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "admin_genre_id"
+    t.integer "s3_multipart_upload_id"
+    t.string "name"
+    t.string "title"
+    t.text "description"
+    t.string "film_video"
+    t.string "video_type"
+    t.string "video_size"
+    t.string "video_format"
+    t.string "directed_by"
+    t.date "released_date"
+    t.string "language"
+    t.date "posted_date"
+    t.string "star_cast"
+    t.string "actors"
+    t.boolean "downloadable"
+    t.string "video_duration"
+    t.string "uploader"
+    t.string "festival_laureates"
+    t.boolean "is_featured_film"
+    t.string "version_file"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_genre_id"], name: "index_admin_movies_on_admin_genre_id"
+    t.index ["s3_multipart_upload_id"], name: "index_admin_movies_on_s3_multipart_upload_id"
   end
 
   create_table "background_images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -165,6 +193,7 @@ ActiveRecord::Schema.define(version: 20180205141330) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "admin_movies", "admin_genres"
   add_foreign_key "contact_user_replies", "contact_us", column: "contact_us_id"
   add_foreign_key "logged_in_users", "users"
   add_foreign_key "user_email_notifications", "users"
