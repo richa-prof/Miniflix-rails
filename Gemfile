@@ -47,6 +47,7 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'rails-controller-testing'
   gem 'database_cleaner'
+  gem 'pry'
 end
 
 group :development do
