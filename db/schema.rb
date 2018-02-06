@@ -10,13 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180206090056) do
+ActiveRecord::Schema.define(version: 20180206091934) do
 
   create_table "admin_genres", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "color"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "admin_movie_captions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "admin_movie_id"
+    t.string "language"
+    t.string "caption_file"
+    t.boolean "status"
+    t.boolean "is_default"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_movie_id"], name: "index_admin_movie_captions_on_admin_movie_id"
   end
 
   create_table "admin_movie_thumbnails", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -215,6 +226,7 @@ ActiveRecord::Schema.define(version: 20180206090056) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "admin_movie_captions", "admin_movies"
   add_foreign_key "admin_movie_thumbnails", "admin_movies"
   add_foreign_key "admin_movies", "admin_genres"
   add_foreign_key "contact_user_replies", "contact_us", column: "contact_us_id"
