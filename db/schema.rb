@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180206091934) do
+ActiveRecord::Schema.define(version: 20180206092811) do
 
   create_table "admin_genres", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -68,6 +68,14 @@ ActiveRecord::Schema.define(version: 20180206091934) do
     t.datetime "updated_at", null: false
     t.index ["admin_genre_id"], name: "index_admin_movies_on_admin_genre_id"
     t.index ["s3_multipart_upload_id"], name: "index_admin_movies_on_s3_multipart_upload_id"
+  end
+
+  create_table "admin_paypal_access_tokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "access_token"
+    t.string "mode"
+    t.string "grant_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "background_images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
