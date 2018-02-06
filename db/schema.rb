@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180206075734) do
+ActiveRecord::Schema.define(version: 20180206090056) do
 
   create_table "admin_genres", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -127,6 +127,16 @@ ActiveRecord::Schema.define(version: 20180206075734) do
     t.index ["user_id"], name: "index_user_email_notifications_on_user_id"
   end
 
+  create_table "user_filmlists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "user_id"
+    t.bigint "admin_movie_id"
+    t.boolean "is_active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_movie_id"], name: "index_user_filmlists_on_admin_movie_id"
+    t.index ["user_id"], name: "index_user_filmlists_on_user_id"
+  end
+
   create_table "user_payment_methods", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "user_id"
     t.string "first_name"
@@ -210,5 +220,7 @@ ActiveRecord::Schema.define(version: 20180206075734) do
   add_foreign_key "contact_user_replies", "contact_us", column: "contact_us_id"
   add_foreign_key "logged_in_users", "users"
   add_foreign_key "user_email_notifications", "users"
+  add_foreign_key "user_filmlists", "admin_movies"
+  add_foreign_key "user_filmlists", "users"
   add_foreign_key "user_payment_methods", "users"
 end
