@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180206092811) do
+ActiveRecord::Schema.define(version: 20180206093656) do
 
   create_table "admin_genres", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -186,6 +186,18 @@ ActiveRecord::Schema.define(version: 20180206092811) do
     t.index ["user_id"], name: "index_user_payment_methods_on_user_id"
   end
 
+  create_table "user_video_last_stops", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "admin_movie_id"
+    t.integer "role_id"
+    t.string "role_type"
+    t.float "last_stopped", limit: 24
+    t.integer "total_time"
+    t.float "watched_percent", limit: 24
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_movie_id"], name: "index_user_video_last_stops_on_admin_movie_id"
+  end
+
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
@@ -243,4 +255,5 @@ ActiveRecord::Schema.define(version: 20180206092811) do
   add_foreign_key "user_filmlists", "admin_movies"
   add_foreign_key "user_filmlists", "users"
   add_foreign_key "user_payment_methods", "users"
+  add_foreign_key "user_video_last_stops", "admin_movies"
 end
