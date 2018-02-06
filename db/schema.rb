@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180206104149) do
+ActiveRecord::Schema.define(version: 20180206110513) do
 
   create_table "admin_genres", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -141,6 +141,19 @@ ActiveRecord::Schema.define(version: 20180206104149) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_logged_in_users_on_user_id"
+  end
+
+  create_table "movie_versions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "movie_id"
+    t.integer "s3_multipart_upload_id"
+    t.string "uploader"
+    t.string "film_video"
+    t.string "video_size"
+    t.string "resolution"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["movie_id"], name: "index_movie_versions_on_movie_id"
+    t.index ["s3_multipart_upload_id"], name: "index_movie_versions_on_s3_multipart_upload_id"
   end
 
   create_table "notifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
