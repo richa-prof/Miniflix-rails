@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180206093656) do
+ActiveRecord::Schema.define(version: 20180206103043) do
 
   create_table "admin_genres", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -116,6 +116,16 @@ ActiveRecord::Schema.define(version: 20180206093656) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_logged_in_users_on_user_id"
+  end
+
+  create_table "notifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "admin_movie_id"
+    t.bigint "user_id"
+    t.string "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_movie_id"], name: "index_notifications_on_admin_movie_id"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
   create_table "temp_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -251,6 +261,8 @@ ActiveRecord::Schema.define(version: 20180206093656) do
   add_foreign_key "admin_movies", "admin_genres"
   add_foreign_key "contact_user_replies", "contact_us", column: "contact_us_id"
   add_foreign_key "logged_in_users", "users"
+  add_foreign_key "notifications", "admin_movies"
+  add_foreign_key "notifications", "users"
   add_foreign_key "user_email_notifications", "users"
   add_foreign_key "user_filmlists", "admin_movies"
   add_foreign_key "user_filmlists", "users"
