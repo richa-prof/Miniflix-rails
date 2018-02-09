@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe UserEmailNotification, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe "Association" do
+    context "belongs_to" do
+      it{ should belong_to(:user) }
+    end
+  end
 end
