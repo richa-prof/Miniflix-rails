@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180206113308) do
+ActiveRecord::Schema.define(version: 20180208124354) do
 
   create_table "admin_genres", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -217,8 +217,8 @@ ActiveRecord::Schema.define(version: 20180206113308) do
     t.string "card_token"
     t.float "amount", limit: 24
     t.boolean "is_send_expiration_mail"
-    t.datetime "payment_date", null: false
-    t.datetime "payment_expire_date", null: false
+    t.datetime "payment_date"
+    t.datetime "payment_expire_date"
     t.string "agreement_id"
     t.string "paypal_plan_id"
     t.string "encrypted_card_CVC"
