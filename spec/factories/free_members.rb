@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :free_member do
-    email "MyString"
+    email {Faker::Internet.email}
   end
 end
