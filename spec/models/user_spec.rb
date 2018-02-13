@@ -11,13 +11,13 @@ RSpec.describe User, type: :model do
 
   context "Association" do
     context "has_many" do
-      it{ should have_many(:user_payment_methods) }
-      it{ should have_many(:user_filmlists) }
-      it{ should have_many(:user_video_last_stops) }
+      it { should have_many(:user_payment_methods) }
+      it { should have_many(:user_filmlists) }
+      it { should have_many(:user_video_last_stops) }
     end
     context "has_one" do
-      it{ should have_one(:user_email_notification) }
-      it{ should have_one(:logged_in_user) }
+      it { should have_one(:user_email_notification) }
+      it { should have_one(:logged_in_user) }
     end
   end
 
@@ -37,27 +37,28 @@ RSpec.describe User, type: :model do
     end
   end
 
-	context "enum checking" do
+  context "enum checking" do
     plan_hash = {
       Educational: "Educational",
       Monthly: "Monthly",
       Annually: "Annually",
-			Freemium: "Freemium"
-      }
-      sign_up_hash = {
-        Web: "web",
-        Android: "android",
-        iOS: 'ios'
-      }
-      plan_status_hash = {
-        Activate: "Activate",
-        Cancelled: 'Cancelled',
-        Expired: 'Expired'
-      }
-		it {User.should have_valid_string_enum(:registration_plans, plan_hash)}
-    it {User.should  have_valid_string_enum(:sign_up_froms, sign_up_hash)}
-    it {User.should have_valid_string_enum(:subscription_plan_statuses, plan_status_hash)}
-	end
+      Freemium: "Freemium"
+    }
+    sign_up_hash = {
+      Web: "web",
+      Android: "android",
+      iOS: 'ios'
+    }
+    plan_status_hash = {
+      Activate: "Activate",
+      Cancelled: 'Cancelled',
+      Expired: 'Expired'
+    }
+
+    it { User.should have_valid_string_enum(:registration_plans, plan_hash)}
+    it { User.should have_valid_string_enum(:sign_up_froms, sign_up_hash)}
+    it { User.should have_valid_string_enum(:subscription_plan_statuses, plan_status_hash)}
+  end
 
   context "Presence of validation check-- record" do
     it { should validate_presence_of(:name) }
@@ -101,6 +102,7 @@ RSpec.describe User, type: :model do
         end
         it { should callback(:set_free_user).before(:create).if('((Educational? && FreeMember.find_by_email(email)) || Freemium?)') }
         it "with valid user" do
+
           create_free_user.is_free.should eq(true)
         end
         it "with invalid user" do
@@ -108,10 +110,12 @@ RSpec.describe User, type: :model do
           user.is_free.should_not eq(true)
         end
       end
+      #
       context "check user valid for free" do
         it { should callback(:check_user_valid_for_free).before(:create).if ('Educational?') }
         it "with Educational plan" do
           user = create(:user, registration_plan: "Educational")
+
         end
         it "With other plan" do
           user = create(:user, registration_plan: ["Monthly", "Annually", "Freemium"].sample)
