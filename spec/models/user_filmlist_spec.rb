@@ -1,5 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe UserFilmlist, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe "Association" do
+    context "belongs_to" do
+      it{ should belong_to(:user) }
+      it{ should belong_to(:admin_movie) }
+    end
+  end
 end
