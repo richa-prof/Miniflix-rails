@@ -37,6 +37,7 @@ gem 'jbuilder', '~> 2.5'
 #for attribute encryption - saving card details
 gem "attr_encrypted"
 gem 'twilio-ruby', '~> 5.6.3'
+gem "figaro"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
