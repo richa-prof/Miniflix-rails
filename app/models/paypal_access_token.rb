@@ -1,0 +1,2 @@
+class PaypalAccessToken < ApplicationRecord
+end

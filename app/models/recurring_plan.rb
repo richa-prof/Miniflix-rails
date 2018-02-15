@@ -1,0 +1,2 @@
+class RecurringPlan < ApplicationRecord
+end
