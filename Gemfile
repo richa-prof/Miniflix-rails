@@ -38,6 +38,8 @@ gem 'jbuilder', '~> 2.5'
 gem "attr_encrypted"
 gem 'twilio-ruby', '~> 5.6.3'
 gem "figaro"
+#for pagination
+gem 'will_paginate', '~> 3.1.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
