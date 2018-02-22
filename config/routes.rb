@@ -6,7 +6,9 @@ Rails.application.routes.draw do
       resource :mobile_apps, only: [] do
         get :share_app_link
       end
-      resources :genres, only: [:index] 
+      resources :genres, only: [:index] do
+        resources :movies, only: [:index]
+      end
       resource :movies, only: [] do
         get :featured_movie, on: :collection
       end
