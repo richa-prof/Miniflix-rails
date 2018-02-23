@@ -1,9 +1,9 @@
 class User < ActiveRecord::Base
   # Include default devise modules.
   devise :database_authenticatable, :registerable,
-          :recoverable, :rememberable, :trackable, :validatable,
-          :confirmable
+          :recoverable, :rememberable, :trackable, :validatable
   include DeviseTokenAuth::Concerns::User
+
 
   attr_accessor :temp_user_id
   #Association
@@ -33,5 +33,9 @@ class User < ActiveRecord::Base
   enum registration_plan: {Educational: 'Educational', Monthly:'Monthly', Annually: 'Annually', Freemium: 'Freemium'}
   enum sign_up_from: {Web: 'web', Android: 'android', iOS: 'ios'}
   enum subscription_plan_status: {Activate: 'Activate', Cancelled: 'Cancelled', Expired: 'Expired'}
+
+  def is_payment_verified?
+    Educational?
+  end
 
 end
