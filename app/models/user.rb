@@ -4,8 +4,6 @@ class User < ActiveRecord::Base
           :recoverable, :rememberable, :trackable, :validatable
   include DeviseTokenAuth::Concerns::User
 
-
-  attr_accessor :temp_user_id
   #Association
   has_many :user_payment_methods, dependent: :destroy
   has_many :user_filmlists,  dependent: :destroy
@@ -20,14 +18,12 @@ class User < ActiveRecord::Base
   UPDATE_SUBSCRIPTION = "subscription plan for update"
 
   #callback
-  before_create :create_user_email_notification
-  before_create :set_free_user, if: '((Educational? && FreeMember.find_by_email(email)) || Freemium?)'
-  before_create :check_user_valid_for_free, if: 'Educational?'
-  before_destroy :cancel_subscription_plan
-  after_create :delete_temp_user, if: 'temp_user_id.present?'
-  before_update :assign_subscription_cancel_date, if: 'Cancelled?'
-  after_create :send_free_user_mail, if: 'is_free'
-  after_create :send_signup_mail_for_paid_user, unless: 'is_free'
+  before_validation :valid_for_Education_plan, if: 'Educational?'
+  before_create :build_email_notification
+  before_create :set_free_user, if: '(Educational? && FreeMember.find_by_email(email))'
+
+  #Validation
+  validates_presence_of :registration_plan, :sign_up_from, :name
 
   #enum
   enum registration_plan: {Educational: 'Educational', Monthly:'Monthly', Annually: 'Annually', Freemium: 'Freemium'}
@@ -38,4 +34,19 @@ class User < ActiveRecord::Base
     Educational?
   end
 
+  private
+
+  def valid_for_Education_plan
+    if (FreeMember.find_by_email(email)).nil?
+      errors.add(:email, "Email not added as free email by admin. Contact to miniflix for free signup!")
+    end
+  end
+
+  def set_free_user
+    self.is_free = true
+  end
+
+  def build_email_notification
+    build_user_email_notification(product_updates: true,films_added: true,special_offers_and_promotions: true,better_product: true,do_not_send: true)
+  end
 end
