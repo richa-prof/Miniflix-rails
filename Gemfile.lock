@@ -87,6 +87,7 @@ GEM
     docile (1.1.5)
     encryptor (3.0.0)
     erubi (1.7.0)
+    excon (0.60.0)
     execjs (2.7.0)
     factory_bot (4.8.2)
       activesupport (>= 3.0.0)
@@ -119,6 +120,9 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.7.0)
       mini_mime (>= 0.1.1)
+    mandrill-api (1.0.53)
+      excon (>= 0.16.0, < 1.0)
+      json (>= 1.7.7, < 2.0)
     method_source (0.9.0)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
@@ -270,6 +274,7 @@ DEPENDENCIES
   figaro
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
+  mandrill-api
   mysql2
   pry
   puma (~> 3.7)
