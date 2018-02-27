@@ -18,9 +18,10 @@ class User < ActiveRecord::Base
   UPDATE_SUBSCRIPTION = "subscription plan for update"
 
   #callback
-  before_validation :valid_for_Education_plan, if: 'Educational?'
+  before_validation :valid_for_Education_plan, if: 'Educational?', on: :create
   before_create :build_email_notification
   before_create :set_free_user, if: '(Educational? && FreeMember.find_by_email(email))'
+  after_create :welcome_mail_for_free_user, if: :is_free
 
   #Validation
   validates_presence_of :registration_plan, :sign_up_from, :name
@@ -48,5 +49,9 @@ class User < ActiveRecord::Base
 
   def build_email_notification
     build_user_email_notification(product_updates: true,films_added: true,special_offers_and_promotions: true,better_product: true,do_not_send: true)
+  end
+
+  def welcome_mail_for_free_user
+    UserMailer.free_user_signup_email(self).deliver
   end
 end
