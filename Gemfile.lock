@@ -111,6 +111,10 @@ GEM
     json (1.8.6)
     jsonapi-renderer (0.2.0)
     jwt (2.1.0)
+    launchy (2.4.3)
+      addressable (~> 2.3)
+    letter_opener (1.6.0)
+      launchy (~> 2.2)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -273,6 +277,7 @@ DEPENDENCIES
   faker
   figaro
   jbuilder (~> 2.5)
+  letter_opener
   listen (>= 3.0.5, < 3.2)
   mandrill-api
   mysql2
