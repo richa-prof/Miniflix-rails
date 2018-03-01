@@ -47,6 +47,12 @@ gem 'twilio-ruby', '~> 5.6.3'
 gem "figaro"
 #for pagination
 gem 'will_paginate', '~> 3.1.0'
+#======set up for image and file =====================
+#way to upload files
+gem 'carrierwave', '~> 1.0'
+#for storing file to s3
+gem 'fog'
+gem 'mini_magick'
 
 gem 'active_model_serializers', '~> 0.10.7'
 
