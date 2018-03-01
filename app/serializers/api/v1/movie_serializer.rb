@@ -3,7 +3,9 @@ class Api::V1::MovieSerializer < ActiveModel::Serializer
   has_one :movie_thumbnail
 
   def video_file
-    object.hls_movie_url
+    if (scope[:current_user] && scope[:current_user].is_payment_verified?)
+      object.hls_movie_url
+    end
   end
 
   def genre_name
