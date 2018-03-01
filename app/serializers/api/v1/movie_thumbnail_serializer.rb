@@ -5,7 +5,7 @@ class Api::V1::MovieThumbnailSerializer < ActiveModel::Serializer
   [:movie_screenshot_1, :movie_screenshot_2, :movie_screenshot_3].each do |screen_shot|
     attributes screen_shot
     define_method(screen_shot) do
-      image_url(object.send(screen_shot))
+      image_url (object.send(screen_shot).featured_thumb.path)
     end
   end
 
