@@ -16,9 +16,9 @@ class TwilioService
           to: phone_number,
           body: "Download the app now to watch unlimited short films! #{ENV['smart_url']}"
         )
-        { success: true, success_msg: 'Download link send successfully.' }
+        { success: true, message: 'Download link send successfully.' }
       rescue Twilio::REST::RestError => error
-        { success: false, error_message: error.message }
+        { success: false, message: error.message }
       end
     end
 end
