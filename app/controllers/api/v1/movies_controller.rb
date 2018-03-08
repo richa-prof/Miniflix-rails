@@ -2,7 +2,7 @@ class Api::V1::MoviesController < ApplicationController
 
   def index
     movies = Movie.where(admin_genre_id: params[:genre_id]).paginate(page: params[:page])
-    serialize_movies = ActiveModelSerializers::SerializableResource.new(movies,
+    serialize_movies = ActiveModelSerializers::SerializableResource.new(movies, scope: {current_user: current_user},
         each_serializer: Api::V1::MovieSerializer)
     render json: {total_page: movies.total_pages, current_page: movies.current_page, movies: serialize_movies}
   end
