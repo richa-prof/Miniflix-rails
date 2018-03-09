@@ -5,6 +5,7 @@ class Movie < ApplicationRecord
   # Association
   belongs_to :genre, class_name: "Genre", foreign_key: "admin_genre_id"
   has_one :movie_thumbnail, dependent: :destroy, foreign_key: "admin_movie_id"
+  has_many :notifications, dependent: :destroy, foreign_key: "admin_movie_id"
 
   #Scopes
   scope :featured, -> {where(is_featured_film: true)}

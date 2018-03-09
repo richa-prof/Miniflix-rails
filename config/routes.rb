@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   mount_devise_token_auth_for 'User', at: 'auth', controllers: {
     sessions: "sessions",
     registrations: "registrations"
@@ -16,6 +17,7 @@ Rails.application.routes.draw do
         get :featured_movie, on: :collection
       end
       resources :contact_us, only: [:create]
+      resources :notifications, only: [:index]
     end
   end
 end
