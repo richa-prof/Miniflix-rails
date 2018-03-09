@@ -7,4 +7,10 @@ class Api::V1::NotificationsController < ApplicationController
         each_serializer: Api::V1::NotificationSerializer)
     render json: {total_page: notifications.total_pages, current_page: notifications.current_page, notifications: serialize_notifications}
   end
+
+  def delete_notifications
+    notifications = current_user.notifications.where(id: params[:ids])
+    notifications.destroy_all
+    render json: {success: true, message: "Notification successfully deleted"}
+  end
 end

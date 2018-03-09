@@ -17,7 +17,9 @@ Rails.application.routes.draw do
         get :featured_movie, on: :collection
       end
       resources :contact_us, only: [:create]
-      resources :notifications, only: [:index]
+      resources :notifications, only: [:index] do
+        delete :delete_notifications, on: :collection
+      end
     end
   end
 end
