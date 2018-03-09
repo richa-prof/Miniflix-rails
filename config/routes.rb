@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       end
       resource :movies, only: [] do
         get :featured_movie, on: :collection
+        get :search, on: :collection
       end
       resources :contact_us, only: [:create]
       resources :notifications, only: [:index] do

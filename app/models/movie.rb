@@ -19,4 +19,9 @@ class Movie < ApplicationRecord
   def hls_movie_url
     "https://s3-us-west-1.amazonaws.com/#{ENV['S3_OUTPUT_BUCKET']}/#{version_file}"
   end
+
+  def self.search(search_key)
+    key = "%#{search_key}%"
+    Movie.where('name LIKE :search OR title LIKE :search OR description LIKE :search or festival_laureates LIKE :search or actors LIKE :search', search: key).order(:name)
+  end
 end
