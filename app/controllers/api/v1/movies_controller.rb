@@ -32,6 +32,17 @@ class Api::V1::MoviesController < ApplicationController
     render json: serialize_movie_response_with_pagination(movies)
   end
 
+  def remove_from_playlist
+    filmlist = current_user.user_filmlists.find_by_admin_movie_id params[:id]
+    if filmlist
+      filmlist.destroy
+      response = { success: true ,message: "Movie successfully removed form playlist" }
+    else
+      response = { success: false ,message: "Movie not added in playlist" }
+    end
+    render json: response
+  end
+
   private
     def serialize_movie_response_with_pagination(movies)
       serialize_movies = ActiveModelSerializers::SerializableResource.new(movies, scope: {current_user: current_user},

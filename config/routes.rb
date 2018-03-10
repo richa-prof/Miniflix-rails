@@ -21,6 +21,7 @@ Rails.application.routes.draw do
         end
         member do
           get :add_to_playlist
+          get :remove_from_playlist
         end
       end
       resources :contact_us, only: [:create]
