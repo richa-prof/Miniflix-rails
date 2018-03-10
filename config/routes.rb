@@ -13,9 +13,14 @@ Rails.application.routes.draw do
       resources :genres, only: [:index] do
         resources :movies, only: [:index]
       end
-      resource :movies, only: [] do
-        get :featured_movie, on: :collection
-        get :search, on: :collection
+      resources :movies, only: [] do
+        collection do
+          get :featured_movie
+          get :search
+        end
+        member do
+          get :add_to_playlist
+        end
       end
       resources :contact_us, only: [:create]
       resources :notifications, only: [:index] do

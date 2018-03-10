@@ -1,4 +1,5 @@
 class Api::V1::MoviesController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :featured_movie, :search]
 
   def index
     movies = Movie.where(admin_genre_id: params[:genre_id]).paginate(page: params[:page])
@@ -17,4 +18,15 @@ class Api::V1::MoviesController < ApplicationController
     movies = Movie.search(params[:search_key])
     render json: movies, scope: {current_user: current_user}
   end
+
+  def add_to_playlist
+    filmlist = current_user.user_filmlists.new(admin_movie_id: params[:id])
+    if filmlist.save
+      response = { success: true ,message: "Movie successfully added to my list" }
+    else
+      response = { success: false ,message: filmlist.errors.full_messages }
+    end
+    render json: response
+  end
+
 end
