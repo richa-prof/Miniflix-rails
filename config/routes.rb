@@ -17,6 +17,7 @@ Rails.application.routes.draw do
         collection do
           get :featured_movie
           get :search
+          get :my_playlist
         end
         member do
           get :add_to_playlist

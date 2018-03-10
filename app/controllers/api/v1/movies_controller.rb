@@ -3,9 +3,7 @@ class Api::V1::MoviesController < ApplicationController
 
   def index
     movies = Movie.where(admin_genre_id: params[:genre_id]).paginate(page: params[:page])
-    serialize_movies = ActiveModelSerializers::SerializableResource.new(movies, scope: {current_user: current_user},
-        each_serializer: Api::V1::MovieSerializer)
-    render json: {total_page: movies.total_pages, current_page: movies.current_page, movies: serialize_movies}
+    render json: serialize_movie_response_with_pagination(movies)
   end
 
   def featured_movie
@@ -28,5 +26,17 @@ class Api::V1::MoviesController < ApplicationController
     end
     render json: response
   end
+
+  def my_playlist
+    movies = current_user.my_list_movies.paginate(page: params[:page])
+    render json: serialize_movie_response_with_pagination(movies)
+  end
+
+  private
+    def serialize_movie_response_with_pagination(movies)
+      serialize_movies = ActiveModelSerializers::SerializableResource.new(movies, scope: {current_user: current_user},
+          each_serializer: Api::V1::MovieSerializer)
+      {total_page: movies.total_pages, current_page: movies.current_page, movies: serialize_movies}
+    end
 
 end
