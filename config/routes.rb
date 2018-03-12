@@ -29,6 +29,7 @@ Rails.application.routes.draw do
         delete :delete_notifications, on: :collection
       end
       resources :user_email_notifications, only: [:index]
+      resource :user_email_notification, only: [:update]
     end
   end
 end
