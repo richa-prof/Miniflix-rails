@@ -1,5 +1,4 @@
 class Api::V1::ContactUsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:create]
 
   def create
     contact_us = ContactUs.new(contact_us_params)
