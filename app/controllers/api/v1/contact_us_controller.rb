@@ -1,4 +1,4 @@
-class Api::V1::ContactUsController < ApplicationController
+class Api::V1::ContactUsController < Api::V1::ApplicationController
 
   def create
     contact_us = ContactUs.new(contact_us_params)

@@ -1,4 +1,4 @@
-class Api::V1::GenresController < ApplicationController
+class Api::V1::GenresController < Api::V1::ApplicationController
 
   def index
     if params[:paginate]

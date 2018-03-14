@@ -1,4 +1,4 @@
-class Api::V1::MoviesController < ApplicationController
+class Api::V1::MoviesController < Api::V1::ApplicationController
   before_action :authenticate_user!, except: [:index, :featured_movie, :search]
 
   def index
