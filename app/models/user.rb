@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   has_many :user_video_last_stops,  dependent: :destroy
   has_one :user_email_notification, dependent: :destroy
   has_one :logged_in_user, dependent: :destroy
-  has_many :user_video_last_stops,as: :role, dependent: :destroy
+  has_many :user_video_last_stops, as: :role, dependent: :destroy
   has_many :notifications, dependent: :destroy
 
   #constant

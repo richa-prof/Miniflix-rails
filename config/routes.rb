@@ -23,6 +23,7 @@ Rails.application.routes.draw do
           get :add_to_playlist
           get :remove_from_playlist
         end
+        resources :user_video_last_stops, only: [:create]
       end
       resources :contact_us, only: [:create]
       resources :notifications, only: [:index] do

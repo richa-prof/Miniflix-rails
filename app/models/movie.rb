@@ -7,6 +7,7 @@ class Movie < ApplicationRecord
   has_one :movie_thumbnail, dependent: :destroy, foreign_key: "admin_movie_id"
   has_many :notifications, dependent: :destroy, foreign_key: "admin_movie_id"
   has_many :user_filmlists, dependent: :destroy, foreign_key: "admin_movie_id"
+  has_many :user_video_last_stops, dependent: :destroy, foreign_key: "admin_movie_id"
 
   #Scopes
   scope :featured, -> {where(is_featured_film: true)}
