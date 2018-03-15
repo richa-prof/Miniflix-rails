@@ -28,4 +28,11 @@ class Api::V1::RegistrationsController < DeviseTokenAuth::RegistrationsControlle
     message = I18n.t('devise_token_auth.registrations.email_already_exists', email: @resource.email)
     render_error(422, message, response)
   end
+
+  def render_update_success
+      render json: {
+        status: 'success',
+        user:   serialize_user
+      }
+  end
 end
