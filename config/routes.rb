@@ -1,14 +1,15 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
+  mount_devise_token_auth_for 'User', at: 'api/v1/auth', controllers: {
+    sessions: "api/v1/sessions",
+    registrations: "api/v1/registrations",
+    token_validations: "api/v1/token_validations",
+    passwords: "api/v1/passwords"
+  }
+
   namespace :api do
     namespace :v1 do
-
-      mount_devise_token_auth_for 'User', at: 'auth', controllers: {
-        sessions: "api/v1/sessions",
-        registrations: "api/v1/registrations",
-        token_validations: "api/v1/token_validations",
-        passwords: "api/v1/passwords"
-      }
 
       resource :mobile_apps, only: [] do
         get :share_app_link
