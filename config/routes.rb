@@ -6,7 +6,8 @@ Rails.application.routes.draw do
       mount_devise_token_auth_for 'User', at: 'auth', controllers: {
         sessions: "api/v1/sessions",
         registrations: "api/v1/registrations",
-        token_validations: "api/v1/token_validations"
+        token_validations: "api/v1/token_validations",
+        passwords: "api/v1/passwords"
       }
 
       resource :mobile_apps, only: [] do
