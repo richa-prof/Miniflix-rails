@@ -65,6 +65,9 @@ gem 'friendly_id', '~> 5.2.3'
 #valiation for phone number
 gem 'phony_rails'
 
+#sidekiq
+gem 'sidekiq'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
