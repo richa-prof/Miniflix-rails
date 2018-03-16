@@ -24,6 +24,8 @@ class User < ActiveRecord::Base
   before_create :build_email_notification
   before_create :set_free_user, if: '(Educational? && FreeMember.find_by_email(email))'
   after_create :welcome_mail_for_free_user, if: :is_free
+  after_validation :send_verification_code, if: ->  {unconfirmed_phone_number_changed? && errors.blank? }
+  before_update :assign_unverified_phone_to_phone_numer, if: -> {verification_code_changed? && verification_code.nil?}
 
   #change phone number in nomalize form before validate
   phony_normalize :phone_number, :unconfirmed_phone_number
@@ -45,6 +47,10 @@ class User < ActiveRecord::Base
     self.user_filmlists.find_or_initialize_by(admin_movie_id: movie_id)
   end
 
+  def valid_verification_code?(verification_code)
+    self.verification_code == verification_code
+  end
+
   private
 
   def valid_for_Education_plan
@@ -64,4 +70,22 @@ class User < ActiveRecord::Base
   def welcome_mail_for_free_user
     UserMailer.free_user_signup_email(self).deliver
   end
+
+  def send_verification_code
+    self.verification_code =  rand(1 .. 99999)
+    twillo_response = TwilioService.new(unconfirmed_phone_number, message_with_verification_code(verification_code)).call()
+    errors.add(:unconfirmed_phone_number, twillo_response[:message]) unless twillo_response[:success]
+    errors.blank?
+  end
+
+
+  def message_with_verification_code(verification_code)
+    "you are requesting for updating phone number your verification code is #{verification_code}, this code is valid for 2 minute "
+  end
+
+  def assign_unverified_phone_to_phone_numer
+    self.phone_number = self.unconfirmed_phone_number
+    self.unconfirmed_phone_number = nil
+  end
+
 end

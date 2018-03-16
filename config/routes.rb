@@ -8,9 +8,9 @@ Rails.application.routes.draw do
     passwords: "api/v1/passwords"
   }
 
+
   namespace :api do
     namespace :v1 do
-
       resource :mobile_apps, only: [] do
         get :share_app_link
       end
@@ -35,6 +35,10 @@ Rails.application.routes.draw do
       end
       resources :user_email_notifications, only: [:index]
       resource :user_email_notification, only: [:update]
+      resource :users, only: [] do
+        put :send_verification_code
+        put :verify_verification_code
+      end
     end
   end
 end
