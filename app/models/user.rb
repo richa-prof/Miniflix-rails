@@ -25,8 +25,12 @@ class User < ActiveRecord::Base
   before_create :set_free_user, if: '(Educational? && FreeMember.find_by_email(email))'
   after_create :welcome_mail_for_free_user, if: :is_free
 
+  #change phone number in nomalize form before validate
+  phony_normalize :phone_number, :unconfirmed_phone_number
+
   #Validation
   validates_presence_of :registration_plan, :sign_up_from, :name
+  validates_plausible_phone :phone_number,:unconfirmed_phone_number
 
   #enum
   enum registration_plan: {Educational: 'Educational', Monthly:'Monthly', Annually: 'Annually', Freemium: 'Freemium'}
