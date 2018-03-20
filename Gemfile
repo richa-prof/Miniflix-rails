@@ -55,6 +55,9 @@ gem 'fog'
 gem 'mini_magick'
 
 gem 'active_model_serializers', '~> 0.10.7'
+#social authentication
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
 
 #for shorten url and tracking
 gem 'bitly'
