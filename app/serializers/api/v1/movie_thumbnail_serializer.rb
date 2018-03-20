@@ -1,16 +1,19 @@
 class Api::V1::MovieThumbnailSerializer < ActiveModel::Serializer
 
   # attributes :movie_screenshot_1, :movie_screenshot_2, :movie_screenshot_3
+  attributes :main_screenshot, :other_screenshots
 
-  [:movie_screenshot_1, :movie_screenshot_2, :movie_screenshot_3].each do |screen_shot|
-    attributes screen_shot
-    define_method(screen_shot) do
-      image_url (object.send(screen_shot).featured_thumb.path)
+
+  def main_screenshot
+    object.cloud_front_url(object.movie_screenshot_1.carousel_thumb.path)
+  end
+
+  def other_screenshots
+    screen_shot_array = []
+    [:movie_screenshot_1, :movie_screenshot_2, :movie_screenshot_3].each do |screen_shot|
+      screen_shot_array << (object.cloud_front_url(object.send(screen_shot).featured_thumb.path))
     end
+    screen_shot_array
   end
 
-  private
-  def image_url(path)
-    ENV['cloud_front_url'] + path
-  end
 end
