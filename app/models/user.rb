@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
           :recoverable, :rememberable, :trackable, :validatable, :omniauthable
   include DeviseTokenAuth::Concerns::User
 
+  attr_accessor :social_login
+
   #Association
   has_many :user_payment_methods, dependent: :destroy
   has_many :user_filmlists,  dependent: :destroy
@@ -33,6 +35,8 @@ class User < ActiveRecord::Base
   #Validation
   validates_presence_of :registration_plan, :sign_up_from, :name
   validates_plausible_phone :phone_number,:unconfirmed_phone_number
+  validates_presence_of :registration_plan, unless: -> {social_login}
+  validates_presence_of :sign_up_from, :name
 
   #enum
   enum registration_plan: {Educational: 'Educational', Monthly:'Monthly', Annually: 'Annually', Freemium: 'Freemium'}
