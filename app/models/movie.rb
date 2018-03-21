@@ -8,6 +8,7 @@ class Movie < ApplicationRecord
   has_many :notifications, dependent: :destroy, foreign_key: "admin_movie_id"
   has_many :user_filmlists, dependent: :destroy, foreign_key: "admin_movie_id"
   has_many :user_video_last_stops, dependent: :destroy, foreign_key: "admin_movie_id"
+  has_many :movie_captions, dependent: :destroy, foreign_key: "admin_movie_id"
 
   #Scopes
   scope :featured, -> {where(is_featured_film: true)}
@@ -25,5 +26,9 @@ class Movie < ApplicationRecord
   def self.search(search_key)
     key = "%#{search_key}%"
     Movie.where('name LIKE :search OR title LIKE :search OR description LIKE :search or festival_laureates LIKE :search or actors LIKE :search', search: key).order(:name)
+  end
+
+  def active_movie_captions
+    self.movie_captions.active_caption
   end
 end

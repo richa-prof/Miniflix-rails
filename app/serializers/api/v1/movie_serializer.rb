@@ -2,6 +2,7 @@ class Api::V1::MovieSerializer < ActiveModel::Serializer
   attributes :id, :name, :title, :description, :festival_laureates, :directed_by, :language, :released_date, :video_duration, :video_file, :genre_name
   has_one :movie_thumbnail, serializer: Api::V1::MovieThumbnailSerializer
   has_many :user_video_last_stops
+  has_many :movie_captions, serializer: Api::V1::MovieCaptionSerializer
 
   def video_file
     if (scope[:current_user] && scope[:current_user].is_payment_verified?)
@@ -19,5 +20,9 @@ class Api::V1::MovieSerializer < ActiveModel::Serializer
       ActiveModelSerializers::SerializableResource.new(user_video_last_stop,
           serializer: Api::V1::UserVideoLastStopSerializer).serializable_hash if user_video_last_stop.present?
     end
+  end
+
+  def movie_captions
+    object.active_movie_captions if scope[:current_user]
   end
 end
