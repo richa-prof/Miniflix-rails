@@ -10,6 +10,10 @@ class Movie < ApplicationRecord
   has_many :user_video_last_stops, dependent: :destroy, foreign_key: "admin_movie_id"
   has_many :movie_captions, dependent: :destroy, foreign_key: "admin_movie_id"
 
+  #callback
+  before_save :create_bitly_url, if: -> {name_changed?}
+
+
   #Scopes
   scope :featured, -> {where(is_featured_film: true)}
 
@@ -30,5 +34,16 @@ class Movie < ApplicationRecord
 
   def active_movie_captions
     self.movie_captions.active_caption
+  end
+
+  private
+  def create_bitly_url
+    movie_show_url = ENV['movie-show-root'] + parameterize_name
+    bitly = Bitly.client.shorten(movie_show_url)
+    self.bitly_url = bitly.short_url
+  end
+
+  def parameterize_name
+    self.name.parameterize
   end
 end
