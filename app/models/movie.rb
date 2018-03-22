@@ -2,6 +2,7 @@ class Movie < ApplicationRecord
   self.table_name = "admin_movies"
   PER_PAGE = 6
 
+  SHARE_ON = ['facebook', 'twitter']
   # Association
   belongs_to :genre, class_name: "Genre", foreign_key: "admin_genre_id"
   has_one :movie_thumbnail, dependent: :destroy, foreign_key: "admin_movie_id"
