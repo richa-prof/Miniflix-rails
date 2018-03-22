@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       resources :genres, only: [:index] do
         resources :movies, only: [:index]
       end
-      resources :movies, only: [] do
+      resources :movies, only: [:show] do
         collection do
           get :featured_movie
           get :search

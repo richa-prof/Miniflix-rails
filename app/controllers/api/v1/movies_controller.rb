@@ -12,6 +12,11 @@ class Api::V1::MoviesController < Api::V1::ApplicationController
     render json: featured_movie, scope: {current_user: current_user}
   end
 
+  def show
+    movie = Movie.find params[:id]
+    render json: movie, scope: {current_user: current_user}
+  end
+
   def search
     movies = Movie.search(params[:search_key])
     render json: movies, scope: {current_user: current_user}
