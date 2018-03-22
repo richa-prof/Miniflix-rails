@@ -1,4 +1,5 @@
 class Movie < ApplicationRecord
+  include Rails.application.routes.url_helpers
   self.table_name = "admin_movies"
   PER_PAGE = 6
   SHARE_ON = ['facebook', 'twitter']
@@ -16,7 +17,7 @@ class Movie < ApplicationRecord
   has_many :movie_captions, dependent: :destroy, foreign_key: "admin_movie_id"
 
   #callback
-  before_save :create_bitly_url, if: -> {name_changed?}
+  before_save :create_bitly_url, if: -> {slug_changed?}
 
 
   #Scopes
@@ -43,12 +44,12 @@ class Movie < ApplicationRecord
 
   private
   def create_bitly_url
-    movie_show_url = ENV['movie-show-root'] + parameterize_name
     bitly = Bitly.client.shorten(movie_show_url)
     self.bitly_url = bitly.short_url
   end
 
-  def parameterize_name
-    self.name.parameterize
+  def movie_show_url
+     Rails.application.routes.url_helpers.api_v1_movie_url(self, host: ENV['Host'])
   end
+
 end
