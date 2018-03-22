@@ -13,7 +13,7 @@ class Api::V1::MoviesController < Api::V1::ApplicationController
   end
 
   def show
-    movie = Movie.find params[:id]
+    movie = Movie.friendly.find(params[:id])
     render json: movie, scope: {current_user: current_user}
   end
 
