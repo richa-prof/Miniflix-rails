@@ -1,5 +1,4 @@
 class Movie < ApplicationRecord
-  include Rails.application.routes.url_helpers
   self.table_name = "admin_movies"
   PER_PAGE = 6
   SHARE_ON = ['facebook', 'twitter']
@@ -49,7 +48,7 @@ class Movie < ApplicationRecord
   end
 
   def movie_show_url
-     Rails.application.routes.url_helpers.api_v1_movie_url(self, host: ENV['Host'])
+     "#{ENV['Host']}/movies/#{self.slug}"
   end
 
 end
