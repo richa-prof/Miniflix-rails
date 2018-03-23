@@ -28,7 +28,7 @@ class Api::V1::MovieSerializer < ActiveModel::Serializer
 
   def click_count
     bitly_clicks_result = BitlyClickCountService.new(object.bitly_url).call
-    return bitly_response_parse_to_count_click(bitly_clicks_result) if bitly_clicks_result
+    return bitly_response_parse_to_count_click(bitly_clicks_result) if bitly_clicks_result.present?
   end
 
   private
