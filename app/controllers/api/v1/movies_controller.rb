@@ -34,30 +34,9 @@ class Api::V1::MoviesController < Api::V1::ApplicationController
     render json: response
   end
 
-  def add_to_playlist
-    filmlist = current_user.user_filmlists.new(admin_movie_id: params[:id])
-    if filmlist.save
-      response = { success: true ,message: "Movie successfully added to my list" }
-    else
-      response = { success: false ,message: filmlist.errors.full_messages }
-    end
-    render json: response
-  end
-
   def my_playlist
     movies = current_user.my_list_movies.paginate(page: params[:page])
     render json: serialize_movie_response_with_pagination(movies)
-  end
-
-  def remove_from_playlist
-    filmlist = current_user.user_filmlists.find_by_admin_movie_id params[:id]
-    if filmlist
-      filmlist.destroy
-      response = { success: true ,message: "Movie successfully removed form playlist" }
-    else
-      response = { success: false ,message: "Movie not added in playlist" }
-    end
-    render json: response
   end
 
   def popular_movies
