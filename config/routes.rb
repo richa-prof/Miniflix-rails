@@ -22,6 +22,7 @@ Rails.application.routes.draw do
           get :featured_movie
           get :search
           get :my_playlist
+          get :popular_movies
         end
         member do
           get :add_to_playlist

@@ -48,6 +48,11 @@ class Api::V1::MoviesController < Api::V1::ApplicationController
     render json: response
   end
 
+  def popular_movies
+    movies = Movie.last 3
+    render json: movies, scope: {current_user: current_user}
+  end
+
   private
     def serialize_movie_response_with_pagination(movies)
       serialize_movies = ActiveModelSerializers::SerializableResource.new(movies, scope: {current_user: current_user},
