@@ -22,6 +22,18 @@ class Api::V1::MoviesController < Api::V1::ApplicationController
     render json: movies, scope: {current_user: current_user}
   end
 
+  def add_and_remove_to_my_playlist
+    filmlist = current_user.find_or_initialize_filmlist(params[:id])
+    if filmlist.new_record?
+      filmlist.save
+      response = { success: true ,message: "Movie successfully added to my list" }
+    else
+      filmlist.destroy
+      response = { success: true ,message: "Movie successfully removed form playlist" }
+    end
+    render json: response
+  end
+
   def add_to_playlist
     filmlist = current_user.user_filmlists.new(admin_movie_id: params[:id])
     if filmlist.save

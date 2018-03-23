@@ -37,6 +37,10 @@ class User < ActiveRecord::Base
     Educational?
   end
 
+  def find_or_initialize_filmlist(movie_id)
+    self.user_filmlists.find_or_initialize_by(admin_movie_id: movie_id)
+  end
+
   private
 
   def valid_for_Education_plan

@@ -27,6 +27,7 @@ Rails.application.routes.draw do
         member do
           get :add_to_playlist
           get :remove_from_playlist
+          get :add_and_remove_to_my_playlist
         end
         resources :user_video_last_stops, only: [:create]
       end
