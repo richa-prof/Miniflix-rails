@@ -1,5 +1,5 @@
 class Api::V1::MoviesController < Api::V1::ApplicationController
-  before_action :authenticate_user!, except: [:index, :featured_movie, :search]
+  before_action :authenticate_user!, except: [:index, :featured_movie, :search, :show]
 
   def index
     movies = Movie.where(admin_genre_id: params[:genre_id]).paginate(page: params[:page])
