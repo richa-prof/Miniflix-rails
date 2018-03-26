@@ -1,5 +1,5 @@
 class Api::V1::MovieSerializer < ActiveModel::Serializer
-  attributes :id, :slug, :name, :title, :description, :festival_laureates, :directed_by, :language, :released_date, :video_duration, :video_file, :genre_name, :click_count
+  attributes :id, :slug, :name, :title, :description, :festival_laureates, :directed_by, :language, :released_date, :video_duration, :video_file, :genre_name, :click_count, :is_liked
   has_one :movie_thumbnail, serializer: Api::V1::MovieThumbnailSerializer
   has_many :user_video_last_stops
   has_many :movie_captions, serializer: Api::V1::MovieCaptionSerializer
@@ -29,6 +29,10 @@ class Api::V1::MovieSerializer < ActiveModel::Serializer
   def click_count
     bitly_clicks_result = BitlyClickCountService.new(object.bitly_url).call
     return bitly_response_parse_to_count_click(bitly_clicks_result) if bitly_clicks_result.present?
+  end
+
+  def is_liked
+    scope[:current_user].my_list_movie_ids.include?(object.id) if scope[:current_user]
   end
 
   private

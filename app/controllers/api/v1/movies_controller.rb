@@ -26,10 +26,10 @@ class Api::V1::MoviesController < Api::V1::ApplicationController
     filmlist = current_user.find_or_initialize_filmlist(params[:id])
     if filmlist.new_record?
       filmlist.save
-      response = { success: true ,message: "Movie successfully added to my list" }
+      response = { success: true ,message: "Movie successfully added to my list", is_liked: true, movie_id: params[:id]  }
     else
       filmlist.destroy
-      response = { success: true ,message: "Movie successfully removed form playlist" }
+      response = { success: true ,message: "Movie successfully removed form playlist", is_liked: false,  movie_id: params[:id] }
     end
     render json: response
   end
