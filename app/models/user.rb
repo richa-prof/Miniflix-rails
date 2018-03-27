@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
   after_create :welcome_mail_for_free_user, if: :is_free
   after_validation :send_verification_code, if: ->  {unconfirmed_phone_number_changed? && errors.blank? }
   before_update :assign_unverified_phone_to_phone_number, if: -> { check_condition_for_assign_phone_number}
+  before_update :make_migrate_user_false, if: -> {(encrypted_password_changed? && migrate_user)}
 
   #change phone number in nomalize form before validate
   phony_normalize :phone_number, :unconfirmed_phone_number
@@ -99,6 +100,10 @@ class User < ActiveRecord::Base
 
   def destroy_verification_code_after_2minutes
     VerificationWorker.perform_in(2.minutes, type: "delete_verification_code", user_id: self.id)
+  end
+
+  def make_migrate_user_false
+    self.migrate_user = false
   end
 
 end
