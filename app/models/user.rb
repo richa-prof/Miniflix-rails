@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  attr_accessor :skip_callbacks
+
   # Include default devise modules.
   devise :database_authenticatable, :registerable,
           :recoverable, :rememberable, :trackable, :validatable, :omniauthable
@@ -28,7 +30,7 @@ class User < ActiveRecord::Base
   after_create :welcome_mail_for_free_user, if: :is_free
   after_validation :send_verification_code, if: ->  {unconfirmed_phone_number_changed? && errors.blank? }
   before_update :assign_unverified_phone_to_phone_number, if: -> { check_condition_for_assign_phone_number}
-  before_update :make_migrate_user_false, if: -> {(encrypted_password_changed? && migrate_user)}
+  before_update :make_migrate_user_false, if: -> { can_make_migrate_user_false? }
 
   #change phone number in nomalize form before validate
   phony_normalize :phone_number, :unconfirmed_phone_number
@@ -43,6 +45,28 @@ class User < ActiveRecord::Base
   enum registration_plan: {Educational: 'Educational', Monthly:'Monthly', Annually: 'Annually', Freemium: 'Freemium'}
   enum sign_up_from: {Web: 'web', Android: 'android', iOS: 'ios'}
   enum subscription_plan_status: {Activate: 'Activate', Cancelled: 'Cancelled', Expired: 'Expired'}
+  enum provider: {  email: 'email', facebook: 'facebook', twitter: 'twitter' }
+
+  # Scope
+  scope :with_migrate_user, -> { where(migrate_user: true) }
+
+  # ===== Class methods Start =====
+  class << self
+    def send_reset_password_reminder
+      with_migrate_user.each do |user|
+        if user.phone_number.present?
+          user.send_reset_password_reminder_sms
+        end
+
+        if user.email? && user.Web?
+          user.send_reset_password_reminder_email
+        elsif user.iOS? || user.Android?
+          user.send_reset_password_reminder_push_notification
+        end
+      end
+    end
+  end
+  # ===== Class methods End =====
 
   def is_payment_verified?
     Educational?
@@ -54,6 +78,27 @@ class User < ActiveRecord::Base
 
   def valid_verification_code?(verification_code)
     self.verification_code == verification_code
+  end
+
+  def send_reset_password_reminder_sms
+    message = notification_message_to_reset_password
+
+    TwilioService.new(phone_number, message).call()
+  end
+
+  def send_reset_password_reminder_email
+    UserMailer.reset_password_reminder_email(self).deliver
+  end
+
+  def send_reset_password_reminder_push_notification
+    options = { data: { message: notification_message_to_reset_password } }
+
+    if Android?
+      fcm_service.send_notification_to_android(logged_in_user_device_tokens, options)
+    elsif iOS?
+      ios_token = logged_in_user_device_tokens.last
+      fcm_service.send_notification_to_ios(ios_token, options[:data])
+    end
   end
 
   private
@@ -102,8 +147,23 @@ class User < ActiveRecord::Base
     VerificationWorker.perform_in(2.minutes, type: "delete_verification_code", user_id: self.id)
   end
 
+  def can_make_migrate_user_false?
+    !skip_callbacks && encrypted_password_changed? && migrate_user
+  end
+
   def make_migrate_user_false
     self.migrate_user = false
   end
 
+  def fcm_service
+    @fcm_service ||= FcmService.new
+  end
+
+  def logged_in_user_device_tokens
+    LoggedInUser.where(user_id: self.id).pluck('device_token')
+  end
+
+  def notification_message_to_reset_password
+    "Your temporary password is: #{self.temp_password} Please login and reset your password."
+  end
 end

@@ -71,6 +71,15 @@ gem 'phony_rails'
 #sidekiq
 gem 'sidekiq'
 
+# For witing Cron jobs
+gem 'whenever', require: false
+
+# For Sending notifications to Android and iOS devices via Firebase Cloud Messaging.
+gem 'fcm'
+
+gem 'aws-s3'
+gem 'aws-sdk-v1'
+gem 'aws-sdk', '~> 2'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

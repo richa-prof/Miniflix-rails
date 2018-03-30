@@ -6,5 +6,10 @@ class UserMailer < ApplicationMailer
     body = MandrillService.new(FreeUserTemplate, variable).call()
     mail(to: user.email, subject: subject, body: body, content_type: "text/html")
   end
-  
+
+  def reset_password_reminder_email(user)
+    subject = 'Reset your Miniflix password'
+    body = "Your temporary password is: #{user.temp_password} Please login and reset your password."
+    mail(to: user.email, subject: subject, body: body, content_type: 'text/html')
+  end
 end
