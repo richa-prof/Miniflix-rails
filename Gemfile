@@ -10,8 +10,6 @@ end
 gem 'rails', '~> 5.1.4'
 # Use sqlite3 as the database for Active Record
 gem 'mysql2'
-#authorization
-gem 'devise_token_auth'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets
@@ -80,6 +78,15 @@ gem 'fcm'
 gem 'aws-s3'
 gem 'aws-sdk-v1'
 gem 'aws-sdk', '~> 2'
+
+# For administration interfaces and services
+gem 'activeadmin'
+
+# For flexible authentication solution with Warden
+gem 'devise', git: 'https://github.com/plataformatec/devise' #, ref: '88e9a85'
+
+# For Token based authentication for JSON APIs
+gem 'devise_token_auth'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
