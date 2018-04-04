@@ -53,7 +53,7 @@
                 <li class="col-sm-6"><i class="fa fa-newspaper-o"></i><%= blogs.count %> Blogs</li>
               </ul>
               <ul class="row">
-                <li class="col-sm-12"><i class="fa fa-map-o"></i><%= staff.address.try(:city) %></li>
+                <li class="col-sm-12"><i class="fa fa-map-o"></i><%= staff.address.try(:city) || '-' %></li>
               </ul>
             </div>
           </div>
@@ -89,7 +89,7 @@
                       </ul>
                     </div>
                     <div class="blog-main-image">
-                      <%= image_tag(blog.featured_image_url) %>
+                      <%= image_tag(blog.featured_image_url(:medium)) %>
                     </div>
                     <div class="blg-dt-user-profile">
                       <i class="fa fa-calendar"></i> <%= blog.created_at.strftime("%m/%d/%Y") %>
@@ -114,11 +114,11 @@
                         <%= link_to('Continue Reading', blog_path(id: blog.id), class: "btn btn-default") %>
                       </div>
                       <div class="blg-like-comm-counter">
-                        <div class="blg-like-count">
-                          <a href="javascript:void(0);"><i class="fa fa-thumbs-o-up"></i></a> 1k
+                        <div class="blg-like-count" id="likes_<%= blog.id %>">
+                          <%= render partial: 'likes/list', locals: { blog: blog } %>
                         </div>
                         <div class="blg-comm-count">
-                          <a href="02-blog_single.html#comm-section"><i class="fa fa-comments-o"></i></a> 550
+                          <a href="javascript:void(0);"><i class="fa fa-comments-o"></i></a> <%= blog.comments.count %>
                         </div>
                       </div>
                     </div>

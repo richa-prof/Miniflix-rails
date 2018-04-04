@@ -825,3 +825,33 @@ label.uploadfile-field .form-control {
 .blg-pagination .pagination *:last-child {
   border-radius: 0px 5px 5px 0px;
 }
+.user-blogs-view-edit .blog-list-single {
+  height: 100%;
+  background: #fff;
+}
+.blg-dt-user-profile {
+  background: #fae902;
+}
+.blog-short-msg p, .blog-short-msg h3 {
+  word-wrap: break-word;
+}
+.blog-add-main span.blg-advice.text-danger {
+  color: #e03935;
+  font-weight: 600;
+}
+@media (min-width: 992px) {
+  .user-blogs-view-edit .row {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+  }
+  .user-blogs-view-edit .col-md-4 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 33.333333%;
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+  }
+}

@@ -59,6 +59,7 @@ Rails.application.routes.draw do
       member do
         post :create_comment
       end
+      resources :likes, only: [:create, :destroy]
     end
     get 'blog_profile/:id' => 'blogs#blog_profile', as: 'blog_profile'
   end

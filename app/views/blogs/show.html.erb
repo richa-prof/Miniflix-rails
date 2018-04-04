@@ -6,18 +6,18 @@
           <div class="col-sm-12">
             <div class="blog-single-bg">
               <div class="blog-single-feat-img">
-              <%= image_tag (@blog.featured_image_url) %>
+              <%= image_tag (@blog.featured_image_url(:large)) %>
               </div>
               <div class="blog-upload-usr-dt">
                 <div class="blg-dt">
                   <%= @blog.created_at.strftime("%B %d %Y") %>
                 </div>
                 <div class="blg-like-comm-counter">
-                  <div class="blg-like-count">
-                    <a href="javascript:void(0);"<i class="fa fa-thumbs-o-up"></i></a> 1k
+                  <div class="blg-like-count" id="likes_<%= @blog.id %>">
+                    <%= render partial: 'likes/list', locals: { blog: @blog } %>
                   </div>
                   <div class="blg-comm-count">
-                    <a href="javascript:void(0);"<i class="fa fa-comments-o"></i></a> 550
+                    <a href="javascript:void(0);"<i class="fa fa-comments-o"></i></a> <%= @blog.comments.count %>
                   </div>
                 </div>
                 <div class="blg-user">
@@ -27,7 +27,9 @@
                   <div class="blg-usr-nm">
                     <%= link_to(@blog.user.name, blog_profile_path(id: @staff.id)) %>
                   </div>
-                  <div class="blg-usr-desig">Miniflix Chief Editor</div>
+                  <div class="blg-usr-desig">
+                    <%= @blog.user.role.titleize %>
+                  </div>
                 </div>
               </div>
               <div class="blog-content-single">

@@ -1,0 +1,1 @@
+$("#likes_<%= @blog.id %>").html("<%= j (render partial: 'likes/list', locals: { blog: @blog } ) %>");
