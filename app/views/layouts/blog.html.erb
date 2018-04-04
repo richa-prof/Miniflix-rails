@@ -6,15 +6,9 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <% if false #unless user_signed_in? %>
-      <%= javascript_include_tag Ckeditor.cdn_url %>
-    <% end %>
   </head>
 
   <body>
-    <%- flash.each do |name, msg| -%>
-      <%= content_tag :div, msg, :id => "flash_#{name}" if msg.is_a?(String) %>
-    <%- end -%> 
     <%= yield %>
   </body>
 </html>

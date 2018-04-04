@@ -1,0 +1,66 @@
+<footer class="main-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 col-sm-6">
+        <div class="ftr-sub">
+          <ul>
+            <li><a href="#">About Miniflix</a></li>
+            <li><a href="#">Submit a Film</a></li>
+            <li><a href="#">info@miniflix.tv</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="ftr-sub">
+          <ul>
+            <li><a href="#">Legal</a></li>
+            <li><a href="#">Help Center</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-12">
+        <div class="ftr-sub ftr-social">
+          <ul>
+            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+            <li><a href="#"><i class="fa fa-facebook-official"></i></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-12">
+        <div class="ftr-sub">
+          <div class="download-link">
+            <div class="row no-mp">
+              <div class="col-xs-7 no-mp">  
+                <input type="tel" class="custom-form-control mobile-number" placeholder="+1">
+              </div>
+              <div class="col-xs-5 no-mp">
+                <button class="btn btn-default" type="button">Send download link</button>
+              </div>
+            </div>
+          </div>
+          <div class="app-download">
+            <span>
+              <a href="#"><%= image_tag('down-app.png') %></a>
+            </span>
+            <span>
+              <a href="#"><%= image_tag('down-play.png') %></a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  $(".mobile-number").intlTelInput();
+  $(".mobile-number").intlTelInput();
+</script>
+<script>
+  $("#card_btn").click(function(){
+      $(".card-details").slideDown();
+    });
+  $("#paypal_btn").click(function(){
+    $(".card-details").slideUp();
+  });
+</script>

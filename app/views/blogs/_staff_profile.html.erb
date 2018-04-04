@@ -1,0 +1,135 @@
+<%= render 'shared/blog_header' %>
+<div class="main-content">
+  <section class="blog-profile-main blog-list-main">
+    <div class="container">
+      <div class="profile-main-bg">
+        <div class="usr-pro-header">
+          <div class="usr-profile-img-wrapper">
+            <div class="upi-pic">
+              <%= image_tag(staff.image_url) %>
+              <% if own_profile %>
+                <div class="edit-user-profile">
+                  <%= link_to(edit_staff_user_registration_path) do %>
+                    <i class="fa fa-edit"></i>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+            <div class="up-social-links">
+              <ul>
+                <li>
+                  <%= link_to(staff.social_media_link_for('facebook'), target: '_blank') do %>
+                    <i class="fa fa-facebook"></i>
+                  <% end %>
+                </li>
+                <li>
+                  <%= link_to(staff.social_media_link_for('twitter'), target: '_blank') do %>
+                    <i class="fa fa-twitter"></i>
+                  <% end %>
+                </li>
+                <li>
+                  <%= link_to(staff.social_media_link_for('google_plus'), target: '_blank') do %>
+                    <i class="fa fa-google-plus"></i>
+                  <% end %>
+                </li>
+                <li>
+                  <%= link_to(staff.social_media_link_for('linkedin'), target: '_blank') do %>
+                    <i class="fa fa-linkedin"></i>
+                  <% end %>
+                </li>
+              </ul>
+            </div>
+            <div class="up-user-name">
+              <h3> <%= staff.name %> </h3>
+              <span><%= staff.role.titleize %></span>
+            </div>
+          </div>
+          <div class="usr-profile-detail-wrapper">
+            <div class="upd-section">
+              <ul class="row">
+                <li class="col-sm-6">
+                  <i class="fa fa-envelope-o"></i><%= staff.email %>
+                </li>
+                <li class="col-sm-6"><i class="fa fa-newspaper-o"></i><%= blogs.count %> Blogs</li>
+              </ul>
+              <ul class="row">
+                <li class="col-sm-12"><i class="fa fa-map-o"></i><%= staff.address.try(:city) %></li>
+              </ul>
+            </div>
+          </div>
+          <% if own_profile %>
+            <div class="add-blog-btn">
+              <%= link_to(new_blog_path, class: "btn btn-default") do %>
+                <i class="fa fa-plus"></i> Add Blog
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <div class="user-blogs-view-edit">
+          <div class="usr-profile-blog-heading">
+            <h3>My Blogs</h3>
+          </div>
+          <% blogs.each_slice(3) do |sliced_blogs| %>
+            <div class='row'>
+              <% sliced_blogs.each do |blog| %>
+                <div class="col-md-4">
+                  <div class="blog-list-single">
+                    <div class="edit-del-blog">
+                      <ul>
+                        <li>
+                          <%= link_to(edit_blog_path(id: blog.id), class: "btn btn-primary") do %>
+                            <i class="fa fa-edit"></i> Edit
+                          <% end %>
+                        </li>
+                        <li>
+                          <%= link_to(blog_path(id: blog.id), method: :delete, class: "btn btn-danger") do %>
+                            <i class="fa fa-trash"></i> Delete
+                          <% end %>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="blog-main-image">
+                      <%= image_tag(blog.featured_image_url) %>
+                    </div>
+                    <div class="blg-dt-user-profile">
+                      <i class="fa fa-calendar"></i> <%= blog.created_at.strftime("%m/%d/%Y") %>
+                    </div>
+                    <div class="blog-short-msg">
+                      <h3><%= blog.title.truncate(50) %></h3>
+                      <div class="share-video-btn">
+                        <div class="dropdown">
+                          <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" aria-expanded="true">
+                            <i class="fa fa-share"></i> Share
+                          <span class="caret"></span></a>
+                          <ul class="dropdown-menu">
+                            <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                      <p>
+                        <%= blog.body.truncate(200).html_safe %>
+                      </p>
+                      <div class="blog-inner-link">
+                        <%= link_to('Continue Reading', blog_path(id: blog.id), class: "btn btn-default") %>
+                      </div>
+                      <div class="blg-like-comm-counter">
+                        <div class="blg-like-count">
+                          <a href="javascript:void(0);"><i class="fa fa-thumbs-o-up"></i></a> 1k
+                        </div>
+                        <div class="blg-comm-count">
+                          <a href="02-blog_single.html#comm-section"><i class="fa fa-comments-o"></i></a> 550
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<%= render 'shared/blog_footer' %>

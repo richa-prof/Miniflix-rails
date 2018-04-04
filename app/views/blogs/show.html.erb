@@ -1,0 +1,110 @@
+<%= render 'shared/blog_header' %>
+  <div class="main-content">
+    <section class="blog-inner-main blog-list-main">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="blog-single-bg">
+              <div class="blog-single-feat-img">
+              <%= image_tag (@blog.featured_image_url) %>
+              </div>
+              <div class="blog-upload-usr-dt">
+                <div class="blg-dt">
+                  <%= @blog.created_at.strftime("%B %d %Y") %>
+                </div>
+                <div class="blg-like-comm-counter">
+                  <div class="blg-like-count">
+                    <a href="javascript:void(0);"<i class="fa fa-thumbs-o-up"></i></a> 1k
+                  </div>
+                  <div class="blg-comm-count">
+                    <a href="javascript:void(0);"<i class="fa fa-comments-o"></i></a> 550
+                  </div>
+                </div>
+                <div class="blg-user">
+                  <div class="blg-usr-pro-img">
+                    <%= image_tag @blog.user.image_url %>
+                  </div>
+                  <div class="blg-usr-nm">
+                    <%= link_to(@blog.user.name, blog_profile_path(id: @staff.id)) %>
+                  </div>
+                  <div class="blg-usr-desig">Miniflix Chief Editor</div>
+                </div>
+              </div>
+              <div class="blog-content-single">
+                <h1><%= @blog.title.html_safe %></h1>
+                <%= @blog.body.html_safe %>
+                <div class="share-video-btn">
+                  <div class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" aria-expanded="true">
+                      <i class="fa fa-share"></i> Share
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
+                      <li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="comment-section" id="comm-section">
+                <h3 class="comm-heading">Add a Comment</h3>
+                <div class="form-group">
+                  <input type="text" name="commentUserName" class="form-control" placeholder="Enter Name">
+                </div>
+                <div class="form-group">
+                  <textarea class="form-control" rows="3" placeholder="Type your text here"></textarea>
+                </div>
+                <button type="Submit" class="btn btn-default">Submit</button>
+              </div>
+              <div class="user-comments">
+                <h4>User Comments</h4>
+                <div class="usr-comment-sub">
+                  <div class="usr-pro-pic">
+                    <img src="profile-image.jpg">
+                  </div>
+                  <div class="usr-comment">
+                    <a href="03-blog_profile.html"><h5 class="usr-pro-name">John Doe</h5></a>
+                    <p>This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
+                  </div>
+                </div>
+                <div class="usr-comment-sub">
+                  <div class="usr-pro-pic">
+                    <img src="profile-image.jpg">
+                  </div>
+                  <div class="usr-comment">
+                    <a href="03-blog_profile.html"><h5 class="usr-pro-name">John Doe</h5></a>
+                    <p>This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
+                  </div>
+                </div>
+                <div class="usr-comment-sub">
+                  <div class="usr-pro-pic">
+                    <img src="profile-image.jpg">
+                  </div>
+                  <div class="usr-comment">
+                    <a href="03-blog_profile.html"><h5 class="usr-pro-name">John Doe</h5></a>
+                    <p>This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
+                  </div>
+                </div>
+                <a class="view-more" href="#">View more <i class="fa fa-angle-down"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+<%= render 'shared/blog_footer' %>
+
+<script>
+  $("#card_btn").click(function(){
+      $(".card-details").slideDown();
+    });
+  $("#paypal_btn").click(function(){
+    $(".card-details").slideUp();
+  });
+  $(".blg-comm-count a").click(function() {
+      $('html, body').animate({
+          scrollTop: $(".comment-section").offset().top - 90
+      }, 1000);
+  });
+</script>

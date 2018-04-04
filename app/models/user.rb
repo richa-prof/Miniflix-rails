@@ -8,6 +8,8 @@ class User < ActiveRecord::Base
 
   attr_accessor :social_login
 
+  mount_uploader :image, ImageUploader
+
   #Association
   has_many :user_payment_methods, dependent: :destroy
   has_many :user_filmlists,  dependent: :destroy
@@ -17,6 +19,9 @@ class User < ActiveRecord::Base
   has_one :logged_in_user, dependent: :destroy
   has_many :user_video_last_stops, as: :role, dependent: :destroy
   has_many :notifications, dependent: :destroy
+  has_many :blogs, dependent: :destroy
+  has_one :address, dependent: :destroy
+  has_many :social_media_links, dependent: :destroy
 
   #constant
   OLDUSER = "Trial Completed"
@@ -36,7 +41,7 @@ class User < ActiveRecord::Base
   phony_normalize :phone_number, :unconfirmed_phone_number
 
   #Validation
-  validates_presence_of :registration_plan, :sign_up_from, :name
+  validates_presence_of :sign_up_from, :name
   validates_plausible_phone :phone_number,:unconfirmed_phone_number
   validates_presence_of :registration_plan, unless: -> {skip_registration_plan_validation}
   validates_presence_of :sign_up_from, :name
@@ -105,6 +110,9 @@ class User < ActiveRecord::Base
       ios_token = logged_in_user_device_tokens.last
       fcm_service.send_notification_to_ios(ios_token, options[:data])
     end
+
+  def social_media_link_for(link_type)
+    self.social_media_links.where(link_type: link_type).last.try(:link) || '#'
   end
 
   private
