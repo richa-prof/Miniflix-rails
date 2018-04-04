@@ -55,8 +55,12 @@ Rails.application.routes.draw do
     devise_for :users, as: :staff
     
     root to: 'blogs#dashboard'
+    resources :blogs, except: [:index] do
+      member do
+        post :create_comment
+      end
+    end
     get 'blog_profile/:id' => 'blogs#blog_profile', as: 'blog_profile'
-    resources :blogs, except: [:index]
   end
 
 end

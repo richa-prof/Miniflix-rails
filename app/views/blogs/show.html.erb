@@ -45,47 +45,8 @@
                   </div>
                 </div>
               </div>
-              <div class="comment-section" id="comm-section">
-                <h3 class="comm-heading">Add a Comment</h3>
-                <div class="form-group">
-                  <input type="text" name="commentUserName" class="form-control" placeholder="Enter Name">
-                </div>
-                <div class="form-group">
-                  <textarea class="form-control" rows="3" placeholder="Type your text here"></textarea>
-                </div>
-                <button type="Submit" class="btn btn-default">Submit</button>
-              </div>
-              <div class="user-comments">
-                <h4>User Comments</h4>
-                <div class="usr-comment-sub">
-                  <div class="usr-pro-pic">
-                    <img src="profile-image.jpg">
-                  </div>
-                  <div class="usr-comment">
-                    <a href="03-blog_profile.html"><h5 class="usr-pro-name">John Doe</h5></a>
-                    <p>This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
-                  </div>
-                </div>
-                <div class="usr-comment-sub">
-                  <div class="usr-pro-pic">
-                    <img src="profile-image.jpg">
-                  </div>
-                  <div class="usr-comment">
-                    <a href="03-blog_profile.html"><h5 class="usr-pro-name">John Doe</h5></a>
-                    <p>This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
-                  </div>
-                </div>
-                <div class="usr-comment-sub">
-                  <div class="usr-pro-pic">
-                    <img src="profile-image.jpg">
-                  </div>
-                  <div class="usr-comment">
-                    <a href="03-blog_profile.html"><h5 class="usr-pro-name">John Doe</h5></a>
-                    <p>This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
-                  </div>
-                </div>
-                <a class="view-more" href="#">View more <i class="fa fa-angle-down"></i></a>
-              </div>
+              <%= render partial: 'comment_form', locals: { comment: @comment } %>
+              <%= render partial: 'comments', locals: { comments: @comments } %>
             </div>
           </div>
         </div>
