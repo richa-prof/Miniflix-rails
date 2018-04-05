@@ -48,7 +48,9 @@
                 </div>
               </div>
               <%= render partial: 'comment_form', locals: { comment: @comment } %>
-              <%= render partial: 'comments', locals: { comments: @comments } %>
+              <div class="user-comments" id="comments_<%= @blog.id %>">
+                <%= render partial: 'comments', locals: { comments: @comments } %>
+              </div>
             </div>
           </div>
         </div>
@@ -70,4 +72,5 @@
           scrollTop: $(".comment-section").offset().top - 90
       }, 1000);
   });
+
 </script>

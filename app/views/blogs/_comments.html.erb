@@ -1,5 +1,7 @@
-<div class="user-comments">
-  <h4>User Comments</h4>
-  <%= render :partial => 'comment', :collection => comments, :as => :comment %>
-  <a class="view-more" href="#">View more <i class="fa fa-angle-down"></i></a>
-</div>
+<h4>User Comments</h4>
+<%= render :partial => 'blogs/comment', :collection => comments, :as => :comment %>
+<% if comments.next_page %>
+  <%= link_to blog_comments_path(blog_id: @blog.id, page: comments.next_page), :class => 'view-more', :remote => true do %>
+    View more <i class="fa fa-angle-down"></i>
+  <% end %>
+<% end %>

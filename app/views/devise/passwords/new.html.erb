@@ -11,7 +11,7 @@
             <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "forgot-pass-form signup-form" }) do |f| %>
               <div class="form-group">
                 <label for="forgot_email_">Name</label>
-                <%= f.email_field :email, class: "form-control", id: "forgot_email_", placeholder: "Enter email" %>
+                <%= f.email_field :email, class: "form-control", id: "forgot_email_", placeholder: "Enter email", required: true %>
               </div>
               <%= button_tag(type: 'submit', class: "btn btn-default") do %>
                 Send me reset password instructions

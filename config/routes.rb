@@ -56,10 +56,8 @@ Rails.application.routes.draw do
     
     root to: 'blogs#dashboard'
     resources :blogs, except: [:index] do
-      member do
-        post :create_comment
-      end
       resources :likes, only: [:create, :destroy]
+      resources :comments, only: [:create, :index]
     end
     get 'blog_profile/:id' => 'blogs#blog_profile', as: 'blog_profile'
   end

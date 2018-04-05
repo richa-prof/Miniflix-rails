@@ -1,13 +1,13 @@
 <div class="comment-section" id="comm-section">
   <h3 class="comm-heading">Add a Comment</h3>
-  <%= form_for comment, url: create_comment_blog_path, method: :post do |f| %>
+  <%= form_for comment, url: blog_comments_path(blog_id: @blog.id), method: :post, remote: true do |f| %>
     <% unless staff_user_signed_in? %>
       <div class="form-group">
-        <%= f.text_field :commenter, class: "form-control", placeholder: "Enter Name" %>
+        <%= f.text_field :commenter, class: "form-control", placeholder: "Enter Name", required: true %>
       </div>
     <% end %>
     <div class="form-group">
-      <%= f.text_area :body, class: "form-control", rows: "3", placeholder: "Type your text here" %>
+      <%= f.text_area :body, class: "form-control", rows: "3", placeholder: "Type your comment here", required: true %>
     </div>
     <%= button_tag(type: 'submit', class: "btn btn-default") do %>
       Submit

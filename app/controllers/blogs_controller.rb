@@ -20,12 +20,12 @@ class BlogsController < ApplicationController
   def show
     @staff = current_staff_user
     @blog = Blog.find(params[:id])
-    @comments = @blog.comments
+    @comments = @blog.comments.order('created_at DESC').paginate(:page => params[:page], :per_page => 3)
     @comment = Comment.new
   end
 
   def edit
-    @blog = Blog.find(params[:id])
+    @blog = current_staff_user.blogs.find(params[:id])
   end
 
   def update
@@ -56,22 +56,10 @@ class BlogsController < ApplicationController
     @own_profile = true
   end
 
-  def create_comment
-    blog = Blog.find(params[:id])
-    comment = blog.comments.new(comment_params)
-    comment.user_id = current_staff_user.id if current_staff_user
-    comment.save
-    redirect_to blog
-  end
-
   private
 
   def blog_params
     params.require(:blog).permit(:title, :body, :featured_image)
-  end
-
-  def comment_params
-    params.require(:comment).permit(:commenter, :body)
   end
 
   def set_staff
