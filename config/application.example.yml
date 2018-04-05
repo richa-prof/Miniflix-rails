@@ -1,0 +1,38 @@
+development:
+  #---------------- Twilio credentials----------------
+  TWILIO_ACCOUNT_SID: TWILLO ACCOUNT SID
+  TWILIO_AUTH_TOKEN: TWILLO TOKEN
+  TWILIO_PHONE_NUMBER: TWILLO_PHONENO
+  #---------Social authentication credentials---------
+  FACEBOOK_KEY: FACEBOOK_APP_KEY
+  FACEBOOK_SECRET: FACEBOOK_SECRET_KEY
+  TWITTER_KEY: TWITTER_APP_KEY
+  TWITTER_SECRET: TWITTER_SECRET_KEY
+  cloud_front_url: CLOUDFRONT_IMAGE_URL
+  Mandrill: MANDRILL_KEY
+
+  #mailling credentials
+  Mailer_Email: MAILER_EMAIL
+  Mailer_Password: MAILER_PASSWORD
+  #---------------- Amazon and S3 credentials----------------
+  S3_KEY: AWS_S3_KEY
+  S3_SECRET: AWS_S3_SECRET
+  S3_INPUT_BUCKET: INPUT_VIDEO
+  S3_OUTPUT_BUCKET: S3_OUTPUT_BUCKET
+  S3_VIDEO_REGION: us-west-1
+  Host: REACT_HOST
+  # Host: "https://e7ecc366.ngrok.io/update_password"
+  reset_password_url: RESET_PASSWORD_URL_REACT_PAGE
+
+  #sidekiq credentials
+  SideKiq_UserName: SIDEKIQ_LOGIN_USERNAME
+  SideKiq_Password: SIDEKIQ_LOGIN_PASSWORD
+
+  #social_return_url
+  SocialReturn: SOCIAL_RETURN_URL
+
+  #Bitly credentials
+  Bitly_user: BITLY_USERNAME
+  Bitly_apikey: BITLY_APIKEY
+  Bitly_access_token: BITLY_ACCESSTOKEN
+  movie-show-root: REACT_MOVIE_SHOWPAGE_URL
