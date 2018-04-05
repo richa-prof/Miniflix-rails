@@ -42,7 +42,10 @@
               <div class="col-sm-12">
                 <div class="form-group">
                   <label>Change Location</label>
-                  <input type="text" name="editlocation" class="form-control" value="Los Angelles" placeholder="Enter Location">
+                  <% address = f.object.address || f.object.build_address %>
+                  <%= f.fields_for address do |address_fields| %>
+                    <%= address_fields.text_field :city, value: address.city, class: "form-control", placeholder: "Enter Location" %>
+                  <% end %>
                 </div>
               </div>
             </div>
@@ -53,34 +56,37 @@
                 <h3>Social Media Links</h3>
               </div>
             </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label>Facebook Profile</label>
-                  <input type="text" class="form-control" value="http://www.facebook.com" placeholder="Enter Facebook Id URL">
+            <% social_media_link = f.object.social_media_link || f.object.build_social_media_link %>
+            <%= f.fields_for social_media_link do |link_fields| %>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Facebook Profile</label>
+                    <%= link_fields.text_field :facebook, value: social_media_link.facebook, class: "form-control", placeholder: "Enter Facebook Id URL" %>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Twitter Profile</label>
+                    <%= link_fields.text_field :twitter, value: social_media_link.twitter, class: "form-control", placeholder: "Enter Twitter Id URL" %>
+                  </div>
                 </div>
               </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label>Twitter Profile</label>
-                  <input type="text" class="form-control" value="http://www.twitter.com" placeholder="Enter Twitter Id URL">
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Google Plus Profile</label>
+                    <%= link_fields.text_field :google_plus, value: social_media_link.google_plus, class: "form-control", placeholder: "Enter Google Plus Id URL" %>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Linkedin Profile</label>
+                    <%= link_fields.text_field :linekdin, value: social_media_link.linekdin, class: "form-control", placeholder: "Enter Linkedin Id URL" %>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label>Google Plus Profile</label>
-                  <input type="text" class="form-control" value="http://plus.google.com" placeholder="Enter Google Plus Id URL">
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label>Linkedin Profile</label>
-                  <input type="text" class="form-control" value="http://www.linekdin.com" placeholder="Enter Linkedin Id URL ">
-                </div>
-              </div>
-            </div>
+            <% end %>
           </div>
           <div class="edit-pro-sub-section">
             <div class="row">
@@ -94,18 +100,21 @@
                   <label>Old Password</label>
                   <%= f.password_field :current_password, class: "form-control", placeholder: "Enter Old Password" %>
                 </div>
+                <%= errors_for(f, :current_password) %>
               </div>
               <div class="col-sm-4">
                 <div class="form-group">
                   <label>New Password</label>
                   <%= f.password_field :password, class: "form-control", placeholder: "Enter New Password" %>
                 </div>
+                <%= errors_for(f, :password) %>
               </div>
               <div class="col-sm-4">
                 <div class="form-group">
                   <label>Confirm Password</label>
                   <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Confirm New Password" %>
                 </div>
+                <%= errors_for(f, :password_confirmation) %>
               </div>
             </div>
           </div>

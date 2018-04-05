@@ -52,8 +52,8 @@ Rails.application.routes.draw do
 
   # Starts routing for Blog Feature
   constraints Constraints::BlogSubdomainConstraint do
-    devise_for :users, as: :staff
-    
+    devise_for :users, as: :staff, :controllers => {:registrations => "registrations"}
+
     root to: 'blogs#dashboard'
     resources :blogs, except: [:index] do
       resources :likes, only: [:create, :destroy]

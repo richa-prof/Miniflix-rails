@@ -21,7 +21,9 @@ class User < ActiveRecord::Base
   has_many :notifications, dependent: :destroy
   has_many :blogs, dependent: :destroy
   has_one :address, dependent: :destroy
-  has_many :social_media_links, dependent: :destroy
+  has_one :social_media_link, dependent: :destroy
+
+  accepts_nested_attributes_for :address, :social_media_link
 
   #constant
   OLDUSER = "Trial Completed"

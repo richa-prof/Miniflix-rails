@@ -18,22 +18,22 @@
             <div class="up-social-links">
               <ul>
                 <li>
-                  <%= link_to(staff.social_media_link_for('facebook'), target: '_blank') do %>
+                  <%= link_to( formatted_social_media_link(staff.social_media_link.try(:facebook) ), target: '_blank') do %>
                     <i class="fa fa-facebook"></i>
                   <% end %>
                 </li>
                 <li>
-                  <%= link_to(staff.social_media_link_for('twitter'), target: '_blank') do %>
+                  <%= link_to( formatted_social_media_link(staff.social_media_link.try(:twitter) ), target: '_blank') do %>
                     <i class="fa fa-twitter"></i>
                   <% end %>
                 </li>
                 <li>
-                  <%= link_to(staff.social_media_link_for('google_plus'), target: '_blank') do %>
+                  <%= link_to( formatted_social_media_link(staff.social_media_link.try(:google_plus) ), target: '_blank') do %>
                     <i class="fa fa-google-plus"></i>
                   <% end %>
                 </li>
                 <li>
-                  <%= link_to(staff.social_media_link_for('linkedin'), target: '_blank') do %>
+                  <%= link_to( formatted_social_media_link(staff.social_media_link.try(:linkedin) ), target: '_blank') do %>
                     <i class="fa fa-linkedin"></i>
                   <% end %>
                 </li>
