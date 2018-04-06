@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
   #Validation
   validates_presence_of :sign_up_from, :name
   validates_plausible_phone :phone_number,:unconfirmed_phone_number
-  validates_presence_of :registration_plan, unless: -> {skip_registration_plan_validation}
+  validates_presence_of :registration_plan, unless: -> {social_login}
   validates_presence_of :sign_up_from, :name
 
   #enum
