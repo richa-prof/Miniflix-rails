@@ -1,0 +1,76 @@
+<%= render 'shared/blog_header' %>
+  <div class="main-content">
+    <section class="blog-inner-main blog-list-main">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="blog-single-bg">
+              <div class="blog-single-feat-img">
+              <%= image_tag (@blog.featured_image_url(:large)) %>
+              </div>
+              <div class="blog-upload-usr-dt">
+                <div class="blg-dt">
+                  <%= @blog.created_at.strftime("%B %d %Y") %>
+                </div>
+                <div class="blg-like-comm-counter">
+                  <div class="blg-like-count" id="likes_<%= @blog.id %>">
+                    <%= render partial: 'likes/list', locals: { blog: @blog } %>
+                  </div>
+                  <div class="blg-comm-count">
+                    <a href="javascript:void(0);"<i class="fa fa-comments-o"></i></a> <%= @blog.comments.count %>
+                  </div>
+                </div>
+                <div class="blg-user">
+                  <div class="blg-usr-pro-img">
+                    <%= image_tag @blog.user.image_url %>
+                  </div>
+                  <div class="blg-usr-nm">
+                    <%= link_to(@blog.user.name, blog_profile_path(id: @blog_user.id)) %>
+                  </div>
+                  <div class="blg-usr-desig">
+                    <%= @blog.user.role.titleize %>
+                  </div>
+                </div>
+              </div>
+              <div class="blog-content-single">
+                <h1><%= @blog.title.html_safe %></h1>
+                <%= @blog.body.html_safe %>
+                <div class="share-video-btn">
+                  <div class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" aria-expanded="true">
+                      <i class="fa fa-share"></i> Share
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
+                      <li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <%= render partial: 'comment_form', locals: { comment: @comment } %>
+              <div class="user-comments" id="comments_<%= @blog.id %>">
+                <%= render partial: 'comments', locals: { comments: @comments } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+<%= render 'shared/blog_footer' %>
+
+<script>
+  $("#card_btn").click(function(){
+      $(".card-details").slideDown();
+    });
+  $("#paypal_btn").click(function(){
+    $(".card-details").slideUp();
+  });
+  $(".blg-comm-count a").click(function() {
+      $('html, body').animate({
+          scrollTop: $(".comment-section").offset().top - 90
+      }, 1000);
+  });
+
+</script>

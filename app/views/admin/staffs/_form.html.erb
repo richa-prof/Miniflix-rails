@@ -1,0 +1,63 @@
+<!-- form start -->
+<%= form_for([:admin, @staff_member], url: {controller: 'admin/staffs', action: 'create' }, :html => { :id => "frm_admin_staff_member" }) do |f| %>
+  <% if @staff_member.errors.any? %>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-default">
+          <div class="box-body">
+            <% @staff_member.errors.full_messages.each do |message| %>
+              <div class="callout callout-success">
+                <p><%= message %></p>
+              </div>
+            <% end %>         
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-12">
+      <!-- general form elements -->
+      <div class="box box-primary">
+          <div class="box-body">
+            <div class="form-group">
+              <%= f.label :name %>
+              <%= f.text_field :name, class: "form-control", placeholder: "Enter staff name" %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :email %>
+              <%= f.email_field :email, class: "form-control", placeholder: "Enter email", required: true %>
+            </div>
+
+          </div>
+          <!-- /.box-body -->
+
+          <div class="box-footer">
+            <%= f.submit nil,class: "btn btn-primary" %>          
+            <%= link_to 'Cancel', admin_staffs_path, class: "btn btn-default" %>
+          </div>
+      </div>
+      <!-- /.box -->
+    </div>
+  </div>
+<% end %>
+<script type="text/javascript">
+  $(document).ready(function () { 
+  console.log("inside ready....")      
+    $("#frm_admin_staff_member").validate({
+      rules: {
+        "staff_member[email]": {required: true, email: true, remote:"/admin/staff_members/check_email"}
+      },
+      messages: {
+        "staff_member[email]": {
+          required: "Please enter an email.",
+          remote: "Email already exist."
+        }
+      }
+    });
+  });
+</script>

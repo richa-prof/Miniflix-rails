@@ -1,5 +1,9 @@
 require 'sidekiq/web'
+require 'constraints/blog_subdomain_constraint'
+
 Rails.application.routes.draw do
+  mount Ckeditor::Engine => '/ckeditor'
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   mount Sidekiq::Web, at: '/sidekiq'
 
@@ -11,6 +15,15 @@ Rails.application.routes.draw do
     omniauth_callbacks: "api/v1/omniauth_callbacks"
   }
 
+
+  namespace :admin do
+    devise_for :users, as: :admin, controllers: {
+      sessions: 'admin/sessions',
+    }
+
+    resources :staffs, only: [:index, :new, :create, :destroy]
+    get '/' => 'staffs#index'
+  end
 
   namespace :api do
     namespace :v1 do
@@ -44,4 +57,17 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  # Starts routing for Blog Feature
+  constraints Constraints::BlogSubdomainConstraint do
+    devise_for :users, as: :staff, :controllers => {:registrations => "registrations"}
+
+    root to: 'blogs#dashboard'
+    resources :blogs do
+      resources :likes, only: [:create, :destroy]
+      resources :comments, only: [:create, :index]
+    end
+    get 'blog_profile/:id' => 'blogs#blog_profile', as: 'blog_profile'
+  end
+
 end

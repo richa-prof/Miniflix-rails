@@ -1,0 +1,64 @@
+<div class="main-content">
+  <section class="blog-add-main">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8">
+          <div class="bl-heading">
+            <% action_heading = @blog.persisted? ? 'Edit' : 'Add' %>
+            <h2><%= "#{action_heading} Blog" %></h2>
+            <p>Please complete all field below to add blog</p>
+          </div>
+        </div>
+      </div>
+      <%= form_for @blog do |f| %>
+        <div class="row">
+          <div class="col-md-7">
+            <div class="form-group">
+              <label>Blog Title</label>
+              <%= f.text_field :title, class: "form-control", placeholder: "(Max 60 Letters)", maxlength: 60, required: true %>
+              <%= errors_for(f, :title) %>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="form-group">
+              <label>Featured Image</label>
+              <div class="upload-file-all">
+                <input type="text" name="blog-feat-upload" class="form-control targetFileField" placeholder="Upload Featured Image (Optional)" readonly>
+                <label class="uploadfile-field">
+                  <%= f.file_field(:featured_image, class: "form-control") %>
+                  <div class="upl-btn"><i class="fa fa-paperclip"></i></div>
+                </label>
+              </div>
+              <%= errors_for(f, :featured_image) %>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="blog-editor">
+              <h3>Editor</h3>
+              <div id="editor" class="main-blog-editor">
+              <%= f.cktext_area :body, value: @blog.body, required: true %>
+              </div>
+            </div>
+            <%= errors_for(f, :body) %>
+            <div class="add-blog-submit-btn">
+              <%= button_tag(type: 'submit', class: "btn btn-default") do %>
+                Submit
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>       
+    </div>
+  </section>
+</div>
+
+<script>
+  $(".uploadfile-field .form-control").change(function(){
+    var fileFieldVal = $(this).val().replace(/C:\\fakepath\\/i, '');
+    var targetField = $(this).closest(".upload-file-all").find(".targetFileField");
+    targetField.val(fileFieldVal);
+  })
+</script>
+

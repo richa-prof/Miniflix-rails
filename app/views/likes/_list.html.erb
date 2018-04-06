@@ -1,0 +1,17 @@
+<% if blog.liked_by?(current_staff_user) %>
+  <%= link_to '', blog_like_path(blog_id: blog.id, id: blog.id),
+                        method: :delete,
+                        remote: true,
+                        id: "like_#{blog.id}",
+                        class: 'fa fa-thumbs-up' %>
+<% elsif current_staff_user.blank? %>
+  <%= link_to '', 'javascript:void(0);',
+                  class: 'fa fa-thumbs-up' %>
+<% else %>
+  <%= link_to '', blog_likes_path(blog.id),
+                        method: :post,
+                        remote: true,
+                        id: "like_#{blog.id}",
+                        class: 'fa fa-thumbs-o-up' %>
+<% end %>
+<%= blog.likes.count %>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	  <title>Miniflix Admin</title>
+	  <meta charset='utf-8'>
+	  <meta content='IE=Edge,chrome=1' http-equiv='X-UA-Compatible'>
+	  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no' id='viewport' name='viewport'>
+	  <link href="/assets/favicon.ico" rel="icon">
+	  <%= stylesheet_link_tag    'admin.css', media: 'all', 'data-turbolinks-track' => true %>
+	  <%= javascript_include_tag 'admin.js', 'data-turbolinks-track' => true %>
+	  <%= csrf_meta_tags %>
+	</head>
+	<body class="hold-transition login-page">
+		<%= yield %>
+	</body>
+</html>

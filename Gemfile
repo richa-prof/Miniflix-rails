@@ -16,10 +16,19 @@ gem 'devise_token_auth'
 gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
+
+gem 'bootstrap-sass'
+
+# the font-awesome font bundled as an asset for the asset pipeline
+gem "font-awesome-rails"
+
+gem 'jquery-rails'
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
+
 
 gem 'mandrill-api'
 
@@ -53,6 +62,7 @@ gem 'carrierwave', '~> 1.0'
 #for storing file to s3
 gem 'fog'
 gem 'mini_magick'
+gem 'ckeditor'
 
 gem 'active_model_serializers', '~> 0.10.7'
 #social authentication
@@ -71,6 +81,24 @@ gem 'phony_rails'
 #sidekiq
 gem 'sidekiq'
 
+# For witing Cron jobs
+gem 'whenever', require: false
+
+# For Sending notifications to Android and iOS devices via Firebase Cloud Messaging.
+gem 'fcm'
+
+gem 'aws-s3'
+gem 'aws-sdk-v1'
+gem 'aws-sdk', '~> 2'
+
+# For administration interfaces and services
+gem 'activeadmin'
+
+# For flexible authentication solution with Warden
+gem 'devise', git: 'https://github.com/plataformatec/devise' #, ref: '88e9a85'
+
+# For Token based authentication for JSON APIs
+gem 'devise_token_auth'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

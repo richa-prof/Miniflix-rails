@@ -1,0 +1,28 @@
+<div class="usr-comment-sub">
+  <div class="usr-pro-pic">
+    <% if comment.by_staff? %>
+      <%= image_tag comment.commenter_user.image_url %>
+    <% else %>
+      <%= image_tag (ImageUploader.new.default_url) %>
+    <% end %>
+  </div>
+  <div class="usr-comment">
+    <% if comment.by_staff? %>
+      <% commenter_user = comment.commenter_user %>
+      <%= link_to( blog_profile_path(id: commenter_user.id) ) do %>
+        <h5 class="usr-pro-name">
+          <%= commenter_user.name %>
+        </h5>
+      <% end %>
+    <% else %>
+      <%= link_to('javascript:void(0)') do %>
+        <h5 class="usr-pro-name">
+          <%= comment.commenter %>
+        </h5>
+      <% end %>
+    <% end %>
+    <p>
+    	<%= comment.body %>
+    </p>
+  </div>
+</div>
