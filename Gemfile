@@ -91,9 +91,6 @@ gem 'aws-s3'
 gem 'aws-sdk-v1'
 gem 'aws-sdk', '~> 2'
 
-# For administration interfaces and services
-gem 'activeadmin'
-
 # For flexible authentication solution with Warden
 gem 'devise', git: 'https://github.com/plataformatec/devise' #, ref: '88e9a85'
 

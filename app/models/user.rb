@@ -55,7 +55,6 @@ class User < ActiveRecord::Base
   enum provider: {  email: 'email', facebook: 'facebook', twitter: 'twitter' }
   enum role: {admin: 'Admin', staff: 'Staff', user: 'User'}
 
-
   # Scope
   scope :with_migrate_user, -> { where(migrate_user: true) }
 
@@ -112,6 +111,7 @@ class User < ActiveRecord::Base
       ios_token = logged_in_user_device_tokens.last
       fcm_service.send_notification_to_ios(ios_token, options[:data])
     end
+  end
 
   def social_media_link_for(link_type)
     self.social_media_links.where(link_type: link_type).last.try(:link) || '#'
@@ -144,7 +144,6 @@ class User < ActiveRecord::Base
     destroy_verification_code_after_2minutes if errors.blank?
     errors.blank?
   end
-
 
   def message_with_verification_code(verification_code)
     "you are requesting for updating phone number your verification code is #{verification_code}, this code is valid for 2 minute "
