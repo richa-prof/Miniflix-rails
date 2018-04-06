@@ -2,15 +2,6 @@
 <%= render 'form' %>
 <%= render 'shared/blog_footer' %>
 
-<!-- <script src="https://cdn.ckeditor.com/ckeditor5/1.0.0-alpha.2/inline/ckeditor.js"></script> -->
-
-<script>
-    InlineEditor
-        .create( document.querySelector( '#editor' ) )
-        .catch( error => {
-            console.error( error );
-        } );
-</script>
 <script>
   $(".uploadfile-field .form-control").change(function(){
     var fileFieldVal = $(this).val().replace(/C:\\fakepath\\/i, '');

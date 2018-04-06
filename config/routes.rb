@@ -16,6 +16,15 @@ Rails.application.routes.draw do
   }
 
 
+  namespace :admin do
+    devise_for :users, as: :admin, controllers: {
+      sessions: 'admin/sessions',
+    }
+
+    resources :staffs, only: [:index, :new, :create, :destroy]
+    get '/' => 'staffs#index'
+  end
+
   namespace :api do
     namespace :v1 do
       resource :mobile_apps, only: [] do

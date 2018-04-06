@@ -34,7 +34,7 @@
               <div class="col-sm-6">
                 <div class="form-group">
                   <label>Change Email</label>
-                  <%= f.email_field :email, class: "form-control", placeholder: "Enter Email" %>
+                  <%= f.email_field :email, class: "form-control", placeholder: "Enter Email", required: true %>
                 </div>
               </div>
             </div>
@@ -98,7 +98,7 @@
               <div class="col-sm-4">
                 <div class="form-group">
                   <label>Old Password</label>
-                  <%= f.password_field :current_password, class: "form-control", placeholder: "Enter Old Password" %>
+                  <%= f.password_field :current_password, class: "form-control", placeholder: "Enter Old Password", required: true %>
                 </div>
                 <%= errors_for(f, :current_password) %>
               </div>

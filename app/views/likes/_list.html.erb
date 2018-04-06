@@ -4,6 +4,9 @@
                         remote: true,
                         id: "like_#{blog.id}",
                         class: 'fa fa-thumbs-up' %>
+<% elsif current_staff_user.blank? %>
+  <%= link_to '', 'javascript:void(0);',
+                  class: 'fa fa-thumbs-up' %>
 <% else %>
   <%= link_to '', blog_likes_path(blog.id),
                         method: :post,

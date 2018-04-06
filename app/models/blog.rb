@@ -11,6 +11,8 @@ class Blog < ApplicationRecord
   validates :title, length: { maximum: 60 }
 
   def liked_by?(target_user)
+    return false unless target_user
+
     self.likes.where(user_id: target_user.id).any?
   end
 end

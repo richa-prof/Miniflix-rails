@@ -1,6 +1,5 @@
 class BlogsController < ApplicationController
-  layout 'blog'
-  before_action :authenticate_staff_user!
+  before_action :authenticate_staff_user!, except: [:blog_profile, :show]
 
   def new
     @staff = current_staff_user
@@ -20,6 +19,7 @@ class BlogsController < ApplicationController
   def show
     @staff = current_staff_user
     @blog = Blog.find(params[:id])
+    @blog_user = @blog.user
     @comments = @blog.comments.order('created_at DESC').paginate(:page => params[:page], :per_page => 3)
     @comment = Comment.new
   end
@@ -47,8 +47,9 @@ class BlogsController < ApplicationController
 
   def blog_profile
     set_staff
-    @staff_blogs = @staff.blogs
     @own_profile = current_staff_user == @staff
+    redirect_to root_path if @own_profile
+    @staff_blogs = @staff.blogs
   end
 
   def dashboard

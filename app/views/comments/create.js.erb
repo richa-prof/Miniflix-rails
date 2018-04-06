@@ -1,2 +1,8 @@
 $("#comments_<%= @blog.id %>").html("<%= j (render partial: 'blogs/comments', locals: { comments: @comments } ) %>");
 $("#comment_body").val('');
+
+var commenterField = $("#comment_commenter");
+
+if (commenterField.length) {
+  commenterField.val('');
+}

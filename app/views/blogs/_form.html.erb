@@ -55,13 +55,6 @@
 </div>
 
 <script>
-    InlineEditor
-        .create( document.querySelector( '#editor' ) )
-        .catch( error => {
-            console.error( error );
-        } );
-</script>
-<script>
   $(".uploadfile-field .form-control").change(function(){
     var fileFieldVal = $(this).val().replace(/C:\\fakepath\\/i, '');
     var targetField = $(this).closest(".upload-file-all").find(".targetFileField");

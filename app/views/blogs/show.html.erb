@@ -25,7 +25,7 @@
                     <%= image_tag @blog.user.image_url %>
                   </div>
                   <div class="blg-usr-nm">
-                    <%= link_to(@blog.user.name, blog_profile_path(id: @staff.id)) %>
+                    <%= link_to(@blog.user.name, blog_profile_path(id: @blog_user.id)) %>
                   </div>
                   <div class="blg-usr-desig">
                     <%= @blog.user.role.titleize %>
