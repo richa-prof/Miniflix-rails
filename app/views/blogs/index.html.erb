@@ -1,0 +1,81 @@
+<%= render 'shared/blog_header' %>
+<div class="main-content">
+  <section class="blog-list-main">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8">
+          <div class="bl-heading">
+            <h2>Miniflix Blog</h2>
+            <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters...</p>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="blog-search-bar"> 
+            <div class="input-group">
+              <input type="text" name="search" class="form-control" placeholder="Search Blog Here">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+          <% @blogs.each_slice(2) do |sliced_blogs| %>
+            <div class='row'>
+              <% sliced_blogs.each do |blog| %>
+                <div class="col-md-6">
+                  <div class="blog-list-single">
+                    <div class="blog-main-image">
+                      <%= image_tag(blog.featured_image_url(:medium)) %>
+                    </div>
+                    <div class="blg-dt-user-profile">
+                      <i class="fa fa-calendar"></i> <%= blog.created_at.strftime("%m/%d/%Y") %>
+                    </div>
+                    <div class="blog-short-msg">
+                      <h3><%= blog.title.truncate(50) %></h3>
+                      <div class="share-video-btn">
+                        <div class="dropdown">
+                          <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" aria-expanded="true">
+                            <i class="fa fa-share"></i> Share
+                          <span class="caret"></span></a>
+                          <ul class="dropdown-menu">
+                            <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                      <p>
+                        <%= blog.body.truncate(200).html_safe %>
+                      </p>
+                      <div class="blog-inner-link">
+                        <%= link_to('Continue Reading', blog_path(id: blog.id), class: "btn btn-default") %>
+                      </div>
+                      <div class="blg-like-comm-counter">
+                        <div class="blg-like-count" id="likes_<%= blog.id %>">
+                          <%= render partial: 'likes/list', locals: { blog: blog } %>
+                        </div>
+                        <div class="blg-comm-count">
+                          <a href="javascript:void(0);"><i class="fa fa-comments-o"></i></a> <%= blog.comments.count %>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+      <%= will_paginate @blogs %>
+    </div>
+  </section>
+</div>
+
+<%= render 'shared/blog_footer' %>
+
+<script>
+  $("#card_btn").click(function(){
+      $(".card-details").slideDown();
+    });
+  $("#paypal_btn").click(function(){
+    $(".card-details").slideUp();
+  });
+</script>

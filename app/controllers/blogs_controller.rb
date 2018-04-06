@@ -1,5 +1,9 @@
 class BlogsController < ApplicationController
-  before_action :authenticate_staff_user!, except: [:blog_profile, :show]
+  before_action :authenticate_staff_user!, except: [:blog_profile, :show, :index]
+
+  def index
+    @blogs = Blog.order('created_at DESC').paginate(:page => params[:page], :per_page => 4)
+  end
 
   def new
     @staff = current_staff_user

@@ -63,7 +63,7 @@ Rails.application.routes.draw do
     devise_for :users, as: :staff, :controllers => {:registrations => "registrations"}
 
     root to: 'blogs#dashboard'
-    resources :blogs, except: [:index] do
+    resources :blogs do
       resources :likes, only: [:create, :destroy]
       resources :comments, only: [:create, :index]
     end
