@@ -12,8 +12,6 @@ gem 'rails', '~> 5.1.4'
 gem 'mysql2'
 #authorization
 gem 'devise_token_auth'
-# Use Puma as the app server
-gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 
@@ -113,6 +111,9 @@ group :development, :test do
   gem 'shoulda-callback-matchers'
   gem 'simplecov', require: false
   gem 'pry'
+
+  # Use Puma as the app server
+  gem 'puma', '~> 3.7'
 end
 
 group :development do
