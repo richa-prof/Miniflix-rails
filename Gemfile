@@ -92,7 +92,7 @@ gem 'aws-sdk-v1'
 gem 'aws-sdk', '~> 2'
 
 # For flexible authentication solution with Warden
-gem 'devise', git: 'https://github.com/plataformatec/devise' #, ref: '88e9a85'
+gem 'devise'
 
 # For Token based authentication for JSON APIs
 gem 'devise_token_auth'
