@@ -27,12 +27,10 @@ gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
-
 gem 'mandrill-api'
 
 #Rack Middleware for handling Cross-Origin Resource Sharing (CORS), which makes cross-origin AJAX possible.
 gem 'rack-cors', :require => 'rack/cors'
-
 
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
@@ -55,6 +53,7 @@ gem 'twilio-ruby', '~> 5.6.3'
 gem "figaro"
 #for pagination
 gem 'will_paginate', '~> 3.1.0'
+
 #======set up for image and file =====================
 #way to upload files
 gem 'carrierwave', '~> 1.0'
@@ -95,6 +94,9 @@ gem 'devise'
 
 # For Token based authentication for JSON APIs
 gem 'devise_token_auth'
+
+#For JavaScript flash notifications.
+gem 'pnotify-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

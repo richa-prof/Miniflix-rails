@@ -70,4 +70,5 @@ Rails.application.routes.draw do
     get 'blog_profile/:id' => 'blogs#blog_profile', as: 'blog_profile'
   end
 
+  get 'send_download_link' => 'mobile_apps#send_download_link'
 end

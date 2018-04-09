@@ -15,4 +15,9 @@
 //= require rails-ujs
 //= require turbolinks
 //= require ckeditor/init
-//= require intlTelInput.js
+
+//= require intlTelInput
+//= require utils
+//= require pnotify
+
+//= require footer
