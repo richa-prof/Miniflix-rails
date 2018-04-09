@@ -10,6 +10,9 @@ class Blog < ApplicationRecord
   validates :title, :body, presence: true
   validates :title, length: { maximum: 60 }
 
+  # Scopes
+  scope :with_search_query, -> (q) { where('title LIKE ? or body LIKE ? ', "%#{q}%", "%#{q}%") if q.present? }
+
   def liked_by?(target_user)
     return false unless target_user
 
