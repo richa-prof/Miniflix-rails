@@ -1,6 +1,7 @@
 class RegistrationsController < Devise::RegistrationsController
 
   def update
+    save_user_image
     save_staff_address
     save_social_media_link
 
@@ -8,6 +9,14 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   private
+
+  def save_user_image
+    image = staff_user_params.delete(:image)
+    if image.present?
+      resource.image = image
+      resource.save
+    end
+  end
 
   def save_staff_address
     address = resource.address || resource.build_address

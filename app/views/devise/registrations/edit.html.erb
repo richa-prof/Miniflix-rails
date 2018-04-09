@@ -23,9 +23,9 @@
                 <div class="form-group">
                   <label>Change Profile Picture</label>
                   <div class="upload-file-all">
-                    <input type="text" name="blog-feat-upload" class="form-control targetFileField" value="01.jpg" placeholder="Upload Featured Image" readonly>
+                    <%= text_field_tag 'blog-feat-upload', f.object.image.try(:filename), readonly: true, class: "form-control targetFileField", placeholder: 'Upload Profile Picture' %>
                     <label class="uploadfile-field">
-                      <input type="file" name="blogfeatimage" class="form-control">
+                      <%= f.file_field(:image, class: "form-control") %>
                       <div class="upl-btn"><i class="fa fa-paperclip"></i></div>
                     </label>
                   </div>

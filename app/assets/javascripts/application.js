@@ -21,3 +21,4 @@
 //= require pnotify
 
 //= require footer
+//= require form_helpers
