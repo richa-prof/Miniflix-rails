@@ -12,8 +12,6 @@ gem 'rails', '~> 5.1.4'
 gem 'mysql2'
 #authorization
 gem 'devise_token_auth'
-# Use Puma as the app server
-gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 
@@ -42,6 +40,7 @@ gem 'coffee-rails', '~> 4.2'
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
+gem 'therubyracer'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
@@ -92,7 +91,7 @@ gem 'aws-sdk-v1'
 gem 'aws-sdk', '~> 2'
 
 # For flexible authentication solution with Warden
-gem 'devise', git: 'https://github.com/plataformatec/devise' #, ref: '88e9a85'
+gem 'devise'
 
 # For Token based authentication for JSON APIs
 gem 'devise_token_auth'
@@ -112,6 +111,9 @@ group :development, :test do
   gem 'shoulda-callback-matchers'
   gem 'simplecov', require: false
   gem 'pry'
+
+  # Use Puma as the app server
+  gem 'puma', '~> 3.7'
 end
 
 group :development do

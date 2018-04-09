@@ -21,7 +21,7 @@
 /yarn-error.log
 
 .byebug_history
-.ruby-gemset
+
 /config/database.yml
 /config/secrets.yml
 

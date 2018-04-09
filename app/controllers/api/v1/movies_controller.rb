@@ -18,8 +18,8 @@ class Api::V1::MoviesController < Api::V1::ApplicationController
   end
 
   def search
-    movies = Movie.search(params[:search_key])
-    render json: movies, scope: {current_user: current_user}
+    movies = Movie.search(params[:search_key]).paginate(page: params[:page])
+    render json: serialize_movie_response_with_pagination(movies)
   end
 
   def add_and_remove_to_my_playlist
