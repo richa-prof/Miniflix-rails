@@ -113,8 +113,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def social_media_link_for(link_type)
-    self.social_media_links.where(link_type: link_type).last.try(:link) || '#'
+  def send_welcome_mail
+    UserMailer.staff_member_signup_email(self).deliver
   end
 
   private

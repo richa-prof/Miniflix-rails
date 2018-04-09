@@ -16,9 +16,12 @@ class Admin::StaffsController < ApplicationController
     @staff_member = User.new(admin_staff_member_params)
     @staff_member.role = User.roles[:staff]
     @staff_member.sign_up_from = User.sign_up_froms[:Web]
-    @staff_member.password = SecureRandom.hex(8)
+    temp_password = SecureRandom.hex(8)
+    @staff_member.password = temp_password
+    @staff_member.temp_password = temp_password
 
     if @staff_member.save
+      SendWelcomeStaffMailJob.perform_later(@staff_member.id)
       redirect_to admin_staffs_path
     else
       render :new
