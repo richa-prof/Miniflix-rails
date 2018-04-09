@@ -58,9 +58,10 @@ class BlogsController < ApplicationController
   end
 
   def blog_profile
-    set_staff
+    @staff = User.staff.friendly.find(params[:id])
     @own_profile = current_staff_user == @staff
     redirect_to root_path if @own_profile
+
     @staff_blogs = @staff.blogs
   end
 
@@ -73,9 +74,5 @@ class BlogsController < ApplicationController
 
   def blog_params
     params.require(:blog).permit(:title, :body, :featured_image)
-  end
-
-  def set_staff
-    @staff = User.staff.find(params[:id])
   end
 end

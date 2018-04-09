@@ -70,7 +70,7 @@ gem 'omniauth-twitter'
 #for shorten url and tracking
 gem 'bitly'
 
-#friendly id for url
+# For creating pretty URL’s and work with human-friendly strings as if they were numeric ids for ActiveRecord models.
 gem 'friendly_id', '~> 5.2.3'
 
 #valiation for phone number

@@ -67,7 +67,7 @@ Rails.application.routes.draw do
       resources :likes, only: [:create, :destroy]
       resources :comments, only: [:create, :index]
     end
-    get 'blog_profile/:id' => 'blogs#blog_profile', as: 'blog_profile'
+    get 'profile/:id' => 'blogs#blog_profile', as: 'profile'
   end
 
   get 'send_download_link' => 'mobile_apps#send_download_link'

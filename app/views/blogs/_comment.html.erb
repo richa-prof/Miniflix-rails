@@ -9,7 +9,7 @@
   <div class="usr-comment">
     <% if comment.by_staff? %>
       <% commenter_user = comment.commenter_user %>
-      <%= link_to( blog_profile_path(id: commenter_user.id) ) do %>
+      <%= link_to( profile_path( commenter_user ) ) do %>
         <h5 class="usr-pro-name">
           <%= commenter_user.name %>
         </h5>

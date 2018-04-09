@@ -28,6 +28,7 @@
       <% @blogs.each_slice(2) do |sliced_blogs| %>
         <div class="row">
           <% sliced_blogs.each do |blog| %>
+            <% blog_user = blog.user %>
             <div class="col-md-6">
               <div class="blog-list-single">
                 <div class="blog-main-image">
@@ -39,12 +40,12 @@
                   </div>
                   <div class="blg-user">
                     <div class="blg-usr-pro-img">
-                      <%= image_tag blog.user.image_url %>
+                      <%= image_tag blog_user.image_url %>
                     </div>
                     <div class="blg-usr-nm">
-                      <%= link_to(blog.user.name, blog_profile_path(id: blog.user.id)) %>
+                      <%= link_to( blog_user.name, profile_path(blog_user) ) %>
                     </div>
-                    <div class="blg-usr-desig"><%= blog.user.role.titleize %></div>
+                    <div class="blg-usr-desig"><%= blog_user.role.titleize %></div>
                   </div>
                 </div>
                 <div class="blog-short-msg">
