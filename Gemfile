@@ -129,6 +129,7 @@ group :development do
   gem 'capistrano'
   gem 'capistrano-rails'
   gem 'capistrano-bundler'
+  gem 'capistrano-rvm'
   gem 'capistrano-passenger'
   gem 'capistrano-faster-assets'
   gem 'capistrano-rails-collection'
