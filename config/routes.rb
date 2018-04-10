@@ -21,7 +21,12 @@ Rails.application.routes.draw do
       sessions: 'admin/sessions',
     }
 
-    resources :staffs, only: [:index, :new, :create, :destroy]
+    resources :staffs, only: [:index, :new, :create, :destroy] do
+      collection do
+        get 'check_email'
+      end
+    end
+
     get '/' => 'staffs#index'
   end
 

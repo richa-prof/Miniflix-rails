@@ -13,6 +13,30 @@
     })
   };
 
+  adminStaffMemberForm = function() {
+    return $("#frm_admin_staff_member");
+  };
+
+  applyValidationToStaffMemberForm = function() {
+    var formObject = adminStaffMemberForm();
+    formObject.validate({
+      rules: {
+        "user[email]": { required: true,
+                         email: true,
+                         remote: formObject.data('check-email-path') }
+      },
+      messages: {
+        "user[name]": {
+          required: "Name can't be blank."
+        },
+        "user[email]": {
+          required: "Please enter an email.",
+          remote: "Email already exist."
+        }
+      }
+    });
+  };
+
 }) (jQuery);
 
 var ready;
@@ -20,6 +44,10 @@ var ready;
 ready = function() {
   if (fileFields().length) {
     bindChangeEventOnFileFields();
+  }
+
+  if ( adminStaffMemberForm().length ) {
+    applyValidationToStaffMemberForm();
   }
 };
 
