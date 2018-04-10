@@ -43,7 +43,7 @@
                       <%= image_tag blog_user.image_url %>
                     </div>
                     <div class="blg-usr-nm">
-                      <%= link_to( blog_user.name, profile_path(blog_user) ) %>
+                      <%= link_to( blog_user.name, profile_path_for(blog_user) ) %>
                     </div>
                     <div class="blg-usr-desig"><%= blog_user.role.titleize %></div>
                   </div>

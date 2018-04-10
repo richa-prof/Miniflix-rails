@@ -22,3 +22,4 @@
 
 //= require footer
 //= require form_helpers
+//= require blogs

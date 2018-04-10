@@ -1,0 +1,3 @@
+$("#blogs_list_<%= @staff.id %>").html("<%= j ( render partial: 'staff_blogs', locals: { blogs: @staff_blogs, staff: @staff } ) %>");
+
+applyRemoteTrueToAjaxPaginationLinks();

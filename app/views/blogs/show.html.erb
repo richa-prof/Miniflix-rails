@@ -22,10 +22,10 @@
                 </div>
                 <div class="blg-user">
                   <div class="blg-usr-pro-img">
-                    <%= image_tag @blog_user.image_url %>
+                    <%= image_tag @blog_user.image_url(:staff_medium) %>
                   </div>
                   <div class="blg-usr-nm">
-                    <%= link_to( @blog_user.name, profile_path(@blog_user) ) %>
+                    <%= link_to( @blog_user.name, profile_path_for(@blog_user) ) %>
                   </div>
                   <div class="blg-usr-desig">
                     <%= @blog_user.role.titleize %>
@@ -59,18 +59,3 @@
   </div>
 
 <%= render 'shared/blog_footer' %>
-
-<script>
-  $("#card_btn").click(function(){
-      $(".card-details").slideDown();
-    });
-  $("#paypal_btn").click(function(){
-    $(".card-details").slideUp();
-  });
-  $(".blg-comm-count a").click(function() {
-      $('html, body').animate({
-          scrollTop: $(".comment-section").offset().top - 90
-      }, 1000);
-  });
-
-</script>
