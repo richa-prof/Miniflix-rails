@@ -4,7 +4,9 @@
       <div class="col-md-3 col-sm-6">
         <div class="ftr-sub">
           <ul>
-            <li><a href="#">About Miniflix</a></li>
+            <li>
+              <%= link_to 'About Miniflix', get_static_page_url_for('about_us') %>
+            </li>
             <li>
               <%= link_to "Submit a Film", "mailto:info@miniflix.tv?subject=Film submission" %>
             </li>
@@ -17,8 +19,15 @@
       <div class="col-md-3 col-sm-6">
         <div class="ftr-sub">
           <ul>
-            <li><a href="#">Legal</a></li>
-            <li><a href="#">Help Center</a></li>
+            <li>
+              <%= link_to 'Help Center', get_static_page_url_for('help_center') %>
+            </li>
+            <li>
+              <%= link_to 'Term of services', get_static_page_url_for('term_of_services') %>
+            </li>
+            <li>
+              <%= link_to 'Privacy Policy', get_static_page_url_for('privacy_policy') %>
+            </li>
           </ul>
         </div>
       </div>
@@ -43,7 +52,13 @@
           <div class="download-link">
             <div class="row no-mp">
               <div class="col-xs-7 no-mp">
-                <%= telephone_field_tag 'contact_num', nil, id: 'contact_number', class: 'custom-form-control mobile-number', placeholder: "+1", required: "true", data: { 'target-url' => send_download_link_path } %>
+                <%= telephone_field_tag 'contact_num',
+                                        nil,
+                                        id: 'contact_number',
+                                        class: 'custom-form-control mobile-number',
+                                        placeholder: "+1",
+                                        required: "true",
+                                        data: { 'target-url' => send_download_link_path } %>
               </div>
               <div class="col-xs-5 no-mp">
                 <%= submit_tag "Send download link", class: "btn btn-secondary send_dl_btn" %>
