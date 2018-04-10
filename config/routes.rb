@@ -59,6 +59,7 @@ Rails.application.routes.draw do
       resource :users, only: [] do
         put :send_verification_code
         put :verify_verification_code
+        get :my_activity
       end
     end
   end
