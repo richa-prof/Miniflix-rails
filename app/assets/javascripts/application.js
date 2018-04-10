@@ -15,4 +15,11 @@
 //= require rails-ujs
 //= require turbolinks
 //= require ckeditor/init
-//= require intlTelInput.js
+
+//= require intlTelInput
+//= require utils
+//= require pnotify
+
+//= require footer
+//= require form_helpers
+//= require blogs

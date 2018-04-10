@@ -1,12 +1,3 @@
 <%= render 'shared/blog_header' %>
 <%= render 'form' %>
 <%= render 'shared/blog_footer' %>
-
-<script>
-  $(".uploadfile-field .form-control").change(function(){
-    var fileFieldVal = $(this).val().replace(/C:\\fakepath\\/i, '');
-    var targetField = $(this).closest(".upload-file-all").find(".targetFileField");
-    targetField.val(fileFieldVal);
-  })
-</script>
-

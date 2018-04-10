@@ -17,6 +17,14 @@ class Api::V1::UsersController < Api::V1::ApplicationController
     render json: {success: true, message: "Phone number successful updated"}
   end
 
+  def my_activity
+    user_video_last_stops = current_user.user_video_last_stops.order("updated_at DESC").paginate(page: params[:page])
+    serialize_user_video_last_stop = ActiveModelSerializers::SerializableResource.new(user_video_last_stops,
+        each_serializer: Api::V1::MyActivitySerializer)
+    render json: {total_page: user_video_last_stops.total_pages, current_page: user_video_last_stops.current_page, activity: serialize_user_video_last_stop}
+
+  end
+
 
   private
 

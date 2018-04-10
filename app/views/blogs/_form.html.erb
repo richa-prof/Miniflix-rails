@@ -23,7 +23,7 @@
             <div class="form-group">
               <label>Featured Image</label>
               <div class="upload-file-all">
-                <input type="text" name="blog-feat-upload" class="form-control targetFileField" placeholder="Upload Featured Image (Optional)" readonly>
+                <%= text_field_tag 'blog-feat-upload', f.object.featured_image.try(:filename), readonly: true, class: "form-control targetFileField", placeholder: 'Upload Featured Image (Optional)' %>
                 <label class="uploadfile-field">
                   <%= f.file_field(:featured_image, class: "form-control") %>
                   <div class="upl-btn"><i class="fa fa-paperclip"></i></div>
@@ -53,12 +53,3 @@
     </div>
   </section>
 </div>
-
-<script>
-  $(".uploadfile-field .form-control").change(function(){
-    var fileFieldVal = $(this).val().replace(/C:\\fakepath\\/i, '');
-    var targetField = $(this).closest(".upload-file-all").find(".targetFileField");
-    targetField.val(fileFieldVal);
-  })
-</script>
-

@@ -16,9 +16,12 @@ class Admin::StaffsController < ApplicationController
     @staff_member = User.new(admin_staff_member_params)
     @staff_member.role = User.roles[:staff]
     @staff_member.sign_up_from = User.sign_up_froms[:Web]
-    @staff_member.password = SecureRandom.hex(8)
+    temp_password = SecureRandom.hex(8)
+    @staff_member.password = temp_password
+    @staff_member.temp_password = temp_password
 
     if @staff_member.save
+      SendWelcomeStaffMailJob.perform_later(@staff_member.id)
       redirect_to admin_staffs_path
     else
       render :new
@@ -26,16 +29,17 @@ class Admin::StaffsController < ApplicationController
   end
 
   def destroy
-    staff = User.find(params[:id])
+    staff = User.friendly.find(params[:id])
     if staff.destroy
+      flash[:notice] = 'Staff is deleted successfully.'
       redirect_to admin_staffs_path
     end
   end
 
   # Email already exist validation.
   def check_email
-    if params[:staff_member][:email].present?
-      @user = User.find_by_email(params[:staff_member][:email]) || User.find_by_email(params[:staff_member][:email])
+    if params[:user][:email].present?
+      @user = User.find_by_email(params[:user][:email]) || User.find_by_email(params[:user][:email])
     else  
     end
     respond_to do |format|

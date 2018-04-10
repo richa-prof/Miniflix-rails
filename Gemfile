@@ -5,7 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-
+ruby '2.5.0'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
 # Use sqlite3 as the database for Active Record
@@ -27,12 +27,10 @@ gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
-
 gem 'mandrill-api'
 
 #Rack Middleware for handling Cross-Origin Resource Sharing (CORS), which makes cross-origin AJAX possible.
 gem 'rack-cors', :require => 'rack/cors'
-
 
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
@@ -55,6 +53,7 @@ gem 'twilio-ruby', '~> 5.6.3'
 gem "figaro"
 #for pagination
 gem 'will_paginate', '~> 3.1.0'
+
 #======set up for image and file =====================
 #way to upload files
 gem 'carrierwave', '~> 1.0'
@@ -71,7 +70,7 @@ gem 'omniauth-twitter'
 #for shorten url and tracking
 gem 'bitly'
 
-#friendly id for url
+# For creating pretty URL’s and work with human-friendly strings as if they were numeric ids for ActiveRecord models.
 gem 'friendly_id', '~> 5.2.3'
 
 #valiation for phone number
@@ -95,6 +94,9 @@ gem 'devise'
 
 # For Token based authentication for JSON APIs
 gem 'devise_token_auth'
+
+#For JavaScript flash notifications.
+gem 'pnotify-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

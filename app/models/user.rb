@@ -10,6 +10,10 @@ class User < ActiveRecord::Base
 
   mount_uploader :image, ImageUploader
 
+  # Ref.: https://github.com/norman/friendly_id
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+
   #Association
   has_many :user_payment_methods, dependent: :destroy
   has_many :user_filmlists,  dependent: :destroy
@@ -113,8 +117,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def social_media_link_for(link_type)
-    self.social_media_links.where(link_type: link_type).last.try(:link) || '#'
+  def send_welcome_mail
+    UserMailer.staff_member_signup_email(self).deliver
   end
 
   private

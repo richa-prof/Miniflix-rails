@@ -21,7 +21,12 @@ Rails.application.routes.draw do
       sessions: 'admin/sessions',
     }
 
-    resources :staffs, only: [:index, :new, :create, :destroy]
+    resources :staffs, only: [:index, :new, :create, :destroy] do
+      collection do
+        get 'check_email'
+      end
+    end
+
     get '/' => 'staffs#index'
   end
 
@@ -54,6 +59,7 @@ Rails.application.routes.draw do
       resource :users, only: [] do
         put :send_verification_code
         put :verify_verification_code
+        get :my_activity
       end
     end
   end
@@ -67,7 +73,8 @@ Rails.application.routes.draw do
       resources :likes, only: [:create, :destroy]
       resources :comments, only: [:create, :index]
     end
-    get 'blog_profile/:id' => 'blogs#blog_profile', as: 'blog_profile'
+    get 'profile/:id' => 'blogs#blog_profile', as: 'profile'
   end
 
+  get 'send_download_link' => 'mobile_apps#send_download_link'
 end

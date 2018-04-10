@@ -14,7 +14,7 @@ class BlogsController < ApplicationController
   end
 
   def new
-    @staff = current_staff_user
+    set_current_staff_user_as_instance
     @blog = current_staff_user.blogs.new
   end
 
@@ -29,7 +29,7 @@ class BlogsController < ApplicationController
   end
 
   def show
-    @staff = current_staff_user
+    set_current_staff_user_as_instance
     @blog = Blog.find(params[:id])
     @blog_user = @blog.user
     @comments = @blog.comments.order('created_at DESC').paginate(:page => params[:page], :per_page => 3)
@@ -41,7 +41,7 @@ class BlogsController < ApplicationController
   end
 
   def update
-    @staff = current_staff_user
+    set_current_staff_user_as_instance
     @blog = Blog.find(params[:id])
     if @blog.update(blog_params)
       redirect_to @blog
@@ -51,21 +51,23 @@ class BlogsController < ApplicationController
   end
 
   def destroy
-    @staff = current_staff_user
+    set_current_staff_user_as_instance
     @blog = Blog.find(params[:id])
     @blog.destroy
     redirect_to root_path
   end
 
   def blog_profile
-    set_staff
+    @staff = User.staff.friendly.find(params[:id])
     @own_profile = current_staff_user == @staff
     redirect_to root_path if @own_profile
-    @staff_blogs = @staff.blogs
+
+    fetch_and_set_blogs_for(@staff)
   end
 
   def dashboard
-    @staff_blogs = current_staff_user.blogs
+    fetch_and_set_blogs_for(current_staff_user)
+    set_current_staff_user_as_instance
     @own_profile = true
   end
 
@@ -75,7 +77,11 @@ class BlogsController < ApplicationController
     params.require(:blog).permit(:title, :body, :featured_image)
   end
 
-  def set_staff
-    @staff = User.staff.find(params[:id])
+  def fetch_and_set_blogs_for(user)
+    @staff_blogs = user.blogs.order('created_at DESC').paginate(:page => params[:page], :per_page => 6)
+  end
+
+  def set_current_staff_user_as_instance
+    @staff = current_staff_user
   end
 end
