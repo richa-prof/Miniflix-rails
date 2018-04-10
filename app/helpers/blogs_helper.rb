@@ -1,5 +1,33 @@
 module BlogsHelper
 
+  SHARE_ON = %w(facebook twitter)
+
+  def get_share_button(share_on)
+    str = case share_on
+          when 'facebook'
+            "<i class='fa fa-facebook'></i> Facebook"
+          when 'twitter'
+            "<i class='fa fa-twitter'></i> Twitter"
+          end
+
+    str.html_safe
+  end
+
+  def get_share_url(blog, share_on)
+    title = blog.title
+    description = blog.body.truncate(150)
+    target_url = blog_url(id: blog.id)
+
+    url = case share_on
+          when 'facebook'
+            "http://www.facebook.com/sharer/sharer.php?u=#{target_url}&title=#{title}&description=#{description}"
+          when 'twitter'
+            "https://twitter.com/intent/tweet?url=#{target_url}&text=#{title}"
+          end
+
+    url
+  end
+
   def formatted_social_media_link(link)
     link.presence || 'javascript:void(0)'
   end
