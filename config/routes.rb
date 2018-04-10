@@ -85,6 +85,13 @@ Rails.application.routes.draw do
         put :verify_verification_code
         get :my_activity
       end
+      resources :paypal_payments, only: [] do
+        collection do
+          get 'complete/:user_id' => 'paypal_payments#complete'
+          get 'cancel/:user_id' => 'paypal_payments#cancel'
+          post 'hook'
+        end
+      end
     end
   end
 

@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
           :recoverable, :rememberable, :trackable, :validatable, :omniauthable
   include DeviseTokenAuth::Concerns::User
 
-  attr_accessor :social_login
+  attr_accessor :social_login, :paypal_token, :payment_type
 
   mount_uploader :image, ImageUploader
 
@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   # Note: These are the reserved_words from FriendlyId.
   # config.reserved_words = %w(new edit index session login logout users admin stylesheets assets javascripts images)
 
-  #Association
+  # ASSOCIATION STARTS
   has_many :user_payment_methods, dependent: :destroy
   has_many :user_filmlists,  dependent: :destroy
   has_many :my_list_movies,  through: :user_filmlists, source: "movie"
@@ -29,22 +29,24 @@ class User < ActiveRecord::Base
   has_many :blogs, dependent: :destroy
   has_one :address, dependent: :destroy
   has_one :social_media_link, dependent: :destroy
+  has_many :my_transactions, through: :user_payment_methods, source: "user_payment_transactions"
+  # ASSOCIATION ENDS
 
   accepts_nested_attributes_for :address, :social_media_link
 
-  #constant
+  # CONSTANTS
   OLDUSER = "Trial Completed"
   UPGRADE_SUBSCRIPTION = "upgrade plan for"
   UPDATE_SUBSCRIPTION = "subscription plan for update"
   ADMIN_EMAIL = 'admin@admin.com'
 
-  #callback
+  # CALLBACKS
   before_validation :valid_for_Education_plan, if: 'Educational?', on: :create
   before_create :build_email_notification
   before_create :set_free_user, if: '(Educational? && FreeMember.find_by_email(email))'
   after_create :welcome_mail_for_free_user, if: :is_free
-  after_validation :send_verification_code, if: ->  {unconfirmed_phone_number_changed? && errors.blank? }
-  before_update :assign_unverified_phone_to_phone_number, if: -> { check_condition_for_assign_phone_number}
+  after_validation :send_verification_code, if: ->  { unconfirmed_phone_number_changed? && errors.blank? }
+  before_update :assign_unverified_phone_to_phone_number, if: -> { check_condition_for_assign_phone_number }
   before_update :make_migrate_user_false, if: -> { can_make_migrate_user_false? }
 
   #change phone number in nomalize form before validate
@@ -56,16 +58,27 @@ class User < ActiveRecord::Base
   validates_presence_of :registration_plan, unless: -> { skip_registration_plan_validation }
   validates_presence_of :sign_up_from, unless: -> { skip_sign_up_from_validation }
 
-  #enum
-  enum registration_plan: {Educational: 'Educational', Monthly:'Monthly', Annually: 'Annually', Freemium: 'Freemium'}
-  enum sign_up_from: {by_admin: 'by_admin', Web: 'web', Android: 'android', iOS: 'ios'}
+  # ENUM STARTS
+  enum registration_plan: { Educational: 'Educational',
+                            Monthly:'Monthly',
+                            Annually: 'Annually',
+                            Freemium: 'Freemium' }
+  enum sign_up_from: { by_admin: 'by_admin'
+                       Web: 'web',
+                       Android: 'android',
+                       iOS: 'ios' }
+  enum provider: {  email: 'email',
+                    facebook: 'facebook',
+                    twitter: 'twitter' }
+  enum role: { admin: 'Admin',
+               staff: 'Staff',
+               user: 'User' }
   enum subscription_plan_status: { incomplete: 'Incomplete',
                                    trial: 'Trial',
                                    activate: 'Activate',
                                    cancelled: 'Cancelled',
                                    expired: 'Expired' }
-  enum provider: {  email: 'email', facebook: 'facebook', twitter: 'twitter' }
-  enum role: {admin: 'Admin', staff: 'Staff', user: 'User'}
+  # ENUM ENDS
 
   # SCOPE STARTS
   scope :with_migrate_user, -> { where(migrate_user: true) }
@@ -114,7 +127,6 @@ class User < ActiveRecord::Base
 
   def send_reset_password_reminder_sms
     message = notification_message_to_reset_password
-
     TwilioService.new(phone_number, message).call()
   end
 
@@ -135,6 +147,29 @@ class User < ActiveRecord::Base
 
   def send_welcome_mail
     UserMailer.staff_member_signup_email(self).deliver
+  end
+
+  def checkout_url
+    response = PaypalSubscription.new(:checkout, self).call
+    response.checkout_url
+  end
+
+  def confirm_payment(token, payer_id)
+    self.paypal_token = token
+    self.customer_id = payer_id
+    response = PaypalSubscription.new(:create_recurring_profile, self).call
+    return response unless response
+    self.subscription_id = response.profile_id
+    self.save
+  end
+
+  def find_user_payment_method
+    self.user_payment_methods.find_by(payment_method_attribute)
+  end
+
+  def make_subscription_status_trial_for_monthly_plan
+    self.trial!
+    set_job_for_annual_user_to_change_subscription_status if self.Annually?
   end
 
   private
@@ -200,5 +235,26 @@ class User < ActiveRecord::Base
 
   def notification_message_to_reset_password
     "Your temporary password is: #{self.temp_password} Please login and reset your password."
+  end
+
+  def set_job_for_annual_user_to_change_subscription_status
+    SubscriptionStatusChangeJob.set(wait: 6.hours).perform_later(self.id)
+  end
+
+  def fetch_billing_plan
+    billing_plans_interval = ((self.Monthly?) ? "Month" : "Year")
+    eval("BillingPlan.#{billing_plans_interval}").last
+  end
+
+  def build_user_payment_method
+    self.user_payment_methods.build(payment_method_attribute)
+  end
+
+  def payment_method_attribute
+    {
+      payment_type: UserPaymentMethod.payment_types["paypal"],
+      billing_plan: fetch_billing_plan,
+      status: UserPaymentMethod.statuses["active"]
+    }
   end
 end

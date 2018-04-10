@@ -395,6 +395,7 @@ GEM
     passenger (5.2.3)
       rack
       rake (>= 0.8.1)
+    paypal-recurring (1.1.0)
     phony (2.16.3)
     phony_rails (0.14.6)
       activesupport (>= 3.0)
@@ -594,6 +595,7 @@ DEPENDENCIES
   omniauth-facebook
   omniauth-twitter
   passenger
+  paypal-recurring
   phony_rails
   pnotify-rails
   pry

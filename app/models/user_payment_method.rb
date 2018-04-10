@@ -5,17 +5,37 @@ class UserPaymentMethod < ApplicationRecord
 
   belongs_to :user
   has_many :user_payment_transactions, dependent: :destroy
-  enum payment_type: {Paypal: 'Paypal', Card: 'Card', iOS: 'ios'}
+  belongs_to :billing_plan
+
+  #Enum start
+  enum status:  {
+                  active: 'Active',
+                  inactive: 'Inactive'
+                }
+  enum payment_type: {
+                        paypal: 'Paypal',
+                        card: 'Card',
+                        ios: 'ios'
+                     }
+
+  #Enum End
 
   validates_presence_of :payment_type
-  validates_presence_of :card_number, :expiration_month, :expiration_year, :card_CVC, if: 'Card?'
+  # validates_presence_of :card_number, :expiration_month, :expiration_year, :card_CVC, if: 'Card?'
+  validates :status, uniqueness: { scope: :user_id }, if: -> {active?}
 
+  # CALLBACKS
+  before_validation :deactive_user_payment_method, on: :create
 
-  accepts_nested_attributes_for :user_payment_transactions, reject_if: lambda { |a| a[:payment_expire_date].blank? }, allow_destroy: true
 
   def service_period
     use_payment_expire_date  = created_at + 1.month
-
     "#{created_at.strftime('%m/%d/%y')}-#{use_payment_expire_date.strftime('%m/%d/%y')}"
+  end
+
+  def deactive_user_payment_method
+    user = self.user
+    user.user_payment_methods.update_all(status: UserPaymentMethod.statuses["inactive"])
+    self.status = UserPaymentMethod.statuses["active"]
   end
 end
