@@ -25,61 +25,67 @@
           </div>
         </div>
       </div>
-      <% @blogs.each_slice(2) do |sliced_blogs| %>
-        <div class="row">
-          <% sliced_blogs.each do |blog| %>
-            <% blog_user = blog.user %>
-            <div class="col-md-6">
-              <div class="blog-list-single">
-                <div class="blog-main-image">
-                  <%= image_tag (blog.featured_image_url(:large)) %>
-                </div>
-                <div class="blog-upload-usr-dt">
-                  <div class="blg-dt">
-                    <i class="fa fa-calendar"></i> <%= blog.created_at.strftime("%m/%d/%Y") %>
+      <% unless @blogs.present? %>
+        <div class="row blg-heading">
+          <h2>Currently, no blogs available to show.</h2>
+        </div>
+      <% else %>
+        <% @blogs.each_slice(2) do |sliced_blogs| %>
+          <div class="row">
+            <% sliced_blogs.each do |blog| %>
+              <% blog_user = blog.user %>
+              <div class="col-md-6">
+                <div class="blog-list-single">
+                  <div class="blog-main-image">
+                    <%= image_tag (blog.featured_image_url(:large)) %>
                   </div>
-                  <div class="blg-user">
-                    <div class="blg-usr-pro-img">
-                      <%= image_tag blog_user.image_url %>
+                  <div class="blog-upload-usr-dt">
+                    <div class="blg-dt">
+                      <i class="fa fa-calendar"></i> <%= blog.created_at.strftime("%m/%d/%Y") %>
                     </div>
-                    <div class="blg-usr-nm">
-                      <%= link_to( blog_user.name, profile_path_for(blog_user) ) %>
-                    </div>
-                    <div class="blg-usr-desig"><%= blog_user.role.titleize %></div>
-                  </div>
-                </div>
-                <div class="blog-short-msg">
-                  <h3><%= blog.title.truncate(50) %></h3>
-                  <div class="share-video-btn">
-                    <div class="dropdown">
-                      <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" aria-expanded="true">
-                        <i class="fa fa-share"></i> Share
-                      <span class="caret"></span></a>
-                      <ul class="dropdown-menu">
-                        <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
-                        <li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
-                      </ul>
+                    <div class="blg-user">
+                      <div class="blg-usr-pro-img">
+                        <%= image_tag blog_user.image_url %>
+                      </div>
+                      <div class="blg-usr-nm">
+                        <%= link_to( blog_user.name, profile_path_for(blog_user) ) %>
+                      </div>
+                      <div class="blg-usr-desig"><%= blog_user.role.titleize %></div>
                     </div>
                   </div>
-                  <p>
-                    <%= blog.body.truncate(200).html_safe %>
-                  </p>
-                  <div class="blog-inner-link">
-                    <%= link_to('Continue Reading', blog_path(id: blog.id), class: "btn btn-default") %>
-                  </div>
-                  <div class="blg-like-comm-counter">
-                    <div class="blg-like-count" id="likes_<%= blog.id %>">
-                      <%= render partial: 'likes/list', locals: { blog: blog } %>
+                  <div class="blog-short-msg">
+                    <h3><%= blog.title.truncate(50) %></h3>
+                    <div class="share-video-btn">
+                      <div class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" aria-expanded="true">
+                          <i class="fa fa-share"></i> Share
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                          <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
+                          <li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
+                        </ul>
+                      </div>
                     </div>
-                    <div class="blg-comm-count">
-                      <a href="javascript:void(0);"><i class="fa fa-comments-o"></i></a> <%= blog.comments.count %>
+                    <p>
+                      <%= blog.body.truncate(200).html_safe %>
+                    </p>
+                    <div class="blog-inner-link">
+                      <%= link_to('Continue Reading', blog_path(id: blog.id), class: "btn btn-default") %>
+                    </div>
+                    <div class="blg-like-comm-counter">
+                      <div class="blg-like-count" id="likes_<%= blog.id %>">
+                        <%= render partial: 'likes/list', locals: { blog: blog } %>
+                      </div>
+                      <div class="blg-comm-count">
+                        <a href="javascript:void(0);"><i class="fa fa-comments-o"></i></a> <%= blog.comments.count %>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          <% end %>
-        </div>
+            <% end %>
+          </div>
+        <% end %>
       <% end %>
       <div class="blg-pagination">
         <%= will_paginate @blogs %>
