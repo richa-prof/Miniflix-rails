@@ -392,6 +392,9 @@ GEM
       omniauth-oauth (~> 1.1)
       rack
     orm_adapter (0.5.0)
+    passenger (5.2.3)
+      rack
+      rake (>= 0.8.1)
     phony (2.16.3)
     phony_rails (0.14.6)
       activesupport (>= 3.0)
@@ -590,6 +593,7 @@ DEPENDENCIES
   mysql2
   omniauth-facebook
   omniauth-twitter
+  passenger
   phony_rails
   pnotify-rails
   pry
@@ -614,6 +618,9 @@ DEPENDENCIES
   web-console (>= 3.3.0)
   whenever
   will_paginate (~> 3.1.0)
+
+RUBY VERSION
+   ruby 2.5.0p0
 
 BUNDLED WITH
    1.16.1

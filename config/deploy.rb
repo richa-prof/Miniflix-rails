@@ -11,7 +11,7 @@ ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 # set :deploy_to, "/var/www/my_app_name"
 
 # Set the rvm ruby version
-set :rvm_ruby_version, 'ruby-2.5.0@miniflix-rails'
+set :rvm_ruby_version, 'ruby-2.5.0@miniflix-rails --create'
 
 # Set the bundler to skip the listed env from Gemfile
 set :bundle_without, %w{development test}.join(' ')
@@ -43,3 +43,5 @@ set :keep_releases, 3
 
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
+
+set :passenger_restart_with_touch, true

@@ -8,7 +8,7 @@
 # server "db.example.com", user: "deploy", roles: %w{db}
 
 server '34.210.84.226', user: 'deploy', roles: %w{app db web}
-set :deploy_to, "/data/www/staging/miniflix-rails"
+set :deploy_to, "/data/apps/staging/miniflix-rails"
 
 # role-based syntax
 # ==================
