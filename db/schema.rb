@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180328125429) do
+ActiveRecord::Schema.define(version: 20180409130559) do
+
+  create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "city"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_addresses_on_user_id"
+  end
 
   create_table "admin_genres", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -112,6 +120,38 @@ ActiveRecord::Schema.define(version: 20180328125429) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "blogs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "title"
+    t.text "body"
+    t.string "featured_image"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_blogs_on_user_id"
+  end
+
+  create_table "ckeditor_assets", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "data_file_name", null: false
+    t.string "data_content_type"
+    t.integer "data_file_size"
+    t.string "type", limit: 30
+    t.integer "width"
+    t.integer "height"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["type"], name: "index_ckeditor_assets_on_type"
+  end
+
+  create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.text "body"
+    t.string "commenter"
+    t.integer "user_id"
+    t.bigint "blog_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["blog_id"], name: "index_comments_on_blog_id"
+  end
+
   create_table "contact_us", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "email"
@@ -147,6 +187,14 @@ ActiveRecord::Schema.define(version: 20180328125429) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
+  create_table "likes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "user_id"
+    t.bigint "blog_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["blog_id"], name: "index_likes_on_blog_id"
+  end
+
   create_table "logged_in_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "user_id"
     t.string "device_type"
@@ -178,6 +226,17 @@ ActiveRecord::Schema.define(version: 20180328125429) do
     t.datetime "updated_at", null: false
     t.index ["admin_movie_id"], name: "index_notifications_on_admin_movie_id"
     t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
+  create_table "social_media_links", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "facebook"
+    t.string "twitter"
+    t.string "google_plus"
+    t.string "linkedin"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_social_media_links_on_user_id"
   end
 
   create_table "temp_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -309,6 +368,7 @@ ActiveRecord::Schema.define(version: 20180328125429) do
     t.datetime "updated_at", null: false
     t.boolean "migrate_user", default: false
     t.string "temp_password"
+    t.string "slug"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -321,13 +381,18 @@ ActiveRecord::Schema.define(version: 20180328125429) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "addresses", "users"
   add_foreign_key "admin_movie_captions", "admin_movies"
   add_foreign_key "admin_movie_thumbnails", "admin_movies"
   add_foreign_key "admin_movies", "admin_genres"
+  add_foreign_key "blogs", "users"
+  add_foreign_key "comments", "blogs"
   add_foreign_key "contact_user_replies", "contact_us", column: "contact_us_id"
+  add_foreign_key "likes", "blogs"
   add_foreign_key "logged_in_users", "users"
   add_foreign_key "notifications", "admin_movies"
   add_foreign_key "notifications", "users"
+  add_foreign_key "social_media_links", "users"
   add_foreign_key "user_email_notifications", "users"
   add_foreign_key "user_filmlists", "admin_movies"
   add_foreign_key "user_filmlists", "users"
