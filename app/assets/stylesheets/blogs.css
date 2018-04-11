@@ -3,7 +3,7 @@
   font-family: 'Roboto', sans-serif;
   color: #fff;
   padding: 100px 0;
-  background: url(blog-bg.jpg);
+  background: image-url('blog-bg.jpg');
   background-size: cover;
   background-attachment: fixed;
   position: relative;
