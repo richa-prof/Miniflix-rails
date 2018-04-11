@@ -8,7 +8,7 @@ class Api::V1::ApplicationController < ActionController::Base
   end
 
   def valid_client_request?
-    unless request.headers['HTTP-X-CLIENT-TOKEN'] ==  ENV['HTTP_X_CLIENT_TOKEN']
+    unless request.headers['HTTP_X_CLIENT_TOKEN'] ==  ENV['HTTP_X_CLIENT_TOKEN']
       render json: {message: 'You are not authorize to access this request'}, status: :forbidden and return
     end
   end
