@@ -15,10 +15,10 @@ namespace :miniflix do
     results.each do |row|
       duplicate_email_count = check_duplicate_email(get_email(row["provider"], row["uid"], row["email"]))
       if duplicate_email_count == 0
-        Rails.logger.info "===== user_email : #{row["email"]} full information======="
-        Rails.logger.info "#{row}"
+        Rails.logger.debug "===== user_email : #{row["email"]} full information======="
+        Rails.logger.debug "#{row}"
         @client2.query(users_insert_query(row))
-        Rails.logger.info "users table data inserted successfully"
+        Rails.logger.debug "users table data inserted successfully"
       else
         user_associated_info(row)
       end
@@ -32,15 +32,15 @@ namespace :miniflix do
     db_tables.each do |db_table|
       sh "mysqldump -u#{old_user} -p#{old_password} --no-create-info --complete-insert #{old_database} #{db_table} > #{Rails.root.to_s}/db/sql_dump_files/#{db_table}.sql"
       sh "mysql -u #{new_user} -p#{new_password} #{new_database} < #{Rails.root.to_s}/db/sql_dump_files/#{db_table}.sql"
-      Rails.logger.info "#{db_table} table data inserted successfully"
+      Rails.logger.debug "#{db_table} table data inserted successfully"
     end
 
     results = @client1.query("SELECT * FROM contact_user_replies")
     results.each do |row|
-      Rails.logger.info "===== user_email : #{row["email"]} full information======="
-      Rails.logger.info "#{row}"
+      Rails.logger.debug "===== user_email : #{row["email"]} full information======="
+      Rails.logger.debug "#{row}"
       @client2.query(contact_user_replies_insert_query(row))
-      Rails.logger.info "contact_user_replies table data inserted successfully"
+      Rails.logger.debug "contact_user_replies table data inserted successfully"
     end
   end
 
@@ -50,14 +50,19 @@ namespace :miniflix do
       user.password = user.temp_password
       user.skip_callbacks = true
       if user.save
-        Rails.logger.info "===== password copied for user_id : #{user.id} ======="
+        Rails.logger.debug "===== password copied for user_id : #{user.id} ======="
       else
-        Rails.logger.info "===== password not copied for user_id : #{user.id} Error: #{user.errors.full_messages} ======="
+        Rails.logger.debug "===== password not copied for user_id : #{user.id} Error: #{user.errors.full_messages} ======="
       end
     end
   end
 
   def users_insert_query(row)
+    u_name = row["name"]
+    if u_name.present? && u_name.include?("'")
+      row["name"] = u_name.gsub("'", "")
+    end
+
     insert_sql = "
       INSERT INTO users (
         id, name, email, registration_plan, created_at, updated_at, provider, uid, tokens, image, phone_number, verification_code, subscription_plan_status, cancelation_date, role, customer_id, subscription_id, sign_up_from, receipt_data, is_free, auth_token, expires_at, migrate_user, temp_password
@@ -80,31 +85,40 @@ namespace :miniflix do
   end
 
   def user_associated_info(row)
-    user_logger = Logger.new("#{Rails.root}/log/#{row["email"]}")
-    user_logger.info "===================user_email : #{row["email"]} associate data========================"
+    random_str = "#{SecureRandom.hex(4)}"
+    pre_path = "#{Rails.root}/log/"
+    target_path = "#{get_email(row["provider"], row["uid"], row["email"])}"
+
+    if File.exists?(target_path)
+      target_path = "#{get_email(row["provider"], row["uid"], row["email"])}_#{random_str}"
+    end
+
+    user_logger = Logger.new("#{pre_path}#{target_path}")
+
+    user_logger.debug "===================user_email : #{get_email(row["provider"], row["uid"], row["email"])} associate data========================"
 
     results = @client1.query("select * from user_filmlists where user_id = #{row["id"]}")
-    user_logger.info "====================== filmlists records ==========================="
+    user_logger.debug "====================== filmlists records ==========================="
     log_printer(user_logger, results)
 
     results = @client1.query("select * from user_payment_methods where user_id = #{row["id"]}")
-    user_logger.info "====================== user_payment_methods records==========================="
+    user_logger.debug "====================== user_payment_methods records==========================="
     log_printer(user_logger, results)
 
     results = @client1.query("select * from user_email_notifications where user_id = #{row["id"]}")
-    user_logger.info "====================== user_email_notifications records ==========================="
+    user_logger.debug "====================== user_email_notifications records ==========================="
     log_printer(user_logger, results)
 
     results = @client1.query("select * from logged_in_users where user_id = #{row["id"]}")
-    user_logger.info "====================== logged_in_users records ==========================="
+    user_logger.debug "====================== logged_in_users records ==========================="
     log_printer(user_logger, results)
 
     results = @client1.query("select * from notifications where user_id = #{row["id"]}")
-    user_logger.info "====================== notifications records ==========================="
+    user_logger.debug "====================== notifications records ==========================="
     log_printer(user_logger, results)
 
     results = @client1.query("select * from user_video_last_stops where role_id = #{row["id"]}")
-    user_logger.info "====================== user_video_last_stops records ==========================="
+    user_logger.debug "====================== user_video_last_stops records ==========================="
     log_printer(user_logger, results)
   end
 
@@ -125,13 +139,13 @@ namespace :miniflix do
   end
 
   def check_duplicate_email(email)
-    result=@client2.query("select * from users where email = '#{email}'")
+    result = @client2.query("select * from users where email = '#{email}'")
     result.count
   end
 
   def log_printer(user_logger, results)
     results.each do |row|
-      user_logger.info "#{row}"
+      user_logger.debug "#{row}"
     end
   end
 end
