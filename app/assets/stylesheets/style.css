@@ -94,7 +94,7 @@ body {
 }
 /*Top Slider*/
 .home-slider-sub {
-  background: url(slider-01.jpg);
+  background: image-url('slider-01.jpg');
   background-size: 100%;
   position: relative;
   min-height: 540px;
@@ -380,7 +380,7 @@ span.featured-film {
 .toggle-slider {
   position: relative;
   font-family: 'Roboto Condensed', sans-serif;
-  background: url(slider-01.jpg);
+  background: image-url('slider-01.jpg');
   background-size: 100%;
 }
 .content-slider .toggle-slider {
@@ -1267,7 +1267,7 @@ span.fav-play-icon:hover {
 }
 /*Style Start*/
 .signup-section {
-  background: url(SgnUp-bg.jpg);
+  background: image-url('SgnUp-bg.jpg');
   background-size: cover;
   background-attachment: fixed;
   padding: 100px 0;
@@ -1399,7 +1399,7 @@ span.fav-play-icon:hover {
 }
 /*SignUp*/
 .signIn-section {
-  background: url(SgnUp-bg.jpg);
+  background: image-url('SgnUp-bg.jpg');
   background-size: cover;
   background-attachment: fixed;
   padding: 100px 0;
@@ -1550,7 +1550,7 @@ span.fav-play-icon:hover {
   text-align: center;
   color: #fff;
   padding: 100px 0;
-  background: url(signUp-bg.jpg);
+  background: image-url('signUp-bg.jpg');
   background-size: cover;
   background-attachment: fixed;
   position: relative;
@@ -1768,7 +1768,7 @@ span.fav-play-icon:hover {
 /*SignUpEnd*/
 /*myAccount*/
 .myacc-section {
-  background: url(profile-bg.jpg);
+  background: image-url('profile-bg.jpg');
   background-size: cover;
   background-attachment: fixed;
   padding: 100px 0;

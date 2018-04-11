@@ -3,7 +3,7 @@
   font-family: 'Roboto', sans-serif;
   color: #fff;
   padding: 100px 0;
-  background: url(blog-bg.jpg);
+  background: image-url('blog-bg.jpg');
   background-size: cover;
   background-attachment: fixed;
   position: relative;
@@ -854,4 +854,10 @@ label.uploadfile-field .form-control {
     flex: 0 0 33.333333%;
     max-width: 33.333333%;
   }
+}
+
+.row.blg-heading h2 {
+  position: relative;
+  padding: 0 15px;
+  font-weight: 200;
 }
