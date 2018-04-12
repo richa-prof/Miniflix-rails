@@ -30,19 +30,19 @@ class BlogsController < ApplicationController
 
   def show
     set_current_staff_user_as_instance
-    @blog = Blog.find(params[:id])
+    @blog = Blog.friendly.find(params[:id])
     @blog_user = @blog.user
     @comments = @blog.comments.order('created_at DESC').paginate(:page => params[:page], :per_page => 3)
     @comment = Comment.new
   end
 
   def edit
-    @blog = current_staff_user.blogs.find(params[:id])
+    @blog = current_staff_user.blogs.friendly.find(params[:id])
   end
 
   def update
     set_current_staff_user_as_instance
-    @blog = Blog.find(params[:id])
+    @blog = Blog.friendly.find(params[:id])
     if @blog.update(blog_params)
       redirect_to @blog
     else
@@ -52,7 +52,7 @@ class BlogsController < ApplicationController
 
   def destroy
     set_current_staff_user_as_instance
-    @blog = Blog.find(params[:id])
+    @blog = Blog.friendly.find(params[:id])
     @blog.destroy
     redirect_to root_path
   end

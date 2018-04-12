@@ -78,7 +78,7 @@
                       <%= blog.body.truncate(200).html_safe %>
                     </p>
                     <div class="blog-inner-link">
-                      <%= link_to('Continue Reading', blog_path(id: blog.id), class: "btn btn-default") %>
+                      <%= link_to('Continue Reading', blog_path(id: blog.slug), class: "btn btn-default") %>
                     </div>
                     <div class="blg-like-comm-counter">
                       <div class="blg-like-count" id="likes_<%= blog.id %>">

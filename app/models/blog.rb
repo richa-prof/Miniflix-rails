@@ -6,6 +6,10 @@ class Blog < ApplicationRecord
 
   mount_uploader :featured_image, FeaturedImageUploader
 
+  # Ref.: https://github.com/norman/friendly_id
+  extend FriendlyId
+  friendly_id :title, use: :slugged
+
   # Validations
   validates :title, :body, presence: true
   validates :title, length: { maximum: 60 }

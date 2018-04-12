@@ -16,7 +16,7 @@ module BlogsHelper
   def get_share_url(blog, share_on)
     title = blog.title
     description = blog.body.truncate(150)
-    target_url = blog_url(id: blog.id)
+    target_url = blog_url(id: blog.slug)
 
     url = case share_on
           when 'facebook'
