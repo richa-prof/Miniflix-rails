@@ -8,31 +8,46 @@ development:
   FACEBOOK_SECRET: FACEBOOK_SECRET_KEY
   TWITTER_KEY: TWITTER_APP_KEY
   TWITTER_SECRET: TWITTER_SECRET_KEY
-  cloud_front_url: CLOUDFRONT_IMAGE_URL
+
+  #mandrill api key
   Mandrill: MANDRILL_KEY
+
+  #cloud_front_url for image
+  cloud_front_url: CLOUDFRONT_IMAGE_URL
 
   #mailling credentials
   Mailer_Email: MAILER_EMAIL
   Mailer_Password: MAILER_PASSWORD
+
   #---------------- Amazon and S3 credentials----------------
   S3_KEY: AWS_S3_KEY
   S3_SECRET: AWS_S3_SECRET
   S3_INPUT_BUCKET: INPUT_VIDEO
   S3_OUTPUT_BUCKET: S3_OUTPUT_BUCKET
   S3_VIDEO_REGION: us-west-1
+
+  #host url
   Host: REACT_HOST
-  # Host: "https://e7ecc366.ngrok.io/update_password"
-  reset_password_url: RESET_PASSWORD_URL_REACT_PAGE
+  RAILS_HOST: RAILS_HOST
 
   #sidekiq credentials
   SideKiq_UserName: SIDEKIQ_LOGIN_USERNAME
   SideKiq_Password: SIDEKIQ_LOGIN_PASSWORD
 
   #social_return_url
-  SocialReturn: SOCIAL_RETURN_URL
+  SocialReturn: Url_of_Page_Return_after_social_signup_form_react
 
   #Bitly credentials
-  Bitly_user: BITLY_USERNAME
-  Bitly_apikey: BITLY_APIKEY
   Bitly_access_token: BITLY_ACCESSTOKEN
-  movie-show-root: REACT_MOVIE_SHOWPAGE_URL
+
+  # App token for access react api
+  HTTP_X_CLIENT_TOKEN: Token
+
+  #smart_url https://manage.smarturl.it/
+  smart_url: URL_For_Making_Play_Store_Link
+
+  #for push notification on android devise
+  FCM_API_KEY: FCM_API_KEY
+
+  # -----ios development arn-----for push notifications on ios devise
+  IOS_ARN: IOS_ARN
