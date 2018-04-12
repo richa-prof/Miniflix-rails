@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180409130559) do
+ActiveRecord::Schema.define(version: 20180412120221) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "city"
@@ -369,6 +369,7 @@ ActiveRecord::Schema.define(version: 20180409130559) do
     t.boolean "migrate_user", default: false
     t.string "temp_password"
     t.string "slug"
+    t.boolean "allow_password_change", default: false, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

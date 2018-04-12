@@ -35,7 +35,7 @@
               <div class="col-xs-6">
                 <div class="form-group">
                   <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-                    <%= link_to "Forgot Password ?", 'javascript:void(0);', class: "forgot-pass-link" %>
+                    <%= link_to "Forgot Password ?", new_password_path(resource_name), class: "forgot-pass-link" %>
                   <% end -%>
                 </div>
               </div>
