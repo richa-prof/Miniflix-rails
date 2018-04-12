@@ -64,8 +64,13 @@
                           <i class="fa fa-share"></i> Share
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                          <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
-                          <li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
+                          <% BlogsHelper::SHARE_ON.each do |share_on| %>
+                            <li>
+                              <%= link_to get_share_url(blog, share_on), target: '_blank' do %>
+                                <%= get_share_button(share_on) %>
+                              <% end %>
+                            </li>
+                          <% end %>
                         </ul>
                       </div>
                     </div>
