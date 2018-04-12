@@ -12,9 +12,9 @@ class Api::V1::ApplicationController < ActionController::Base
     Rails.logger.info "request.headers['HTTP_X_CLIENT_TOKEN'] : #{request.headers['HTTP_X_CLIENT_TOKEN']}"
     Rails.logger.info "ENV['HTTP_X_CLIENT_TOKEN'] : #{ENV['HTTP_X_CLIENT_TOKEN']}"
 
-    unless request.headers['HTTP_X_CLIENT_TOKEN'] ==  ENV['HTTP_X_CLIENT_TOKEN']
-      render json: {message: 'You are not authorize to access this request'}, status: :forbidden and return
-    end
+    # unless request.headers['HTTP_X_CLIENT_TOKEN'] ==  ENV['HTTP_X_CLIENT_TOKEN']
+    #   render json: {message: 'You are not authorize to access this request'}, status: :forbidden and return
+    # end
   end
 
 end
