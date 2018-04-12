@@ -7,22 +7,25 @@
         <div class="col-sm-8">
           <div class="bl-heading">
             <h2>Miniflix Blog</h2>
-            <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters...</p>
+            <!-- TODO: Need to confirm on this description. -->
+            <!-- <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters...</p> -->
           </div>
         </div>
         <div class="col-sm-4">
-          <div class="blog-search-bar"> 
-            <%= form_tag(blogs_path, method: 'get') do %>
-              <div class="input-group">
-                <%= text_field_tag :blog_search_query, params[:blog_search_query], class: "form-control", placeholder: "Search Blog Here" %>
-                <span class="input-group-btn">
-                  <%= button_tag(type: 'submit', class: "btn btn-default") do %>
-                    <i class="fa fa-search"></i>
-                  <% end %>
-                </span>
-              </div>
-            <% end %>
-          </div>
+          <% if @blogs.present? %>
+            <div class="blog-search-bar">
+              <%= form_tag(blogs_path, method: 'get') do %>
+                <div class="input-group">
+                  <%= text_field_tag :blog_search_query, params[:blog_search_query], class: "form-control", placeholder: "Search Blog Here" %>
+                  <span class="input-group-btn">
+                    <%= button_tag(type: 'submit', class: "btn btn-default") do %>
+                      <i class="fa fa-search"></i>
+                    <% end %>
+                  </span>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
         </div>
       </div>
       <% unless @blogs.present? %>
