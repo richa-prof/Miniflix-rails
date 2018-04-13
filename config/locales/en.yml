@@ -31,3 +31,21 @@
 
 en:
   hello: "Hello world"
+
+  table:
+    admin_side_users:
+      user_name: User Name
+      email: Email
+      plan: Plan
+      registration_date: Registration Date
+      action: Action
+  heading:
+    main_navigation: MAIN NAVIGATION
+    registration_users_detail: Registration Users Detail
+    registration_users: Registration Users
+    premium_users_detail: Premium Users Detail
+    premium_users: Premium Users
+    staff_members: Staff Members
+    users: Users
+    educational_users: Educational Users
+    educational_users_detail: Educational Users Detail

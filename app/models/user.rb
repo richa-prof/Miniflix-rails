@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
   OLDUSER = "Trial Completed"
   UPGRADE_SUBSCRIPTION = "upgrade plan for"
   UPDATE_SUBSCRIPTION = "subscription plan for update"
+  ADMIN_EMAIL = 'admin@admin.com'
 
   #callback
   before_validation :valid_for_Education_plan, if: 'Educational?', on: :create
@@ -59,8 +60,12 @@ class User < ActiveRecord::Base
   enum provider: {  email: 'email', facebook: 'facebook', twitter: 'twitter' }
   enum role: {admin: 'Admin', staff: 'Staff', user: 'User'}
 
-  # Scope
+  # SCOPE STARTS
   scope :with_migrate_user, -> { where(migrate_user: true) }
+  scope :without_admin, -> { where.not(email: ADMIN_EMAIL)  }
+  scope :without_educational_plan, -> { where.not(registration_plan: 'Educational')  }
+  scope :premium_users, -> { without_admin.without_educational_plan }
+  # SCOPE ENDS
 
   # ===== Class methods Start =====
   class << self

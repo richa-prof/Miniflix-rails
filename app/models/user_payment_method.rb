@@ -12,4 +12,10 @@ class UserPaymentMethod < ApplicationRecord
 
 
   accepts_nested_attributes_for :user_payment_transactions, reject_if: lambda { |a| a[:payment_expire_date].blank? }, allow_destroy: true
+
+  def service_period
+    use_payment_expire_date  = created_at + 1.month
+
+    "#{created_at.strftime('%m/%d/%y')}-#{use_payment_expire_date.strftime('%m/%d/%y')}"
+  end
 end

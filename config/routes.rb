@@ -28,7 +28,15 @@ Rails.application.routes.draw do
     end
 
     get '/' => 'staffs#index'
+    get 'users' => 'users#index'
+    get 'educational_users' => 'users#educational_users'
+    get 'monthly_users' => 'users#monthly_users'
+    get 'annually_users' => 'users#annually_users'
+    get 'freemium_users' => 'users#freemium_users'
+    get 'get_user_payment_details/:id' => 'users#get_user_payment_details', as: :get_user_payment_details
   end
+
+  resources :users, only: [:destroy]
 
   namespace :api do
     namespace :v1 do

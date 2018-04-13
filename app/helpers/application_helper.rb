@@ -14,4 +14,14 @@ module ApplicationHelper
   def get_static_page_url_for(target_uri)
     STATIC_PAGES_URLS_MAP[target_uri]
   end
+
+  def css_class_for_admin_sidebar_treeview
+    treeview_actions = %w(index educational_users monthly_users annually_users freemium_users)
+
+    (controller_path == 'admin/users' && treeview_actions.include?(action_name)) ? 'active' : ''
+  end
+
+  def css_class_for_treeview_users_menu(target_action_path)
+    (controller_path == 'admin/users' && action_name == target_action_path) ? 'active' : ''
+  end
 end

@@ -11,6 +11,7 @@
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
+
       <!-- search form -->
       <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
@@ -22,14 +23,55 @@
         </div>
       </form>
       <!-- /.search form -->
+
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
-        <li class="header">MAIN NAVIGATION</li>
-        <li class="<%= 'active' if params[:controller] == 'admin/dashboard' %>">
-          <%= link_to admin_staffs_path, method: "GET" do %>
-            <i class="fa fa-dashboard"></i> <span> Staff Members</span>
+        <li class="header">
+          <%= t('heading.main_navigation') %>
+        </li>
+
+        <li class="<%= 'active' if params[:controller] == 'admin/staffs' %>">
+          <%= link_to admin_staffs_path, method: :get do %>
+            <i class="fa fa-user"></i> <span> <%= t('heading.staff_members') %></span>
           <% end %>
         </li>
+
+        <li class="treeview <%= css_class_for_admin_sidebar_treeview %>">
+          <a href="#">
+            <i class="fa fa-user"></i> <span><%= t('heading.users') %></span> <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+            <li class="<%= css_class_for_treeview_users_menu('index') %>">
+              <%= link_to admin_users_path, method: :get do %>
+                <i class="fa fa-circle-o"></i> <span><%= t('heading.registration_users') %></span>
+              <% end %>
+            </li>
+            <li class="<%= css_class_for_treeview_users_menu('educational_users') %>">
+              <%= link_to admin_educational_users_path, method: :get do %>
+                <i class="fa fa-circle-o"></i> <span><%= t('heading.educational_users') %></span>
+              <% end %>
+            </li>
+
+            <li class="<%= css_class_for_treeview_users_menu('monthly_users') %>">
+              <%= link_to admin_monthly_users_path, method: :get do %>
+                <i class="fa fa-circle-o"></i> <span><%= t('heading.monthly_users') %></span>
+              <% end %>
+            </li>
+
+            <li class="<%= css_class_for_treeview_users_menu('annually_users') %>">
+              <%= link_to admin_annually_users_path, method: :get do %>
+                <i class="fa fa-circle-o"></i> <span><%= t('heading.annually_users') %></span>
+              <% end %>
+            </li>
+
+            <li class="<%= css_class_for_treeview_users_menu('freemium_users') %>">
+              <%= link_to admin_freemium_users_path, method: :get do %>
+                <i class="fa fa-circle-o"></i> <span><%= t('heading.freemium_users') %></span>
+              <% end %>
+            </li>
+          </ul>
+        </li>
+
       </ul>
     </section>
     <!-- /.sidebar -->
