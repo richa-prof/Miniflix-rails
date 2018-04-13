@@ -7,7 +7,7 @@
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
-server '34.210.84.226', user: 'deploy', roles: %w{app db web}
+server '52.33.20.12', user: 'deploy', roles: %w{app db web}
 set :deploy_to, "/data/apps/staging/miniflix-rails"
 
 # role-based syntax
