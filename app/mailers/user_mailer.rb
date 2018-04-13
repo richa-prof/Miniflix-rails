@@ -15,7 +15,7 @@ class UserMailer < ApplicationMailer
 
   def staff_member_signup_email(user)
     subject = 'Reset your Miniflix password'
-    body = "Your are registered as Staff Member by Admin. Your temporary password is: #{user.temp_password} Please login Here : #{root_url} and reset your password."
+    body = "Your are registered as Staff Member by Admin. Your temporary password is: #{user.temp_password} Please login Here : #{ENV['BLOG_LOGIN_URL']} and reset your password."
     mail(to: user.email, subject: subject, body: body, content_type: 'text/html')
   end
 end

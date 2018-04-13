@@ -30,6 +30,9 @@ development:
   Host: REACT_HOST
   RAILS_HOST: RAILS_HOST
 
+  # Staff Login url for blog feature.
+  BLOG_LOGIN_URL: "https://stag-blog.localhost:3000/users/sign_in"
+
   #sidekiq credentials
   SideKiq_UserName: SIDEKIQ_LOGIN_USERNAME
   SideKiq_Password: SIDEKIQ_LOGIN_PASSWORD
