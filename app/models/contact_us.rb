@@ -1,12 +1,13 @@
 class ContactUs < ApplicationRecord
 
-  #Association
-  has_many :contact_user_replies
+  # ASSOCIATIONS
+  has_many :contact_user_replies, dependent: :destroy
 
-  #enum
-  enum occupation: {Professor: 'Professor', Student: 'Student'}
+  # ENUMS
+  enum occupation: { Professor: 'Professor',
+                     Student: 'Student' }
 
-  #Validation
+  # VALIDATIONS
   validates :email, uniqueness: true, format: Devise.email_regexp
   validates_presence_of :name, :school, :occupation, :email
   validates :occupation, inclusion: { in: occupations.keys }

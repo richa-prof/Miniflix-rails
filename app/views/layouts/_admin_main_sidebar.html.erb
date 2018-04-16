@@ -72,6 +72,12 @@
           </ul>
         </li>
 
+        <li class="<%= css_class_for_treeview_users_menu('visitors') %>">
+          <%= link_to admin_visitors_path, method: :get do %>
+            <i class="fa fa-user"></i> <span><%= t('heading.visitors') %></span>
+          <% end %>
+        </li>
+
       </ul>
     </section>
     <!-- /.sidebar -->

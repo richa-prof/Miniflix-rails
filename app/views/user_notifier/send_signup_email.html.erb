@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  	<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  	<style type="text/css">
+		  body, td { color: #3A3939; font-size: 20px; font-family: 'Roboto', sans-serif; }
+  		.episode h1 { margin-top:0; margin-bottom: 0px; font-size: 40px; font-weight: bold; }
+  	</style>
+</head>
+<body>
+  <table width="100%" id="background" border="0" cellpadding="0" cellspacing="0">
+    <tr><td align="center" valign="top">
+      <table width="650" id="main" border="0" cellpadding="0" cellspacing="20">
+        <tr class="episode">
+          <td >
+          	<h1 class="mail_header"> Welcome to <img alt="Miniflix" src="http://miniflix.tv/assets/mail_logo.png" /></h1>
+          </td>
+        </tr>
+        <tr class="episode">
+          <td valign="top">
+          	<p style="margin-bottom: 16px; margin-top: 0px;"> Dear <%= @user.name %>, </p>
+          </td>
+        </tr>
+        <tr class="episode">
+          <td valign="top">
+          	<p style="margin-bottom: 16px; margin-top: 0px;"> Now that you've joined Miniflix, you can watch award winning short films anytime, anywhere. Plus we don't have any commercials, and are always adding fresh new content.  </p>
+        </tr>
+        <tr class="episode">
+          <td valign="top">
+          	<p style="margin-bottom: 16px; margin-top: 0px;">
+              <% if @user.registration_plan == "Monthly"  %>
+                We hope you enjoy your free month, and remember you can cancel at any time (although we hope you stay with us!)
+              <% else %>
+                We hope you enjoy your yearly subscription with discount price, and remember you can cancel at any time (although we hope you stay with us!)
+              <% end %>
+              </p>
+        </tr>
+        <tr>
+          <td>
+            <a href="http://miniflix.tv" target="_blank" style="background: #FFDA36 none repeat scroll 0 0;border-radius: 5px; color: #3A3939;display: block;font-size: 16px;line-height: 60px;position: relative; text-align: center; text-decoration: none; text-transform: uppercase; width: 200px;font-weight: bold; ">Start watching</a>
+          </td>
+        </tr>
+        <tr style="padding-top: 20px;">
+          <td>
+            <a href="https://twitter.com/miniflixtv" target="_blank" style="padding-right: 20px;"><img alt="Twiter" src="http://miniflix.tv/assets/footer_twiter.png" /></a>
+            <a href="https://www.facebook.com/miniflix" target="_blank" style="padding-right: 20px;"><img alt="Facebook" src="http://miniflix.tv/assets/footer_fb.png" /></a>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="http://miniflix.tv/about" target="_blank" style="padding-right: 20px;font-size: 16px;text-decoration: none;color: #000000;">About Miniflix</a>
+            <a href="http://miniflix.tv/help_center" target="_blank" style="padding-right: 20px;font-size: 16px;text-decoration: none;color: #000000;">Help center</a>
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>

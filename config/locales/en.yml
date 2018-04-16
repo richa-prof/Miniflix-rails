@@ -49,3 +49,8 @@ en:
     users: Users
     educational_users: Educational Users
     educational_users_detail: Educational Users Detail
+    visitors: Visitors
+  flash:
+    visitor:
+      successfully_deleted: Visitor was successfully deleted.
+      send_reply_successfully: Send reply successfully.

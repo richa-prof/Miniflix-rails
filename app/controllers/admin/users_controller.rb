@@ -51,32 +51,6 @@ class Admin::UsersController < ApplicationController
     render :json => response
   end
 
-  def visitors
-    @visitors = ContactUs.all
-  end
-
-  def send_reply
-    @contact_user_reply = ContactUserReply.new(contact_u_id: params[:v_id],message: params[:v_reply])
-    respond_to do |format|
-      if @contact_user_reply.save
-        @visitor = ContactUs.find(@contact_user_reply.contact_u_id)
-        UserNotifier.send_reply_mail_to_visitor(@visitor,@contact_user_reply.message).deliver
-        format.html { redirect_to admin_visitors_path, notice: 'Send reply successfully.' }
-      else
-        format.html { render :visitors }
-      end
-    end
-  end
-
-  def destroy_visitor
-    @visitor = ContactUs.find(params[:id])
-    @visitor.destroy
-    respond_to do |format|
-      format.html { redirect_to admin_visitors_path, notice: 'Visitor was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
-
   private
 
   def prepare_user_payment_method_map(object)

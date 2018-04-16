@@ -59,7 +59,10 @@
                             <td data-title="Action">
                               <a href="" class="text-blue" data-toggle="modal" data-target="#myModalNorm" onclick="send_reply('<%= visitor.email %>',<%= visitor.id %>)">
                                 <i class="fa fa-reply"></i></a>
-                              <%= link_to admin_destroy_visitor_path(visitor.id), class: "text-red", method: :delete, data: { confirm: 'Are you sure?' } do %>
+                              <%= link_to( admin_visitor_path(visitor),
+                                           class: "text-red",
+                                           method: :delete,
+                                           data: { confirm: 'Are you sure?' } ) do %>
                                 <i class="fa fa-fw fa-trash"></i>
                               <% end %>
                             </td>
@@ -87,21 +90,12 @@
 
 <script type="text/javascript">
   function send_reply (email, v_id) {
-    $("#v_email").val(email);
-    $("#contact_user_reply_contact_us_id").val(v_id);
+    $('#v_email').val(email);
+    $('#contact_user_reply_contact_us_id').val(v_id);
   }
-	$(document).ready(function() {
-    $("#frm_send_reply").validate({
-      rules: {
-        "contact_user_reply[message]": {required: true}
-      },
-      messages: {
-        "contact_user_reply[message]": {
-          required: "Please enter a message for user."
-        }
-      }
-    });
-  	$('#tbl_admin_visitors').dataTable({
+
+  $(document).ready(function() {
+    $('#tbl_admin_visitors').dataTable({
       "paging": true,
       "lengthChange": true,
       "searching": true,
@@ -116,5 +110,5 @@
     });
     // instance, using default configuration.
     CKEDITOR.replace('contact_user_reply[message]');
-	});
+  });
 </script>

@@ -34,9 +34,18 @@ Rails.application.routes.draw do
     get 'annually_users' => 'users#annually_users'
     get 'freemium_users' => 'users#freemium_users'
     get 'get_user_payment_details/:id' => 'users#get_user_payment_details', as: :get_user_payment_details
+    delete 'destroy_visitor/:id' =>'users#destroy_visitor', as: :destroy_visitor
+
+    resources :visitors, only: [:index, :destroy]
+
+    resources :contact_user_replies, only: [:create]
   end
 
-  resources :users, only: [:destroy]
+  resources :users do
+    collection do
+      post 'update_payment_info'
+    end
+  end
 
   namespace :api do
     namespace :v1 do

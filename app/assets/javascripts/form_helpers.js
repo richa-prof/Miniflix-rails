@@ -17,6 +17,10 @@
     return $("#frm_admin_staff_member");
   };
 
+  adminSendReplyToVisitorForm = function() {
+    return $('#frm_send_reply');
+  };
+
   applyValidationToStaffMemberForm = function() {
     var formObject = adminStaffMemberForm();
     formObject.validate({
@@ -37,6 +41,20 @@
     });
   };
 
+  applyValidationToContactUserReplyForm = function() {
+    adminSendReplyToVisitorForm().validate({
+      rules: {
+        "contact_user_reply[message]": { required: true }
+      },
+
+      messages: {
+        "contact_user_reply[message]": {
+          required: "Please enter a message for user."
+        }
+      }
+    });
+  };
+
 }) (jQuery);
 
 var ready;
@@ -48,6 +66,10 @@ ready = function() {
 
   if ( adminStaffMemberForm().length ) {
     applyValidationToStaffMemberForm();
+  }
+
+  if ( adminSendReplyToVisitorForm().length ) {
+    applyValidationToContactUserReplyForm();
   }
 };
 
