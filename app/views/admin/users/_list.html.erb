@@ -51,7 +51,10 @@
                           <td data-title="Email"><%= user.email %></td>
                           <td data-title="Registration Date"><%= user.created_at.strftime('%d %B %Y') %></td>
                           <td data-title="Action">
-                            <%= link_to user, class: "text-red", method: :delete, data: { confirm: 'Are you sure?' } do %>
+                            <%= link_to( admin_user_path(user),
+                                         class: "text-red",
+                                         method: :delete,
+                                         data: { confirm: 'Are you sure?' } ) do %>
                               <i class="fa fa-fw fa-trash"></i>
                             <% end %>
                           </td>

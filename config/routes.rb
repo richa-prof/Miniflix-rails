@@ -28,22 +28,22 @@ Rails.application.routes.draw do
     end
 
     get '/' => 'staffs#index'
-    get 'users' => 'users#index'
     get 'educational_users' => 'users#educational_users'
     get 'monthly_users' => 'users#monthly_users'
     get 'annually_users' => 'users#annually_users'
     get 'freemium_users' => 'users#freemium_users'
     get 'get_user_payment_details/:id' => 'users#get_user_payment_details', as: :get_user_payment_details
-    delete 'destroy_visitor/:id' =>'users#destroy_visitor', as: :destroy_visitor
+
+    resources :users, only: [:index, :destroy]
 
     resources :visitors, only: [:index, :destroy]
 
     resources :contact_user_replies, only: [:create]
-  end
 
-  resources :users do
-    collection do
-      post 'update_payment_info'
+    resources :free_members do
+      collection do
+        get 'check_email' => 'free_members#check_email'
+      end
     end
   end
 

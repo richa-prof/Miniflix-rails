@@ -1,4 +1,5 @@
 class FreeMember < ApplicationRecord
-  #Association
+
+  # ASSOCIATIONS
   validates :email, uniqueness: true, presence: true
 end

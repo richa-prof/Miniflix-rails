@@ -1,0 +1,93 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    Admin Free Members
+  </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <% if !notice.blank? %>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="alert alert-success alert-dismissible">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                  <%= notice %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          <div class="row">
+            <div class="col-lg-10 col-xs-12">
+              <h3 class="box-title admin-box-title">Listing Admin Free Members</h3></div>
+            <div class="col-lg-2 col-xs-12">
+              <%= link_to 'New Free Member', new_admin_free_member_path, class: "btn btn-primary pull-right", method: :get %>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body admin-box-body">
+          <div class="row">
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="box box-primary">
+                <!-- /.box-header -->
+                <div class="box-body">
+                  <table id="tbl_admin_free_members" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>Id</th>
+                        <th>Email</th>
+                        <th width="150px">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% @free_members.each do |free_member| %>
+                        <tr>
+                          <td><%= free_member.id %></td>
+                          <td><%= free_member.email %></td>
+                          <td width="150px">
+                            <%= link_to admin_free_member_path(free_member), class: "text-red", method: :delete, data: { confirm: 'Are you sure?' } do %>
+                              <i class="fa fa-fw fa-trash"></i>
+                            <% end %>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</section>
+<!-- /.content -->
+
+<script>
+  $(document).ready(function() {
+    $('#tbl_admin_free_members').dataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "aoColumnDefs": [
+        { 'bSortable': false, 'aTargets': [ 1 ] },
+        { "bSearchable": false,"bVisible": false, "aTargets": [ 0 ] }
+      ],
+      "aaSorting": [[0, 'desc']]
+    });
+  });
+</script>

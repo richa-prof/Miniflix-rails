@@ -1,0 +1,57 @@
+<!-- form start -->
+<%= form_for([:admin, @free_member], :html => { :id => "frm_admin_free_member" }) do |f| %>
+  <% if @free_member.errors.any? %>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-default">
+          <div class="box-body">
+            <% @free_member.errors.full_messages.each do |message| %>
+              <div class="callout callout-success">
+                <p><%= message %></p>
+              </div>
+            <% end %>         
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-12">
+      <!-- general form elements -->
+      <div class="box box-primary">
+          <div class="box-body">
+            <div class="form-group">
+              <%= f.label :email %>
+              <%= f.email_field :email, class: "form-control", placeholder: "Enter email", required: true %>
+            </div>
+          </div>
+          <!-- /.box-body -->
+
+          <div class="box-footer">
+            <%= f.submit nil,class: "btn btn-primary" %>          
+            <%= link_to 'Cancel', admin_free_members_path, class: "btn btn-default" %>
+          </div>
+      </div>
+      <!-- /.box -->
+    </div>
+  </div>
+<% end %>
+<script type="text/javascript">
+  $(document).ready(function () { 
+  console.log("inside ready....")      
+    $("#frm_admin_free_member").validate({
+      rules: {
+        "free_member[email]": {required: true, email: true, remote:"/admin/free_members/check_email"}
+      },
+      messages: {
+        "free_member[email]": {
+          required: "Please enter an email.",
+          remote: "Email already exist."
+        }
+      }
+    });
+  });
+</script>

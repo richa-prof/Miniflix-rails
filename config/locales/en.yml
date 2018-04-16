@@ -50,7 +50,14 @@ en:
     educational_users: Educational Users
     educational_users_detail: Educational Users Detail
     visitors: Visitors
+    free_member: Free Member
   flash:
     visitor:
       successfully_deleted: Visitor was successfully deleted.
       send_reply_successfully: Send reply successfully.
+    free_member:
+      successfully_created: 'Free member was successfully created.'
+      successfully_updated: 'Free member was successfully updated.'
+      successfully_deleted: 'Free member was successfully deleted.'
+    user:
+      successfully_deleted: 'User was successfully deleted.'

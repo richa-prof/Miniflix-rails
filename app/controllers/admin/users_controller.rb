@@ -51,6 +51,15 @@ class Admin::UsersController < ApplicationController
     render :json => response
   end
 
+  def destroy
+    User.find(params[:id]).destroy
+    respond_to do |format|
+      format.html { redirect_to admin_users_path,
+                    notice: I18n.t('flash.user.successfully_deleted') }
+      format.json { head :no_content }
+    end
+  end
+
   private
 
   def prepare_user_payment_method_map(object)
