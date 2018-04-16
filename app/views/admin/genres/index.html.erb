@@ -1,0 +1,112 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    <%= t('heading.admin_genres') %>
+  </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <% if !notice.blank? %>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="alert alert-success alert-dismissible">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                  <%= notice %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          <div class="row">
+            <div class="col-lg-10 col-xs-12">
+              <h3 class="box-title admin-box-title">
+                <%= t('heading.listing_admin_genres') %>
+              </h3>
+            </div>
+            <div class="col-lg-2 col-xs-12">
+              <%= link_to( t('links.new_genre'),
+                           new_admin_genre_path,
+                           class: "btn btn-primary pull-right",
+                           method: :get ) %>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body admin-box-body">
+          <div class="row">
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="box box-primary">
+                <!-- /.box-header -->
+                <div class="box-body">
+                  <table id="tbl_admin_genres" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th><%= t('table.genres.id') %></th>
+                        <th><%= t('table.genres.name') %></th>
+                        <th><%= t('table.genres.color') %></th>
+                        <th><%= t('table.genres.available_movies') %></th>
+                        <th width="150px"><%= t('table.genres.action') %></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% @admin_genres.each do |admin_genre| %>
+                        <tr>
+                          <td><%= admin_genre.id %></td>
+                          <td><%= admin_genre.name %></td>
+                          <th><%= admin_genre.color %></th>
+                          <td><%= admin_genre.movies.count %></td>
+                          <td width="150px">
+                            <%= link_to admin_genre_path(admin_genre), class: "text-green" do %>
+                              <i class="fa fa-fw fa-eye"></i>
+                            <% end %>
+                            <%= link_to edit_admin_genre_path(admin_genre), class: "text-blue" do %>
+                              <i class="fa fa-fw fa-edit"></i>
+                            <% end %>
+                            <%= link_to( admin_genre_path(admin_genre),
+                                         class: "text-red",
+                                          method: :delete,
+                                          data: { confirm: t('confirm.are_you_sure') } ) do %>
+                              <i class="fa fa-fw fa-trash"></i>
+                            <% end %>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</section>
+<!-- /.content -->
+
+<script>
+  $(document).ready(function() {
+    $('#tbl_admin_genres').dataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "aoColumnDefs": [
+        { 'bSortable': false, 'aTargets': [ 3 ] },
+        { "bSearchable": false,"bVisible": false, "aTargets": [ 0 ] }
+      ],
+      "aaSorting": [[0, 'desc']]
+    });
+  });
+</script>

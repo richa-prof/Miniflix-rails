@@ -39,6 +39,13 @@ en:
       plan: Plan
       registration_date: Registration Date
       action: Action
+    genres:
+      id: Id
+      name: Name
+      color: Color
+      available_movies: Available movies
+      action: Action
+
   heading:
     main_navigation: MAIN NAVIGATION
     registration_users_detail: Registration Users Detail
@@ -51,6 +58,12 @@ en:
     educational_users_detail: Educational Users Detail
     visitors: Visitors
     free_member: Free Member
+    genres: Genres
+    admin_genres: Admin Genres
+    listing_admin_genres: Listing Admin Genres
+    new_admin_genre: New Admin Genre
+    editing_admin_genre: Editing Admin Genre
+    view_admin_genre_details: View Admin Genre details
   flash:
     visitor:
       successfully_deleted: Visitor was successfully deleted.
@@ -61,3 +74,15 @@ en:
       successfully_deleted: 'Free member was successfully deleted.'
     user:
       successfully_deleted: 'User was successfully deleted.'
+    genre:
+      successfully_created: 'Genre was successfully created.'
+      successfully_updated: 'Genre was successfully updated.'
+      successfully_deleted: 'Genre was successfully deleted.'
+  placeholder:
+    genre:
+      name: Enter genre name
+      color: Enter genre color
+  confirm:
+    are_you_sure: Are you sure?
+  links:
+    new_genre: New Genre

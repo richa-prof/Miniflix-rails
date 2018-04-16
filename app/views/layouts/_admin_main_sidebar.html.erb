@@ -30,6 +30,12 @@
           <%= t('heading.main_navigation') %>
         </li>
 
+        <li class="<%= 'active' if controller_path == 'admin/genres' %>">
+          <%= link_to admin_genres_path, method: :get do %>
+            <i class="fa fa-th"></i> <span> <%= t('heading.genres') %> </span>
+          <% end %>
+        </li>
+
         <li class="<%= 'active' if params[:controller] == 'admin/staffs' %>">
           <%= link_to admin_staffs_path, method: :get do %>
             <i class="fa fa-user"></i> <span> <%= t('heading.staff_members') %></span>

@@ -45,6 +45,12 @@ Rails.application.routes.draw do
         get 'check_email' => 'free_members#check_email'
       end
     end
+
+    resources :genres do
+      collection do
+        get 'check_genre_name/:id' => 'genres#check_genre_name', as: :check_genre_name
+      end
+    end
   end
 
   namespace :api do

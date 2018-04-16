@@ -55,6 +55,32 @@
     });
   };
 
+  adminGenreForm = function() {
+    return $("#frm_admin_genre");
+  };
+
+  applyValidationToAdminGenreForm = function() {
+    var formObject = adminGenreForm();
+
+    formObject.validate({
+      rules: {
+        "genre[name]": { required: true,
+                         remote: formObject.data('check-name-url') },
+        "genre[color]": { required: true }
+      },
+
+      messages: {
+        "genre[name]": {
+          required: "Please enter an genre name.",
+          remote: "Genre name already exist."
+        },
+        "genre[color]": {
+          required: "Please enter a color",
+        }
+      }
+    });
+  };
+
 }) (jQuery);
 
 var ready;
@@ -70,6 +96,10 @@ ready = function() {
 
   if ( adminSendReplyToVisitorForm().length ) {
     applyValidationToContactUserReplyForm();
+  }
+
+  if ( adminGenreForm().length ) {
+    applyValidationToAdminGenreForm();
   }
 };
 
