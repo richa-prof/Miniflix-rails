@@ -43,8 +43,14 @@
 
   applyValidationToContactUserReplyForm = function() {
     adminSendReplyToVisitorForm().validate({
+      ignore: [],
       rules: {
-        "contact_user_reply[message]": { required: true }
+        "contact_user_reply[message]": {
+           required: function()
+          {
+           CKEDITOR.instances.contact_user_reply_message.updateElement();
+          }
+        }
       },
 
       messages: {
