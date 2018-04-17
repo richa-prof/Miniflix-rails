@@ -75,9 +75,12 @@
   <!-- /.row -->
 </section>
 <!-- /.content -->
-
+<% details_open_image_path = asset_path('admin/details_open.png') %>
 <script type="text/javascript">
   /* TODO: Need to move this to JS files and also check and split this complex functions. */
+  var detailsOpenImagePath = "<%= details_open_image_path %>";
+  var detailsCloseImagePath = "<%= asset_path('admin/details_close.png') %>";
+
   <% if show_payment_table %>
     var iTableCounter = 1,oTable,oInnerTable;
     function fnFormatDetails ( nTr )
@@ -111,13 +114,13 @@
       if ( oTable.fnIsOpen(nTr) )
       {
         /* This row is already open - close it */
-        $("#payment_"+i).children("img")[0].src = "/assets/admin/details_open.png";
+        $("#payment_"+i).children("img")[0].src = detailsOpenImagePath;
         oTable.fnClose( nTr );
       }
       else
       {
         /* Open this row */
-        $("#payment_"+i).children("img")[0].src = "/assets/admin/details_close.png";
+        $("#payment_"+i).children("img")[0].src = detailsCloseImagePath;
         var data = fnFormatDetails(nTr);
         $.when(data).then(function(theData) {
           var tbl_payment = "<div class=\"row\"><div class=\"col-lg-10 col-xs-12\"><h4 class=\"box-title\">Payment details</h4></div></div>";
@@ -149,8 +152,7 @@
       } );
 
       $('#tbl_admin_users tbody tr').each( function (i) {
-         nCloneTd.innerHTML = '<a href="" onClick="openPaymentTable('+i+'); return false;" id="payment_'+i+'"> <img src="/assets/admin/details_open.png"> </a>';
-         // nCloneTd.innerHTML = '<img src="/assets/admin/details_open.png">';
+         nCloneTd.innerHTML = '<a href="" onClick="openPaymentTable('+i+'); return false;" id="payment_'+i+'"> <img src="<%= details_open_image_path %>"> </a>';
           nCloneTd.className = "center";
         this.insertBefore(  nCloneTd.cloneNode( true ), this.childNodes[0] );
       } );
