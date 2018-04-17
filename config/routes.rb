@@ -40,6 +40,7 @@ Rails.application.routes.draw do
 
     resources :contact_user_replies, only: [:create]
 
+    resources :background_images
     resources :free_members do
       collection do
         get 'check_email' => 'free_members#check_email'

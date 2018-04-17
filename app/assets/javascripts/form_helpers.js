@@ -81,6 +81,25 @@
     });
   };
 
+  adminBackgroundImageForm = function() {
+    return $('#new_background_image');
+  };
+
+  applyValidationToAdminBackgroundImageForm = function() {
+    var formObject = adminBackgroundImageForm();
+
+    formObject.validate({
+      rules: {
+        "background_image[image_file]": { required: true }
+      },
+      messages: {
+        "background_image[image_file]": {
+          required: "Please enter an Background."
+        }
+      }
+    });
+  };
+
 }) (jQuery);
 
 var ready;
@@ -100,6 +119,10 @@ ready = function() {
 
   if ( adminGenreForm().length ) {
     applyValidationToAdminGenreForm();
+  }
+
+  if ( adminBackgroundImageForm().length ) {
+    applyValidationToAdminBackgroundImageForm();
   }
 };
 

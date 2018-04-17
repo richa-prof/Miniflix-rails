@@ -45,6 +45,10 @@ en:
       color: Color
       available_movies: Available movies
       action: Action
+    background_images:
+      image: Image
+      is_set: Is set
+      action: Action
 
   heading:
     main_navigation: MAIN NAVIGATION
@@ -64,6 +68,12 @@ en:
     new_admin_genre: New Admin Genre
     editing_admin_genre: Editing Admin Genre
     view_admin_genre_details: View Admin Genre details
+    background_image: Background image
+    background_images: Background images
+    listing_background_images: Listing Background images
+    new_background_image: New Background image
+    editing_background_image: Editing Background image
+    show: show
   flash:
     visitor:
       successfully_deleted: Visitor was successfully deleted.
@@ -78,6 +88,10 @@ en:
       successfully_created: 'Genre was successfully created.'
       successfully_updated: 'Genre was successfully updated.'
       successfully_deleted: 'Genre was successfully deleted.'
+    background_image:
+      successfully_created: 'Background was successfully created.'
+      successfully_updated: 'Background was successfully updated.'
+      successfully_deleted: 'Background was successfully deleted.'
   placeholder:
     genre:
       name: Enter genre name
@@ -86,3 +100,8 @@ en:
     are_you_sure: Are you sure?
   links:
     new_genre: New Genre
+    new_image: New Image
+    cancel: Cancel
+  label:
+    background_image:
+      is_set: Allow to set Background image for home page

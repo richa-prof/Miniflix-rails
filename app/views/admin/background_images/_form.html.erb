@@ -1,0 +1,59 @@
+<% is_edit_mode = local_assigns[:is_edit_mode].presence || false %>
+<% method_type = is_edit_mode ? 'put' : 'post' %>
+
+<!-- form start -->
+<%= form_for( [:admin, @background_image], method: method_type ) do |f| %>
+  <% if @background_image.errors.any? %>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-default">
+          <div class="box-body">
+            <% @background_image.errors.full_messages.each do |message| %>
+              <div class="callout callout-success">
+                <p><%= message %></p>
+              </div>
+            <% end %>         
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-12">
+      <!-- general form elements -->
+      <div class="box box-primary">
+          <div class="box-body">
+            <div class="form-group">
+              <%= f.label :image_file %>
+              <% if is_edit_mode %>
+                <%= f.file_field :image_file, class: "form-control" %>
+              <% else %>
+                <%= f.file_field :image_file,
+                                 class: "form-control",
+                                 required: true %>
+              <% end %>
+            </div>
+          </div>
+          <div class="box-body">
+            <div class="form-group">
+              <%= f.label t('label.background_image.is_set') %>
+              <%= f.check_box :is_set %>
+            </div>
+          </div>
+          
+          <!-- /.box-body -->
+
+          <div class="box-footer">
+            <%= f.submit nil, class: "btn btn-primary" %>          
+            <%= link_to( t('links.cancel'),
+                         admin_background_images_path,
+                         class: "btn btn-default" ) %>
+          </div>
+      </div>
+      <!-- /.box -->
+    </div>
+  </div>
+<% end %>

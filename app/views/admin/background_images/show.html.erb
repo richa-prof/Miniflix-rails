@@ -1,0 +1,66 @@
+<section class="content-header">
+  <h1>
+    <%= t('heading.background_image') %>
+  </h1>
+  <ol class="breadcrumb">
+    <%= link_to admin_background_images_path, method: :get do %>
+      <i class="fa fa-fw fa-file-movie-o"></i> <span><%= t('heading.background_image') %></span>
+    <% end %>
+    <li>  </li>
+    <li class="active"><%= t('heading.show') %></li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <%= render( partial: 'shared/flash_notification', locals: { notice: notice } ) %>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div id="flim_video" style="display: none;">
+            <%= image_tag( @background_image.image_file_url,
+                           class: "flim-thumbnai-img",
+                           controls: true,
+                           id: "film_thumb_video",
+                           preload: "auto" ) %>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-2 col-md-1 col-sm-12"></div>
+            <div class="col-lg-8 col-md-10 col-sm-12">
+              <div class="box box-primary">
+                <div class="box-body">                  
+                  <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                      <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                          <div class="item active">
+                            <%= image_tag( @background_image.image_file_url,
+                                           class: "flim-thumbnai-img",
+                                           controls: true,
+                                           id: "film_thumb_video",
+                                           preload: "auto" ) %>
+                          </div>
+                        </div>
+                    
+                      </div>
+                    </div>
+                  </div>
+                 
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-1 col-sm-12"></div>
+          </div>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</section>
+<!-- /.content

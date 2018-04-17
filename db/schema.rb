@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180416081125) do
+ActiveRecord::Schema.define(version: 20180417071719) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "city"
@@ -115,7 +115,7 @@ ActiveRecord::Schema.define(version: 20180416081125) do
   end
 
   create_table "background_images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "backaground_image"
+    t.string "image_file"
     t.boolean "is_set"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

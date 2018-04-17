@@ -1,7 +1,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    <%= t('heading.admin_genres') %>
+    <%= t('heading.background_images') %>
   </h1>
 </section>
 
@@ -15,12 +15,12 @@
           <div class="row">
             <div class="col-lg-10 col-xs-12">
               <h3 class="box-title admin-box-title">
-                <%= t('heading.listing_admin_genres') %>
+                <%= t('heading.listing_background_images') %>
               </h3>
             </div>
             <div class="col-lg-2 col-xs-12">
-              <%= link_to( t('links.new_genre'),
-                           new_admin_genre_path,
+              <%= link_to( t('links.new_image'),
+                           new_admin_background_image_path,
                            class: "btn btn-primary pull-right",
                            method: :get ) %>
             </div>
@@ -37,31 +37,31 @@
                   <table id="tbl_admin_genres" class="table table-bordered table-hover">
                     <thead>
                       <tr>
-                        <th><%= t('table.genres.id') %></th>
-                        <th><%= t('table.genres.name') %></th>
-                        <th><%= t('table.genres.color') %></th>
-                        <th><%= t('table.genres.available_movies') %></th>
-                        <th width="150px"><%= t('table.genres.action') %></th>
+                        <th><%= t('table.background_images.image') %></th>
+                        <th><%= t('table.background_images.is_set') %></th>
+                        <th width="150px"><%= t('table.background_images.action') %></th>
                       </tr>
                     </thead>
                     <tbody>
-                      <% @admin_genres.each do |admin_genre| %>
+                      <% @background_images.each do |background_image| %>
                         <tr>
-                          <td><%= admin_genre.id %></td>
-                          <td><%= admin_genre.name %></td>
-                          <th><%= admin_genre.color %></th>
-                          <td><%= admin_genre.movies.count %></td>
+                          <td><%= image_tag(background_image.image_file_url, height: '32', width: '32') %></td>
+                          <% if background_image.is_set.present? %>
+                            <td><%= background_image.is_set %></td>
+                          <% else %>
+                            <td>false</td>
+                          <% end %>
                           <td width="150px">
-                            <%= link_to admin_genre_path(admin_genre), class: "text-green" do %>
+                            <%= link_to admin_background_image_path(id: background_image.id ), class: "text-green" do %>
                               <i class="fa fa-fw fa-eye"></i>
                             <% end %>
-                            <%= link_to edit_admin_genre_path(admin_genre), class: "text-blue" do %>
+                            <%= link_to edit_admin_background_image_path(background_image.id), class: "text-blue" do %>
                               <i class="fa fa-fw fa-edit"></i>
                             <% end %>
-                            <%= link_to( admin_genre_path(admin_genre),
+                            <%= link_to( admin_background_image_path( id: background_image.id ),
                                          class: "text-red",
-                                          method: :delete,
-                                          data: { confirm: t('confirm.are_you_sure') } ) do %>
+                                         method: :delete,
+                                         data: { confirm: t('confirm.are_you_sure') } ) do %>
                               <i class="fa fa-fw fa-trash"></i>
                             <% end %>
                           </td>
@@ -82,22 +82,3 @@
   </div>
   <!-- /.row -->
 </section>
-<!-- /.content -->
-
-<script>
-  $(document).ready(function() {
-    $('#tbl_admin_genres').dataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "aoColumnDefs": [
-        { 'bSortable': false, 'aTargets': [ 3 ] },
-        { "bSearchable": false,"bVisible": false, "aTargets": [ 0 ] }
-      ],
-      "aaSorting": [[0, 'desc']]
-    });
-  });
-</script>

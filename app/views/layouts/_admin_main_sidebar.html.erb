@@ -89,6 +89,12 @@
             <i class="fa fa-user"></i> <span><%= t('heading.free_member') %></span>
           <% end %>
         </li>
+
+        <li class="<%= 'active' if controller_path == 'admin/background_images' %>">
+          <%= link_to admin_background_images_path, method: :get do %>
+            <i class="fa fa-user"></i> <span><%= t('heading.background_images') %></span>
+          <% end %>
+        </li>
       </ul>
     </section>
     <!-- /.sidebar -->
