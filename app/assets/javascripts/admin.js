@@ -7,5 +7,10 @@
 //= require rails-ujs
 //= require turbolinks
 //= require admin/app.min
+//= require bootstrap-datepicker
 
 //= require form_helpers
+//= require admin/upload_movies
+
+//= require underscore
+//= require s3_multipart_modified

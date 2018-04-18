@@ -1,0 +1,126 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    <%= t('heading.movies') %>
+  </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <%= render( partial: 'shared/flash_notification', locals: { notice: notice } ) %>
+          <div class="row">
+            <div class="col-lg-10 col-xs-12">
+              <h3 class="box-title admin-box-title">
+                <%= t('heading.listing_movie_details') %>
+              </h3>
+            </div>
+            <div class="col-lg-2 col-xs-12">
+              <%= link_to( t('links.new_movie'),
+                           new_admin_movie_path,
+                           class: "btn btn-primary pull-right",
+                           method: :get ) %>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body admin-box-body">
+          <div class="row">
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="box box-primary">
+                <!-- /.box-header -->
+                <div class="box-body">
+                  <section id="no-more-tables">
+                    <table id="tbl_admin_movies" class="table table-bordered table-hover">
+                      <thead>
+                        <tr>
+                          <th><%= t('table.movies.id') %></th>
+                          <th><%= t('table.movies.name') %></th>
+                          <th><%= t('table.movies.video_type') %></th>
+                          <th><%= t('table.movies.video_size') %></th>
+                          <th><%= t('table.movies.video_format') %></th>
+                          <th><%= t('table.movies.directed_by') %></th>
+                          <th><%= t('table.movies.released_date') %></th>
+                          <th><%= t('table.movies.language') %></th>
+                          <th><%= t('table.movies.posted_date') %></th>
+                          <th><%= t('table.movies.star_cast') %></th>
+                          <th><%= t('table.movies.featured_film') %></th>
+                          <th><%= t('table.movies.action') %></th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <% @admin_movies.each do |admin_movie| %>
+                          <tr>
+                            <td data-title="Id"><%= admin_movie.id %></td>
+                            <td data-title="Name"><%= admin_movie.name %></td>
+                            <td data-title="Video type"><%= admin_movie.video_type %></td>
+                            <td data-title="Video size"><%= admin_movie.video_size %></td>
+                            <td data-title="Video format"><%= admin_movie.video_format %></td>
+                            <td data-title="Directed by"><%= admin_movie.directed_by %></td>
+                            <td data-title="Released date"><%= admin_movie.released_date %></td>
+                            <td data-title="Language"><%= admin_movie.language %></td>
+                            <td data-title="Posted date"><%= admin_movie.posted_date %></td>
+                            <td data-title="Star cast"><%= admin_movie.star_cast %></td>
+                            <td data-title="Featured film">
+                              <span class="<%= featured_film_content_css_class(admin_movie) %> ">
+                                <%= featured_film_value_for(admin_movie) %>
+                              </span>
+                            </td>
+                            <td data-title="Action">
+                              <%= link_to admin_movie_path(admin_movie), class: "text-green" do %>
+                                <i class="fa fa-fw fa-eye"></i>
+                              <% end %>
+                              <%= link_to edit_admin_movie_path(admin_movie), class: "text-blue" do %>
+                                <i class="fa fa-fw fa-edit"></i>
+                              <% end %>
+                              <%= link_to( admin_movie_path(admin_movie),
+                                           class: "text-red",
+                                           method: :delete,
+                                           data: { confirm: t('confirm.are_you_sure') } ) do %>
+                                <i class="fa fa-fw fa-trash"></i>
+                              <% end %>
+                              <%= link_to admin_movie_movie_captions_path(admin_movie), title: "Add Caption" do %>
+                                <i class="fa fa-file-text-o"></i>
+                              <% end %>
+                             </td>
+                          </tr>
+                        <% end %>
+                      </tbody>
+                    </table>
+                  </section>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</section>
+<!-- /.content -->
+
+<script>
+  $(document).ready(function() {
+    $('#tbl_admin_movies').dataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "aoColumnDefs": [
+        { 'bSortable': false, 'aTargets': [ 11 ] },
+        { "bSearchable": false,"bVisible": false, "aTargets": [ 0 ] }
+      ],
+      "aaSorting": [[0, 'desc']]
+    });
+  });
+</script>

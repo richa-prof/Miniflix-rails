@@ -49,6 +49,19 @@ en:
       image: Image
       is_set: Is set
       action: Action
+    movies:
+      id: Id
+      name: Name
+      video_type: Video type
+      video_size: Video size
+      video_format: Video format
+      directed_by: Directed by
+      released_date: Released date
+      language: Language
+      posted_date: Posted date
+      star_cast: Star cast
+      featured_film: Featured film
+      action: Action
 
   heading:
     main_navigation: MAIN NAVIGATION
@@ -74,6 +87,10 @@ en:
     new_background_image: New Background image
     editing_background_image: Editing Background image
     show: show
+    movie: Movie
+    movies: Movies
+    listing_movie_details: Listing Movie Details
+    add_new_movie_details: Add new movie details
   flash:
     visitor:
       successfully_deleted: Visitor was successfully deleted.
@@ -96,16 +113,35 @@ en:
       successfully_deleted: 'Background was successfully deleted.'
     user_email_notification:
       successfully_updated: 'Email notifications settings have updated successfully.'
+    movie:
+      successfully_created: 'Movie was successfully created.'
+      successfully_updated: 'Movie was successfully updated.'
+      successfully_deleted: 'Movie was successfully deleted.'
   placeholder:
     genre:
       name: Enter genre name
       color: Enter genre color
+    movie:
+      name: Enter name
+      title: Enter title
+      description: Enter description
+      video_type: Enter video type
+      video_size: Enter video size
+      directed_by: Enter directer name
+      released_date: Select released date
+      language: Enter language
+      video_duration: Enter video duration
+      posted_date: Select posted date
+      star_cast: Enter star cast
+      actors: Enter actors
+      festival_laureates: Enter festival laureates
   confirm:
     are_you_sure: Are you sure?
   links:
     new_genre: New Genre
     new_image: New Image
     cancel: Cancel
+    new_movie: New Movie
   label:
     background_image:
       is_set: Allow to set Background image for home page
@@ -140,4 +176,8 @@ en:
       active: "Your current subscription rate is %{price_rate}. Next charge for your subscription will be on %{charge_date}"
       cancelled: "You had Cancelled your subscription on %{cancelation_date}"
       no_subscription: You don't have any active subscription.
-
+    movie:
+      upload_movie_screenshots: Upload movie screenshots
+      upload_movie_thumbnail: Upload movie thumbnail
+      admin_movie_downloadable: Allow to downloadable this movie by user
+      admin_movie_is_featured_film: Allow to set this film as a featured film for home page

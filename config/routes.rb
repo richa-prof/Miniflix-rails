@@ -2,6 +2,7 @@ require 'sidekiq/web'
 require 'constraints/blog_subdomain_constraint'
 
 Rails.application.routes.draw do
+  mount S3Multipart::Engine => "/s3_multipart"
   mount Ckeditor::Engine => '/ckeditor'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
@@ -48,6 +49,14 @@ Rails.application.routes.draw do
       collection do
         get 'check_email' => 'free_members#check_email'
       end
+    end
+
+    resources :movies do
+      collection do
+        get 'download/:id' => "movies#download", as: :download
+        get 'add_movie_details/:id' => "movies#add_movie_details", as: :add_movie_details
+      end
+      resources :movie_captions, except: [:show]
     end
 
     resources :genres do

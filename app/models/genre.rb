@@ -16,4 +16,7 @@ class Genre < ApplicationRecord
 
   #per_page genre on request from react side
   self.per_page = PER_PAGE
+
+  # SCOPE
+  scope :alfa_order, -> { order(:name) }
 end

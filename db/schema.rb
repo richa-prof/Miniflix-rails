@@ -244,6 +244,18 @@ ActiveRecord::Schema.define(version: 20180510154701) do
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
+  create_table "s3_multipart_uploads", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "location"
+    t.string "upload_id"
+    t.string "key"
+    t.string "name"
+    t.string "uploader"
+    t.integer "size"
+    t.text "context"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "social_media_links", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "facebook"
     t.string "twitter"

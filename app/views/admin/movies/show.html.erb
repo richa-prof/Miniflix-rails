@@ -1,0 +1,220 @@
+<!-- Content Header (Page header) -->
+<%= javascript_include_tag 'admin/movies.js' %>
+<%= render 'shared/jwplayer_config' %>
+
+ <div id="err-player"></div>
+
+<section class="content-header">
+  <h1>
+    Admin Movies
+  </h1>
+  <ol class="breadcrumb">
+    <%= link_to admin_movies_path, method: "GET" do %>
+      <i class="fa fa-fw fa-file-movie-o"></i> <span>Movie</span>
+    <% end %>
+    <li>  </li>
+    <li class="active">show</li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <% if !notice.blank? %>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <%= notice %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div class= "player hide">
+            <div id="flim_video">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-2 col-md-1 col-sm-12"></div>
+            <div class="col-lg-8 col-md-10 col-sm-12">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                      <h2 class="box-title text-blue">
+                        <%= @admin_movie.title || "Not Available" %>
+                      </h2>
+                      <p style="margin-bottom: 0px;">Posted on
+                      <% if @admin_movie.posted_date.present? %>
+                        <%= @admin_movie.posted_date.strftime('%B ') %><%= @admin_movie.posted_date.day.ordinalize %><%= @admin_movie.posted_date.strftime(', %Y') %>  by admin
+                      <% else %>
+                        <i> (Not Available) </i>
+                      <%end %></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="box-body">
+                  <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                      <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                          <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                          <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>
+                          <li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>
+                        </ol>
+                        <div class="carousel-inner">
+                          <div class="item active">
+                            <%= image_tag(@admin_movie.movie_thumbnail.movie_screenshot_1, alt: "", class: "movie_thumbnail") if @admin_movie.movie_thumbnail.present? %>
+                            <div class="carousel-caption">
+                            </div>
+                          </div>
+                          <div class="item">
+                            <%= image_tag(@admin_movie.movie_thumbnail.movie_screenshot_2, alt: "", class: "movie_thumbnail") if @admin_movie.movie_thumbnail.present? %>
+                            <div class="carousel-caption">
+                            </div>
+                          </div>
+                          <div class="item">
+                            <%= image_tag(@admin_movie.movie_thumbnail.movie_screenshot_3, alt: "", class: "movie_thumbnail") if @admin_movie.movie_thumbnail.present? %>
+                            <div class="carousel-caption">
+                            </div>
+                          </div>
+                        </div>
+                        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                          <span class="fa fa-angle-left"></span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                          <span class="fa fa-angle-right"></span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                      <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding-right: 0px;">
+                          <div class="box box-primary" style="border-top-width: 0px; margin-bottom: 5px;">
+                            <div class="box-header with-border" style="height: 82px; text-align: center;">
+                              <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                  <h3 class="box-title text-blue">
+                                    Genre
+                                  </h3>
+                                  <p style="margin-bottom: 0px;"><%= @admin_movie.try(:admin_genre).try(:name) || "Not Available" %></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 0px;">
+                          <div class="box box-primary" style="border-top-width: 0px; margin-bottom: 5px;">
+                            <div class="box-header with-border" style="height: 82px; text-align: center;">
+                              <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                  <h3 class="box-title text-blue">
+                                    Directed [by]
+                                  </h3>
+                                  <p style="margin-bottom: 0px;"><%= @admin_movie.directed_by || "Not Available" %></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 0px;">
+                          <div class="box box-primary" style="border-top-width: 0px; margin-bottom: 5px;">
+                            <div class="box-header with-border" style="height: 82px; text-align: center;">
+                              <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                  <h3 class="box-title text-blue">
+                                    Released [On]
+                                  </h3>
+                                  <p style="margin-bottom: 0px;"><%= @admin_movie.released_date.try(:strftime, "%d %B %Y") || "Not Available" %></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding-left: 0px;">
+                          <div class="box box-primary" style="border-top-width: 0px; margin-bottom: 5px;">
+                            <div class="box-header with-border" style="height: 82px; text-align: center;">
+                              <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                  <h3 class="box-title text-blue">
+                                    Stars Cast
+                                  </h3>
+                                  <p class="star_cast"><%= @admin_movie.star_cast || "Not Available"  %></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div class="box box-primary" style="border-top-width: 0px; margin-bottom: 5px;">
+                            <div class="box-header with-border" style="text-align: center;">
+                              <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                  <%= link_to "Watch Now","javascript:void(0)", class: "btn btn-primary btn-lg full-screen-play", style: "width: 45%;" %>
+                                  <% if @admin_movie.downloadable %>
+                                    <%= link_to "Download Now", @admin_movie.film_video, class: "btn btn-primary btn-lg", style: "width: 45%;" %>
+                                  <% end %>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div class="box box-primary" style="border-top-width: 0px; margin-bottom: 0px;">
+                            <div class="box-header with-border">
+                              <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                  <h3 class="box-title text-blue">
+                                  Movie Story :
+                                </h3>
+                                <p style="margin-bottom: 0px;"><%= @admin_movie.description %></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-1 col-sm-12"></div>
+          </div>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</section>
+<!-- /.content -->
+
+<script type="text/javascript">
+  var hls_file = "https://s3-us-west-1.amazonaws.com/<%= ENV['S3_OUTPUT_BUCKET']%>/<%= @admin_movie.version_file %>"
+  var original_file =  "<%= @admin_movie.film_video %>"
+  caption_data = []
+  <% @admin_movie.movie_captions.active_caption.each do |caption| %>
+    caption_data.push({
+       file: "<%= caption.caption_file_url %>",
+      label: "<%= caption.language %>",
+      kind: "captions",
+      default: "<%= caption.is_default  %>"
+    })
+  <% end %>
+  jwplayer_setup(hls_file, original_file, caption_data);
+  jwplayer_setup_error();
+</script>

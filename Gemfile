@@ -95,6 +95,12 @@ gem 'aws-s3'
 gem 'aws-sdk-v1'
 gem 'aws-sdk', '~> 2'
 
+# For asset-pipeline provider/wrapper
+gem 'underscore-rails'
+
+# For Direct multipart uploading to Amazon S3
+gem 's3_multipart'
+
 # For flexible authentication solution with Warden
 gem 'devise'
 
@@ -103,6 +109,9 @@ gem 'devise_token_auth'
 
 #For JavaScript flash notifications.
 gem 'pnotify-rails'
+
+# A Datepicker for Twitter Bootstrap, integrated with Rails assets pipeline
+gem 'bootstrap-datepicker-rails'
 
 group :production, :staging do
   gem 'passenger'
