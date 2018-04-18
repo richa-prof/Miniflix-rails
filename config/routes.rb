@@ -92,6 +92,8 @@ Rails.application.routes.draw do
           post 'hook'
         end
       end
+
+      resource :payments, only: [:create]
     end
   end
 
