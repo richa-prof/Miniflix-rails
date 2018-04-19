@@ -12,13 +12,8 @@ class PaypalSubscription
   private
 
   def subscribe_user_to_paypal_recurring(action, user)
-    billing_plan = fetch_subscription_plan(user)
+    billing_plan = user.send(:fetch_billing_plan)
     paypal_process(action, billing_plan, user)
-  end
-
-  def fetch_subscription_plan(user)
-    billing_plans_interval = ((user.Monthly?) ? "Month" : "Year")
-    eval("BillingPlan.#{billing_plans_interval}").last
   end
 
   def paypal_process(action, billing_plan, user)

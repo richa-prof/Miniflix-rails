@@ -25,6 +25,11 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
   end
 
+  def make_invalid_for_thankyou_page
+    current_user.update_attribute('valid_for_thankyou_page', false)
+    render json: {success: true}
+  end
+
 
   private
 

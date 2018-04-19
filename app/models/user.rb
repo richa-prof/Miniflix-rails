@@ -114,7 +114,7 @@ class User < ActiveRecord::Base
   end
 
   def is_payment_verified?
-    Educational?
+    Educational? || trial? || activate?
   end
 
   def find_or_initialize_filmlist(movie_id)
@@ -155,16 +155,14 @@ class User < ActiveRecord::Base
   end
 
   def confirm_payment(token, payer_id)
-    self.paypal_token = token
-    self.customer_id = payer_id
+    assign_token_and_customer_id(token,payer_id)
     response = PaypalSubscription.new(:create_recurring_profile, self).call
     return response unless response
-    self.subscription_id = response.profile_id
-    self.save
+    payment_cofirmation_setting(response.profile_id)
   end
 
   def find_user_payment_method
-    self.user_payment_methods.find_by(payment_method_attribute)
+    self.user_payment_methods.active_payment_method.paypal.find_by(billing_plan: fetch_billing_plan)
   end
 
   def make_subscription_status_trial_for_monthly_plan
@@ -256,5 +254,17 @@ class User < ActiveRecord::Base
       billing_plan: fetch_billing_plan,
       status: UserPaymentMethod.statuses["active"]
     }
+  end
+
+  def assign_token_and_customer_id(token, payer_id)
+    self.paypal_token = token
+    self.customer_id = payer_id
+  end
+
+  def payment_cofirmation_setting(customer_id)
+    self.subscription_id = customer_id
+    self.valid_for_thankyou_page = true
+    self.subscription_plan_status = User.subscription_plan_statuses['trial']
+    self.save
   end
 end

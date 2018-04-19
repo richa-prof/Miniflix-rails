@@ -1,17 +1,20 @@
-class Api::V1::PaypalPaymentsController < ApplicationController
+class Api::V1::PaypalPaymentsController < Api::V1::ApplicationController
   before_action :set_user, except: [:hook]
   before_action :set_user_and_check_condition_for_hook, only: [:hook]
 
   def complete
+    #"payment_success & make_payment" is name of component at frontend side
     if @user.confirm_payment(params[:token], params[:PayerID])
-      redirect_to paypal_payment_success_url
+      redirect_to paypal_payment_url(t 'payment.paypal.thank_you')
     else
-      redirect_to paypal_payment_cancel_url
+      @user.incomplete!
+      redirect_to paypal_payment_url(t 'payment.paypal.make_payment')
     end
   end
 
   def cancel
-    redirect_to "#{ENV['Host']}/sign_up"
+    @user.incomplete!
+    redirect_to paypal_payment_url(t 'payment.paypal.make_payment')
   end
 
   def hook
@@ -38,14 +41,8 @@ class Api::V1::PaypalPaymentsController < ApplicationController
       (@user && (params["txn_type"] == "recurring_payment") && (params[:payment_status].downcase == "completed"))
     end
 
-
-    def paypal_payment_success_url
+    def paypal_payment_url(action_name)
       auth_token = @user.create_new_auth_token
-      "#{ENV['Host']}/payment_success?client_id=#{auth_token['client']}&token=#{auth_token['access-token']}&uid=#{auth_token['uid']}&expiry=#{auth_token['expiry']}"
-    end
-
-    def paypal_payment_cancel_url
-      auth_token = @user.create_new_auth_token
-      "#{ENV['Host']}/make_payment?client_id=#{auth_token['client']}&token=#{auth_token['access-token']}&uid=#{auth_token['uid']}&expiry=#{auth_token['expiry']}"
+      "#{ENV['Host']}/#{action_name}?client_id=#{auth_token['client']}&token=#{auth_token['access-token']}&uid=#{auth_token['uid']}&expiry=#{auth_token['expiry']}"
     end
 end

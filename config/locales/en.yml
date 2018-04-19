@@ -105,3 +105,8 @@ en:
   label:
     background_image:
       is_set: Allow to set Background image for home page
+
+  payment:
+    paypal:
+      thank_you: "thank_you"
+      make_payment: "make_payment"
