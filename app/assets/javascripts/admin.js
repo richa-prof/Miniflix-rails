@@ -9,6 +9,7 @@
 //= require turbolinks
 //= require admin/app.min
 //= require bootstrap-datepicker
+//= require admin/icheck.min
 
 //= require form_helpers
 //= require admin/upload_movies

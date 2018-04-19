@@ -53,7 +53,6 @@ Rails.application.routes.draw do
 
     resources :movies do
       collection do
-        get 'download/:id' => "movies#download", as: :download
         get 'add_movie_details/:id' => "movies#add_movie_details", as: :add_movie_details
       end
       resources :movie_captions, except: [:show]

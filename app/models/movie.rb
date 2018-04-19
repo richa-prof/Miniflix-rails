@@ -21,6 +21,8 @@ class Movie < ApplicationRecord
   has_many :movie_captions, dependent: :destroy, foreign_key: "admin_movie_id"
   has_many :movie_versions, dependent: :destroy
 
+  accepts_nested_attributes_for :movie_thumbnail
+
   # CALLBACKS
   before_save :create_bitly_url, if: -> { slug_changed? }
 
@@ -70,6 +72,10 @@ class Movie < ApplicationRecord
 
   def active_movie_captions
     self.movie_captions.active_caption
+  end
+
+  def set_is_featured_film_false
+    self.update(is_featured_film: false)
   end
   # ===== Instance methods End =====
 

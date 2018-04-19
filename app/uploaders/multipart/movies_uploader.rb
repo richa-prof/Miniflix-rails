@@ -45,9 +45,15 @@ class MoviesUploader < ApplicationController
     puts "on_complete session ---> #{session.to_json}"  
     # film_video = "https://d1jqh0kfebho7s.cloudfront.net/"+upload.key
 
+    upload_location = upload.location
+    file_type = MIME::Types.type_for(upload_location).first.content_type.split("/").last rescue nil
+
     @admin_movie = Movie.new( s3_multipart_upload_id: upload.id,
                               uploader: upload.uploader,
-                              film_video: upload.location )
+                              film_video: upload_location,
+                              name: upload.name,
+                              video_size: upload.size,
+                              video_format: file_type )
 
     @admin_movie.build_movie_thumbnail
 

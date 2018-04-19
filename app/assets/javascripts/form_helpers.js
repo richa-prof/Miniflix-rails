@@ -13,6 +13,20 @@
     })
   };
 
+  bindChangeEventOnMovieThumbnailFileFields = function() {
+    $('.movie-thumbnail-file-field').off('change').on('change', function(event) {
+      var fileFieldId = $(this).attr('id');
+      validFile(fileFieldId);
+    })
+  };
+
+  bindClickEventOnMovieThumbnailFileFieldWrappers = function() {
+    $('.movie-thumbnail-file-field-wrapper').off('click').on('click', function(event) {
+      var targetObj = $(this).siblings('.movie-thumbnail-file-field');
+      targetObj.click();
+    })
+  };
+
   adminStaffMemberForm = function() {
     return $("#frm_admin_staff_member");
   };
@@ -106,11 +120,162 @@
     });
   };
 
+  adminAddMovieDetailsForm = function() {
+    return $('#frm_admin_movie.add_movie_details_frm');
+  };
+
+  adminMovieEditForm = function() {
+    return $('#frm_admin_movie.edit_movie_frm');
+  };
+
+  adminMovieFormValidationRules = function() {
+    var rulesMap = {
+          "movie[name]": {required: true},
+          "movie[title]": {required: true},
+          "movie[description]": {required: true},
+          "movie[admin_genre_id]": {required: true},
+          "movie[video_type]": {required: true},
+          "movie[video_size]": {required: true},
+          "movie[video_duration]": {required: true},
+          "movie[video_format]": {required: true},
+          "movie[directed_by]": {required: true},
+          "movie[released_date]": {required: true},
+          "movie[language]": {required: true},
+          "movie[posted_date]": {required: true},
+          "movie[star_cast]": {required: true},
+          "movie[actors]": {required: true}
+        };
+
+    return rulesMap;
+  };
+
+  adminMovieFormValidationMessages = function() {
+    var messagesMap = {
+          "movie[name]": {required: "Please enter a movie name."},
+          "movie[title]": {required: "Please enter a movie title."},
+          "movie[description]": {required: "Please enter a movie description."},
+          "movie[admin_genre_id]": {required: "Please select genre type."},
+          "movie[video_type]": {required: "Please enter a video type."},
+          "movie[video_size]": {required: "Please enter a video size."},
+          "movie[video_duration]": {required: "Please enter a video duration."},
+          "movie[video_format]": {required: "Please enter a video format."},
+          "movie[directed_by]": {required: "Please enter a directer name."},
+          "movie[released_date]": {required: "Please select a released date."},
+          "movie[language]": {required: "Please enter a language."},
+          "movie[posted_date]": {required: "Please select a posted date."},
+          "movie[star_cast]": {required: "Please enter a star cast."},
+          "movie[actors]": {required: "Please enter an actor."}
+        };
+    return messagesMap;
+  };
+
+  adminMovieThumbnailValidationRules = function() {
+    var rulesMap = {
+          "movie_thumbnail[movie_screenshot_1]": {required: true},
+          "movie_thumbnail[movie_screenshot_2]": {required: true},
+          "movie_thumbnail[movie_screenshot_3]": {required: true}
+        };
+    return rulesMap;
+  };
+
+  adminMovieThumbnailValidationMessages = function() {
+    var messagesMap = {
+          "movie_thumbnail[movie_screenshot_1]": {required: "Please upload movie thumbnail."},
+          "movie_thumbnail[movie_screenshot_2]": {required: "Please upload movie thumbnail."},
+          "movie_thumbnail[movie_screenshot_3]": {required: "Please upload movie thumbnail."}
+        };
+
+    return messagesMap;
+  };
+
+  adminMovieAndThumbnailValidationRulesMap = function() {
+    var rules1 = adminMovieFormValidationRules();
+    var rules2 = adminMovieThumbnailValidationRules();
+    return $.extend( rules1, rules2 );
+  };
+
+  adminMovieAndThumbnailValidationMessagesMap = function() {
+    var messages1 = adminMovieFormValidationMessages();
+    var messages2 = adminMovieThumbnailValidationMessages();
+    return $.extend( messages1, messages2 );
+  };
+
+  applyValidationToAdminMovieForm = function() {
+    var formObject = adminAddMovieDetailsForm();
+
+    formObject.validate({
+      rules: adminMovieAndThumbnailValidationRulesMap(),
+
+      messages: adminMovieAndThumbnailValidationMessagesMap(),
+
+      submitHandler: function(form) {
+        // do other things for a valid form
+        validate_thumbnails(form);
+      }
+    });
+  };
+
+  applyValidationToAdminMovieEditForm = function() {
+    var formObject = adminMovieEditForm();
+
+    formObject.validate({
+      rules: adminMovieFormValidationRules(),
+      messages: adminMovieFormValidationMessages(),
+      submitHandler: function(form) {
+        // do other things for a valid form
+        validate_thumbnails(form);
+      }
+    });
+  };
+
+  open_file_upload = function(fileId) {
+    $("#"+fileId).click();
+  };
+
+  validFile = function(fileId) {
+    $("#"+fileId).valid();
+  };
+
+  enableDatePicker = function() {
+    var dateInputFieldObjects = $('.date-picker');
+
+    if (dateInputFieldObjects.length > 0) {
+      dateInputFieldObjects.each(function() {
+        $(this).datepicker({
+          autoclose: true
+        });
+      })
+    }
+  };
+
+  enableICheckToCheckboxes = function() {
+    var minimalCheckboxObjects = $('input[type="checkbox"].minimal, input[type="radio"].minimal');
+
+    if (minimalCheckboxObjects.length > 0) {
+      minimalCheckboxObjects.each(function() {
+        $(this).iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+      })
+    }
+  };
+
+  enableMaskToVideoDurationField = function() {
+    $('#movie_video_duration').mask('00:00:00', { placeholder: "00:00:00" });
+  };
+
 }) (jQuery);
 
 var ready;
 
 ready = function() {
+  enableDatePicker();
+  enableICheckToCheckboxes();
+  enableMaskToVideoDurationField();
+  bindChangeEventOnMovieThumbnailFileFields();
+  bindClickEventOnMovieThumbnailFileFieldWrappers();
+
   if (fileFields().length) {
     bindChangeEventOnFileFields();
   }
@@ -129,6 +294,14 @@ ready = function() {
 
   if ( adminBackgroundImageForm().length ) {
     applyValidationToAdminBackgroundImageForm();
+  }
+
+  if (adminAddMovieDetailsForm().length) {
+    applyValidationToAdminMovieForm();
+  }
+
+  if (adminMovieEditForm().length) {
+    applyValidationToAdminMovieEditForm();
   }
 };
 

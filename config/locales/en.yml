@@ -177,7 +177,8 @@ en:
       cancelled: "You had Cancelled your subscription on %{cancelation_date}"
       no_subscription: You don't have any active subscription.
     movie:
-      upload_movie_screenshots: Upload movie screenshots
+      upload_movie_screenshots: Upload Movie Screenshots
+      upload_movie_thumbnails: Upload Movie Thumbnails
       upload_movie_thumbnail: Upload movie thumbnail
       admin_movie_downloadable: Allow to downloadable this movie by user
       admin_movie_is_featured_film: Allow to set this film as a featured film for home page

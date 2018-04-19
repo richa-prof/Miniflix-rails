@@ -5,10 +5,31 @@ module Admin::MoviesHelper
   end
 
   def featured_film_value_for(movie)
-  	movie.is_featured_film ? 'Yes' : 'No'
+    movie.is_featured_film ? 'Yes' : 'No'
   end
 
   def featured_film_content_css_class(movie)
-  	movie.is_featured_film ? 'text-success' : 'text-danger'
+    movie.is_featured_film ? 'text-success' : 'text-danger'
+  end
+
+  def render_thumbnail_image_for(is_edit_mode, thumbnail_type, thumbnail_screenshot)
+    target_image_url = if is_edit_mode && thumbnail_screenshot.present?
+                        thumbnail_screenshot.url
+                      else
+                        get_default_thumbnail_url_for(thumbnail_type)
+                      end
+
+    image_tag(target_image_url).html_safe
+  end
+
+  def get_default_thumbnail_url_for(thumbnail_type)
+    case thumbnail_type
+    when 'thumbnail_640_screenshot'
+      'admin/upload_img640.png'
+    when 'thumbnail_screenshot'
+      'admin/upload_img330.png'
+    else
+      'admin/upload_img.png'
+    end
   end
 end
