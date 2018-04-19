@@ -30,7 +30,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'mandrill-api'
 
 #Rack Middleware for handling Cross-Origin Resource Sharing (CORS), which makes cross-origin AJAX possible.
-gem 'rack-cors', :require => 'rack/cors'
+gem 'rack-cors', '1.0.1', :require => 'rack/cors'
 
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
