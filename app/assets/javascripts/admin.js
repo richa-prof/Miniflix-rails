@@ -14,3 +14,4 @@
 
 //= require underscore
 //= require s3_multipart_modified
+//= require jquery.mask
