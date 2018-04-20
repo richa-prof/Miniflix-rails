@@ -41,9 +41,10 @@ class User < ActiveRecord::Base
   ADMIN_EMAIL = 'admin@admin.com'
 
   # CALLBACKS
+  after_initialize :set_default_subscription_plan, if: -> { new_record?}
   before_validation :valid_for_Education_plan, if: 'Educational?', on: :create
   before_create :build_email_notification
-  before_create :set_free_user, if: '(Educational? && FreeMember.find_by_email(email))'
+  before_create :set_free_user_and_subscription_staus, if: -> { condition_for_free_user}
   after_create :welcome_mail_for_free_user, if: :is_free
   after_validation :send_verification_code, if: ->  { unconfirmed_phone_number_changed? && errors.blank? }
   before_update :assign_unverified_phone_to_phone_number, if: -> { check_condition_for_assign_phone_number }
@@ -86,6 +87,7 @@ class User < ActiveRecord::Base
   scope :without_educational_plan, -> { where.not(registration_plan: 'Educational')  }
   scope :premium_users, -> { without_admin.without_educational_plan }
   # SCOPE ENDS
+
 
   # ===== Class methods Start =====
   class << self
@@ -178,7 +180,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def set_free_user
+  def set_free_user_and_subscription_staus
+    self.subscription_plan_status = User.subscription_plan_statuses['trial']
     self.is_free = true
   end
 
@@ -266,5 +269,14 @@ class User < ActiveRecord::Base
     self.valid_for_thankyou_page = true
     self.subscription_plan_status = User.subscription_plan_statuses['trial']
     self.save
+  end
+
+  def condition_for_free_user
+    (Educational? && FreeMember.find_by_email(email))
+  end
+
+  #set default values
+  def set_default_subscription_plan
+    self.subscription_plan_status = User.subscription_plan_statuses['incomplete']
   end
 end
