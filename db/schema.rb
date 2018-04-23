@@ -121,6 +121,18 @@ ActiveRecord::Schema.define(version: 20180425141522) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "billing_plans", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name"
+    t.string "description"
+    t.float "amount", limit: 24
+    t.string "currency"
+    t.string "interval"
+    t.integer "trial_days"
+    t.string "stripe_plan_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "blogs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "title"
     t.text "body"
@@ -306,6 +318,9 @@ ActiveRecord::Schema.define(version: 20180425141522) do
     t.string "encrypted_expiration_year_iv"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "billing_plan_id"
+    t.string "status"
+    t.index ["billing_plan_id"], name: "index_user_payment_methods_on_billing_plan_id"
     t.index ["user_id"], name: "index_user_payment_methods_on_user_id"
   end
 
@@ -360,7 +375,7 @@ ActiveRecord::Schema.define(version: 20180425141522) do
     t.string "subscription_id"
     t.datetime "cancelation_date"
     t.string "role", default: "User"
-    t.string "subscription_plan_status", default: "Activate"
+    t.string "subscription_plan_status"
     t.boolean "is_free"
     t.text "receipt_data", limit: 4294967295
     t.datetime "expires_at"
@@ -372,6 +387,7 @@ ActiveRecord::Schema.define(version: 20180425141522) do
     t.string "temp_password"
     t.string "slug"
     t.boolean "allow_password_change", default: false, null: false
+    t.boolean "valid_for_thankyou_page", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -399,6 +415,7 @@ ActiveRecord::Schema.define(version: 20180425141522) do
   add_foreign_key "user_email_notifications", "users"
   add_foreign_key "user_filmlists", "admin_movies"
   add_foreign_key "user_filmlists", "users"
+  add_foreign_key "user_payment_methods", "billing_plans"
   add_foreign_key "user_payment_methods", "users"
   add_foreign_key "user_payment_transactions", "user_payment_methods"
   add_foreign_key "user_video_last_stops", "admin_movies"
