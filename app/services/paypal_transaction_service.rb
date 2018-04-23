@@ -13,7 +13,8 @@ class PaypalTransactionService
   private
 
   def make_entry_for_transaction_detail(user, response)
-    transaction_detail = user.my_transactions.find_by(transaction_id: response[:txn_id])
+    transaction_detail = user.my_transactions.find_or_initialize_by(transaction_id: response[:txn_id])
+
     create_and_update_transaction_detail(user, transaction_detail, response)
     change_subscriptions_status(user)
   end

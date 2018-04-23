@@ -17,6 +17,18 @@ class Api::V1::PaypalPaymentsController < Api::V1::ApplicationController
     redirect_to paypal_payment_url(t 'payment.paypal.make_payment')
   end
 
+  def update_payment
+    if @user.confirm_for_update_payment(params[:token], params[:PayerID])
+      redirect_to paypal_payment_url(t 'payment.paypal.my_account')
+    else
+      redirect_to paypal_payment_url(t 'payment.paypal.update_payment')
+    end
+  end
+
+  def cancel_update
+    redirect_to paypal_payment_url(t 'payment.paypal.update_payment')
+  end
+
   def hook
     PaypalTransactionService.new(@user, params).call
     render json: {success: true}

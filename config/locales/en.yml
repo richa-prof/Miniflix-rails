@@ -110,3 +110,5 @@ en:
     paypal:
       thank_you: "thank_you"
       make_payment: "make_payment"
+      my_account:   "my_account"
+      update_payment: "update_payment"

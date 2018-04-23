@@ -20,9 +20,10 @@ class PaypalSubscription
     paypal = PayPal::Recurring.new(payment_options(action, billing_plan, user))
     response = paypal.send(action)
     return false if response.errors.present?
-    user.send(:build_user_payment_method)
     response
   end
+
+protected
 
   def payment_options(action, billing_plan, user)
     options = {
@@ -58,7 +59,6 @@ class PaypalSubscription
       end
     end
   end
-
 
   def paypal_return_url_payment_success(user)
     "#{ENV['RAILS_HOST']}/api/v1/paypal_payments/complete/#{user.id}"
