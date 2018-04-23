@@ -3,7 +3,7 @@ class PaypalUpgradeSubscription < PaypalSubscription
 private
 
   def fetch_billing_plan(user)
-    BillingPlan.Year.last
+    BillingPlan.year.last
   end
 
   def payment_options(action, billing_plan, user)
@@ -37,4 +37,3 @@ private
   end
 
 end
-1

@@ -268,7 +268,7 @@ class User < ActiveRecord::Base
   end
 
   def fetch_billing_plan
-    billing_plans_interval = ((self.Monthly?) ? "Month" : "Year")
+    billing_plans_interval = ((self.Monthly?) ? "month" : "year")
     eval("BillingPlan.#{billing_plans_interval}").last
   end
 
