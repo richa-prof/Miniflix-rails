@@ -92,11 +92,15 @@ Rails.application.routes.draw do
           get 'cancel/:user_id' => 'paypal_payments#cancel'
           get 'update_payment/:user_id' => 'paypal_payments#update_payment'
           get 'cancel_update/:user_id' =>  'paypal_payments#cancel_update'
+          get 'upgrade_payment/:user_id' => 'paypal_payments#upgrade_payment'
+          get 'cancel_upgrade/:user_id' =>  'paypal_payments#cancel_upgrade'
           post 'hook'
         end
       end
 
-      resource :payments, only: [:create, :update]
+      resource :payments, only: [:create, :update] do
+        put :upgrade
+      end
     end
   end
 

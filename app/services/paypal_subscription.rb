@@ -12,7 +12,7 @@ class PaypalSubscription
   private
 
   def subscribe_user_to_paypal_recurring(action, user)
-    billing_plan = user.send(:fetch_billing_plan)
+    billing_plan = fetch_billing_plan(user)
     paypal_process(action, billing_plan, user)
   end
 
@@ -23,7 +23,11 @@ class PaypalSubscription
     response
   end
 
-protected
+  protected
+
+  def fetch_billing_plan(user)
+    user.send(:fetch_billing_plan)
+  end
 
   def payment_options(action, billing_plan, user)
     options = {

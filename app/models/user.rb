@@ -49,6 +49,7 @@ class User < ActiveRecord::Base
   after_validation :send_verification_code, if: ->  { unconfirmed_phone_number_changed? && errors.blank? }
   before_update :assign_unverified_phone_to_phone_number, if: -> { check_condition_for_assign_phone_number }
   before_update :make_migrate_user_false, if: -> { can_make_migrate_user_false? }
+  before_save :set_job_for_annual_user_to_change_subscription_status, if: -> {user_choose_annual_plan?}
 
   #change phone number in nomalize form before validate
   phony_normalize :phone_number, :unconfirmed_phone_number
@@ -161,6 +162,11 @@ class User < ActiveRecord::Base
     response.checkout_url
   end
 
+  def upgrade_checkout_url
+    response = PaypalUpgradeSubscription.new(:checkout, self).call
+    response.checkout_url
+  end
+
   def confirm_payment(token, payer_id)
     assign_token_and_customer_id(token,payer_id)
     response = PaypalSubscription.new(:create_recurring_profile, self).call
@@ -173,16 +179,18 @@ class User < ActiveRecord::Base
     assign_token_and_customer_id(token,payer_id)
     response = PaypalUpdateSubscription.new(:create_recurring_profile, self).call
     return response unless response
-    update_payment_confirmation_setting_for_paypal(response.profile_id)
+    update_or_upgrade_payment_confirmation(response.profile_id)
+  end
+
+  def confirm_for_upgrade_payment(token, payer_id)
+    assign_token_and_customer_id(token,payer_id)
+    response = PaypalUpgradeSubscription.new(:create_recurring_profile, self).call
+    return response unless response
+    update_or_upgrade_payment_confirmation(response.profile_id, true)
   end
 
   def find_user_payment_method
     self.user_payment_methods.active.paypal.find_by(billing_plan: fetch_billing_plan)
-  end
-
-  def make_subscription_status_trial_for_monthly_plan
-    self.trial!
-    set_job_for_annual_user_to_change_subscription_status if self.Annually?
   end
 
   def build_user_payment_method(payment_type)
@@ -292,19 +300,34 @@ class User < ActiveRecord::Base
     self.subscription_plan_status = User.subscription_plan_statuses['incomplete']
   end
 
-  def update_payment_confirmation_setting_for_paypal(agreement_id)
+  def update_or_upgrade_payment_confirmation(agreement_id, upgrade_payment=nil)
+    cancel_previous_subscription
+    assign_registration_plan_and_build_payment_method if upgrade_payment
+    self.subscription_id = agreement_id
+    self.save
+  end
+
+  def assign_registration_plan_and_build_payment_method
+    self.subscription_plan_status = User.subscription_plan_statuses['trial']
+    self.registration_plan = User.registration_plans['Annually']
+    self.build_user_payment_method(UserPaymentMethod.payment_types['paypal'])
+  end
+
+  def cancel_previous_subscription
     if find_user_payment_method.paypal?
       cancel_previous_paypal_subscription
     else
       #code to cancel stripe payment
     end
-    self.subscription_id = agreement_id
-    self.save
   end
 
   def cancel_previous_paypal_subscription
     ppr = PayPal::Recurring.new(profile_id: self.subscription_id)
     ppr.cancel
+  end
+
+  def user_choose_annual_plan?
+    self.registration_plan_changed? && self.Annually? && self.trial?
   end
 
 end

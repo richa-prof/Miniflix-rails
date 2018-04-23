@@ -112,3 +112,4 @@ en:
       make_payment: "make_payment"
       my_account:   "my_account"
       update_payment: "update_payment"
+      upgrade_payment: "upgrade_payment"
