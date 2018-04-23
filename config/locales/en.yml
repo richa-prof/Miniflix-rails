@@ -91,6 +91,8 @@ en:
     movies: Movies
     listing_movie_details: Listing Movie Details
     add_new_movie_details: Add new movie details
+  title:
+    miniflix_admin: Miniflix Admin
   flash:
     visitor:
       successfully_deleted: Visitor was successfully deleted.
@@ -142,6 +144,7 @@ en:
     new_image: New Image
     cancel: Cancel
     new_movie: New Movie
+    download_now: Download Now
   label:
     background_image:
       is_set: Allow to set Background image for home page

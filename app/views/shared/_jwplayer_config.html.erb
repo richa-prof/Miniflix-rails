@@ -1,2 +1,2 @@
-<script type='text/javascript' src="https://d1jqh0kfebho7s.cloudfront.net/upgraded_jwplayer/jwplayer.js"></script>
-<script>jwplayer.key="<%= ENV['JW_PLAYER_KEY'] %>";</script>
+
+<div id="jwPlayerConfigContainer" data-hls-file="https://s3-us-west-1.amazonaws.com/<%= ENV['S3_OUTPUT_BUCKET']%>/<%= @admin_movie.version_file %>" data-original-file = "<%= @admin_movie.film_video %>" data-jwplayer-key="<%= ENV['JW_PLAYER_KEY'] %>" style="display: none;" ></div>

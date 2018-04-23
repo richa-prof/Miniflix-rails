@@ -6,32 +6,25 @@
 
 <section class="content-header">
   <h1>
-    Admin Movies
+    <%= t('heading.movies') %>
   </h1>
   <ol class="breadcrumb">
-    <%= link_to admin_movies_path, method: "GET" do %>
-      <i class="fa fa-fw fa-file-movie-o"></i> <span>Movie</span>
+    <%= link_to admin_movies_path, method: :get do %>
+      <i class="fa fa-fw fa-file-movie-o"></i> <span><%= t('heading.movie') %></span>
     <% end %>
     <li>  </li>
-    <li class="active">show</li>
+    <li class="active"><%= t('heading.show') %></li>
   </ol>
 </section>
+
+<% movie_thumbnail = @admin_movie.movie_thumbnail %>
 
 <!-- Main content -->
 <section class="content">
   <div class="row">
     <div class="col-xs-12">
       <div class="box">
-        <% if !notice.blank? %>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="alert alert-success alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                <%= notice %>
-              </div>
-            </div>
-          </div>
-        <% end %>
+        <%= render( partial: 'shared/flash_notification', locals: { notice: notice } ) %>
         <!-- /.box-header -->
         <div class="box-body">
           <div class= "player hide">
@@ -69,17 +62,17 @@
                         </ol>
                         <div class="carousel-inner">
                           <div class="item active">
-                            <%= image_tag(@admin_movie.movie_thumbnail.movie_screenshot_1, alt: "", class: "movie_thumbnail") if @admin_movie.movie_thumbnail.present? %>
+                            <%= image_tag(movie_thumbnail.movie_screenshot_1, class: "movie_thumbnail") if movie_thumbnail.present? %>
                             <div class="carousel-caption">
                             </div>
                           </div>
                           <div class="item">
-                            <%= image_tag(@admin_movie.movie_thumbnail.movie_screenshot_2, alt: "", class: "movie_thumbnail") if @admin_movie.movie_thumbnail.present? %>
+                            <%= image_tag(movie_thumbnail.movie_screenshot_2, class: "movie_thumbnail") if movie_thumbnail.present? %>
                             <div class="carousel-caption">
                             </div>
                           </div>
                           <div class="item">
-                            <%= image_tag(@admin_movie.movie_thumbnail.movie_screenshot_3, alt: "", class: "movie_thumbnail") if @admin_movie.movie_thumbnail.present? %>
+                            <%= image_tag(movie_thumbnail.movie_screenshot_3, class: "movie_thumbnail") if movie_thumbnail.present? %>
                             <div class="carousel-caption">
                             </div>
                           </div>
@@ -161,7 +154,10 @@
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                   <%= link_to "Watch Now","javascript:void(0)", class: "btn btn-primary btn-lg full-screen-play", style: "width: 45%;" %>
                                   <% if @admin_movie.downloadable %>
-                                    <%= link_to "Download Now", @admin_movie.film_video, class: "btn btn-primary btn-lg", style: "width: 45%;" %>
+                                    <%= link_to( t('links.download_now'),
+                                                 @admin_movie.film_video,
+                                                 class: "btn btn-primary btn-lg",
+                                                 style: "width: 45%;" ) %>
                                   <% end %>
                                 </div>
                               </div>
@@ -202,19 +198,3 @@
   <!-- /.row -->
 </section>
 <!-- /.content -->
-
-<script type="text/javascript">
-  var hls_file = "https://s3-us-west-1.amazonaws.com/<%= ENV['S3_OUTPUT_BUCKET']%>/<%= @admin_movie.version_file %>"
-  var original_file =  "<%= @admin_movie.film_video %>"
-  caption_data = []
-  <% @admin_movie.movie_captions.active_caption.each do |caption| %>
-    caption_data.push({
-       file: "<%= caption.caption_file_url %>",
-      label: "<%= caption.language %>",
-      kind: "captions",
-      default: "<%= caption.is_default  %>"
-    })
-  <% end %>
-  jwplayer_setup(hls_file, original_file, caption_data);
-  jwplayer_setup_error();
-</script>
