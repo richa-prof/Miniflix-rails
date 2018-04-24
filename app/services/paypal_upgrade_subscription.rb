@@ -13,7 +13,7 @@ private
       amount: billing_plan.amount,
       currency: billing_plan.currency,
       description: billing_plan.description,
-      period: billing_plan.interval,
+      period: billing_plan.interval.capitalize,
       frequency: 1, #once in interval
       start_at: Time.now
     }

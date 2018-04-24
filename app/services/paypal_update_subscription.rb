@@ -8,7 +8,7 @@ private
       amount: billing_plan.amount,
       currency: billing_plan.currency,
       description: billing_plan.description,
-      period: billing_plan.interval,
+      period: billing_plan.interval.capitalize,
       frequency: 1, #once in interval
       start_at: updated_plan_start_date(user)
     }
@@ -42,7 +42,7 @@ private
   end
 
   def cancel_url_on_payment_cancel(user)
-    "#{ENV['RAILS_HOST']}/api/v1/paypal_payments/cancel_update /#{user.id}"
+    "#{ENV['RAILS_HOST']}/api/v1/paypal_payments/cancel_update/#{user.id}"
   end
 
 end

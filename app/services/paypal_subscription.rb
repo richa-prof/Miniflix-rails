@@ -36,7 +36,7 @@ class PaypalSubscription
       amount: billing_plan.amount,
       currency: billing_plan.currency,
       description: billing_plan.description,
-      period: billing_plan.interval,
+      period: billing_plan.interval.capitalize,
       frequency: 1, #once in interval
       start_at: Time.now
     }.merge(extra_option(action, billing_plan, user))
@@ -54,7 +54,7 @@ class PaypalSubscription
       if (billing_plan.trial_days.present? && billing_plan.trial_days != 0)
         {
           :trial_length    => 1,
-          :trial_period    => billing_plan.interval,
+          :trial_period    => billing_plan.interval.capitalize,
           :trial_frequency => 1,
           :outstanding => :next_billing
         }
