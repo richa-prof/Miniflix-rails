@@ -38,6 +38,7 @@ class Admin::MoviesController < ApplicationController
     if movie_params[:is_featured_film]
       previous_featured_film = Movie.find_by_is_featured_film(true)
     end
+
     if @admin_movie.update(movie_params)
       previous_featured_film.try(:set_is_featured_film_false)
       save_movie_thumbnails(@admin_movie)
@@ -67,7 +68,17 @@ class Admin::MoviesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def movie_params
-    params.require(:movie).permit(:name, :title, :description, :admin_genre_id, :film_video, :video_type, :video_size, :video_duration, :video_format, :directed_by, :language, :star_cast, :actors, :downloadable, :festival_laureates, :released_date, :posted_date, :is_featured_film)
+    modified_params = movie_default_params
+    posted_date_param = modified_params.delete(:posted_date)
+    released_date_param = modified_params.delete(:released_date)
+
+    posted_date = Date.strptime(posted_date_param, '%m/%d/%Y').to_date rescue nil
+    released_date = Date.strptime(released_date_param, '%m/%d/%Y').to_date rescue nil
+
+    modified_params[:released_date] = released_date if released_date.present?
+    modified_params[:posted_date] = posted_date if posted_date.present?
+
+    modified_params
   end
 
   def movie_thumbnail_params
@@ -85,5 +96,9 @@ class Admin::MoviesController < ApplicationController
       movie_thumbnail = movie.build_movie_thumbnail(movie_thumbnail_params)
       movie_thumbnail.save
     end
+  end
+
+  def movie_default_params
+    params.require(:movie).permit(:name, :title, :description, :admin_genre_id, :film_video, :video_type, :video_size, :video_duration, :video_format, :directed_by, :language, :star_cast, :actors, :downloadable, :festival_laureates, :released_date, :posted_date, :is_featured_film)
   end
 end

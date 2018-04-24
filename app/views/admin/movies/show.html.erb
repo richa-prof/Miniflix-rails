@@ -18,6 +18,8 @@
 </section>
 
 <% movie_thumbnail = @admin_movie.movie_thumbnail %>
+<% movie_genre = @admin_movie.genre %>
+<% not_available = t('label.not_available') %>
 
 <!-- Main content -->
 <section class="content">
@@ -40,14 +42,11 @@
                   <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                       <h2 class="box-title text-blue">
-                        <%= @admin_movie.title || "Not Available" %>
+                        <%= @admin_movie.title || not_available %>
                       </h2>
-                      <p style="margin-bottom: 0px;">Posted on
-                      <% if @admin_movie.posted_date.present? %>
-                        <%= @admin_movie.posted_date.strftime('%B ') %><%= @admin_movie.posted_date.day.ordinalize %><%= @admin_movie.posted_date.strftime(', %Y') %>  by admin
-                      <% else %>
-                        <i> (Not Available) </i>
-                      <%end %></p>
+                      <p class="margin-btm-zero">
+                        <%= movie_posted_on_details_for(@admin_movie) %>
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -89,57 +88,58 @@
                   <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                       <div class="row">
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding-right: 0px;">
-                          <div class="box box-primary" style="border-top-width: 0px; margin-bottom: 5px;">
-                            <div class="box-header with-border" style="height: 82px; text-align: center;">
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 padding-zero">
+                          <div class='box box-primary movie-block-box-primary'>
+                            <div class="box-header with-border text-center movie-block-box-header">
                               <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                   <h3 class="box-title text-blue">
-                                    Genre
+                                    <%= t('title.movie.genre') %>
                                   </h3>
-                                  <p style="margin-bottom: 0px;"><%= @admin_movie.try(:admin_genre).try(:name) || "Not Available" %></p>
+
+                                  <p class="margin-btm-zero"><%= movie_genre.try(:name) || not_available %></p>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 0px;">
-                          <div class="box box-primary" style="border-top-width: 0px; margin-bottom: 5px;">
-                            <div class="box-header with-border" style="height: 82px; text-align: center;">
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 padding-zero">
+                          <div class="box box-primary movie-block-box-primary">
+                            <div class="box-header with-border text-center movie-block-box-header">
                               <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                   <h3 class="box-title text-blue">
-                                    Directed [by]
+                                    <%= t('title.movie.directed_by') %>
                                   </h3>
-                                  <p style="margin-bottom: 0px;"><%= @admin_movie.directed_by || "Not Available" %></p>
+                                  <p class="margin-btm-zero"><%= @admin_movie.directed_by || not_available %></p>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 0px;">
-                          <div class="box box-primary" style="border-top-width: 0px; margin-bottom: 5px;">
-                            <div class="box-header with-border" style="height: 82px; text-align: center;">
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 padding-zero">
+                          <div class="box box-primary movie-block-box-primary">
+                            <div class="box-header with-border text-center movie-block-box-header">
                               <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                   <h3 class="box-title text-blue">
-                                    Released [On]
+                                    <%= t('title.movie.released_on') %>
                                   </h3>
-                                  <p style="margin-bottom: 0px;"><%= @admin_movie.released_date.try(:strftime, "%d %B %Y") || "Not Available" %></p>
+                                  <p class="margin-btm-zero"><%= formatted_released_date_for(@admin_movie) %></p>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding-left: 0px;">
-                          <div class="box box-primary" style="border-top-width: 0px; margin-bottom: 5px;">
-                            <div class="box-header with-border" style="height: 82px; text-align: center;">
+                          <div class="box box-primary movie-block-box-primary">
+                            <div class="box-header with-border text-center movie-block-box-header">
                               <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                   <h3 class="box-title text-blue">
-                                    Stars Cast
+                                    <%= t('title.movie.stars_cast') %>
                                   </h3>
-                                  <p class="star_cast"><%= @admin_movie.star_cast || "Not Available"  %></p>
+                                  <p class="star_cast"><%= @admin_movie.star_cast || not_available  %></p>
                                 </div>
                               </div>
                             </div>
@@ -148,16 +148,17 @@
                       </div>
                       <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                          <div class="box box-primary" style="border-top-width: 0px; margin-bottom: 5px;">
-                            <div class="box-header with-border" style="text-align: center;">
+                          <div class="box box-primary movie-block-box-primary">
+                            <div class="box-header with-border text-center">
                               <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                  <%= link_to "Watch Now","javascript:void(0)", class: "btn btn-primary btn-lg full-screen-play", style: "width: 45%;" %>
+                                  <%= link_to( t('links.watch_now'),
+                                               "javascript:void(0)",
+                                               class: "btn btn-primary btn-lg movie-watch-download-link full-screen-play" ) %>
                                   <% if @admin_movie.downloadable %>
                                     <%= link_to( t('links.download_now'),
                                                  @admin_movie.film_video,
-                                                 class: "btn btn-primary btn-lg",
-                                                 style: "width: 45%;" ) %>
+                                                 class: "btn btn-primary btn-lg movie-watch-download-link" ) %>
                                   <% end %>
                                 </div>
                               </div>
@@ -167,14 +168,14 @@
                       </div>
                       <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                          <div class="box box-primary" style="border-top-width: 0px; margin-bottom: 0px;">
+                          <div class="box box-primary movie-description-box">
                             <div class="box-header with-border">
                               <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                   <h3 class="box-title text-blue">
-                                  Movie Story :
-                                </h3>
-                                <p style="margin-bottom: 0px;"><%= @admin_movie.description %></p>
+                                    <%= t('title.movie.movie_story') %>
+                                  </h3>
+                                  <p class="margin-btm-zero"><%= @admin_movie.description %></p>
                                 </div>
                               </div>
                             </div>

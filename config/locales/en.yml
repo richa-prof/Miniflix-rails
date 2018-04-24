@@ -93,6 +93,12 @@ en:
     add_new_movie_details: Add new movie details
   title:
     miniflix_admin: Miniflix Admin
+    movie:
+      released_on: Released [On]
+      movie_story: "Movie Story :"
+      stars_cast: Stars Cast
+      directed_by: Directed [by]
+      genre: Genre
   flash:
     visitor:
       successfully_deleted: Visitor was successfully deleted.
@@ -145,7 +151,9 @@ en:
     cancel: Cancel
     new_movie: New Movie
     download_now: Download Now
+    watch_now: Watch Now
   label:
+    not_available: Not Available
     background_image:
       is_set: Allow to set Background image for home page
   invalid_params:
@@ -185,3 +193,6 @@ en:
       upload_movie_thumbnail: Upload movie thumbnail
       admin_movie_downloadable: Allow to downloadable this movie by user
       admin_movie_is_featured_film: Allow to set this film as a featured film for home page
+  content:
+    movie:
+      posted_on_details: "Posted on %{formatted_date} by admin"

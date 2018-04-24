@@ -3,6 +3,14 @@
   They will automatically be included in application.css.
 */
 
+.padding-zero {
+  padding: 0px;
+}
+
+.margin-btm-zero {
+  margin-bottom: 0px;
+}
+
 .movie-thumbnail-file-field {
   height: 0px !important;
 }
@@ -16,4 +24,22 @@
   max-width: 200px;
   max-height: 150px;
   line-height: 20px;
+}
+
+.movie-watch-download-link {
+  width: 45%;
+}
+
+.movie-block-box-primary {
+  border-top-width: 0px;
+  margin-bottom: 5px;
+}
+
+.movie-block-box-header {
+  height: 82px;
+}
+
+.movie-description-box {
+  border-top-width: 0px;
+  margin-bottom: 0px;
 }
