@@ -47,13 +47,14 @@ class Movie < ApplicationRecord
       #   bucket_name: ENV['S3_INPUT_BUCKET'],
       #   key: s3_multipart_obj.key
       # )
+
       movie_key_array = s3_multipart_obj.key.split('/')
       s3file_prefix = movie_key_array.first
       s3.buckets[ENV['S3_INPUT_BUCKET']].objects.with_prefix(s3file_prefix).delete_all
       # elastic transcoder file delete
-      file_name = File.basename(version_file)
-      version_file.slice!(file_name)
-      s3.buckets[ENV['S3_OUTPUT_BUCKET']].objects.with_prefix(version_file).delete_all
+      # file_name = File.basename(version_file)
+      # version_file.slice!(file_name)
+      # s3.buckets[ENV['S3_OUTPUT_BUCKET']].objects.with_prefix(version_file).delete_all
 
       s3_multipart_obj.destroy
     end
