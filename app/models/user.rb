@@ -47,11 +47,11 @@ class User < ActiveRecord::Base
   #change phone number in nomalize form before validate
   phony_normalize :phone_number, :unconfirmed_phone_number
 
-  #Validation
-  validates_presence_of :sign_up_from, :name
+  # VALIDATIONS
+  validates_presence_of :name
   validates_plausible_phone :phone_number,:unconfirmed_phone_number
   validates_presence_of :registration_plan, unless: -> { skip_registration_plan_validation }
-  validates_presence_of :sign_up_from, :name
+  validates_presence_of :sign_up_from, unless: -> { skip_sign_up_from_validation }
 
   #enum
   enum registration_plan: {Educational: 'Educational', Monthly:'Monthly', Annually: 'Annually', Freemium: 'Freemium'}
@@ -87,6 +87,10 @@ class User < ActiveRecord::Base
 
   def skip_registration_plan_validation
     social_login || staff?
+  end
+
+  def skip_sign_up_from_validation
+    staff?
   end
 
   def is_payment_verified?

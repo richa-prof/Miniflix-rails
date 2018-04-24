@@ -15,7 +15,6 @@ class Admin::StaffsController < ApplicationController
   def create
     @staff_member = User.new(admin_staff_member_params)
     @staff_member.role = User.roles[:staff]
-    @staff_member.sign_up_from = User.sign_up_froms[:Web]
     temp_password = SecureRandom.hex(8)
     @staff_member.password = temp_password
     @staff_member.temp_password = temp_password
