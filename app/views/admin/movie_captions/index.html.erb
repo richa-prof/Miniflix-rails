@@ -1,0 +1,86 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    Caption list for <%= @admin_movie.name %>
+  </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <% if !notice.blank? %>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="alert alert-success alert-dismissible">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                  <%= notice %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          <div class="row">
+            <div class="col-lg-10 col-xs-12">
+              <h3 class="box-title admin-box-title"> Caption Details</h3></div>
+            <div class="col-lg-2 col-xs-12">
+              <%= link_to 'Add Caption', new_admin_movie_movie_caption_path(@admin_movie), class: "btn btn-primary pull-right" %>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body admin-box-body">
+          <div class="row">
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="box box-primary">
+                <!-- /.box-header -->
+                <div class="box-body">
+                  <section id="no-more-tables">
+                    <table id="tbl_movie_caption" class="table table-bordered table-hover">
+                      <thead>
+                        <tr>
+                          <th>Id</th>
+                          <th>File Name</th>
+                          <th> Language </th>
+                          <th> Status </th>
+                          <th> Default </th>
+                          <th> Action</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <% @movie_captions.each_with_index do |movie_caption, index| %>
+                          <tr>
+                            <td data-title="Id"><%= (index + 1) %></td>
+                            <td data-title="file-name"><%= movie_caption.caption_file.filename.split('/').last %></td>
+                            <td data-title="language"><%= movie_caption.language %></td>
+                            <td data-title="status"><%=  movie_caption.status %></td>
+                            <td data-title="default-file"><%= "Set as default" if movie_caption.is_default %></td>
+                            <td data-title="Action">
+                              <%= link_to edit_admin_movie_movie_caption_path(@admin_movie, movie_caption), class: "text-blue" do %>
+                                <i class="fa fa-fw fa-edit"></i>
+                              <% end %>
+                              <%= link_to admin_movie_movie_caption_path(@admin_movie, movie_caption), class: "text-red", method: :delete, data: { confirm: 'Are you sure?' } do %>
+                                <i class="fa fa-fw fa-trash"></i>
+                              <% end %>
+                             </td>
+                          </tr>
+                        <% end %>
+                      </tbody>
+                    </table>
+                  </section>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</section>
+<!-- /.content -->

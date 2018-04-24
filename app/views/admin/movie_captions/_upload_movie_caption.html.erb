@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-primary">
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-12">
+            <% if @movie_caption.present? && @movie_caption.errors.any? %>
+              <div class="alert alert-danger" id="error_msg">
+                <%= @movie_caption.errors.full_messages.join(',') %>
+              </div>
+            <% end %>
+            <div class="alert alert-success" id="success_msg" style="display: none;">
+            </div>
+          </div>
+        </div>
+        <div class="row" style="display: none;" id="progress-bar">
+          <div class="col-sm-11 col-xs-10">
+            <!-- Progress bars -->
+            <div class="progress">
+              <div class="progress-bar progress-bar-green" id="v_u_progress_bar"></div>
+            </div>
+          </div>
+          <div class="col-sm-1 col-xs-2 p-l-0" id="v_u_percent">
+          </div>
+        </div>
+        <%= form_for @admin_movie.movie_captions.new, url: admin_movie_movie_captions_path(@admin_movie) do |f|%>
+            <%= f.file_field :caption_file, class: "form-control" %>
+            <%= f.submit "Add file", class: "btn btn-primary m-t-15" %>
+            </span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
