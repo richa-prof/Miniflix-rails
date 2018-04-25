@@ -24,20 +24,30 @@ namespace :miniflix do
       end
     end
 
+    results = @client1.query("SELECT * FROM background_images")
+    results.each do |row|
+      Rails.logger.debug "===== background_images full information======="
+      Rails.logger.debug "#{row}"
+      @client2.query(background_images_insert_query(row))
+      Rails.logger.debug "background_images table data inserted successfully"
+    end
+
     dir = "#{Rails.root.to_s}/db/sql_dump_files"
     FileUtils.mkdir_p(dir) unless File.directory?(dir)
 
-    db_tables = ["s3_multipart_uploads", "contact_us", "admin_genres", "admin_movies", "admin_movie_captions", "admin_movie_thumbnails", "admin_paypal_access_tokens", "admin_recurring_plans", "background_images", "logged_in_users", "free_members", "notifications", "schema_migrations", "temp_users", "user_email_notifications", "user_filmlists", "user_payment_methods", "user_payment_transactions", "user_video_last_stops", "visitors", "movie_versions"]
+    db_tables = ["s3_multipart_uploads", "admin_genres", "admin_movies", "admin_movie_captions", "admin_movie_thumbnails", "admin_paypal_access_tokens", "admin_recurring_plans", "logged_in_users", "free_members", "notifications", "schema_migrations", "temp_users", "user_email_notifications", "user_filmlists", "user_payment_methods", "user_payment_transactions", "user_video_last_stops", "visitors", "movie_versions", "contact_us"]
 
     db_tables.each do |db_table|
       sh "mysqldump -u#{old_user} -p#{old_password} --no-create-info --complete-insert #{old_database} #{db_table} > #{Rails.root.to_s}/db/sql_dump_files/#{db_table}.sql"
       sh "mysql -u #{new_user} -p#{new_password} #{new_database} < #{Rails.root.to_s}/db/sql_dump_files/#{db_table}.sql"
       Rails.logger.debug "#{db_table} table data inserted successfully"
+      puts "#{db_table} table data inserted successfully"
     end
+
 
     results = @client1.query("SELECT * FROM contact_user_replies")
     results.each do |row|
-      Rails.logger.debug "===== user_email : #{row["email"]} full information======="
+      Rails.logger.debug "===== contact_user_replies full information======="
       Rails.logger.debug "#{row}"
       @client2.query(contact_user_replies_insert_query(row))
       Rails.logger.debug "contact_user_replies table data inserted successfully"
@@ -49,7 +59,7 @@ namespace :miniflix do
     User.all.each do |user|
       user.password = user.temp_password
       user.skip_callbacks = true
-      if user.save
+      if user.save(validate: false)
         Rails.logger.debug "===== password copied for user_id : #{user.id} ======="
       else
         Rails.logger.debug "===== password not copied for user_id : #{user.id} Error: #{user.errors.full_messages} ======="
@@ -68,7 +78,7 @@ namespace :miniflix do
         id, name, email, registration_plan, created_at, updated_at, provider, uid, tokens, image, phone_number, verification_code, subscription_plan_status, cancelation_date, role, customer_id, subscription_id, sign_up_from, receipt_data, is_free, auth_token, expires_at, migrate_user, temp_password
       )
       VALUES (
-        '#{row["id"]}', '#{row["name"]}', '#{get_email(row["provider"], row["uid"], row["email"])}', '#{row["registration_plan"]}', #{change_date_time_into_string(row["created_at"])}, #{change_date_time_into_string(row["updated_at"])}, '#{get_provider(row["provider"])}', '#{get_uid(row["uid"], row["email"])}', '#{row["tokens"]}', '#{row["image"]}', '#{row["phone_number"]}', '#{row["verification_code"]}', '#{row["subscription_plan_status"]}', #{change_date_time_into_string(row['cancelation_date'])}, '#{row["role"]}', '#{row["customer_id"]}', '#{row["subscription_id"]}', '#{row["sign_up_from"]}', '', '#{row["is_free"]}', '#{row["auth_token"]}', #{change_date_time_into_string(row['expires_at'])}, 1, '#{SecureRandom.hex(8)}'
+        '#{row["id"]}', '#{row["name"]}', '#{get_email(row["provider"], row["uid"], row["email"])}', '#{row["registration_plan"]}', #{change_date_time_into_string(row["created_at"])}, #{change_date_time_into_string(row["updated_at"])}, '#{get_provider(row["provider"])}', '#{get_uid(row["uid"], row["email"])}', '#{row["tokens"]}', '#{row["image"]}', '#{row["phone_number"]}', '#{row["verification_code"]}', '#{row["subscription_plan_status"]}', #{change_date_time_into_string(row['cancelation_date'])}, '#{row["role"]}', '#{row["customer_id"]}', '#{row["subscription_id"]}', '#{get_sign_up_from(row["sign_up_from"])}', '#{row["receipt_data"]}', '#{row["is_free"]}', '#{row["auth_token"]}', #{change_date_time_into_string(row['expires_at'])}, 1, '#{SecureRandom.hex(8)}'
       )
     "
   end
@@ -80,6 +90,17 @@ namespace :miniflix do
       )
       VALUES (
         #{row["id"]}, #{row["contact_u_id"]}, '#{row["message"]}', #{change_date_time_into_string(row["created_at"])}, #{change_date_time_into_string(row["updated_at"])}
+      )
+    "
+  end
+
+  def background_images_insert_query(row)
+    "
+      INSERT INTO background_images (
+        id, image_file, is_set, created_at, updated_at
+      )
+      VALUES (
+        #{row["id"]}, '#{row["background_image"]}', '#{row["is_set"]}', #{change_date_time_into_string(row["created_at"])}, #{change_date_time_into_string(row["updated_at"])}
       )
     "
   end
@@ -147,5 +168,9 @@ namespace :miniflix do
     results.each do |row|
       user_logger.debug "#{row}"
     end
+  end
+
+  def get_sign_up_from(sign_up_from)
+    sign_up_from.blank? ? 'admin' : sign_up_from
   end
 end

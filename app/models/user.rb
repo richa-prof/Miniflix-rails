@@ -56,7 +56,11 @@ class User < ActiveRecord::Base
   #enum
   enum registration_plan: {Educational: 'Educational', Monthly:'Monthly', Annually: 'Annually', Freemium: 'Freemium'}
   enum sign_up_from: {by_admin: 'by_admin', Web: 'web', Android: 'android', iOS: 'ios'}
-  enum subscription_plan_status: {Activate: 'Activate', Cancelled: 'Cancelled', Expired: 'Expired'}
+  enum subscription_plan_status: { incomplete: 'Incomplete',
+                                   trial: 'Trial',
+                                   activate: 'Activate',
+                                   cancelled: 'Cancelled',
+                                   expired: 'Expired' }
   enum provider: {  email: 'email', facebook: 'facebook', twitter: 'twitter' }
   enum role: {admin: 'Admin', staff: 'Staff', user: 'User'}
 
