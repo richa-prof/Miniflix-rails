@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180417071719) do
+ActiveRecord::Schema.define(version: 20180425141522) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "city"
@@ -362,7 +362,7 @@ ActiveRecord::Schema.define(version: 20180417071719) do
     t.string "role", default: "User"
     t.string "subscription_plan_status", default: "Activate"
     t.boolean "is_free"
-    t.text "receipt_data"
+    t.text "receipt_data", limit: 4294967295
     t.datetime "expires_at"
     t.string "auth_token"
     t.text "tokens"
