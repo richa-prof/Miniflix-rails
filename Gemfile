@@ -54,6 +54,9 @@ gem "figaro"
 #for pagination
 gem 'will_paginate', '~> 3.1.0'
 
+#for calculating time for remaining time for trial day
+gem 'time_difference'
+
 #======set up for image and file =====================
 #way to upload files
 gem 'carrierwave', '~> 1.0'
