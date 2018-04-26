@@ -101,6 +101,10 @@ Rails.application.routes.draw do
       resource :payments, only: [:create, :update] do
         put :upgrade
       end
+
+      resource :stripe_payments, only: [] do
+        post 'hook'
+      end
     end
   end
 

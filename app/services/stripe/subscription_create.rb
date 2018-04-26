@@ -61,7 +61,6 @@ class Stripe::SubscriptionCreate
         source: stripe_token,
         plan:  fetch_stripe_plan_id(user),
         email: user.email
-        trial_days:
       }
     end
 

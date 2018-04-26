@@ -1,4 +1,5 @@
 class UserPaymentMethod < ApplicationRecord
+  # TODO: Need to remove these attributes.
   # attr_encrypted :card_number, key: ENV['credit_card_number_key']
   # attr_encrypted :card_CVC , key: ENV['credit_card_cvc_key']
   # attr_encrypted :expiration_month, :expiration_year, key: ENV['month_year_key']

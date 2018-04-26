@@ -41,6 +41,8 @@ class Api::V1::PaypalPaymentsController < Api::V1::ApplicationController
     redirect_to paypal_payment_url(t 'payment.paypal.upgrade_payment')
   end
 
+  # called on payment_confimration from payPal.
+  # For more info Refer IPN(instant payment notification)
   def hook
     PaypalTransactionService.new(@user, params).call
     render json: {success: true}

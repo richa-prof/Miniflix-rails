@@ -22,7 +22,12 @@ class Api::V1::PaymentsController < Api::V1::ApplicationController
       redirect_url = current_user.update_checkout_url
       render_json(redirect_url)
     else
-       #code for stripe
+      subscription_done = current_user.update_card_payment(params[:stripe_token]) if params["stripe_token"]
+      if !(subscription_done && subscription_done[:success]) #subscription fail on stripe
+        render_json_for_card_fail(subscription_done)
+      else
+        render_json_for_card_success(subscription_done)
+      end
     end
   end
 

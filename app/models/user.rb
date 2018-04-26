@@ -197,6 +197,17 @@ class User < ActiveRecord::Base
     self.user_payment_methods.build(payment_method_attribute(payment_type))
   end
 
+  def update_card_payment(token)
+    if latest_payment_method.paypal?
+      paypal_subscription_id = self.subscription_id
+      response = Stripe::SubscriptionUpdate.new(self, token).call
+      cancel_previous_paypal_subscription(paypal_subscription_id) if response[:success]
+    else
+      response = Stripe::UpdateCard.new(self, token).call
+    end
+    response
+  end
+
   private
 
   def valid_for_Education_plan
@@ -315,14 +326,14 @@ class User < ActiveRecord::Base
 
   def cancel_previous_subscription
     if latest_payment_method.paypal?
-      cancel_previous_paypal_subscription
+      cancel_previous_paypal_subscription(self.subscription_id)
     else
       #code to cancel stripe payment
     end
   end
 
-  def cancel_previous_paypal_subscription
-    ppr = PayPal::Recurring.new(profile_id: self.subscription_id)
+  def cancel_previous_paypal_subscription(subscription_id)
+    ppr = PayPal::Recurring.new(profile_id: subscription_id)
     ppr.cancel
   end
 
