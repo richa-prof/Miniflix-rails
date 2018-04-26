@@ -2,7 +2,8 @@ module Api::V1::Concerns::UserSerializeDataConcern
   extend ActiveSupport::Concern
 
   def serialize_user
-    ActiveModelSerializers::SerializableResource.new(@resource,
+    user = @resource || current_user
+    ActiveModelSerializers::SerializableResource.new(user,
     each_serializer: Api::V1::UserSerializer)
   end
 

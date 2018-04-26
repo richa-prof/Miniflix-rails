@@ -113,3 +113,7 @@ en:
       my_account:   "my_account"
       update_payment: "update_payment"
       upgrade_payment: "upgrade_payment"
+
+    card:
+      success: "Miniflix subscription successfully done"
+      fail: "%{error} Your payment not completed, try again.."

@@ -14,7 +14,8 @@ class Api::V1::RegistrationsController < DeviseTokenAuth::RegistrationsControlle
           redirect_url: redirect_url
         } and return if redirect_url.present?
       else
-        #code for stripe card payment
+        subscription_done = Stripe::SubscriptionCreate.new(@resource, params["stripe_token"]).call()  if params["stripe_token"]
+        render_json(subscription_done) unless (subscription_done && subscription_done[:success])
       end
     end
     render json: {
@@ -45,5 +46,14 @@ class Api::V1::RegistrationsController < DeviseTokenAuth::RegistrationsControlle
         status: 'success',
         user:   serialize_user
       }
+  end
+
+  def render_json (subscription)
+    error_message = ((subscription && subscription[:message]) ?  subscription[:message] : (I18n.t "payment.card.fail", error: "invaild token,"))
+    render json: {
+      status: 'fail',
+      user:   serialize_user,
+      errors: error_message
+    } and return
   end
 end
