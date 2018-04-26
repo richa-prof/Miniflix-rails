@@ -189,8 +189,8 @@ class User < ActiveRecord::Base
     update_or_upgrade_payment_confirmation(response.profile_id, true)
   end
 
-  def find_user_payment_method
-    self.user_payment_methods.active.paypal.find_by(billing_plan: fetch_billing_plan)
+  def latest_payment_method
+    self.user_payment_methods.active.last
   end
 
   def build_user_payment_method(payment_type)
@@ -314,7 +314,7 @@ class User < ActiveRecord::Base
   end
 
   def cancel_previous_subscription
-    if find_user_payment_method.paypal?
+    if latest_payment_method.paypal?
       cancel_previous_paypal_subscription
     else
       #code to cancel stripe payment

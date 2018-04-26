@@ -36,7 +36,7 @@ class PaypalTransactionService
   end
 
   def fetch_user_payment_method(user)
-    user.find_user_payment_method
+    user.latest_payment_method
   end
 
   def paypal_payment_date(response)
