@@ -208,6 +208,10 @@ class User < ActiveRecord::Base
     response
   end
 
+  def upgrade_payment_through_card
+    Stripe::SubscriptionUpgrade.new(self).call
+  end
+
   private
 
   def valid_for_Education_plan

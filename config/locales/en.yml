@@ -119,3 +119,4 @@ en:
       fail: "%{error} Your payment not completed, try again.."
 
   payment_update: "Your payment method successfully changed"
+  payment_upgrade: "Your plan is successfully switched to Annually"

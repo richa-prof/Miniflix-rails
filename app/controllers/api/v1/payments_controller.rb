@@ -31,14 +31,19 @@ class Api::V1::PaymentsController < Api::V1::ApplicationController
     end
   end
 
+  # we are supposing user try to upgrade payment with his default payment method.
   def upgrade
-    if params[:payment_type] == "paypal"
+    if current_user.latest_payment_method.paypal?
       redirect_url = current_user.upgrade_checkout_url
       render_json(redirect_url)
     else
-      #code for stripe
+      upgrade_done = current_user.upgrade_payment_through_card
+      if  upgrade_done[:success]
+        render_json_for_card_success(upgrade_done)
+      else
+        render_json_for_card_fail(upgrade_done)
+      end
     end
-
   end
 
   private
