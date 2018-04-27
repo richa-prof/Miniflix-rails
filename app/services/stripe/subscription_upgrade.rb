@@ -12,7 +12,7 @@ class Stripe::SubscriptionUpgrade
 
   def upgrade_subscription(user)
     stripe_retrive_subscription_and_upgrade(user)
-    user.Annually!
+    save_user_detail_for_annual_plan(user)
     {success: true, message: (I18n.t "payment_upgrade")}
   rescue Stripe::InvalidRequestError => e
     {success: false, message: (I18n.t "payment.card.fail", error: stripe_error(e))}
@@ -49,6 +49,12 @@ class Stripe::SubscriptionUpgrade
 
   def annual_plan_id
     BillingPlan.year.last.stripe_plan_id
+  end
+
+  def save_user_detail_for_annual_plan(user)
+    user.registration_plan = User.registration_plans['Annually']
+    user.build_user_payment_method(UserPaymentMethod.payment_types['card'])
+    user.save
   end
 
   def stripe_error(exception)
