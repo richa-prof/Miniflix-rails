@@ -19,17 +19,10 @@ namespace :task_for_miniflix do
     users = User.all.select{ |u| u if u.sign_up_from.blank? }
 
     users.each do |user|
-      user.sign_up_from = 'by_admin'
+      user.sign_up_from = User.sign_up_froms['by_admin']
       Rails.logger.debug "=======Processing for user_id: #{user.id}======="
       puts "=======Processing for user_id: #{user.id}======="
-
-      if user.save(validate: false)
-        Rails.logger.debug "Successfully update user_id: #{user.id}"
-        puts "Successfully update user_id: #{user.id}"
-      else
-        Rails.logger.debug "update failed for user_id: #{user.id} >>> errors:  #{user.errors.full_messages}"
-        puts "update failed for user_id: #{user.id} >>> errors:  #{user.errors.full_messages}"
-      end
+      save_record(user)
       count += 1
     end
 
@@ -47,14 +40,7 @@ namespace :task_for_miniflix do
       unless is_validate_phone_number?(user.phone_number)
         Rails.logger.debug "=======update for #{user.id} if phone_number is invalid======="
         user.phone_number = nil
-        if user.save(validate: false)
-          Rails.logger.debug "Successfully updated user_id: #{user.id}"
-          puts "Successfully update user_id: #{user.id}"
-        else
-          Rails.logger.debug "update failed for user_id: #{user.id} >>> errors:  #{user.errors.full_messages}"
-          puts "update failed for user_id: #{user.id} >>> errors:  #{user.errors.full_messages}"
-        end
-
+        save_record(user)
         count += 1
       end
     end
@@ -62,43 +48,14 @@ namespace :task_for_miniflix do
     puts "<<<<<<<<< #{count} rows affected <<<<<<<<<"
   end
 
-  def is_validate_phone_number? phone_number
-    phone_number.phony_formatted(strict: true) ? true : false
-  end
+  desc "Update registration_plan if it is blank"
+  task update_registration_plan: :environment do
 
-  desc "CSV file generate"
-  task csv_file_generate: :environment do
-    CSV.open("user_details.csv","w") do |csv|
-      column_names = ['id', 'email', 'name', 'sign_up_from', 'is_free', 'registration_plan', 'subscription_plan', 'provider', 'payment_method_available', 'customer_id', 'subscription_id', 'receipt_url']
-      csv << column_names
-      User.all.each do |user|
-        csv << [user.id, user.email, user.name, user.sign_up_from, user.is_free, user.registration_plan, user.subscription_plan_status, user.provider, is_payment_method_available?(user), user.customer_id, user.subscription_id, is_receipt_url_present?(user)]
-      end
-    end
-  end
-
-  desc "CSV file generate where sign_up_from and register_plan  is nil"
-  task csv_file_generate_1: :environment do
-    CSV.open("user_details_with_sign_up_from_and_registration_plan_nil.csv","w") do |csv|
-      column_names = ['id', 'email', 'name', 'sign_up_from', 'is_free', 'registration_plan', 'subscription_plan', 'provider', 'payment_method_available', 'customer_id', 'subscription_id']
-      csv << column_names
-      User.all.each do |user|
-        if((user.sign_up_from == nil or user.sign_up_from = '') and (user.registration_plan == nil or user.registration_plan = ''))
-          puts "user: #{user.id}, sign_up_from: #{user.sign_up_from}, registration_plan: #{user.registration_plan}"
-          csv << [user.id, user.email, user.name, user.sign_up_from, user.is_free, user.registration_plan, user.subscription_plan_status, user.provider, is_payment_method_available?(user), user.customer_id, user.subscription_id]
-        end
-      end
-    end
-  end
-
-  desc "Update subscription_plan_status"
-  task update_subscription_plan_status: :environment do
-
-    users = User.Web.select{ |u| u if u.registration_plan.blank? }
+    users = User.select{ |u| u if u.registration_plan.blank? }
 
     count = 0
 
-    Rails.logger.debug "=======update subscription_plan_status from users======="
+    Rails.logger.debug "=======update registration_plan from users======="
 
     users.each do |user|
       Rails.logger.debug "sign_up_from: #{user.sign_up_from}, registration_plan: #{user.registration_plan}"
@@ -106,37 +63,49 @@ namespace :task_for_miniflix do
       Rails.logger.debug "=======Processing for user_id: #{user.id}======="
       puts "=======Processing for user_id: #{user.id}======="
 
-      user.subscription_plan_status = :incomplete
-      if user.save(validate: false)
-        Rails.logger.debug "Successfully updated user_id #{user.id}"
-        puts "Successfully updated user_id #{user.id}"
-      else
-        Rails.logger.debug "update failed for user_id: #{user.id} >>> errors:  #{user.errors.full_messages}"
-        puts "update failed for user_id: #{user.id} >>> errors:  #{user.errors.full_messages}"
+      if user.Web?
+        user.subscription_plan_status = User.subscription_plan_statuses['incomplete']
+        user.registration_plan = User.registration_plans['monthly']
+        save_record(user)
+      elsif user.Android?
+        user.registration_plan = User.registration_plans['Freemium']
+        save_record(user)
       end
-      
       count += 1
     end 
     Rails.logger.debug "<<<<<<<<< #{count} rows Updated <<<<<<<<<"
     puts "<<<<<<<<< #{count} rows Updated<<<<<<<<<"
   end
 
-  def is_payment_method_available?(user)
-    user.user_payment_methods.blank? ? 'NA' : 'Yes'
+  def is_validate_phone_number? phone_number
+    phone_number.phony_formatted(strict: true) ? true : false
   end
 
-  def is_receipt_url_present?(user)
-    if user.sign_up_from == 'iOS'
-      puts user.receipt_data.present? ? 'Yes' : 'No'
-      user.receipt_data.present? ? 'Yes' : 'No'
+  def save_record(user)
+    if user.save(validate: false)
+      Rails.logger.debug "Successfully updated user_id #{user.id}"
+      puts "Successfully updated user_id #{user.id}"
     else
-      puts user.receipt_data.present? ? 'Yes' : '-'
-      user.receipt_data.present? ? 'Yes' : '-'
+      Rails.logger.debug "update failed for user_id: #{user.id} >>> errors:  #{user.errors.full_messages}"
+      puts "update failed for user_id: #{user.id} >>> errors:  #{user.errors.full_messages}"
     end
   end
 end
 
 # Commands to run the above tasks:
 # 1. rake task_for_miniflix:update_sign_up_from
-# 2. rake task_for_miniflix:update_subscription_plan_status
+# 2. rake task_for_miniflix:update_registration_plan
 # 3. rake task_for_miniflix:validate_phone_number
+
+# Currently we are saving the users with `(validate: false)` beacuse there are some errors in different different fields. Need to fix all those problems.
+
+# For example an error is there: ["Friendly is reserved"]
+# Root cause: These are the reserved_words from FriendlyId.
+# config.reserved_words = %w(new edit index session login logout users admin stylesheets assets javascripts images)
+# Need to fix this.
+# Ref.: https://github.com/norman/friendly_id
+
+# Note: To find invalid_users
+# invalid_users = User.all.reject(&:valid?)
+# invalid_users.count
+# invalid_users.map{|u| u.errors.full_messages}

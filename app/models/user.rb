@@ -14,6 +14,9 @@ class User < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: :slugged
 
+  # Note: These are the reserved_words from FriendlyId.
+  # config.reserved_words = %w(new edit index session login logout users admin stylesheets assets javascripts images)
+
   #Association
   has_many :user_payment_methods, dependent: :destroy
   has_many :user_filmlists,  dependent: :destroy

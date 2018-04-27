@@ -174,3 +174,7 @@ namespace :miniflix do
     sign_up_from.blank? ? 'admin' : sign_up_from
   end
 end
+
+# rake miniflix:insert_data[:old_database,:old_db_user,:old_db_password,:new_database_name,:new_db_user,:new_db_password]
+# For example:
+# rake miniflix:insert_data['mini0_devlopment','root','root','miniflix_dev','root','root']
