@@ -46,6 +46,11 @@ class Api::V1::PaymentsController < Api::V1::ApplicationController
     end
   end
 
+  def suspend
+    response = current_user.suspend_subscription
+    render json: response
+  end
+
   private
     def render_json(redirect_url)
       render json: {

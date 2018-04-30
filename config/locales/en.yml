@@ -120,3 +120,7 @@ en:
 
   payment_update: "Your payment method successfully changed"
   payment_upgrade: "Your plan is successfully switched to Annually"
+
+  suspend_subscription:
+    success: Subscription has been canceled successfully.
+    already_canceled: Subscription is already canceled.

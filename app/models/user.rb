@@ -212,6 +212,15 @@ class User < ActiveRecord::Base
     Stripe::SubscriptionUpgrade.new(self).call
   end
 
+  def suspend_subscription
+    if latest_payment_method.paypal?
+      suspend_paypal_subscription(subscription_id)
+    else
+      stripe_service_obj = StripeService.new(subscription_id)
+      stripe_service_obj.suspend_subscription
+    end
+  end
+
   private
 
   def valid_for_Education_plan
@@ -332,9 +341,8 @@ class User < ActiveRecord::Base
     if latest_payment_method.paypal?
       cancel_previous_paypal_subscription(self.subscription_id)
     else
-      # Cancel stripe subscription
-      # here we are actually doing `canel` the subscription  not `suspend`.
-      cancel_previous_stripe_subscription(self.subscription_id)
+      stripe_service_obj = StripeService.new(subscription_id)
+      stripe_service_obj.cancel_subscription
     end
   end
 
@@ -343,22 +351,14 @@ class User < ActiveRecord::Base
     ppr.cancel
   end
 
-  def cancel_previous_stripe_subscription(subscription_id)
-    begin
-      subscription = Stripe::Subscription.retrieve(subscription_id)
-      if subscription.status != "canceled"
-        subscription.delete
-        puts 'subscription canceled!'
-      else
-        puts 'Subscription already canceled.'
-      end
-    rescue Exception => e
-      puts "====== response stripe error : #{e.message} ======"
-    end
+  def suspend_paypal_subscription(subscription_id)
+    ppr = PayPal::Recurring.new(profile_id: subscription_id)
+    ppr.suspend
+    response = { success: true,
+                 message: (I18n.t 'suspend_subscription.success') }
   end
 
   def user_choose_annual_plan?
     self.registration_plan_changed? && self.Annually? && self.trial?
   end
-
 end

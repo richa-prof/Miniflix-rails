@@ -100,6 +100,7 @@ Rails.application.routes.draw do
 
       resource :payments, only: [:create, :update] do
         put :upgrade
+        get :suspend
       end
 
       resource :stripe_payments, only: [] do
