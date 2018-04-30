@@ -332,13 +332,29 @@ class User < ActiveRecord::Base
     if latest_payment_method.paypal?
       cancel_previous_paypal_subscription(self.subscription_id)
     else
-      #code to cancel stripe payment
+      # Cancel stripe subscription
+      # here we are actually doing `canel` the subscription  not `suspend`.
+      cancel_previous_stripe_subscription(self.subscription_id)
     end
   end
 
   def cancel_previous_paypal_subscription(subscription_id)
     ppr = PayPal::Recurring.new(profile_id: subscription_id)
     ppr.cancel
+  end
+
+  def cancel_previous_stripe_subscription(subscription_id)
+    begin
+      subscription = Stripe::Subscription.retrieve(subscription_id)
+      if subscription.status != "canceled"
+        subscription.delete
+        puts 'subscription canceled!'
+      else
+        puts 'Subscription already canceled.'
+      end
+    rescue Exception => e
+      puts "====== response stripe error : #{e.message} ======"
+    end
   end
 
   def user_choose_annual_plan?
