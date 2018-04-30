@@ -13,6 +13,32 @@ class StripeService
     cancel_stripe_subscription
   end
 
+  def reactivate_subscription
+    begin
+      subscription = Stripe::Subscription.retrieve(@subscription_id)
+      item = subscription.items.data.last
+      items = [{
+        cancel_at_period_end: false,
+        id: item.id,
+        plan: item.plan.id,
+      }]
+
+      subscription.items = items
+      subscription.save
+
+      response = { success: true,
+                   message: (I18n.t 'reactivate_subscription.success') }
+      puts 'subscription reactivated!'
+
+    rescue Exception => e
+      response = { success: false,
+                   message: e.message }
+      puts "====== response stripe error : #{e.message} ======"
+    end
+
+    response
+  end
+
   private
 
   def cancel_stripe_subscription(period_end_opts=nil)

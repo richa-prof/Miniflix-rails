@@ -221,6 +221,15 @@ class User < ActiveRecord::Base
     end
   end
 
+  def reactivate_subscription
+    if latest_payment_method.paypal?
+      reactivate_paypal_subscription(subscription_id)
+    else
+      stripe_service_obj = StripeService.new(subscription_id)
+      stripe_service_obj.reactivate_subscription
+    end
+  end
+
   private
 
   def valid_for_Education_plan
@@ -354,6 +363,13 @@ class User < ActiveRecord::Base
   def suspend_paypal_subscription(subscription_id)
     ppr = PayPal::Recurring.new(profile_id: subscription_id)
     ppr.suspend
+    response = { success: true,
+                 message: (I18n.t 'reactivate_subscription.success') }
+  end
+
+  def reactivate_paypal_subscription(subscription_id)
+    ppr = PayPal::Recurring.new(profile_id: subscription_id)
+    ppr.reactivate
     response = { success: true,
                  message: (I18n.t 'suspend_subscription.success') }
   end

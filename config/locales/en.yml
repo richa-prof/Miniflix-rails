@@ -124,3 +124,5 @@ en:
   suspend_subscription:
     success: Subscription has been canceled successfully.
     already_canceled: Subscription is already canceled.
+  reactivate_subscription:
+    success: Subscription has been reactivated successfully.
