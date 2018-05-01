@@ -7,14 +7,14 @@ class Api::V1::RegistrationsController < DeviseTokenAuth::RegistrationsControlle
 
   def render_create_success
     if @resource.Monthly? || @resource.Annually?
-      if @resource.payment_type == "paypal"
+      if @resource.payment_type == User::PAYMENT_TYPE_PAYPAL
         redirect_url = @resource.checkout_url
         return render json: {
           success: true,
           redirect_url: redirect_url
         } if redirect_url.present?
       else
-        subscription_done = Stripe::SubscriptionCreate.new(@resource, params["stripe_token"]).call()  if params["stripe_token"]
+        subscription_done = Stripe::SubscriptionCreate.new(@resource, stripe_token_param).call()  if stripe_token_param
         return render_json(subscription_done) unless (subscription_done && subscription_done[:success])
       end
     end
@@ -55,5 +55,11 @@ class Api::V1::RegistrationsController < DeviseTokenAuth::RegistrationsControlle
       user:   serialize_user,
       errors: error_message
     } and return
+  end
+
+  private
+
+  def stripe_token_param
+    params['stripe_token']
   end
 end

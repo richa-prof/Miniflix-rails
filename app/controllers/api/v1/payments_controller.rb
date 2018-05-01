@@ -4,29 +4,29 @@ class Api::V1::PaymentsController < Api::V1::ApplicationController
   before_action :check_user_valid_for_upgrade_plan, only: [:upgrade]
 
   def create
-    if params[:payment_type] == "paypal"
+    if payment_type == User::PAYMENT_TYPE_PAYPAL
       redirect_url = current_user.checkout_url
       render_json(redirect_url)
     else
-      subscription_done = Stripe::SubscriptionCreate.new(@resource, params["stripe_token"]).call if params["stripe_token"]
-      if !(subscription_done && subscription_done[:success]) #subscription fail on stripe
-        render_json_for_card_fail(subscription_done)
+      response = Stripe::SubscriptionCreate.new(@resource, stripe_token).call if stripe_token
+      unless (response && response[:success]) #subscription fail on stripe
+        render_json_for_card_fail(response)
       else
-        render_json_for_card_success(subscription_done)
+        render_json_for_card_success(response)
       end
     end
   end
 
   def update
-    if params[:payment_type] == "paypal"
+    if payment_type == User::PAYMENT_TYPE_PAYPAL
       redirect_url = current_user.update_checkout_url
       render_json(redirect_url)
     else
-      subscription_done = current_user.update_card_payment(params[:stripe_token]) if params["stripe_token"]
-      if !(subscription_done && subscription_done[:success]) #subscription fail on stripe
-        render_json_for_card_fail(subscription_done)
+      response = current_user.update_card_payment(stripe_token) if stripe_token
+      unless (response && response[:success]) #subscription fail on stripe
+        render_json_for_card_fail(response)
       else
-        render_json_for_card_success(subscription_done)
+        render_json_for_card_success(response)
       end
     end
   end
@@ -37,23 +37,25 @@ class Api::V1::PaymentsController < Api::V1::ApplicationController
       redirect_url = current_user.upgrade_checkout_url
       render_json(redirect_url)
     else
-      upgrade_done = current_user.upgrade_payment_through_card
-      if  upgrade_done[:success]
-        render_json_for_card_success(upgrade_done)
+      response = current_user.upgrade_payment_through_card
+      if  response[:success]
+        render_json_for_card_success(response)
       else
-        render_json_for_card_fail(upgrade_done)
+        render_json_for_card_fail(response)
       end
     end
   end
 
   def suspend
     response = current_user.suspend_subscription
-    render json: response
+
+    render json: response.merge(user: serialize_user)
   end
 
   def reactivate
     response = current_user.reactivate_subscription
-    render json: response
+
+    render json: response.merge(user: serialize_user)
   end
 
   private
@@ -69,8 +71,9 @@ class Api::V1::PaymentsController < Api::V1::ApplicationController
     render json: {success: false, message: "you are not authorize to upgrade payment"}  unless (current_user.Monthly? && current_user.trial?)
   end
 
-  def render_json_for_card_fail(subscription)
-    error_message = ((subscription && subscription[:message]) ?  subscription[:message] : (I18n.t "payment.card.fail", error: "invaild token,"))
+  def render_json_for_card_fail(response)
+    error_message = ((response && response[:message]) ?  response[:message] : (I18n.t "payment.card.fail", error: "invaild token,"))
+
     render json: {
       status: 'fail',
       user:   serialize_user,
@@ -78,11 +81,19 @@ class Api::V1::PaymentsController < Api::V1::ApplicationController
     } and return
   end
 
-  def render_json_for_card_success(subscription)
+  def render_json_for_card_success(response)
     render json: {
       status: 'success',
       user:   serialize_user,
-      message: subscription[:message]
+      message: response[:message]
     } and return
+  end
+
+  def stripe_token
+    params['stripe_token']
+  end
+
+  def payment_type
+    params[:payment_type]
   end
 end

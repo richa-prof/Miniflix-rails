@@ -55,6 +55,11 @@ development:
   # -----ios development arn-----for push notifications on ios devise
   IOS_ARN: IOS_ARN
 
-  #stripe
+  # STRIPE
   PUBLISHABLE_KEY: stripe_puplish_key
   SECRET_KEY: stripe_secret_key
+
+  # PAYPAL
+  Paypal_Username: Paypal_Username
+  Paypal_Password: Paypal_Password
+  Paypal_signature: Paypal_signature

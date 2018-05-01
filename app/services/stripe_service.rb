@@ -18,15 +18,15 @@ class StripeService
       subscription = Stripe::Subscription.retrieve(@subscription_id)
       item = subscription.items.data.last
       items = [{
-        cancel_at_period_end: false,
         id: item.id,
-        plan: item.plan.id,
+        plan: item.plan.id
       }]
 
       subscription.items = items
-      subscription.save
+      subscription_obj = subscription.save
 
       response = { success: true,
+                   subscription: subscription_obj,
                    message: (I18n.t 'reactivate_subscription.success') }
       puts 'subscription reactivated!'
 
@@ -50,8 +50,10 @@ class StripeService
                      message: (I18n.t 'suspend_subscription.already_canceled') }
         puts 'Subscription already canceled.'
       else
-        subscription.delete(period_end_opts)
+        subscription_obj = subscription.delete(period_end_opts)
+
         response = { success: true,
+                     subscription: subscription_obj,
                      message: (I18n.t 'suspend_subscription.success') }
         puts 'subscription canceled!'
       end

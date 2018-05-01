@@ -39,6 +39,7 @@ class User < ActiveRecord::Base
   UPGRADE_SUBSCRIPTION = "upgrade plan for"
   UPDATE_SUBSCRIPTION = "subscription plan for update"
   ADMIN_EMAIL = 'admin@admin.com'
+  PAYMENT_TYPE_PAYPAL = 'paypal'
 
   # CALLBACKS
   after_initialize :set_default_subscription_plan, if: -> { new_record?}
@@ -214,20 +215,71 @@ class User < ActiveRecord::Base
 
   def suspend_subscription
     if latest_payment_method.paypal?
-      suspend_paypal_subscription(subscription_id)
+      ppr_response = suspend_paypal_subscription(subscription_id)
+      if ppr_response.valid?
+        self.cancelled!
+
+        response = { success: true,
+                     message: (I18n.t 'suspend_subscription.success') }
+      else
+        response = { success: false,
+                     message: response.errors[0][:messages][0] }
+      end
     else
       stripe_service_obj = StripeService.new(subscription_id)
-      stripe_service_obj.suspend_subscription
+      response = stripe_service_obj.suspend_subscription
+      self.cancelled! if response[:success]
     end
+
+    response
   end
 
   def reactivate_subscription
     if latest_payment_method.paypal?
-      reactivate_paypal_subscription(subscription_id)
+      ppr_response = reactivate_paypal_subscription(subscription_id)
+
+      if ppr_response.valid?
+        ppr = PayPal::Recurring.new(profile_id: ppr_response.profile_id)
+
+        case ppr.profile.try(:status)
+        when 'active'
+          self.activate!
+        when 'suspended'
+          self.cancelled!
+        when 'canceled'
+          self.expired!
+        else
+          self.activate!
+        end
+
+        response = { success: true,
+                     message: (I18n.t 'reactivate_subscription.success') }
+      else
+        response = { success: false,
+                     message: ppr_response.errors[0][:messages][0] }
+      end
+
     else
       stripe_service_obj = StripeService.new(subscription_id)
-      stripe_service_obj.reactivate_subscription
+
+      response = stripe_service_obj.reactivate_subscription
+      if response[:success]
+        subscription = response[:subscription]
+
+        case subscription.status
+        when 'trialing'
+          self.trial!
+        when 'active'
+          self.activate!
+        when 'canceled'
+          self.cancelled!
+        when 'unpaid'
+          self.expired!
+        end
+      end
     end
+
+    response
   end
 
   private
@@ -363,15 +415,11 @@ class User < ActiveRecord::Base
   def suspend_paypal_subscription(subscription_id)
     ppr = PayPal::Recurring.new(profile_id: subscription_id)
     ppr.suspend
-    response = { success: true,
-                 message: (I18n.t 'reactivate_subscription.success') }
   end
 
   def reactivate_paypal_subscription(subscription_id)
     ppr = PayPal::Recurring.new(profile_id: subscription_id)
     ppr.reactivate
-    response = { success: true,
-                 message: (I18n.t 'suspend_subscription.success') }
   end
 
   def user_choose_annual_plan?
