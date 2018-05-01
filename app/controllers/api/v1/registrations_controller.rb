@@ -9,19 +9,19 @@ class Api::V1::RegistrationsController < DeviseTokenAuth::RegistrationsControlle
     if @resource.Monthly? || @resource.Annually?
       if @resource.payment_type == "paypal"
         redirect_url = @resource.checkout_url
-        render json: {
+        return render json: {
           success: true,
           redirect_url: redirect_url
-        } and return if redirect_url.present?
+        } if redirect_url.present?
       else
         subscription_done = Stripe::SubscriptionCreate.new(@resource, params["stripe_token"]).call()  if params["stripe_token"]
-        render_json(subscription_done) unless (subscription_done && subscription_done[:success])
+        return render_json(subscription_done) unless (subscription_done && subscription_done[:success])
       end
     end
     render json: {
       success: true,
       user:   serialize_user
-    }
+    } and return
   end
 
   def render_create_error
@@ -48,7 +48,7 @@ class Api::V1::RegistrationsController < DeviseTokenAuth::RegistrationsControlle
       }
   end
 
-  def render_json (subscription)
+  def render_json(subscription)
     error_message = ((subscription && subscription[:message]) ?  subscription[:message] : (I18n.t "payment.card.fail", error: "invaild token,"))
     render json: {
       status: 'fail',

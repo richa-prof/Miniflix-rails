@@ -56,16 +56,15 @@ class Stripe::SubscriptionCreate
 
   protected
 
-    def stripe_plan_attribute(user, stripe_token)
-      {
-        source: stripe_token,
-        plan:  fetch_stripe_plan_id(user),
-        email: user.email
-      }
-    end
+  def stripe_plan_attribute(user, stripe_token)
+    {
+      source: stripe_token,
+      plan:  fetch_stripe_plan_id(user),
+      email: user.email
+    }
+  end
 
-    def update_subscription_plan_status
-      user.subscription_plan_status = get_subscription_plan_status(subscription_detail)
-    end
-
+  def update_subscription_plan_status(subscription_detail)
+    @user.subscription_plan_status = get_subscription_plan_status(subscription_detail)
+  end
 end
