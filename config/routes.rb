@@ -85,6 +85,7 @@ Rails.application.routes.draw do
         put :verify_verification_code
         get :my_activity
         get :make_invalid_for_thankyou_page
+        get :billing_details
       end
       resources :paypal_payments, only: [] do
         collection do
