@@ -1,11 +1,15 @@
 class Api::V1::UsersController < Api::V1::ApplicationController
+  include Api::V1::Concerns::UserSerializeDataConcern
+
   before_action :authenticate_user!
   before_action :check_current_password, only: [:send_verification_code]
   before_action :check_verification_code, only: [:verify_verification_code]
 
   def send_verification_code
     if current_user.update_attributes(user_update_phone_params)
-     response = {success: true, message: "Verification code is sent to your entered phone number, verify phone number for complete process."}
+     response = { success: true,
+                  user: serialize_user,
+                  message: "Verification code is sent to your entered phone number, verify phone number for complete process." }
     else
       response = {success: false, message: current_user.errors}
     end
@@ -14,7 +18,9 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
   def verify_verification_code
     current_user.update_attribute('verification_code', nil)
-    render json: {success: true, message: "Phone number successful updated"}
+    render json: { success: true,
+                   user: serialize_user,
+                   message: "Phone number is successfully updated" }
   end
 
   def my_activity

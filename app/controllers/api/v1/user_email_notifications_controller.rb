@@ -10,10 +10,13 @@ class Api::V1::UserEmailNotificationsController < Api::V1::ApplicationController
   def update
     user_email_notification = current_user.user_email_notification
     if user_email_notification.update_attributes(user_email_notification_update_params)
-      response = {success: true, message: "successful email Notification updated"}
-    else
       email_notification_serializer = ActiveModelSerializers::SerializableResource.new(user_email_notification, serializer: Api::V1::UserEmailNotificationSerializer).serializable_hash
-      response = {success: true, message: "successful email Notification updated", user_email_notification: email_notification_serializer}
+      response = { success: true,
+                   message: "successful email Notification updated",
+                   user_email_notification: email_notification_serializer }
+    else
+      response = { success: false,
+                   message: user_email_notification.errors.full_messages[0] }
     end
     render json: response
   end
