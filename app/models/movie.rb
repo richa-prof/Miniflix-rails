@@ -6,6 +6,8 @@ class Movie < ApplicationRecord
   #friendly id
   extend FriendlyId
   friendly_id :name, use: :slugged
+  # To update the slug of old records please run below query.
+  # Movie.find_each(&:save)
 
   # Association
   belongs_to :genre, class_name: "Genre", foreign_key: "admin_genre_id"

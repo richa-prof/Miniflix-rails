@@ -1,5 +1,5 @@
 class Api::V1::MovieSerializer < ActiveModel::Serializer
-  attributes :id, :slug, :name, :title, :description, :festival_laureates, :directed_by, :language, :released_date, :video_duration, :video_file, :trailer_file, :genre_name, :click_count, :is_liked, :is_featured_film
+  attributes :id, :slug, :name, :title, :description, :festival_laureates, :directed_by, :language, :released_date, :video_duration, :video_file, :trailer_file, :genre_name, :click_count, :is_liked, :is_featured_film, :social_urls
   has_one :genre, serializer: Api::V1::GenreSerializer
   has_one :movie_thumbnail, serializer: Api::V1::MovieThumbnailSerializer
   has_many :user_video_last_stops, serializer: Api::V1::UserVideoLastStopSerializer
@@ -34,6 +34,16 @@ class Api::V1::MovieSerializer < ActiveModel::Serializer
     #T0DO :need to implement trailer functionality, from admin side
   end
 
+  def social_urls
+    arr = []
+    Movie::SHARE_ON.each do |share_domain|
+      url = get_social_share_url(object, share_domain)
+      arr << { share_domain => url }
+    end
+
+    arr
+  end
+
   private
 
   def valid_user?
@@ -51,5 +61,20 @@ class Api::V1::MovieSerializer < ActiveModel::Serializer
   def get_click_count(results, domain)
     result = results.select {|result| result["domain"].include?(domain)}.first
     result['clicks'] if result.present?
+  end
+
+  def get_social_share_url(obj, share_on)
+    title = object.title
+    description = object.description.truncate(150) rescue ''
+    target_url = object.bitly_url
+
+    url = case share_on
+          when 'facebook'
+            "http://www.facebook.com/sharer/sharer.php?u=#{target_url}&title=#{title}&description=#{description}"
+          when 'twitter'
+            "https://twitter.com/intent/tweet?url=#{target_url}&text=#{title}"
+          end
+
+    url
   end
 end
