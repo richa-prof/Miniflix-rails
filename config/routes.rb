@@ -114,6 +114,56 @@ Rails.application.routes.draw do
     end
   end
 
+  # API's for mobile applications
+  namespace :api do
+    namespace :vm1 do
+    post 'users/contact_us' => 'users#contact_us'
+    post 'users/get_billing_detail_of_the_user' => 'users#get_billing_detail_of_the_use'
+    post 'users/payment_history' => 'users#payment_history'
+    post 'users/email_and_notification'
+    post 'users/update_profile'
+    post 'users/update_registration_plan'
+    post 'users/get_user_by_id'
+    delete 'users/:id' => 'users#destroy'
+
+    get 'genres/genres' => 'genres#genres'
+    post 'genres/genres_wise_movies' =>'genres#genres_wise_movies'
+    post 'genres/id_wise_gener' => 'genres#id_wise_gener_with_movie',as: :id_wise_gener
+
+    post 'movies/get_movie_detail' => 'movies#get_movie_detail'
+    post 'movies/get_all_movie_by_movie_name_or_genre_name' => 'movies#get_all_movie_by_movie_name_or_genre_name'
+    post 'movies/search_movie_with_genre' => 'movies#search_movie_with_genre'
+    post 'movies/add_movie_my_list' => 'movies#add_movie_my_list'
+    post 'movies/remove_my_list_movie' => 'movies#remove_my_list_movie'
+    post 'movies/my_list_movies' => 'movies#my_list_movies'
+    post 'movies/add_to_recently_watched' => 'movies#add_to_recently_watched'
+    post 'movies/add_multiple_to_recently_watched' => 'movies#add_multiple_to_recently_watched'
+    post 'movies/add_multiple_to_recently_watched_visitor' => 'movies#add_multiple_to_recently_watched_visitor'
+    post 'movies/add_to_recently_watched_visitor' => 'movies#add_to_recently_watched_visitor'
+    post 'movies/get_watched_movie_count_visitor' => 'movies#get_watched_movie_count_visitor'
+    get  'movies/latest_movies' => 'movies#latest_movies'
+
+    post 'sessions/sign_in', :defaults => { :format => 'json' }
+    post 'sessions/sign_up'
+    post 'sessions/sign_out'
+    post 'sessions/social_sign_in'
+    post 'sessions/change_password'
+    post 'sessions/edit_phone_number'
+    post 'sessions/forgot_password'
+    delete 'sessions/sign_out'
+
+    post 'payments/update_payment_info'
+    post 'payments/update_android_payment_payment_info'
+    post 'payments/cancel_subscription'
+    post 'payments/reactive_cancelled_payment'
+    post 'payments/update_receipt_data_of_user' => 'payments#update_receipt_data_of_user'
+
+    post 'notifications/get_notifications' => 'notifications#get_notifications'
+    post 'notifications/delete_notifications' => 'notifications#delete_notifications'
+    post 'notifications/send_test_notification' => 'notifications#send_test_notification'
+    end
+  end
+
   # Starts routing for Blog Feature
   constraints Constraints::BlogSubdomainConstraint do
     devise_for :users, as: :staff, :controllers => {:registrations => "registrations"}
