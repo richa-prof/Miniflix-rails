@@ -1,4 +1,4 @@
-class Api::Vm1::SessionsController < ApplicationController
+class Api::Vm1::SessionsController < Api::Vm1::ApplicationController
   include Api::Vm1::Concerns::UserCreate
   before_action :authenticate_api, only: [:change_password, :edit_phone_number, :sign_out]
 

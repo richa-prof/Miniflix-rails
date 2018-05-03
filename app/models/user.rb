@@ -356,6 +356,10 @@ class User < ActiveRecord::Base
   def invalid_only?(field_name)
     ( self.errors.count == 1 && !self.valid?(field_name) )
   end
+
+  def destroy_auth_token
+    self.update_attribute('auth_token', nil)
+  end
   # ======= Related to mobile API's start =======
 
   private
