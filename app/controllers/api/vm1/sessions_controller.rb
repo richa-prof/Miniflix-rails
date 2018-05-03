@@ -63,14 +63,15 @@ class Api::Vm1::SessionsController < ApplicationController
           response = user_login_and_generate_response(user)
         else
           user = User.new(social_user_params)
-          if user.valid?
+          user.registration_plan = "Freemium" if user.Android?
+
+          if user.valid? || user.invalid_only?('registration_plan')
             if user.iOS?
               temp_user_id = TempUser.save_user_detail_into_temp_user(user, "social_authenticate")
               temp_user = TempUser.find (temp_user_id)
               headers['authenticate'] = temp_user.update_auth_token
               response = {code: "0", status: "Success", message: "Select plan for further process", temp_user: TempUser.json_content(temp_user_id), is_sign_up: true,is_valid_payment: false }
             else
-              user.registration_plan = "Freemium"
               response = user_create_and_generate_response(user)
             end
           else

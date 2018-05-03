@@ -348,6 +348,14 @@ class User < ActiveRecord::Base
     logged_in_user.notification_from = params[:notification_from]
     logged_in_user.save
   end
+
+  def self.check_user_already_present_or_not(provider, uid )
+    find_by_provider_and_uid(provider, uid)
+  end
+
+  def invalid_only?(field_name)
+    ( self.errors.count == 1 && !self.valid?(field_name) )
+  end
   # ======= Related to mobile API's start =======
 
   private

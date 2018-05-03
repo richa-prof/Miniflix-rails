@@ -1,4 +1,5 @@
 class TempUser < ApplicationRecord
+
   def self.save_user_detail_into_temp_user(user, social_authenticate=nil)
     # user_hash = user.as_json(only: [:name, :email, :registration_plan])
     # temp_user = self.create(user_hash.merge(password: user.password))
@@ -25,7 +26,7 @@ class TempUser < ApplicationRecord
     temp_user.image = auth.info.image
     temp_user.token = auth.credentials.token
     temp_user.password = '123'
-    temp_user.sign_up_from = 'Web'
+    temp_user.sign_up_from = 'web'
     if temp_user.provider == 'facebook'
       temp_user.expires_at = Time.at(auth.credentials.expires_at)
     end
