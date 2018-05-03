@@ -111,7 +111,7 @@ class Api::Vm1::SessionsController < Api::Vm1::ApplicationController
       if params[:user][:phone_number].present?
         @user = api_user
         if @user && params[:user][:password].present?
-          authorized_user = @user.authenticate(params[:user][:password])
+          authorized_user = @user.valid_password?(params[:user][:password])
         elsif @user && params[:user][:email].present?
           authorized_user = @user.email == params[:user][:email] ? @user : nil
         else
@@ -130,17 +130,15 @@ class Api::Vm1::SessionsController < Api::Vm1::ApplicationController
             end
           else
             verification_code = rand(1000...9999)
-            begin
-            @twilio_client = Twilio::REST::Client.new(ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN'])
-            txt_message = @twilio_client.account.sms.messages.create(
-            :from => ENV['TWILIO_PHONE_NUMBER'],
-            :to => "#{params[:countries]}#{params[:user][:phone_number]}",
-            :body => "Your phone number successfully updated on miniflix and your verification code is #{verification_code}"
-            )
+            to_number = "#{params[:countries]}#{params[:user][:phone_number]}"
+            body = "Your phone number successfully updated on miniflix and your verification code is #{verification_code}"
 
-              @user.update_attributes(:verification_code => verification_code)
+            twillo_response = TwilioService.new(to_number, body).call()
+
+            if twillo_response[:success]
               @response = {:code => "0",:status => "Success",:message => "Successfully sent verification code on your phone number."}
-            rescue Twilio::REST::RequestError => e
+              @user.update_attributes(:verification_code => verification_code)
+            else
               @response = {:code => "-1",:status => "Error",:message => e.message}
             end
           end
