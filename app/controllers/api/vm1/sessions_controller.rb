@@ -5,7 +5,7 @@ class Api::Vm1::SessionsController < ApplicationController
   def sign_in
     if params[:user][:email].present? && params[:user][:password].present?
       user = User.find_by_email(params[:user][:email])
-      if user && user.authenticate(params[:user][:password])
+      if user && user.valid_password?(params[:user][:password])
         begin
           response = user_login_and_generate_response(user)
         rescue Exception => e

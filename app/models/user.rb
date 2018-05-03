@@ -340,6 +340,14 @@ class User < ActiveRecord::Base
   def check_user_free_or_not
     self.Freemium? || self.Educational?
   end
+
+  def create_or_update_logged_in_user(params)
+    logged_in_user = LoggedInUser.find_or_initialize_by(user_id: self.id)
+    logged_in_user.device_token =  params[:device_token]
+    logged_in_user.device_type = params[:device_type]
+    logged_in_user.notification_from = params[:notification_from]
+    logged_in_user.save
+  end
   # ======= Related to mobile API's start =======
 
   private
