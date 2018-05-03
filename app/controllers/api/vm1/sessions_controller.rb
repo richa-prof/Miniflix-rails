@@ -182,11 +182,20 @@ class Api::Vm1::SessionsController < ApplicationController
   private
     # Whitelist all user params
     def user_params
-      params.require(:user).permit(:name,:email,:password,:subscription_id,:customer_id,:image,:provider,:uid,:registration_plan,:sign_up_from,:receipt_data)
+      use_params = params.require(:user).permit(:name, :email, :password, :subscription_id, :customer_id, :image, :provider, :uid, :registration_plan, :sign_up_from, :receipt_data)
+      sign_up_from_param = use_params[:sign_up_from].try(:downcase)
+      use_params[:sign_up_from] = sign_up_from_param
+
+      use_params
     end
 
     def social_user_params
-      params.require(:user).permit(:name,:email,:password,:subscription_id,:customer_id,:image,:provider,:uid,:sign_up_from,:receipt_data).merge(password: "12345678")
+      use_params = params.require(:user).permit(:name,:email,:password,:subscription_id,:customer_id,:image,:provider,:uid,:sign_up_from,:receipt_data).merge(password: "12345678")
+
+      sign_up_from_param = use_params[:sign_up_from].try(:downcase)
+      use_params[:sign_up_from] = sign_up_from_param
+
+      use_params
     end
 
     def logged_in_params

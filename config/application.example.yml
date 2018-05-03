@@ -56,6 +56,7 @@ development:
 
   # -----ios development arn-----for push notifications on ios devise
   IOS_ARN: IOS_ARN
+  receipt_url: RECEIPT_URL
 
   # STRIPE
   PUBLISHABLE_KEY: stripe_puplish_key

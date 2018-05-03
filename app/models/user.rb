@@ -312,6 +312,36 @@ class User < ActiveRecord::Base
     next_charge_date_time_obj
   end
 
+  # ======= Related to mobile API's start =======
+  def update_auth_token
+    token = Digest::SHA1.hexdigest([Time.now, rand].join)
+    self.update_attribute('auth_token', token)
+    token
+  end
+
+  def create_hash
+    as_json(include: [{logged_in_user: {only: [:notification_from, :device_type, :device_token]}}, {user_email_notification: {except: [:id, :created_at, :updated_at, :user_id]}}])
+  end
+
+  def valid_for_monthly_plan?
+    self.Freemium?
+  end
+
+  def check_login
+    return check_user_free_or_not if check_user_free_or_not
+    self.is_valid_payment?
+  end
+
+  def is_valid_payment?
+    last_transaction = UserPaymentTransaction.joins(:user_payment_method => :user).where('user_payment_methods.user_id = ?', self.id).last
+    last_transaction.present? && (last_transaction.payment_expire_date >= Time.now)
+  end
+
+  def check_user_free_or_not
+    self.Freemium? || self.Educational?
+  end
+  # ======= Related to mobile API's start =======
+
   private
 
   def valid_for_Education_plan
