@@ -90,7 +90,7 @@ class Api::Vm1::SessionsController < Api::Vm1::ApplicationController
   def change_password
     if params[:user][:current_password] && params[:user][:new_password]
       begin
-        password_update = api_user.update_attribute('password', params[:user][:new_password]) if api_user.authenticate(params[:user][:current_password])
+        password_update = api_user.update_attribute('password', params[:user][:new_password]) if api_user.valid_password?(params[:user][:current_password])
         if password_update
           response = {code: "0", status: "Success", message: "Password updated successfully", user: api_user.create_hash}
         else
