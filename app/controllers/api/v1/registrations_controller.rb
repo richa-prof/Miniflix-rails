@@ -42,10 +42,17 @@ class Api::V1::RegistrationsController < DeviseTokenAuth::RegistrationsControlle
   end
 
   def render_update_success
-      render json: {
-        status: 'success',
-        user:   serialize_user
-      }
+    render json: {
+      status: 'success',
+      user:   serialize_user
+    }
+  end
+
+  def render_update_error
+    return render json: {
+      success: false,
+      message: resource_errors[:full_messages][0]
+    }
   end
 
   def render_json(subscription)
