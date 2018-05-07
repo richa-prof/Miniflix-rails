@@ -118,7 +118,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :vm1 do
     post 'users/contact_us' => 'users#contact_us'
-    post 'users/get_billing_detail_of_the_user' => 'users#get_billing_detail_of_the_use'
+    # TODO: Currently there is no such action `get_billing_detail_of_the_user` .
+    # Need to confirm on this.
+    # post 'users/get_billing_detail_of_the_user' => 'users#get_billing_detail_of_the_user'
     post 'users/payment_history' => 'users#payment_history'
     post 'users/email_and_notification'
     post 'users/update_profile'

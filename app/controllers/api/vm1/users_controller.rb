@@ -48,7 +48,7 @@ class Api::Vm1::UsersController < Api::Vm1::ApplicationController
 
   def update_profile
     api_response = begin
-      if api_user.authenticate(params[:user][:password])
+      if api_user.valid_password?(params[:user][:password])
         api_user.update_attributes!(update_user_params)
         {code: "0", status: "Success", message: "User updated successfully.", user: api_user.create_hash}
       else
