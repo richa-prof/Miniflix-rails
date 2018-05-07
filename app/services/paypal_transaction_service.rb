@@ -13,10 +13,16 @@ class PaypalTransactionService
   private
 
   def make_entry_for_transaction_detail(user, response)
-    transaction_detail = user.my_transactions.find_or_initialize_by(transaction_id: response[:txn_id])
+    "<<<<<<<<<  Paypal IPN Called <<<<<<<<<<<<"
+    if response[:payment_status] == 'Expired' && !user.expired?
+      # Set user's `subscription_plan_status` to `Expired`.
+      user.expired!
+    else
+      transaction_detail = user.my_transactions.find_or_initialize_by(transaction_id: response[:txn_id])
 
-    create_and_update_transaction_detail(user, transaction_detail, response)
-    change_subscriptions_status(user)
+      create_and_update_transaction_detail(user, transaction_detail, response)
+      change_subscriptions_status(user)
+    end
   end
 
   def create_and_update_transaction_detail(user, transaction_detail, response)
