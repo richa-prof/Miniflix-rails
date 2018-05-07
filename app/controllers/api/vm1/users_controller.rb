@@ -1,5 +1,5 @@
-class Api::UsersController < ApplicationController
-  include Api::Concerns::UserCreate
+class Api::Vm1::UsersController < Api::Vm1::ApplicationController
+  include Api::Vm1::Concerns::UserCreate
   before_action :authenticate_api, only: [:payment_history, :email_and_notification, :update_profile, :get_user_by_id]
   before_action :authenticate_user_and_temp_user, only: [:update_registration_plan]
 
