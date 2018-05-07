@@ -79,7 +79,7 @@ class Api::Vm1::UsersController < Api::Vm1::ApplicationController
   end
 
   def destroy
-    if Rails.env.staging?
+    if Rails.env.staging? || Rails.env.development?
       begin
         user = User.find params[:id]
         user.destroy
