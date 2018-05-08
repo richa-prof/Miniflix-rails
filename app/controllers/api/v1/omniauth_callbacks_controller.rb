@@ -6,7 +6,8 @@ class Api::V1::OmniauthCallbacksController < DeviseTokenAuth::OmniauthCallbacksC
       response.headers['access-token'] =  @auth_params[:auth_token]
       response.headers['uid'] = @auth_params[:uid]
       response.headers['expiry'] =  @auth_params[:expiry]
-      redirect_to ENV['SocialReturn'] and return
+
+      redirect_to react_redirect_url and return
     end
   end
 
@@ -18,4 +19,8 @@ class Api::V1::OmniauthCallbacksController < DeviseTokenAuth::OmniauthCallbacksC
      user.assign_attributes(attrs)
    end
 
+  def react_redirect_url
+    auth_token = current_user.create_new_auth_token
+    "#{ENV['SocialReturn']}/?client_id=#{auth_token['client']}&token=#{auth_token['access-token']}&uid=#{auth_token['uid']}&expiry=#{auth_token['expiry']}"
+  end
 end
