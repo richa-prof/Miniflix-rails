@@ -21,6 +21,12 @@ class Api::V1::OmniauthCallbacksController < DeviseTokenAuth::OmniauthCallbacksC
 
   def react_redirect_url
     auth_token = current_user.create_new_auth_token
-    "#{ENV['SocialReturn']}/?client_id=#{auth_token['client']}&token=#{auth_token['access-token']}&uid=#{auth_token['uid']}&expiry=#{auth_token['expiry']}"
+
+    if current_user.incomplete?
+      action_name = t('payment.paypal.choose_plan')
+      "#{ENV['Host']}/#{action_name}?client_id=#{auth_token['client']}&token=#{auth_token['access-token']}&uid=#{auth_token['uid']}&expiry=#{auth_token['expiry']}"
+    else
+      "#{ENV['SocialReturn']}/?client_id=#{auth_token['client']}&token=#{auth_token['access-token']}&uid=#{auth_token['uid']}&expiry=#{auth_token['expiry']}"
+    end
   end
 end

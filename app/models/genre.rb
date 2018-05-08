@@ -8,6 +8,7 @@ class Genre < ApplicationRecord
   #Friendly id
   extend FriendlyId
   friendly_id :name, use: :slugged
+  # Genre.find_each(&:save)
 
   # VALIDATIONS
   validates_presence_of :name, :color
