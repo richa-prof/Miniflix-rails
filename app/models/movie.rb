@@ -16,6 +16,7 @@ class Movie < ApplicationRecord
   has_many :user_filmlists, dependent: :destroy, foreign_key: "admin_movie_id"
   has_many :user_video_last_stops, dependent: :destroy, foreign_key: "admin_movie_id"
   has_many :movie_captions, dependent: :destroy, foreign_key: "admin_movie_id"
+  has_many :movie_versions, dependent: :destroy
 
   #callback
   before_save :create_bitly_url, if: -> {slug_changed?}
@@ -42,6 +43,48 @@ class Movie < ApplicationRecord
   def active_movie_captions
     self.movie_captions.active_caption
   end
+
+  # ======= Related to mobile API's start =======
+  def as_json(options=nil)
+    case options
+    when "full_movie_detail"
+      return super(except: [:created_at, :updated_at, :version_file, :uploader, :s3_multipart_upload_id, :admin_genre_id]).merge(movie_screenshot: movie_screenshot_list, captions: self.movie_captions.map(&:as_json), film_video: fetch_movie_urls, genre_name: genre_name)
+    when "genre_wise_list"
+      return super(only: [:id, :name]).merge(movie_screenshot: movie_screenshot_list)
+    else
+      movie_detail =  super(only: [:id, :name, :title, :description, :language, :video_duration]).merge(film_video: fetch_movie_urls, genre_name: genre_name, movie_screenshot: movie_screenshot_list)
+      movie_detail.merge!(last_stopped: fetch_last_stop(options)) if options.present?
+      return movie_detail
+    end
+  end
+
+  def fetch_movie_urls
+    movie_urls = {}
+    movie_urls[:hls] = "https://s3-us-west-1.amazonaws.com/#{ENV['S3_OUTPUT_BUCKET']}/#{version_file}"
+    self.movie_versions.each do |version|
+      movie_urls["video_"+version.resolution.to_s]  = "https://s3-us-west-1.amazonaws.com/#{ENV['S3_INPUT_BUCKET']}/#{version.film_video}"
+    end
+    movie_urls
+  end
+
+  def movie_screenshot_list
+    movie_thumbnail = self.movie_thumbnail
+    {
+      original: image_url(movie_thumbnail.movie_screenshot_1.carousel_thumb.path),
+      thumb330: image_url(movie_thumbnail.thumbnail_screenshot.carousel_thumb.path),
+      thumb640: image_url(movie_thumbnail.thumbnail_640_screenshot.carousel_thumb.path)
+    }
+  end
+
+  def image_url(path)
+    'https://' +  ENV['Image_url'] +'/'+ path if path.present?
+  end
+
+  def fetch_last_stop(user)
+    user_video_last_stop = user.user_video_last_stops.find_by(admin_movie_id: self.id)
+    user_video_last_stop.present? ? user_video_last_stop.last_stopped : 0
+  end
+  # ======= Related to mobile API's start =======
 
   private
   def create_bitly_url

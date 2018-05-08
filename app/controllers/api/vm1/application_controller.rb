@@ -12,4 +12,10 @@ class Api::Vm1::ApplicationController < ActionController::Base
   def authenticate_api
     render json: {code: '-1', status: 'unauthorize_request'} and return if api_user.nil?
   end
+
+  def authenticate_according_to_devise
+    unless request.headers['deviceType'] == "ios"
+       authenticate_api
+    end
+  end
 end
