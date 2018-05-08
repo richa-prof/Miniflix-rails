@@ -1,4 +1,5 @@
 class Api::V1::PaypalPaymentsController < Api::V1::ApplicationController
+  skip_before_action :verify_authenticity_token, only: [:hook]
   before_action :set_user, except: [:hook]
   before_action :set_user_and_check_condition_for_hook, only: [:hook]
 
