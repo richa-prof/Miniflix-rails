@@ -1,35 +1,4 @@
 namespace :task_for_miniflix do
-  desc "Update the user's sign_up_from field to by_admin if it's nil or blank."
-  task update_sign_up_from: :environment do
-    # begin
-    #   @con = Mysql2::Client.new(:host => "localhost", 
-    #                            :username => "root", 
-    #                            :password => "root",
-    #                            :database => "database_1"
-    #                            )   
-    #   @con.query "UPDATE users SET sign_up_from = 'by_admin' WHERE sign_up_from is NULL or sign_up_from = ''"
-    #   puts "The query has affected #{@con.affected_rows} rows" 
-    # rescue Mysql::Error => e
-    #   puts e
-    # ensure
-    #   @con.close if @con
-    # end
-    count = 0
-
-    users = User.all.select{ |u| u if u.sign_up_from.blank? }
-
-    users.each do |user|
-      user.sign_up_from = User.sign_up_froms['by_admin']
-      Rails.logger.debug "=======Processing for user_id: #{user.id}======="
-      puts "=======Processing for user_id: #{user.id}======="
-      save_record(user)
-      count += 1
-    end
-
-    Rails.logger.debug "<<<<<<<<< #{count} rows affected <<<<<<<<<"
-    puts "<<<<<<<<< #{count} rows affected <<<<<<<<<"
-  end
-
   desc "Update the user's phone_number field to nil if it's not a valid phone_number with phony_formatted."
   task validate_phone_number: :environment do
     count = 0
@@ -65,13 +34,14 @@ namespace :task_for_miniflix do
 
       if user.Web?
         user.subscription_plan_status = User.subscription_plan_statuses['incomplete']
-        user.registration_plan = User.registration_plans['monthly']
+        user.registration_plan = User.registration_plans['Monthly']
         save_record(user)
+        count += 1
       elsif user.Android?
         user.registration_plan = User.registration_plans['Freemium']
         save_record(user)
+        count += 1
       end
-      count += 1
     end 
     Rails.logger.debug "<<<<<<<<< #{count} rows Updated <<<<<<<<<"
     puts "<<<<<<<<< #{count} rows Updated<<<<<<<<<"

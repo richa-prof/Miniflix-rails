@@ -110,7 +110,11 @@ class User < ActiveRecord::Base
   # ===== Class methods End =====
 
   def skip_registration_plan_validation
-    social_login || staff?
+    social_login || staff? || is_social_login?
+  end
+
+  def is_social_login?
+    facebook? || twitter?
   end
 
   def skip_sign_up_from_validation

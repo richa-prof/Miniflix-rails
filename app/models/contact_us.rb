@@ -4,8 +4,8 @@ class ContactUs < ApplicationRecord
   has_many :contact_user_replies, dependent: :destroy
 
   # ENUMS
-  enum occupation: { Professor: 'Professor',
-                     Student: 'Student' }
+  enum occupation: { professor: 'professor',
+                     student: 'student' }
 
   # VALIDATIONS
   validates :email, uniqueness: true, format: Devise.email_regexp

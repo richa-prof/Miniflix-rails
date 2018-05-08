@@ -32,10 +32,18 @@ namespace :miniflix do
       Rails.logger.debug "background_images table data inserted successfully"
     end
 
+    results = @client1.query("SELECT * FROM contact_us")
+    results.each do |row|
+      Rails.logger.debug "===== contact_us full information======="
+      Rails.logger.debug "#{row}"
+      @client2.query(contact_us_insert_query(row))
+      Rails.logger.debug "contact_us table data inserted successfully"
+    end
+
     dir = "#{Rails.root.to_s}/db/sql_dump_files"
     FileUtils.mkdir_p(dir) unless File.directory?(dir)
 
-    db_tables = ["s3_multipart_uploads", "admin_genres", "admin_movies", "admin_movie_captions", "admin_movie_thumbnails", "admin_paypal_access_tokens", "admin_recurring_plans", "logged_in_users", "free_members", "notifications", "schema_migrations", "temp_users", "user_email_notifications", "user_filmlists", "user_payment_methods", "user_payment_transactions", "user_video_last_stops", "visitors", "movie_versions", "contact_us"]
+    db_tables = ["s3_multipart_uploads", "admin_genres", "admin_movies", "admin_movie_captions", "admin_movie_thumbnails", "admin_paypal_access_tokens", "admin_recurring_plans", "logged_in_users", "free_members", "notifications", "schema_migrations", "temp_users", "user_email_notifications", "user_filmlists", "user_payment_methods", "user_payment_transactions", "user_video_last_stops", "visitors", "movie_versions"]
 
     db_tables.each do |db_table|
       sh "mysqldump -u#{old_user} -p#{old_password} --no-create-info --complete-insert #{old_database} #{db_table} > #{Rails.root.to_s}/db/sql_dump_files/#{db_table}.sql"
@@ -68,17 +76,12 @@ namespace :miniflix do
   end
 
   def users_insert_query(row)
-    u_name = row["name"]
-    if u_name.present? && u_name.include?("'")
-      row["name"] = u_name.gsub("'", "")
-    end
-
     insert_sql = "
       INSERT INTO users (
         id, name, email, registration_plan, created_at, updated_at, provider, uid, tokens, image, phone_number, verification_code, subscription_plan_status, cancelation_date, role, customer_id, subscription_id, sign_up_from, receipt_data, is_free, auth_token, expires_at, migrate_user, temp_password
       )
       VALUES (
-        '#{row["id"]}', '#{row["name"]}', '#{get_email(row["provider"], row["uid"], row["email"])}', '#{row["registration_plan"]}', #{change_date_time_into_string(row["created_at"])}, #{change_date_time_into_string(row["updated_at"])}, '#{get_provider(row["provider"])}', '#{get_uid(row["uid"], row["email"])}', '#{row["tokens"]}', '#{row["image"]}', '#{row["phone_number"]}', '#{row["verification_code"]}', '#{row["subscription_plan_status"]}', #{change_date_time_into_string(row['cancelation_date'])}, '#{row["role"]}', '#{row["customer_id"]}', '#{row["subscription_id"]}', '#{get_sign_up_from(row["sign_up_from"])}', '#{row["receipt_data"]}', '#{row["is_free"]}', '#{row["auth_token"]}', #{change_date_time_into_string(row['expires_at'])}, 1, '#{SecureRandom.hex(8)}'
+        '#{row["id"]}', '#{exclude_single_quote(row["name"])}', '#{get_email(row["provider"], row["uid"], row["email"])}', '#{row["registration_plan"]}', #{change_date_time_into_string(row["created_at"])}, #{change_date_time_into_string(row["updated_at"])}, '#{get_provider(row["provider"])}', '#{get_uid(row["uid"], row["email"])}', '#{row["tokens"]}', '#{row["image"]}', '#{row["phone_number"]}', '#{row["verification_code"]}', '#{row["subscription_plan_status"]}', #{change_date_time_into_string(row['cancelation_date'])}, '#{row["role"]}', '#{row["customer_id"]}', '#{row["subscription_id"]}', '#{get_sign_up_from(row["sign_up_from"])}', '#{row["receipt_data"]}', '#{row["is_free"]}', '#{row["auth_token"]}', #{change_date_time_into_string(row['expires_at'])}, 1, '#{SecureRandom.hex(8)}'
       )
     "
   end
@@ -101,6 +104,17 @@ namespace :miniflix do
       )
       VALUES (
         #{row["id"]}, '#{row["background_image"]}', '#{row["is_set"]}', #{change_date_time_into_string(row["created_at"])}, #{change_date_time_into_string(row["updated_at"])}
+      )
+    "
+  end
+
+  def contact_us_insert_query(row)
+    "
+      INSERT INTO contact_us (
+        id, name, email, school, occupation, created_at, updated_at
+      )
+      VALUES (
+        #{row["id"]}, '#{exclude_single_quote(row["name"])}', '#{row["email"]}', '#{exclude_single_quote(row["school"])}', '#{get_downcase(row["occupation"])}', #{change_date_time_into_string(row["created_at"])}, #{change_date_time_into_string(row["updated_at"])}
       )
     "
   end
@@ -148,7 +162,7 @@ namespace :miniflix do
   end
 
   def get_provider(provider)
-    provider.blank? ? 'email' : provider
+    provider.blank? ? 'email' : get_downcase(provider)
   end
 
   def get_uid(uid, email)
@@ -171,7 +185,17 @@ namespace :miniflix do
   end
 
   def get_sign_up_from(sign_up_from)
-    sign_up_from.blank? ? 'admin' : sign_up_from
+    sign_up_from.blank? ? User.sign_up_froms[:by_admin] : get_downcase(sign_up_from)
+  end
+
+  def get_downcase(name)
+    name.downcase
+  end
+
+  def exclude_single_quote(name)
+    if name.present? && name.include?("'")
+      name.gsub("'", "")
+    end
   end
 end
 
