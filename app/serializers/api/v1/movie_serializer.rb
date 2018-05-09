@@ -35,13 +35,13 @@ class Api::V1::MovieSerializer < ActiveModel::Serializer
   end
 
   def social_urls
-    arr = []
+    urls_map = { }
     Movie::SHARE_ON.each do |share_domain|
       url = get_social_share_url(object, share_domain)
-      arr << { share_domain => url }
+      urls_map.merge!({share_domain => url})
     end
 
-    arr
+    urls_map
   end
 
   private
