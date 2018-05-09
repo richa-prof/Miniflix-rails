@@ -33,7 +33,7 @@ class Api::Vm1::PaymentsController < Api::Vm1::ApplicationController
       if ((!api_user.iOS?) && user_payment_method.present?)
         is_payment_reactive = api_user.reactive_payment_subscription
         if is_payment_reactive
-          api_user.Activate!
+          api_user.activate!
           response = {code: "0", status: "Success", message: "Plan Successfully Reactivated", user: api_user.create_hash}
         else
           error_msg = api_user.errors || "subscription unable to active"

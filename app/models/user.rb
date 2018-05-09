@@ -404,6 +404,61 @@ class User < ActiveRecord::Base
     end
   end
 
+  def reactive_payment_subscription
+    if latest_payment_method.card?
+      reactive_subscription_for_stripe
+    else
+      reactive_subscription_for_paypal
+    end
+  end
+
+  def reactive_subscription_for_paypal
+    access_token = PaypalAccessToken.last.access_token
+    token = "#{subscription_id}/re-activate"
+    request_data = JSON.dump({ note: "Reactive the agreement" })
+    reactive_response = Paypal::BillingPlanRequest.paypal_request_send(ENV["PAYPAL_BILLING_AGREEMENTS_URL"], "post", access_token, request_data, token)
+    if  reactive_response.code == "204"
+      puts "paypal subscription successfully canceled"
+      return true
+    elsif reactive_response.code == "401"
+      PaypalAccessToken.fetch_paypal_access_token
+      reactive_subscription_for_paypal
+    else
+      reactive_response_json = JSON.load(reactive_response.body)
+      if reactive_response_json.present? && reactive_response_json['name'] == "STATUS_INVALID"
+        puts "Plan already activated"
+        return true
+      else
+        errors.add(:paypal, "Plan unable to active")
+        return false
+      end
+    end
+  end
+
+  def reactive_subscription_for_stripe
+    begin
+      customer = Stripe::Customer.retrieve(customer_id)
+      subscription = customer.subscriptions.retrieve(subscription_id)
+      item = subscription.items.data.last
+      items = [{
+        id: item.id,
+        plan: item.plan.id,
+      }]
+      subscription.items = items
+      subscription.save
+      true
+    rescue Stripe::InvalidRequestError => e
+      puts "#{e.http_status}"
+      body = e.json_body
+      error = body[:error][:message]
+      puts "#{error}"
+      errors.add(:stripe, "#{error}" )
+      false
+    rescue => e
+      false
+    end
+  end
+
   # ======= Related to mobile API's END =======
 
   private
