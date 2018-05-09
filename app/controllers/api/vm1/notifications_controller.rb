@@ -1,6 +1,5 @@
-class Api::NotificationsController < ApplicationController
-before_action :authenticate_api, only: [:get_notifications, :delete_notifications]
-
+class Api::Vm1::NotificationsController < Api::Vm1::ApplicationController
+  before_action :authenticate_api, only: [:get_notifications, :delete_notifications]
 
   def get_notifications
     notifications = api_user.notifications.order(created_at: :desc).offset(params[:offset]).limit(params[:limit])
