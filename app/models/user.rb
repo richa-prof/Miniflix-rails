@@ -300,6 +300,7 @@ class User < ActiveRecord::Base
   def set_free_user_and_subscription_staus
     self.subscription_plan_status = User.subscription_plan_statuses['trial']
     self.is_free = true
+    self.valid_for_thankyou_page = true
   end
 
   def build_email_notification
@@ -400,13 +401,14 @@ class User < ActiveRecord::Base
     cancel_previous_subscription
     assign_registration_plan_and_build_payment_method if upgrade_payment
     self.subscription_id = agreement_id
+    self.build_user_payment_method(UserPaymentMethod.payment_types['paypal'])
+
     self.save
   end
 
   def assign_registration_plan_and_build_payment_method
     self.subscription_plan_status = User.subscription_plan_statuses['trial']
     self.registration_plan = User.registration_plans['Annually']
-    self.build_user_payment_method(UserPaymentMethod.payment_types['paypal'])
   end
 
   def cancel_previous_subscription

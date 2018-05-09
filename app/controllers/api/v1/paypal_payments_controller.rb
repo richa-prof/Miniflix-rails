@@ -62,13 +62,13 @@ class Api::V1::PaypalPaymentsController < Api::V1::ApplicationController
     def set_user_and_check_condition_for_hook
       @user =  User.find_by_subscription_id (params["recurring_payment_id"])
 
-      Rails.logger.debug "<<<<< set_user_and_check_condition_for_hook::user : #{@user.try(:inspect)} << params['recurring_payment_id'] <<<<<"
+      Rails.logger.debug "<<<<< set_user_and_check_condition_for_hook::user : #{@user.try(:inspect)} << #{params['recurring_payment_id']} <<<<<"
 
       render json: {success: false} and return unless check_condition_for_hook
     end
 
     def check_condition_for_hook
-      Rails.logger.debug "<<<<< check_condition_for_hook::user : #{@user.try(:inspect)} << params[:payment_status] <<<<<"
+      Rails.logger.debug "<<<<< check_condition_for_hook::user : #{@user.try(:inspect)} << #{params[:payment_status]} <<<<<"
 
       (@user && (params["txn_type"] == "recurring_payment") && (params[:payment_status].downcase == "completed"))
     end
