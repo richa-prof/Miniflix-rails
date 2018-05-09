@@ -1,13 +1,12 @@
 require "#{Rails.root}/lib/paypal_service"
 class User < ActiveRecord::Base
-  attr_accessor :skip_callbacks
 
   # Include default devise modules.
   devise :database_authenticatable, :registerable,
           :recoverable, :rememberable, :trackable, :validatable, :omniauthable
   include DeviseTokenAuth::Concerns::User
 
-  attr_accessor :social_login, :paypal_token, :payment_type
+  attr_accessor :skip_callbacks, :temp_user_id, :social_login, :paypal_token, :payment_type
 
   mount_uploader :image, ImageUploader
 
@@ -48,6 +47,7 @@ class User < ActiveRecord::Base
   before_create :build_email_notification
   before_create :set_free_user_and_subscription_staus, if: -> { condition_for_free_user}
   after_create :welcome_mail_for_free_user, if: :is_free
+  after_create :delete_temp_user, if: 'temp_user_id.present?'
   after_validation :send_verification_code, if: ->  { unconfirmed_phone_number_changed? && errors.blank? }
   before_update :assign_unverified_phone_to_phone_number, if: -> { check_condition_for_assign_phone_number }
   before_update :make_migrate_user_false, if: -> { can_make_migrate_user_false? }
@@ -609,5 +609,10 @@ class User < ActiveRecord::Base
 
   def user_choose_annual_plan?
     self.registration_plan_changed? && self.Annually? && self.trial?
+  end
+
+  def delete_temp_user
+    temp_user = TempUser.find temp_user_id
+    temp_user.delete
   end
 end

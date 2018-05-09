@@ -390,6 +390,7 @@ ActiveRecord::Schema.define(version: 20180510154701) do
     t.string "slug"
     t.boolean "allow_password_change", default: false, null: false
     t.boolean "valid_for_thankyou_page", default: false
+    t.string "token"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

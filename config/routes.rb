@@ -154,8 +154,13 @@ Rails.application.routes.draw do
     post 'sessions/forgot_password'
     delete 'sessions/sign_out'
 
-    post 'payments/update_payment_info'
-    post 'payments/update_android_payment_payment_info'
+    # TODO: Currently there is no such action `update_payment_info` .
+    # Need to confirm on this.
+    # post 'payments/update_payment_info'
+
+    # TODO: Currently there is no such action `update_android_payment_payment_info` .
+    # Need to confirm on this.
+    # post 'payments/update_android_payment_payment_info'
     post 'payments/cancel_subscription'
     post 'payments/reactive_cancelled_payment'
     post 'payments/update_receipt_data_of_user' => 'payments#update_receipt_data_of_user'
