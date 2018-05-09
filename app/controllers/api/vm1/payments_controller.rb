@@ -1,18 +1,18 @@
-class Api::PaymentsController < ApplicationController
-  include Api::Concerns::UserCreate
+class Api::Vm1::PaymentsController < Api::Vm1::ApplicationController
+  include Api::Vm1::Concerns::UserCreate
   before_action :authenticate_api, only: [:cancel_subscription, :reactive_cancelled_payment]
   before_action :authenticate_ios_user_api, only: [:update_receipt_data_of_user]
 
   def cancel_subscription
     user_payment_method = api_user.user_payment_methods.last
     begin
-      if user_payment_method.Card?
+      if user_payment_method.card?
         subscription_cancel = api_user.stripe_subscription_cancel(at_period_end: true)
-      elsif  user_payment_method.Paypal?
+      elsif  user_payment_method.paypal?
         subscription_cancel = api_user.cancel_paypal_subscription
       end
       if subscription_cancel
-        if api_user.Cancelled!
+        if api_user.cancelled!
           api_response = {code: "0", status: "Success", message: "Subscription has been cancelled successfully", user: api_user.create_hash}
         else
           api_response = {code: "1", status: "Error", message: api_user.errors}

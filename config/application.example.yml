@@ -66,3 +66,12 @@ development:
   Paypal_Username: Paypal_Username
   Paypal_Password: Paypal_Password
   Paypal_signature: Paypal_signature
+
+  #---------------- paypal sandbox credentials----------------
+  PAYPAL_CLIENT_ID: PAYPAL_CLIENT_ID
+  PAYPAL_CLIENT_SECRET: PAYPAL_CLIENT_SECRET
+  PAYPAL_TOKEN_URL: PAYPAL_TOKEN_URL
+  PAYPAL_BILLING_AGREEMENTS_URL: PAYPAL_BILLING_AGREEMENTS_URL
+  PAYPAL_BILLING_PLAN_URL: PAYPAL_BILLING_PLAN_URL
+  PAYPAL_HOST: PAYPAL_HOST
+  APP_HOST: APP_HOST

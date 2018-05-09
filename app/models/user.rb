@@ -1,3 +1,4 @@
+require "#{Rails.root}/lib/paypal_service"
 class User < ActiveRecord::Base
   attr_accessor :skip_callbacks
 
@@ -360,7 +361,50 @@ class User < ActiveRecord::Base
   def destroy_auth_token
     self.update_attribute('auth_token', nil)
   end
-  # ======= Related to mobile API's start =======
+
+  def stripe_subscription_cancel(period_end_hash=nil)
+    begin
+      customer = Stripe::Customer.retrieve(customer_id)
+      subscription = customer.subscriptions.retrieve(subscription_id)
+      if subscription.status != "canceled"
+        delete_subscription = subscription.delete(period_end_hash)
+        puts "subscription canceled"
+      else
+        puts" Subscription already canceled."
+      end
+      true
+    rescue Exception => e
+       puts"<===response stripe error===#{e.message}=======>"
+       errors.add(:stripe, e.message)
+       false
+    end
+  end
+
+  def cancel_paypal_subscription
+    access_token = PaypalAccessToken.last.access_token
+    token = "#{subscription_id}/suspend"
+    request_data = JSON.dump({ note: "Suspending the agreement" })
+
+    suspend_response = Paypal::BillingPlanRequest.paypal_request_send(ENV["PAYPAL_BILLING_AGREEMENTS_URL"], "post", access_token, request_data, token)
+    if  suspend_response.code == "204"
+      puts "paypal subscription successfully canceled"
+      return true
+    elsif suspend_response.code == "401"
+      PaypalAccessToken.fetch_paypal_access_token
+      cancel_paypal_subscription
+    else
+      suspend_response_json = JSON.load(suspend_response.body)
+      if suspend_response_json.present? && suspend_response_json['name'] == "STATUS_INVALID"
+        puts "Plan already canceled"
+        return true
+      else
+        errors.add(:paypal, "Plan unable to suspend")
+        return false
+      end
+    end
+  end
+
+  # ======= Related to mobile API's END =======
 
   private
 
