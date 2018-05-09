@@ -27,6 +27,7 @@ class Stripe::SubscriptionCreate
   def save_user_payment_detail(user, stripe_customer)
     assign_customer_id_and_subscription_id(user, stripe_customer)
     user.build_user_payment_method(UserPaymentMethod.payment_types["card"])
+    user.valid_for_thankyou_page = true
     user.save
     {success: true, message: (I18n.t "payment.card.success")}
   end
