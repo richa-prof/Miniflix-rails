@@ -175,7 +175,10 @@ class User < ActiveRecord::Base
   def confirm_payment(token, payer_id)
     assign_token_and_customer_id(token,payer_id)
     response = PaypalSubscription.new(:create_recurring_profile, self).call
+
+    Rails.logger.debug "<<<<< confirm_payment::response : #{response} <<<<<"
     return response unless response
+
     self.build_user_payment_method(UserPaymentMethod.payment_types['paypal'])
     payment_cofirmation_setting(response.profile_id)
   end
@@ -374,9 +377,13 @@ class User < ActiveRecord::Base
   end
 
   def payment_cofirmation_setting(agreement_id)
+    Rails.logger.debug "<<<<< payment_cofirmation_setting::agreement_id : #{agreement_id} <<<<<"
     self.valid_for_thankyou_page = true
     self.subscription_id = agreement_id
     self.subscription_plan_status = User.subscription_plan_statuses['trial']
+
+    Rails.logger.debug "<<<<< payment_cofirmation_setting::user : #{self.inspect} << is_valid:: #{self.valid?} << errors:: #{self.errors.full_messages} <<<<<"
+
     self.save
   end
 

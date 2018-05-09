@@ -19,6 +19,8 @@ class PaypalSubscription
   def paypal_process(action, billing_plan, user)
     paypal = PayPal::Recurring.new(payment_options(action, billing_plan, user))
     response = paypal.send(action)
+    Rails.logger.debug "<<<<< paypal_process::response.errors : #{response.errors} <<<<<"
+
     return false if response.errors.present?
     response
   end
