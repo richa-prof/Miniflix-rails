@@ -293,7 +293,7 @@ class User < ActiveRecord::Base
 
   def valid_for_Education_plan
     if (FreeMember.find_by_email(email)).nil?
-      errors.add(:email, "Email not added as free email by admin. Contact to miniflix for free signup!")
+      errors.add(:email, 'not added as free email by admin. Contact to miniflix for free signup!')
     end
   end
 
