@@ -29,6 +29,8 @@ development:
   #host url
   Host: REACT_HOST
   RAILS_HOST: RAILS_HOST
+  RAILS_DEFAULT_URL_HOST: RAILS_DEFAULT_URL_HOST
+  BLOG_HOST: BLOG_HOST
 
   # Staff Login url for blog feature.
   BLOG_LOGIN_URL: "https://stag-blog.localhost:3000/users/sign_in"
