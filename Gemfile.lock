@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/seuros/capistrano-sidekiq.git
+  revision: 2a9e46f61bed00e1d897737e44d939c6b6f2db2d
+  specs:
+    capistrano-sidekiq (1.0.2)
+      capistrano (>= 3.9.0)
+      sidekiq (>= 3.4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -575,6 +583,7 @@ DEPENDENCIES
   capistrano-rails
   capistrano-rails-collection
   capistrano-rvm
+  capistrano-sidekiq!
   capybara (~> 2.13)
   carrierwave (~> 1.0)
   ckeditor

@@ -82,6 +82,9 @@ gem 'phony_rails'
 #sidekiq
 gem 'sidekiq'
 
+# Sidekiq integration for Capistrano
+gem 'capistrano-sidekiq', github: 'seuros/capistrano-sidekiq'
+
 # For witing Cron jobs
 gem 'whenever', require: false
 
