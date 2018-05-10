@@ -3,6 +3,8 @@ class Comment < ApplicationRecord
 
   # Validations
   validates :body, presence: true
+  validates :commenter, presence: true, if: -> { skip_commenter_validation }
+  validates :commenter_email, presence: true, if: -> { skip_commenter_validation }
 
   def by_staff?
     user_id.present?
@@ -10,5 +12,9 @@ class Comment < ApplicationRecord
 
   def commenter_user
     User.find(user_id)
+  end
+
+  def skip_commenter_validation
+    !by_staff?
   end
 end

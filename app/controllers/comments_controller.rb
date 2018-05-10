@@ -5,6 +5,7 @@ class CommentsController < ApplicationController
     comment = @blog.comments.new(comment_params)
     comment.user_id = current_staff_user.id if current_staff_user
     comment.save
+
     @comments = @blog.comments.order('created_at DESC').paginate(:page => params[:page], :per_page => 3)
   end
 
@@ -16,6 +17,6 @@ class CommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:comment).permit(:commenter, :body)
+    params.require(:comment).permit(:commenter, :body, :commenter_email)
   end
 end
