@@ -139,7 +139,7 @@ class Api::Vm1::SessionsController < Api::Vm1::ApplicationController
               @response = {:code => "0",:status => "Success",:message => "Successfully sent verification code on your phone number."}
               @user.update_attributes(:verification_code => verification_code)
             else
-              @response = {:code => "-1",:status => "Error",:message => e.message}
+              @response = {:code => "-1",:status => "Error",:message => twillo_response[:message]}
             end
           end
         else
