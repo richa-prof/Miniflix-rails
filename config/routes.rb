@@ -133,6 +133,7 @@ Rails.application.routes.draw do
     post 'genres/id_wise_gener' => 'genres#id_wise_gener_with_movie',as: :id_wise_gener
 
     post 'movies/get_movie_detail' => 'movies#get_movie_detail'
+    post 'movies/get_movie_detail/:id' => 'movies#get_movie_detail'
     post 'movies/get_all_movie_by_movie_name_or_genre_name' => 'movies#get_all_movie_by_movie_name_or_genre_name'
     post 'movies/search_movie_with_genre' => 'movies#search_movie_with_genre'
     post 'movies/add_movie_my_list' => 'movies#add_movie_my_list'

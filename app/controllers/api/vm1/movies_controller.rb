@@ -1,4 +1,4 @@
-class Api::MoviesController < ApplicationController
+class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
   include UsersHelper
   before_action :authenticate_api, only: [:my_list_movies, :add_movie_my_list, :remove_my_list_movie]
   before_action :authenticate_according_to_devise, only: [:get_movie_detail, :get_all_movie_by_movie_name_or_genre_name, :search_movie_with_genre, :add_to_recently_watched, :add_to_recently_watched_visitor, :add_multiple_to_recently_watched, :latest_movies ]
@@ -8,7 +8,7 @@ class Api::MoviesController < ApplicationController
     user_video_last_stop = api_user.user_video_last_stops.find_by(admin_movie_id: params[:id]) if api_user
     last_stopped = (user_video_last_stop.present? ? user_video_last_stop.last_stopped : 0)
     begin
-      movie = Admin::Movie.find(params[:id])
+      movie = Movie.find(params[:id])
       valid_payment = api_user.try(:check_login) || false
       movie_hash = movie.as_json("full_movie_detail").merge(is_valid_payment: valid_payment, is_active: movie.movie_view_by_user?(api_user.try(:id)), last_stopped: last_stopped)
       api_response = { code: "0",status: "Success",message: "Successfully  movie details found", movie: movie_hash}
@@ -21,14 +21,14 @@ class Api::MoviesController < ApplicationController
   def get_all_movie_by_movie_name_or_genre_name
     begin
       if params[:movie_name]
-        @movies=Admin::Movie.where("lower(name) LIKE (?) ","%#{params[:movie_name].downcase}%")
+        @movies = Movie.where("lower(name) LIKE (?) ","%#{params[:movie_name].downcase}%")
         if @movies.present?
           @response = { code: "0",status: "Success",message: "Successfully  movie found",movie: @movies.as_json}
         else
           @response = { code: "1",status: "Error",message: "Movie not found"}
         end
       else
-        @genres=Admin::Genre.where("lower(name) LIKE (?) ","%#{params[:genre_name].downcase}%")
+        @genres = Genre.where("lower(name) LIKE (?) ","%#{params[:genre_name].downcase}%")
         if @genres.present?
           @genres= @genres.map do |genre|
             create_json_genres genre
@@ -49,14 +49,14 @@ class Api::MoviesController < ApplicationController
   def search_movie_with_genre
     begin
       if params[:movie_name].present? && params[:genre_id].present?
-        @movies=Admin::Movie.where("lower(name) LIKE (?) ","%#{params[:movie_name].downcase}%").where(admin_genre_id: params[:genre_id])
+        @movies=Movie.where("lower(name) LIKE (?) ","%#{params[:movie_name].downcase}%").where(admin_genre_id: params[:genre_id])
         if @movies.present?
           @response = { code: "0",status: "Success",message: "Successfully  movie found",movie: @movies.as_json(api_user)}
         else
           @response = { code: "1",status: "Error",message: "Movie not found"}
         end
       else
-        @movies=Admin::Movie.where(admin_genre_id: params[:genre_id])
+        @movies=Movie.where(admin_genre_id: params[:genre_id])
         if @movies.present?
           @response = { code: "0",status: "Success",message: "Successfully  movie found",movie: @movies.as_json(api_user)}
         else
@@ -75,7 +75,7 @@ class Api::MoviesController < ApplicationController
       api_response = { code: "3",status: "Error",message: "Movie already added to my list" }
     else
       begin
-        movie = Admin::Movie.find params[:movie_id]
+        movie = Movie.find params[:movie_id]
         api_user.user_filmlists.create!(admin_movie_id: params[:movie_id])
         api_response = { code: "0",status: "Success",message: "Movie added successfully to my list",my_list: movie.as_json}
       rescue Exception => e
@@ -88,7 +88,7 @@ class Api::MoviesController < ApplicationController
 
   def my_list_movies
     begin
-      my_movies = Admin::Movie.joins(:user_filmlists).where('user_filmlists.user_id = ?', api_user.id).order('user_filmlists.created_at DESC').offset(params[:offset]).limit(params[:limit])
+      my_movies = Movie.joins(:user_filmlists).where('user_filmlists.user_id = ?', api_user.id).order('user_filmlists.created_at DESC').offset(params[:offset]).limit(params[:limit])
       if my_movies.present?
         api_response = { code: "0",status: "Success",message: "Successfully get all movies for my list",my_list: my_movies.as_json(api_user)}
       else
@@ -222,7 +222,7 @@ class Api::MoviesController < ApplicationController
   end
 
   def latest_movies
-    movies = Admin::Movie.order(created_at: :desc).limit params[:limit]
+    movies = Movie.order(created_at: :desc).limit params[:limit]
     response =  { code: "0",status: "Success" ,movies: movies.as_json(api_user)}
     render json: response
   end
@@ -232,8 +232,8 @@ class Api::MoviesController < ApplicationController
   end
 
   def create_json_recentaly_watched user_video_last_stop
-    @admin_movie = user_video_last_stop.admin_movie
+    @admin_movie = user_video_last_stop.movie
     film_video_url = "https://s3-us-west-1.amazonaws.com/#{ENV['S3_INPUT_BUCKET']}/#{@admin_movie.movie_versions.find_by(resolution: "320").film_video}"
-    return {id: user_video_last_stop.id,movie_id: @admin_movie.id,last_stopped: user_video_last_stop.last_stopped.to_i,watched_percent: user_video_last_stop.watched_percent,time_left_text: user_video_last_stop.time_left,image_330: image_cloud_front_url(@admin_movie.admin_movie_thumbnail.thumbnail_screenshot.carousel_thumb.path),image_640: image_cloud_front_url(@admin_movie.admin_movie_thumbnail.thumbnail_640_screenshot.carousel_thumb.path),film_video: film_video_url,current_time: user_video_last_stop.current_time,remaining_time: user_video_last_stop.remaining_time,updated_at: user_video_last_stop.formated_updated_at, captions: @admin_movie.movie_captions.as_json}
+    return {id: user_video_last_stop.id,movie_id: @admin_movie.id,last_stopped: user_video_last_stop.last_stopped.to_i,watched_percent: user_video_last_stop.watched_percent,time_left_text: user_video_last_stop.time_left,image_330: image_cloud_front_url(@admin_movie.movie_thumbnail.thumbnail_screenshot.carousel_thumb.path),image_640: image_cloud_front_url(@admin_movie.movie_thumbnail.thumbnail_640_screenshot.carousel_thumb.path),film_video: film_video_url,current_time: user_video_last_stop.current_time,remaining_time: user_video_last_stop.remaining_time,updated_at: user_video_last_stop.formated_updated_at, captions: @admin_movie.movie_captions.as_json}
   end
 end

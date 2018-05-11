@@ -45,6 +45,11 @@ class Movie < ApplicationRecord
   end
 
   # ======= Related to mobile API's start =======
+
+  def movie_view_by_user?(user_id)
+    (self.user_filmlists.find_by_user_id user_id).present?
+  end
+
   def as_json(options=nil)
     case options
     when "full_movie_detail"
