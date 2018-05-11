@@ -31,8 +31,8 @@ class Api::V1::UserSerializer < ActiveModel::Serializer
   end
 
   def formatted_cancelation_date(object)
-    return unless user.cancelation_date
-    user.cancelation_date.strftime('%B %d, %Y')
+    return unless object.cancelation_date
+    object.cancelation_date.strftime('%B %d, %Y')
   end
 
   def price_rate_of_plan(plan_type)

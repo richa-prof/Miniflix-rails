@@ -299,7 +299,7 @@ class User < ActiveRecord::Base
     latest_transaction  = self.my_transactions.last
     next_charge_date_time_obj = latest_transaction.try(:payment_expire_date)
 
-    unless next_charge_date_time_obj
+    if !next_charge_date_time_obj && latest_payment_method.present?
       latest_payment_method_created_at = latest_payment_method.created_at
 
       next_charge_date_time_obj =
