@@ -100,6 +100,6 @@ class Api::V1::PaymentsController < Api::V1::ApplicationController
   end
 
   def set_registration_plan_for(user)
-    user.registration_plan = User.registration_plans[payment_type]
+    user.registration_plan = User.registration_plans[payment_type] if payment_type.present?
   end
 end

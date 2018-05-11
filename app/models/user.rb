@@ -50,6 +50,7 @@ class User < ActiveRecord::Base
   after_validation :send_verification_code, if: ->  { unconfirmed_phone_number_changed? && errors.blank? }
   before_update :assign_unverified_phone_to_phone_number, if: -> { check_condition_for_assign_phone_number }
   before_update :make_migrate_user_false, if: -> { can_make_migrate_user_false? }
+  before_update :assign_subscription_cancel_date, if: 'cancelled?'
   before_save :set_job_for_annual_user_to_change_subscription_status, if: -> {user_choose_annual_plan?}
 
   #change phone number in nomalize form before validate
@@ -123,6 +124,10 @@ class User < ActiveRecord::Base
 
   def is_payment_verified?
     Educational? || trial? || activate?
+  end
+
+  def assign_subscription_cancel_date
+    self.cancelation_date = Time.now
   end
 
   def find_or_initialize_filmlist(movie_id)
@@ -287,6 +292,24 @@ class User < ActiveRecord::Base
     end
 
     response
+  end
+
+  def next_charge_date
+    latest_transaction  = self.my_transactions.last
+    next_charge_date_time_obj = latest_transaction.try(:payment_expire_date)
+
+    unless next_charge_date_time_obj
+      latest_payment_method_created_at = latest_payment_method.created_at
+
+      next_charge_date_time_obj =
+        if Monthly?
+          latest_payment_method_created_at + 1.month
+        elsif Annually?
+          latest_payment_method_created_at + 1.year
+        end
+    end
+
+    next_charge_date_time_obj
   end
 
   private

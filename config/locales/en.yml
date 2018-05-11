@@ -129,3 +129,10 @@ en:
     already_canceled: Subscription is already canceled.
   reactivate_subscription:
     success: Subscription has been reactivated successfully.
+
+  contents:
+    subscription_info:
+      active: "Your current subscription rate is %{price_rate}. Next charge for your subscription will be on %{charge_date}"
+      cancelled: "You had Cancelled your subscription on %{cancelation_date}"
+      no_subscription: You don't have any active subscription.
+
