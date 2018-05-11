@@ -92,6 +92,8 @@ en:
       successfully_created: 'Background was successfully created.'
       successfully_updated: 'Background was successfully updated.'
       successfully_deleted: 'Background was successfully deleted.'
+    user_email_notification:
+      successfully_updated: 'Email notifications settings have updated successfully.'
   placeholder:
     genre:
       name: Enter genre name

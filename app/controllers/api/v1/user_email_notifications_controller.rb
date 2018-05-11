@@ -12,7 +12,7 @@ class Api::V1::UserEmailNotificationsController < Api::V1::ApplicationController
     if user_email_notification.update_attributes(user_email_notification_update_params)
       email_notification_serializer = ActiveModelSerializers::SerializableResource.new(user_email_notification, serializer: Api::V1::UserEmailNotificationSerializer).serializable_hash
       response = { success: true,
-                   message: "successful email Notification updated",
+                   message: I18n.t('flash.user_email_notification.successfully_updated'),
                    user_email_notification: email_notification_serializer }
     else
       response = { success: false,

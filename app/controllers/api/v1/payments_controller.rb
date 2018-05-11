@@ -5,9 +5,11 @@ class Api::V1::PaymentsController < Api::V1::ApplicationController
 
   def create
     if payment_type == User::PAYMENT_TYPE_PAYPAL
+      set_registration_plan_for(current_user)
       redirect_url = current_user.checkout_url
       render_json(redirect_url)
     else
+      set_registration_plan_for(@resource)
       response = Stripe::SubscriptionCreate.new(@resource, stripe_token).call if stripe_token
       unless (response && response[:success]) #subscription fail on stripe
         render_json_for_card_fail(response)
@@ -95,5 +97,9 @@ class Api::V1::PaymentsController < Api::V1::ApplicationController
 
   def payment_type
     params[:payment_type]
+  end
+
+  def set_registration_plan_for(user)
+    user.registration_plan = User.registration_plans[payment_type]
   end
 end
