@@ -155,16 +155,16 @@ class Api::Vm1::SessionsController < Api::Vm1::ApplicationController
     render :json => @response
   end
 
-
   #sends reset password instructions
   def forgot_password
     begin
       if params[:email].present?
         user = User.find_by_email(params[:email])
         if user
-          token = user.generate_reset_password_token
-          user.update_attribute('reset_password_token', token)
-          UserNotifier.send_reset_password_instruction(user,token).deliver
+          user.send_reset_password_instructions({
+            redirect_url: forgot_password_redirect_url
+          })
+
           response = {:code => "0",:status => "Success",:message => "Reset password instruction details has been sent to your email"}
         else
           response = {:code => "1",:status => "Error",:message => "User not exist"}
@@ -230,5 +230,9 @@ class Api::Vm1::SessionsController < Api::Vm1::ApplicationController
       temp_user = TempUser.find (temp_user_id)
       headers['authenticate'] = temp_user.update_auth_token
       {code: "0", status: "Success", message: "Choose payment type for further process", temp_user: TempUser.json_content(temp_user_id)}
+    end
+
+    def forgot_password_redirect_url
+      "#{ENV['Host']}/update_password"
     end
 end
