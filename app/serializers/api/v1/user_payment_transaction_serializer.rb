@@ -6,7 +6,7 @@ class Api::V1::UserPaymentTransactionSerializer < ActiveModel::Serializer
   end
 
   def payment_date
-    object.payment_expire_date.strftime(" %A, %d %b %Y %l:%M %p")
+    object.payment_date.strftime(" %A, %d %b %Y %l:%M %p")
   end
 
   def amount
