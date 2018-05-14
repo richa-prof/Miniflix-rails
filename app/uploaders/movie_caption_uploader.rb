@@ -2,6 +2,7 @@ class MovieCaptionUploader < CarrierWave::Uploader::Base
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   # include CarrierWave::MiniMagick
+  include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
   # storage :fog
@@ -42,6 +43,9 @@ class MovieCaptionUploader < CarrierWave::Uploader::Base
   # def extension_whitelist
   #   %w(jpg jpeg gif png)
   # end
+  def extension_white_list
+    %w(srt vtt dfxp)
+  end
 
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.

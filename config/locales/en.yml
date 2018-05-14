@@ -125,6 +125,11 @@ en:
       successfully_created: 'Movie was successfully created.'
       successfully_updated: 'Movie was successfully updated.'
       successfully_deleted: 'Movie was successfully deleted.'
+    movie_caption:
+      caption_file:
+        successfully_created: 'Caption File successfully saved, Fill other detail for caption file.'
+        successfully_saved: 'Caption detail successfully saved.'
+        successfully_deleted: 'Caption file successfully deleted.'
   placeholder:
     genre:
       name: Enter genre name
@@ -152,6 +157,7 @@ en:
     new_movie: New Movie
     download_now: Download Now
     watch_now: Watch Now
+    add_caption: Add Caption
   label:
     not_available: Not Available
     background_image:

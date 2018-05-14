@@ -4,9 +4,9 @@
       <div class="box-body">
         <div class="row">
           <div class="col-md-12">
-            <% if @movie_caption.present? && @movie_caption.errors.any? %>
+            <% if movie_caption.present? && movie_caption.errors.any? %>
               <div class="alert alert-danger" id="error_msg">
-                <% @movie_caption.errors.each do |attr, msg| %>
+                <% movie_caption.errors.each do |attr, msg| %>
                   <li><%= msg %></li>
                 <% end %>
               </div>
@@ -25,18 +25,20 @@
           <div class="col-sm-1 col-xs-2 p-l-0" id="v_u_percent">
           </div>
         </div>
-         <%= form_for @movie_caption, url: admin_movie_movie_caption_path(@admin_movie, @movie_caption), method: "put" do |f|%>
+         <%= form_for( movie_caption,
+                       url: admin_movie_movie_caption_path(admin_movie, movie_caption),
+                       method: "put" ) do |f|%>
 
-          <% if @movie_caption.language.present? %>
+          <% if movie_caption.language.present? %>
             <div class="form-group">
               <%= f.file_field :caption_file, class: "form-control" %>
             </div>
 
-            <label> Language: <%= @movie_caption.language %> </label>
+            <label> Language: <%= movie_caption.language %> </label>
 
           <% else %>
             <div class="form-group">
-              <%= f.select :language, options_for_select(language_list),{}, { class: "form-control", "data-placeholder": "Select language"} %>
+              <%= f.select :language, options_for_select(language_list_for(admin_movie, movie_caption)),{}, { class: "form-control", "data-placeholder": "Select language"} %>
             </div>
           <% end %>
 
@@ -49,7 +51,7 @@
 
           <div class="form-check">
             <label class="form-check-label">
-              <%= f.check_box :is_default, class: "form-check-input #{check_for_default_caption}"%>
+              <%= f.check_box :is_default, class: "form-check-input #{check_for_default_caption(admin_movie)}"%>
               Make Default <i> (Default caption show when video start) </i>
             </label>
           </div>
@@ -61,4 +63,3 @@
     </div>
   </div>
 </div>
-

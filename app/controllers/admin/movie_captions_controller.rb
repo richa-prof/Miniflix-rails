@@ -1,6 +1,6 @@
 class Admin::MovieCaptionsController < ApplicationController
   before_action :set_movie
-  layout "admin"
+  layout 'admin'
 
   def index
     @movie_captions = @admin_movie.movie_captions
@@ -14,11 +14,11 @@ class Admin::MovieCaptionsController < ApplicationController
   def create
     @movie_caption = @admin_movie.movie_captions.new(movie_caption_params)
     if @movie_caption.save
-      redirect_to edit_admin_movie_movie_caption_path(@admin_movie, @movie_caption),notice: "Caption File successfully saved, Fill other detail for caption file"
+      redirect_to( edit_admin_movie_movie_caption_path( @admin_movie, @movie_caption ),
+                   notice: I18n.t('flash.movie_caption.caption_file.successfully_created') )
     else
       render :new
     end
-
   end
 
   def edit
@@ -34,7 +34,8 @@ class Admin::MovieCaptionsController < ApplicationController
     end
     if @movie_caption.update_attributes(movie_caption_params)
       if params[:commit] == "Save"
-        redirect_to admin_movie_movie_captions_path(@admin_movie), notice: "Caption detail successfully saved"
+        redirect_to( admin_movie_movie_captions_path(@admin_movie),
+                     notice: I18n.t('flash.movie_caption.caption_file.successfully_saved') )
       else
         redirect_to new_admin_movie_movie_caption_path(@admin_movie)
       end
@@ -46,16 +47,17 @@ class Admin::MovieCaptionsController < ApplicationController
   def destroy
      @movie_caption = @admin_movie.movie_captions.find(params[:id])
      @movie_caption.destroy
-     redirect_to admin_movie_movie_captions_path(@admin_movie), notice: 'Caption file successfully deleted'
+     redirect_to( admin_movie_movie_captions_path(@admin_movie),
+                  notice: I18n.t('flash.movie_caption.caption_file.successfully_deleted') )
   end
 
   private
 
   def movie_caption_params
-    params.require(:admin_movie_caption).permit(:caption_file,:language, :status, :is_default) if params[:admin_movie_caption].present?
+    params.require(:movie_caption).permit(:caption_file, :language, :status, :is_default) if params[:movie_caption].present?
   end
 
   def set_movie
-    @admin_movie = Admin::Movie.find params[:movie_id]
+    @admin_movie = Movie.friendly.find(params[:movie_id])
   end
 end

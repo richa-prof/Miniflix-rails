@@ -28,7 +28,8 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body" id="upload_video">
-          <%= render 'other_caption_info' %>
+          <%= render( partial: 'other_caption_info', locals: { admin_movie: @admin_movie,
+                                                                 movie_caption: @movie_caption } ) %>
         </div>
         <!-- /.box-body -->
       </div>
