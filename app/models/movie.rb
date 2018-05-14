@@ -82,7 +82,7 @@ class Movie < ApplicationRecord
   end
 
   def image_url(path)
-    'https://' +  ENV['Image_url'] +'/'+ path if path.present?
+    'https://' +  ENV['cloud_front_url'] +'/'+ path if path.present?
   end
 
   def fetch_last_stop(user)

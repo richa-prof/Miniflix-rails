@@ -79,7 +79,7 @@ class Notification < ApplicationRecord
   end
 
   def movie_detail
-    {movie_id: self.admin_movie.id, name: self.admin_movie.name, realesed: self.admin_movie.created_at, image: ApplicationController.helpers.image_cloud_front_url(self.admin_movie.movie_thumbnail.thumbnail_screenshot.carousel_thumb.path)}
+    {movie_id: self.movie.id, name: self.movie.name, realesed: self.movie.created_at, image: ApplicationController.helpers.image_cloud_front_url(self.movie.movie_thumbnail.thumbnail_screenshot.carousel_thumb.path)}
   end
   # ======= Related to mobile API's END =======
 end
