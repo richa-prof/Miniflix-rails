@@ -84,6 +84,7 @@ Rails.application.routes.draw do
       resources :user_email_notifications, only: [:index]
       resource :user_email_notification, only: [:update]
       resource :users, only: [] do
+        put :update_profile
         put :send_verification_code
         put :verify_verification_code
         get :my_activity

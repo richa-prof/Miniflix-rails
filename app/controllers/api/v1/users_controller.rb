@@ -44,6 +44,22 @@ class Api::V1::UsersController < Api::V1::ApplicationController
     render json: { user_payment_transactions: user_transaction_serializer }
   end
 
+  def update_profile
+    unless user_update_profile_params.present?
+      return render json: { success: false,
+                            message: I18n.t('invalid_params.user.empty_image') }
+    end
+
+    if current_user.update(user_update_profile_params)
+      return render json: { success: true,
+                            user: serialize_user,
+                            message: I18n.t('flash.user.image.successfully_updated') }
+    else
+      render json: { success: false,
+                     message: current_user.errors.full_messages[0] }
+    end
+  end
+
   private
 
   def check_current_password
@@ -60,5 +76,9 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
   def check_verification_code
      render json: {success: false, message: "invalid code" } unless current_user.valid_verification_code?(params[:verification_code])
+  end
+
+  def user_update_profile_params
+    params.require(:user).permit(:image)
   end
 end

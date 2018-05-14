@@ -84,6 +84,8 @@ en:
       successfully_deleted: 'Free member was successfully deleted.'
     user:
       successfully_deleted: 'User was successfully deleted.'
+      image:
+        successfully_updated: 'Profile image was successfully updated.'
     genre:
       successfully_created: 'Genre was successfully created.'
       successfully_updated: 'Genre was successfully updated.'
@@ -107,6 +109,9 @@ en:
   label:
     background_image:
       is_set: Allow to set Background image for home page
+  invalid_params:
+    user:
+      empty_image: "Image parameter can't be empty."
 
   payment:
     paypal:
