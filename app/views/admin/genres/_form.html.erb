@@ -37,6 +37,18 @@
               <%= f.text_field :color, class: "form-control", placeholder: t('placeholder.genre.color'), required: true %>
             </div>
           </div>
+
+          <div class="box-body">
+            <div class="form-group">
+              <%= f.label :description %>
+              <%= f.text_area( :description,
+                               rows: 3,
+                               class: "form-control",
+                               placeholder: t('placeholder.genre.description'),
+                               required: true ) %>
+            </div>
+          </div>
+
           <!-- /.box-body -->
 
           <div class="box-footer">

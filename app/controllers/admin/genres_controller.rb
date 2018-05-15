@@ -89,7 +89,7 @@ class Admin::GenresController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def admin_genre_params
-      params.require(:genre).permit(:name, :color)
+      params.require(:genre).permit(:name, :color, :description)
     end
 
     def genre_id

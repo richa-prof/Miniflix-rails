@@ -134,6 +134,7 @@ en:
     genre:
       name: Enter genre name
       color: Enter genre color
+      description: Enter genre description
     movie:
       name: Enter name
       title: Enter title
