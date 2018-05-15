@@ -9,6 +9,7 @@ class MovieThumbnail < ApplicationRecord
 	mount_uploader :thumbnail_640_screenshot, MovieThumbnailUploader
 
   def cloud_front_url(path)
-    ENV['cloud_front_url'] + path
+    # ENV['cloud_front_url'] + path
+    'https://' +  ENV['cloud_front_url'] +'/'+ path
   end
 end
