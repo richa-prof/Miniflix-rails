@@ -60,6 +60,12 @@ class Api::V1::UsersController < Api::V1::ApplicationController
     end
   end
 
+  def stripe_card_details
+    response = current_user.fetch_stripe_card_number
+
+    render json: response
+  end
+
   private
 
   def check_current_password

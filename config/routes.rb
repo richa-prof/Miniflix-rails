@@ -98,6 +98,7 @@ Rails.application.routes.draw do
         get :my_activity
         get :make_invalid_for_thankyou_page
         get :billing_details
+        get :stripe_card_details
       end
       resources :paypal_payments, only: [] do
         collection do

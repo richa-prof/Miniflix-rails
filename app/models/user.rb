@@ -313,6 +313,20 @@ class User < ActiveRecord::Base
     next_charge_date_time_obj
   end
 
+  def fetch_stripe_card_number
+    begin
+      customer = Stripe::Customer.retrieve(customer_id)
+      default_card_map = customer.sources.data.select{ |a| a.id == customer.default_source }
+      card_number = default_card_map.last.try(:last4)
+
+      { success: true, card_number: card_number }
+    rescue Exception => e
+      puts"<===response stripe error===#{e.message}=======>"
+
+      { success: false }
+    end
+  end
+
   # ======= Related to mobile API's start =======
   def update_auth_token
     token = Digest::SHA1.hexdigest([Time.now, rand].join)
