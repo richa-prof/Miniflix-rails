@@ -31,11 +31,14 @@ Rails.application.routes.draw do
       end
     end
 
-    get '/' => 'staffs#index'
+    get '/' => 'dashboard#index'
+    get 'dashboard' => 'dashboard#index'
     get 'educational_users' => 'users#educational_users'
     get 'monthly_users' => 'users#monthly_users'
     get 'annually_users' => 'users#annually_users'
     get 'freemium_users' => 'users#freemium_users'
+    get 'premium_users' => 'users#premium_users'
+    get 'get_monthly_revenue/:id' => 'users#get_monthly_revenue', as: :get_monthly_revenue
     get 'get_user_payment_details/:id' => 'users#get_user_payment_details', as: :get_user_payment_details
 
     resources :users, only: [:index, :destroy]

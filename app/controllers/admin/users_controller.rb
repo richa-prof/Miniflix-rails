@@ -28,6 +28,10 @@ class Admin::UsersController < ApplicationController
     @users = User.Freemium
   end
 
+  def premium_users
+    @users = User.premium_users
+  end
+
   def get_user_payment_details
     user = User.find(params[:id])
 
