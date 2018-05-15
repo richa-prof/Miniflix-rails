@@ -324,6 +324,20 @@ class User < ActiveRecord::Base
     as_json(include: [{logged_in_user: {only: [:notification_from, :device_type, :device_token]}}, {user_email_notification: {except: [:id, :created_at, :updated_at, :user_id]}}])
   end
 
+  def as_json(options={})
+    user_hash = super(except: [:role,:created_at, :updated_at, :password_digest, :receipt_data, :auth_token, :image, :provider, :uid, :migrate_user, :slug, :allow_password_change, :valid_for_thankyou_page]).reject { |k, v| v.nil? }.merge(super["logged_in_user"]).merge(super["user_email_notification"]).merge(isPaymentSettingsAllow: self.payment_setting_allow?,  is_validPlan: is_valid_payment? )
+
+    if self.image.present?
+      user_hash = user_hash.merge( image: self.image_url )
+    end
+
+    user_hash
+  end
+
+  def payment_setting_allow?
+    self.Android? && self.user_payment_methods.present?
+  end
+
   def valid_for_monthly_plan?
     self.Freemium?
   end

@@ -46,7 +46,7 @@ class Api::Vm1::SessionsController < Api::Vm1::ApplicationController
             api_response = generate_response_for_paid_user(user)
           end
         else
-          api_response = {code: "-1", status: "Error", message: user.errors}
+          api_response = {code: "-1", status: "Error", message: user.errors.full_messages[0]}
         end
       end
     rescue Exception => e
