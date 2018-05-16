@@ -15,7 +15,7 @@ class Stripe::UpdateCard
     Stripe::Customer.update(user.customer_id, {
       source: stripe_token,
     })
-    {success: true, message: (I18n.t "payment_update")}
+    { success: true, message: I18n.t('flash.payment.card.successfully_updated') }
   rescue Stripe::InvalidRequestError => e
     {success: false, message: (I18n.t "payment.card.fail", error: stripe_error(e))}
   rescue Stripe::CardError => e

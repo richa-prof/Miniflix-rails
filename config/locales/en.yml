@@ -130,6 +130,11 @@ en:
         successfully_created: 'Caption File successfully saved, Fill other detail for caption file.'
         successfully_saved: 'Caption detail successfully saved.'
         successfully_deleted: 'Caption file successfully deleted.'
+    payment:
+      card:
+        successfully_updated: 'Your card details has been updated successfully'
+    payment_method:
+        successfully_updated: 'Your payment method has been updated successfully'
   placeholder:
     genre:
       name: Enter genre name

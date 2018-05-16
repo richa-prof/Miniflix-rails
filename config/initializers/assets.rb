@@ -14,3 +14,4 @@ Rails.application.config.assets.paths << Rails.root.join('vendor')
 # folder are already added.
 
 Rails.application.config.assets.precompile += %w( admin.js admin.css app_view.css app-payment.css ckeditor/* admin/bootstrap-fileupload.js admin/movies.js android.js admin/flot/jquery.flot.min.js admin/flot/jquery.flot.resize.min.js admin/flot/jquery.flot.pie.min.js admin/flot/jquery.flot.categories.min.js vendor.js )
+

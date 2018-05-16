@@ -4,8 +4,6 @@ $(document).on("click", "#payment_method input[type='radio']",
   }
 );
 
-
-
 function set_payment_detail(){
   if ($("#user_payment_method_payment_type_card:checked").val() == "Card") {
     $("#card_info").show();
