@@ -262,7 +262,9 @@
   };
 
   enableMaskToVideoDurationField = function() {
-    $('#movie_video_duration').mask('00:00:00', { placeholder: "00:00:00" });
+    if ($('#movie_video_duration').length) {
+      $('#movie_video_duration').mask('00:00:00', { placeholder: "00:00:00" });
+    }
   };
 
 }) (jQuery);

@@ -1,0 +1,97 @@
+<%= javascript_include_tag 'android.js' %>
+<% user = @user_payment_method.user %>
+<div class="container">
+  <div class="row m-t-20">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <h3 class="color-pink m-b-10">Please confirm your information</h3>
+    </div>
+  </div>
+  <div class="col-sm-12">
+    <div class="row">
+      <div class="col-xs-6 m-t-20">
+        <span class="color-gray"><%= user.registration_plan %> Plan</span>
+      </div>
+      <div class="col-xs-6 m-t-20">
+        <span class="color-gray pull-right"><%= price_rate_of_plan(user.registration_plan) %></span>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12">
+    <div class="row">
+      <div class="col-xs-6 m-t-20">
+        <span class="color-pink"> Email: </span>
+      </div>
+      <div class="col-xs-6 m-t-20">
+        <span class="color-gray pull-right"> <%= user.email %> </span>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12">
+  <div class="row">
+    <div class="col-xs-6 m-t-20">
+      <span class="color-pink">Payment Expire date: </span>
+    </div>
+    <div class="col-xs-6 m-t-20">
+      <span class="pull-right"><%= @user_payment_method.fetch_last_payment_expire_date %></span>
+    </div>
+    <hr>
+    </div>
+  </div>
+  <div class = "col-sm-12 col-xs-12 m-t-20 m-b-10">
+    Your new payment method will be applied to your next billing cycle.
+  </div>
+
+  <%= form_for @user_payment_method, url: "/android_payment_update/#{user.id}", html: {method: "patch", id: "payment_method"} do |f|%>
+    <%= render partial: 'android_payment_form', locals: {f: f} %>
+  <% end %>
+</div>
+<div class="backdrop"></div>
+<div class="la-ball-clip-rotate-multiple app-loader">
+  <div></div>
+  <div></div>
+</div>
+
+<script type="text/javascript">
+
+  var check_stripe;
+  var $form = $('#payment_method');
+  Stripe.setPublishableKey($('meta[name="stripe-key"]').attr('content'));
+
+  $(document).on('click', '#btnSubmit', function(){
+    if ($("#payment_method").valid()) {
+      $(".app-loader").show();
+      $(".backdrop").show();
+      if (check_stripe == 1) {
+        Stripe.card.createToken($form, stripeResponseHandler);
+        return false;
+      }
+      $('#payment_method')[0].submit(function(event) {
+        $form.find('#btnSubmit').prop('disabled', true);
+        // Request a token from Stripe:
+      });
+    }
+  });
+
+  function stripeResponseHandler(status, response) {
+    if (response.error) { // Problem!
+      // Show the errors on the form:
+      $form.find('.payment-errors').text(response.error.message).show();
+      $form.find('#btnSubmit').prop('disabled', false); // Re-enable submission
+      $(".app-loader").hide();
+      $(".backdrop").hide();
+    } else { // Token was created!
+      // Get the token ID:
+      var token = response.id;
+
+      // Insert the token ID into the form so it gets submitted to the server:
+      $form.append($('<input type="hidden" name="stripeToken" id="token">').val(token));
+
+      // Submit the form:
+      check_stripe = 0;
+      $form.find('#submit').prop('disabled', false); // Re-enable submission
+      $('#submit').click();
+      $('#payment_method')[0].submit()
+    }
+  };
+
+</script>

@@ -1,0 +1,49 @@
+<%= javascript_include_tag 'upgrade_plan.js' %>
+<%= stylesheet_link_tag    'signup', media: 'all', 'data-turbolinks-track' => true %>
+
+<div class="row ">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <h3 class="step_2_title"> <span class="step-1" >Upgrade to Annual plan </span></h3><h4> Your current subscription plan is Monthly plan you are going to update Annual plan with $24/year discount price. </h4>
+  </div>
+</div>
+
+<div class="row step_2_panel">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 payment-info-main">
+    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 payment-info" >
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 offer-panel">
+          <h2 class="title">Annual</h2>
+          <span class="price">$24/<span class="month">Year</span></span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 offer-detail-panel step2-offer-detail-panel li-image-add">
+          <ul>
+            <li class="offer-info offer-info-top">
+              HD Streaming
+            </li>
+            <li class="offer-info">
+              Watch Unlimited short films
+            </li>
+            <li class="offer-info">
+               Watch on desktop, phone or tablet
+            </li>
+            <li class="offer-info">
+              Billed as $24 per year
+            </li>
+            <li class="offer-info">
+               <strong> 50% off! save $24 </strong>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 step-side-panel payment-info">
+      <%= form_for @user_payment_method, url: upgrade_to_annual_subscription_path, html: {method: "post", id: "upgrade_subscription"} do |f|%>
+        <%= render partial: 'users/payment_info_form', locals: {f: f} %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<br></br><br>

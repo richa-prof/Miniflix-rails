@@ -1,0 +1,346 @@
+
+<div id="mobile_menu" style="display:none">
+  <!-- Fixed navbar -->
+<div class="navbar navbar-inverse" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <!-- Button for smallest screens -->
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" id="navbar-toggle">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <%= link_to( image_tag('Miniflix_logo_pink.png', alt: "Miniflix"), miniflix_film_path, :class=>"navbar-brand", :method => 'GET') %>
+      <li class="dropdown" id="drop_noti">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"> 
+            <%= image_tag('notification.png', alt: "Notification", class: "btn_notification",:style=>'float:right;padding-top:10px; margin-right: 20px;') %>
+          </a>
+          <ul class="dropdown-menu" style="width:100%; margin-top:30px;">
+            <li class="arrow"></li>
+            <li class="li_notification">
+              <p class="no_notification">
+                No recent notification
+              </p>
+              <p style="display:none;">
+                Your one-year subscription is about to expire <%= link_to "Renew now", miniflix_film_path, class: "notification_link" %>.
+              </p>
+            </li>
+          </ul>
+        </li>
+    </div>
+    <div class="navbar-collapse collapse mobile_background" style="background-color:#ffd801; overflow: hidden;">      
+      <ul class="nav navbar-nav pull-right mainNav right_menu drop_close"  id="search_ul" >
+        <li class="header_search_li text-center" id="search_li">
+          <a href="" class="dropdown-toggle  btn_mobile_search moblie_link txt-close p_link" data-toggle="dropdown" id="btn_ser" style="background: none !important; box-shadow:none !important; margin-top:40px;" onclick="search_menu()">Search</a>
+          <div class="form-group has-feedback txt_close" id="txt_search" style="margin: 0 2%">
+            <%= form_for("", url: search_movie_path, method: "get" ) do |f| %>
+              <span  aria-hidden="true">
+                <%= image_tag('search.png', alt: "Search", class: "header_search_icon") %>
+              </span>
+              <input id="search" class="form-control txt-search" type="text" placeholder="Titles, people, genres" name="search" style="margin-top:-12px !important ">
+              <%= f.submit id: "submit",class: "btn-personal",:style=> 'display: none;',:name => nil %>
+              <% end %>
+          </div>
+        </li> 
+       </ul>
+       <ul class="nav navbar-nav pull-right mainNav right_menu drop_close" id="drop_ui">
+        <li class="dropdown text-center" id="li_drop">
+          <a href="" class="dropdown-toggle moblie_link p_link " data-toggle="dropdown" id="drop_a" onclick="drop_open_menu()"><span class="text-center">Browse Genres</span></a>
+          <ul class="dropdown-menu columns-4" style="width:100% !important">
+            <li class="arrow_top"></li>
+            <div class="row">
+              <div class="col-md-3 col-sm-12">
+                <ul class="multi-column-dropdown">
+                  <li><%= link_to "Action", find_by_genre_path("action"), :method => 'GET', class: "li_font_size text-center"  %></li>
+                  <li><%= link_to "Animation", find_by_genre_path("animation"), :method => 'GET', class: " li_font_size text-center"  %></li>
+                  <li><%= link_to "Comedies", find_by_genre_path("comedies"), :method => 'GET', class: "li_font_size text-center"  %></li>
+                  <li><%= link_to "Documentaries", find_by_genre_path("documentaries"), :method => 'GET' , class: " li_font_size text-center" %></li>
+                  <li><%= link_to "Dramas", find_by_genre_path("dramas"), :method => 'GET', class: "li_font_size text-center"  %></li>
+                </ul>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <ul class="multi-column-dropdown">
+                  <li><%= link_to "Horror", find_by_genre_path("horror"), :method => 'GET', class: " li_font_size text-center"  %></li>
+                  <li><%= link_to "LGBT", find_by_genre_path("LGBT"), :method => 'GET', class: "li_font_size text-center"  %></li>
+                  <li><%= link_to "Experimental", find_by_genre_path("experimental"), :method => 'GET', class: " li_font_size text-center"  %></li>
+                  <li><%= link_to "Sci-Fi/Fantasy", find_by_genre_path("fantasy"), :method => 'GET', class: " li_font_size text-center" %></li>
+                  <li><%= link_to "Thrillers", find_by_genre_path("thrillers"), :method => 'GET', class: " li_font_size text-center" %></li>
+                </ul>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <ul class="multi-column-dropdown">
+                  <li><%= link_to "Romance", find_by_genre_path("romance"), :method => 'GET', class: "li_font_size text-center"%></li>
+                  <li><%= link_to "Short Shorts", find_by_genre_path("shorts"), :method => 'GET', class: "li_font_size text-center" %></li>
+                  <li><%= link_to "Student Films", find_by_genre_path("student"), :method => 'GET', class: "li_font_size text-center" %></li>
+                </ul>
+              </div>
+            </div>
+          </ul>
+        </li> 
+      </ul>
+      <ul class="nav navbar-nav pull-right mainNav">
+         <li class="profile_li text-center"><%= link_to "My Account", manage_account_users_path, :method => 'GET' ,class: 'moblie_link '%></li>
+      </ul>
+      <ul class="nav navbar-nav pull-right mainNav">
+       <li class="profile_li text-center" style="margin-bottom: -10px;"><%= link_to "Sign out", logout_path, class: 'moblie_link '%></li>
+      </ul>
+    </div>
+    <!--/.nav-collapse -->
+  </div>
+</div>
+</div>
+<!-- Fixed navbar -->
+<div class="navbar navbar-inverse" role="navigation" id="not_mob">
+  <div class="container">
+    <div class="navbar-header">
+      <!-- Button for smallest screens -->
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <%= link_to( image_tag('Miniflix_logo_pink.png', alt: "Miniflix"), miniflix_film_path, :class=>"navbar-brand", :method => 'GET') %>
+    </div>
+    <div class="navbar-collapse collapse">      
+      
+      <ul class="nav navbar-nav pull-right mainNav right_menu">
+        <li class="header_search_li">
+          <button onclick="search(); return false;" class="btn-search" id="btn_ser"> 
+            <%= image_tag('search.png', alt: "Search", class: "btn_search") %>  Search 
+          </button>
+          <div class="form-group has-feedback" id="txt_search" style="display: none;">
+            <%= form_for("", url: search_movie_path, method: "get" ) do |f| %>
+              <span  aria-hidden="true">
+                <%= image_tag('search.png', alt: "Search", class: "header_search_icon") %>
+              </span>
+              <input id="search" class="form-control txt-search" type="text" placeholder="Titles, people, genres" name="search">
+              <%= f.submit id: "submit",class: "btn-personal",:style=> 'display: none;',:name => nil %>
+              <% end %>
+          </div>
+        </li> 
+        <li class="dropdown btn_notification" style="margin-right: 20px;">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"> 
+            <%= image_tag('notification.png', alt: "Notification", class: "btn_notification") %>
+          </a>
+          <ul class="dropdown-menu notification">
+            <li class="arrow_top arrow_top_noti"></li>
+            <li class="li_notification">
+              <p class="no_notification">
+                No recent notification
+              </p>
+              <p style="display:none;">
+                Your one-year subscription is about to expire <%= link_to "Renew now", miniflix_film_path, class: "notification_link" %>.
+              </p>
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="" class="dropdown-toggle" data-toggle="dropdown"> 
+            <%= image_tag('profile_38x38.png', alt: "", class: "btn_profile") %>
+            <p class="sign_in_user"><%= session[:user_name].capitalize %><b class="caret"></b></p>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="arrow_top arrow_top_profile"></li>
+            <li><%= link_to "Manage Profile", miniflix_film_path, :method => 'GET' %></li>
+            <!-- <li class="divider"></li> -->
+            <li class="profile_li"><%= link_to "Your Account", manage_account_users_path, :method => 'GET' %></li>
+            <li class="profile_li"><%= link_to "Help Center", help_center_path, method: :GET %></li>
+            <li class="profile_li"><%= link_to "Sign out of Miniflix", logout_path %></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav mainNav"> 
+        <li class="dropdown">
+          <a href="" class="dropdown-toggle browse" data-toggle="dropdown">Browse <b class="caret"></b></a>
+          <ul class="dropdown-menu multi-column columns-4">
+            <li class="arrow_top"></li>
+            <div class="row">
+              <div class="col-md-3 col-sm-12 browse-col-1">
+                <ul class="multi-column-dropdown">
+                  <li><%= link_to "Home", miniflix_film_path, :method => 'GET', class: "browse-col-1-a" %></li>
+                  <li><%= link_to "My List", my_list_path, class: "browse-col-1-a", :method => 'GET' %></li>
+                  <li><%= link_to "New Arrivals", miniflix_film_path, class: "browse-col-1-a" %></li>
+                  <li><%= link_to "Ways to watch", miniflix_film_path, class: "browse-col-1-a" %></li>
+                  <li><%= link_to "Help Center", miniflix_film_path, class: "browse-col-1-a" %></li>
+                </ul>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <ul class="multi-column-dropdown">
+                  <li><%= link_to "Action", find_by_genre_path("action"), :method => 'GET' %></li>
+                  <li><%= link_to "Animation", find_by_genre_path("animation"), :method => 'GET' %></li>
+                  <li><%= link_to "Comedies", find_by_genre_path("comedies"), :method => 'GET' %></li>
+                  <li><%= link_to "Documentaries", find_by_genre_path("documentaries"), :method => 'GET' %></li>
+                  <li><%= link_to "Dramas", find_by_genre_path("dramas"), :method => 'GET' %></li>
+                </ul>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <ul class="multi-column-dropdown">
+                  <li><%= link_to "Horror", find_by_genre_path("horror"), :method => 'GET' %></li>
+                  <li><%= link_to "LGBT", find_by_genre_path("LGBT"), :method => 'GET' %></li>
+                  <li><%= link_to "Experimental", find_by_genre_path("experimental"), :method => 'GET' %></li>
+                  <li><%= link_to "Sci-Fi/Fantasy", find_by_genre_path("fantasy"), :method => 'GET' %></li>
+                  <li><%= link_to "Thrillers", find_by_genre_path("thrillers"), :method => 'GET' %></li>
+                </ul>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <ul class="multi-column-dropdown">
+                  <li><%= link_to "Romance", find_by_genre_path("romance"), :method => 'GET' %></li>
+                  <li><%= link_to "Short Shorts", find_by_genre_path("shorts"), :method => 'GET' %></li>
+                  <li><%= link_to "Student Films", find_by_genre_path("student"), :method => 'GET' %></li>
+                </ul>
+              </div>
+            </div>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <!--/.nav-collapse -->
+  </div>
+</div>
+<!-- /.navbar -->
+
+<% if params[:action] == "search_movie" %>
+  <script type="text/javascript">  
+    $("#btn_ser").hide();
+    $("#txt_search").show();
+    $("#search").val("<%= params[:search] %>");
+    $('form[method=get] input[name=utf8]').attr("disabled", "disabled");
+    $('#txt_search').keyup(function(e){
+      if(e.keyCode == 13)
+      {
+        $(this).trigger("enterKey");
+        $('#submit').click();
+        return false;
+       }
+    });
+  </script>
+<% else %>
+  <script type="text/javascript">
+    function search (argument) {
+      // alert("search click");
+      $("#btn_ser").hide();
+      $("#txt_search").show();        
+      return false;
+    }
+    $('form[method=get] input[name=utf8]').attr("disabled", "disabled");
+    $('#txt_search').keyup(function(e){
+      if(e.keyCode == 13)
+      {
+        $(this).trigger("enterKey");
+        $('#submit').click();
+        return false;
+       }
+    });
+  </script>
+<% end  %>
+<style type="text/css">
+  a{
+    font-family: "Roboto" !important;;
+  }
+   .arrow {
+    position: relative !important;
+    width: 0 !important;
+    height: 0 !important;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid #ddd !important;
+    float: right;
+    margin-right: 86px;
+    top: -12px !important;
+  }
+  </style>
+  <script type="text/javascript">
+    $(function(){
+      $(document).click(function(){
+          $( '#drop_ui' ).addClass( "drop_close");
+          $( '#drop_ui' ).removeClass( "drop_open");
+          $('#drop_a').removeClass('drop_a');
+      });
+      $('#navbar-toggle').click(function(){
+        $( '#search_ul' ).css( "margin-top","-10px");
+        $( '#search_ul' ).css( "height","150px");
+        $( '#search_ul' ).addClass( "drop_open");
+        $('#search_ul' ).removeClass( "drop_close");
+        $('#btn_ser').addClass('drop_a');
+        $('#btn_ser').css("padding-bottom","50px")
+        $( '#txt_search' ).removeClass( "txt_close" );
+        $( '#txt_search' ).addClass( "txt_open" );
+      })
+    });
+    function submenu_close()
+    {
+      $( '#drop_ui' ).addClass( "drop_close");
+      $( '#drop_ui' ).removeClass( "drop_open");
+      $('#drop_a').removeClass('drop_a');
+      $( '#search_ul' ).removeClass( "drop_open");
+      $( '#search_ul' ).css( "height","auto");
+      $( '#search_li' ).css( "height","60px");
+      $( '#search_ul' ).addClass( "drop_close");
+      $( '#txt_search' ).addClass( "txt_close" );
+      $( '#txt_search' ).removeClass( "txt_open");
+      $('#btn_ser').removeClass('drop_a');
+    }
+    function drop_open_menu()
+    {
+
+          $( '#search_ul' ).removeClass( "drop_open");
+          $( '#search_ul' ).addClass( "drop_close");
+          $( '#txt_search' ).addClass( "txt_close" );
+          $( '#txt_search' ).removeClass( "txt_open");
+          $('#btn_ser').removeClass('drop_a');
+          $( '#search_ul' ).css( "height","auto");
+          if ($("#drop_a").parent().hasClass("open")) 
+          {
+            $( '#drop_ui' ).removeClass( "drop_open");
+            $( '#drop_ui' ).addClass( "drop_close");
+            $('#drop_a').removeClass('drop_a');
+          }
+          else
+          {
+            $( '#drop_ui' ).removeClass( "drop_close");
+            $( '#drop_ui' ).addClass( "drop_open");
+            $('#drop_a').addClass('drop_a');
+              
+          }
+    }
+    function search_menu()
+    {
+      $( '#drop_ui' ).addClass( "drop_close");
+      $( '#drop_ui' ).removeClass( "drop_open");
+      $('#drop_a').removeClass('drop_a');
+      if ( $('#search_ul' ).hasClass( 'drop_close' ) ) {
+          $( '#search_ul' ).removeClass( "drop_close");
+          $( '#search_ul' ).css( "margin-top","-10px");
+          $( '#search_ul' ).css( "height","150px");
+          $( '#search_ul' ).addClass( "drop_open");
+          $('#btn_ser').addClass('drop_a');
+          $('#btn_ser').css("padding-bottom","50px")
+
+        }
+        else
+        {
+          $( '#search_ul' ).removeClass( "drop_open");
+          $( '#search_ul' ).addClass( "drop_close");
+          $('#btn_ser').removeClass('drop_a');
+          $( '#search_ul' ).css( "height","auto");
+        }
+        if ( $( '#txt_search' ).hasClass( "txt_close" ) ) {
+          $( '#txt_search' ).removeClass( "txt_close" );
+          $( '#txt_search' ).addClass( "txt_open" );
+        }
+        else
+        {
+          $( '#txt_search' ).addClass( "txt_close" );
+          $( '#txt_search' ).removeClass( "txt_open" );
+        }  
+    }
+    $('form[method=get] input[name=utf8]').attr("disabled", "disabled");
+    $('#txt_search').keyup(function(e){
+      if(e.keyCode == 13)
+      {
+        $(this).trigger("enterKey");
+        $('#submit').click();
+        return false;
+       }
+    });
+  </script>

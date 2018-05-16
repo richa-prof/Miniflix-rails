@@ -10,6 +10,10 @@ Rails.application.routes.draw do
 
   # TODO: Need to confirm regarding the response on rails root page.
   # get '/' => 'welcome#index'
+  get 'android_payment_old_user_view' => 'payments#android_payment_old_user_view'
+  patch 'android_payment_process_for_old_user/:id' => 'payments#android_payment_process_for_old_user'
+  get 'paypal_success/:user_id' => 'payments#paypal_success'
+  get 'paypal_cancel/:user_id' => 'payments#paypal_cancel'
 
   mount_devise_token_auth_for 'User', at: 'api/v1/auth', controllers: {
     sessions: "api/v1/sessions",

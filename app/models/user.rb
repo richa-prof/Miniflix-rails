@@ -35,6 +35,7 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :address, :social_media_link
 
   # CONSTANTS
+  FREEMIUM = 'Android'
   OLDUSER = "Trial Completed"
   UPGRADE_SUBSCRIPTION = "upgrade plan for"
   UPDATE_SUBSCRIPTION = "subscription plan for update"
@@ -356,6 +357,11 @@ class User < ActiveRecord::Base
 
   def valid_for_monthly_plan?
     self.Freemium?
+  end
+
+  def is_invalid_email?
+    self.valid?
+    self.errors[:email].present?
   end
 
   def check_login

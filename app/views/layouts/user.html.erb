@@ -5,28 +5,29 @@
     <meta charset='utf-8'>
     <meta content='IE=Edge,chrome=1' http-equiv='X-UA-Compatible'>
     <meta content='width=device-width, initial-scale=1.0' id='viewport' name='viewport'>
-    <%= favicon_link_tag %>
+    <link href="/assets/favicon.ico" rel="icon">
     <link href='https://fonts.googleapis.com/css?family=Roboto:900italic,300,100,100italic,300italic,400,400italic,500,500italic,700,700italic,900' rel='stylesheet' type='text/css'>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag "https://js.stripe.com/v1/",'application', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'vendor.js' %>
+    <%= tag :meta, :name => "stripe-key", :content => ENV['PUBLISHABLE_KEY'] %>
     <%= csrf_meta_tags %>
     <style type="text/css">
-      @media (max-width: 767px) {
+    @media (max-width: 767px) {
       #mobile_menu
       {
         display: block !important;
       }
       #not_mob
       {
-        display: none !important;
+        display: none;
       }
     }
     </style>
     <%= render 'shared/facebook_pixel' %>
   </head>
-  <body style="background-color: black; position: relative; overflow-x: hidden;">
-    <% if    %>
+  <body>
+    <% if current_user %>
       <% user_agent = UserAgent.parse(request.env["HTTP_USER_AGENT"])  %>
         <% if request.user_agent =~ /(iPhone|Android|webOS)/ %>
           <style type="text/css">
@@ -37,14 +38,16 @@
           <% puts "web" %>
           <%= render 'layouts/top_menu_after_login' %>
         <% end %>
-    <% elsif params[:action] != "home" %>
+    <% else %>
       <% if request.user_agent =~ /(iPhone|Android|webOS)/ %>
         <%= render 'layouts/top_menu_mobile_before_login' %>
        <% else %>
         <%= render 'layouts/top_menu' %>
       <% end %>
     <% end %>
-    <%= yield %>
+    <div class="container">
+      <%= yield %>
+    </div>
     <%= render 'layouts/footer' %>
   </body>
 </html>

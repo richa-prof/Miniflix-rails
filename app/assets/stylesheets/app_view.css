@@ -1,0 +1,20 @@
+.color-gray{
+  color: #474242;
+}
+
+#payment_method .radio input:checked ~ label {
+    color: #E4087E;
+}
+
+#card_info .form-group select, #card_info .form-group input:focus, #card_info .form-group input:valid, #card_info .form-group input.form-file, #card_info .form-group input.has-value,
+#card_info .form-group textarea:focus, #card_info .form-group textarea:valid, #card_info .form-group textarea.form-file, #card_info .form-group textarea.has-value {
+    color: #333333;
+}
+
+.android-new-email input{
+   color: #333333 !important;
+}
+
+.android-new-email label{
+   color: #999 !important;
+}
