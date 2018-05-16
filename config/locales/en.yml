@@ -198,6 +198,7 @@ en:
     subscription_info:
       active: "Your current subscription rate is %{price_rate}. Next charge for your subscription will be on %{charge_date}"
       cancelled: "You had Cancelled your subscription on %{cancelation_date}"
+      educational: You have subscribed as an educational user.
       no_subscription: You don't have any active subscription.
     movie:
       upload_movie_screenshots: Upload Movie Screenshots
