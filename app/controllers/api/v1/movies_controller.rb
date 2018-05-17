@@ -1,6 +1,6 @@
 class Api::V1::MoviesController < Api::V1::ApplicationController
   before_action :set_genre, only: [:index]
-  before_action :authenticate_user!, except: [:index, :featured_movie, :search, :show]
+  before_action :authenticate_user!, except: [:index, :featured_movie, :search, :show, :battleship]
 
   def index
     movies = @genre.movies.paginate(page: params[:page])
@@ -43,6 +43,14 @@ class Api::V1::MoviesController < Api::V1::ApplicationController
   def popular_movies
     movies = Movie.last 3
     render json: movies, scope: {current_user: current_user}
+  end
+
+  def battleship
+    movies = Movie.battleship_movies
+    serialize_movies = ActiveModelSerializers::SerializableResource.new(movies, scope: {current_user: current_user},
+        each_serializer: Api::V1::MovieSerializer)
+
+    render json: { movies: serialize_movies }
   end
 
   private

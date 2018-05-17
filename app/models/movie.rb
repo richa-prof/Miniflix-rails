@@ -82,6 +82,21 @@ class Movie < ApplicationRecord
       key = "%#{search_key}%"
       Movie.where('name LIKE :search OR title LIKE :search OR description LIKE :search or festival_laureates LIKE :search or actors LIKE :search', search: key).order(:name)
     end
+
+    def battleship_movies_name_arr
+      [ 'Silent Child',
+        'Madam Black',
+        'Super Sex',
+        'Clones',
+        'The Pond',
+        'The Phone Call',
+        'Stutterer',
+        'A Good Story' ]
+    end
+
+    def battleship_movies
+      Movie.where(name: Movie.battleship_movies_name_arr)
+    end
   end
   # ===== Class methods End =====
 

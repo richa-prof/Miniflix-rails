@@ -86,6 +86,7 @@ Rails.application.routes.draw do
           get :search
           get :my_playlist
           get :popular_movies
+          get :battleship
         end
         member do
           get :add_and_remove_to_my_playlist
