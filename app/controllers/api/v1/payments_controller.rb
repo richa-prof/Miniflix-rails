@@ -99,7 +99,11 @@ class Api::V1::PaymentsController < Api::V1::ApplicationController
     params[:payment_type]
   end
 
+  def registration_plan
+    params[:registration_plan]
+  end
+
   def set_registration_plan_for(user)
-    user.registration_plan = User.registration_plans[payment_type] if payment_type.present?
+    user.registration_plan = User.registration_plans[registration_plan] if registration_plan.present?
   end
 end
