@@ -168,6 +168,7 @@ class User < ActiveRecord::Base
 
   def checkout_url
     response = PaypalSubscription.new(:checkout, self).call
+
     response.checkout_url
   end
 
@@ -182,7 +183,8 @@ class User < ActiveRecord::Base
   end
 
   def confirm_payment(token, payer_id)
-    assign_token_and_customer_id(token,payer_id)
+    assign_token_and_customer_id(token, payer_id)
+    assign_registration_plan_to_android_user if self.Freemium?
     response = PaypalSubscription.new(:create_recurring_profile, self).call
 
     Rails.logger.debug "<<<<< confirm_payment::response : #{response} <<<<<"
@@ -583,6 +585,10 @@ class User < ActiveRecord::Base
   def assign_token_and_customer_id(token, payer_id)
     self.paypal_token = token
     self.customer_id = payer_id
+  end
+
+  def assign_registration_plan_to_android_user
+    self.registration_plan = User.registration_plans['Monthly']
   end
 
   def payment_cofirmation_setting(agreement_id)
