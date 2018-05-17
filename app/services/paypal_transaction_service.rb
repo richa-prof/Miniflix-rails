@@ -21,7 +21,7 @@ class PaypalTransactionService
       transaction_detail = user.my_transactions.find_or_initialize_by(transaction_id: response[:txn_id])
 
       create_and_update_transaction_detail(user, transaction_detail, response)
-      change_subscriptions_status(user)
+      change_subscriptions_status(user) unless is_recurring_payment_profile_created(response)
     end
   end
 
@@ -34,7 +34,7 @@ class PaypalTransactionService
     {
       payment_date: paypal_payment_date(response),
       payment_expire_date: paypal_payment_expire_date(response),
-      amount: response[:mc_gross],
+      amount: transaction_gross_amount(response),
       transaction_id: response[:txn_id]
     }
     attributes.merge!(user_payment_method: fetch_user_payment_method(user)) if transaction_detail.new_record?
@@ -46,12 +46,17 @@ class PaypalTransactionService
   end
 
   def paypal_payment_date(response)
-    payment_date =  response[:payment_date]
+    payment_date = if is_recurring_payment_profile_created(response)
+        response['time_created']
+      else
+        response[:payment_date]
+      end
+
     convert_date_to_ugc_format(payment_date)
   end
 
   def paypal_payment_expire_date(response)
-    payment_date =  response[:next_payment_date]
+    payment_date =  response['next_payment_date']
     convert_date_to_ugc_format(payment_date)
   end
 
@@ -62,5 +67,17 @@ class PaypalTransactionService
 
   def change_subscriptions_status(user)
     user.activate!
+  end
+
+  def is_recurring_payment_profile_created(response)
+    ( response['txn_type'] == 'recurring_payment_profile_created' )
+  end
+
+  def transaction_gross_amount(response)
+    if is_recurring_payment_profile_created(response)
+      response['initial_payment_amount']
+    else
+      response[:mc_gross]
+    end
   end
 end

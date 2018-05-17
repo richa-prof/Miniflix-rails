@@ -70,7 +70,15 @@ class Api::V1::PaypalPaymentsController < Api::V1::ApplicationController
     def check_condition_for_hook
       Rails.logger.debug "<<<<< check_condition_for_hook::user : #{@user.try(:inspect)} << #{params[:payment_status]} <<<<<"
 
-      (@user && (params["txn_type"] == "recurring_payment") && (params[:payment_status].downcase == "completed"))
+      ( @user && (is_recurring_payment_profile_created || is_recurring_payment_deducted) )
+    end
+
+    def is_recurring_payment_profile_created
+      (params['txn_type'] == 'recurring_payment_profile_created')
+    end
+
+    def is_recurring_payment_deducted
+      (params['txn_type'] == 'recurring_payment') && (params[:payment_status].downcase == 'completed')
     end
 
     def paypal_payment_url(action_name)
