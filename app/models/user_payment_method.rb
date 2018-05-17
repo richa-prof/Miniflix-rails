@@ -27,7 +27,7 @@ class UserPaymentMethod < ApplicationRecord
 
   # CALLBACKS
   before_validation :deactive_user_payment_method, on: :create
-
+  accepts_nested_attributes_for :user_payment_transactions, reject_if: lambda { |a| a[:payment_expire_date].blank? }, allow_destroy: true
 
   def service_period
     use_payment_expire_date  = created_at + 1.month

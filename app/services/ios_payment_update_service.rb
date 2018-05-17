@@ -74,12 +74,13 @@ class IosPaymentUpdateService
   end
 
   def build_payment_method_and_transaction_detail(user, latest_payment)
-    user.user_payment_methods.build(user_payment_method_nested_params(latest_payment))
+    user.user_payment_methods.build(user_payment_method_nested_params(user, latest_payment))
   end
 
-  def user_payment_method_nested_params(latest_payment)
+  def user_payment_method_nested_params(user, latest_payment)
     {
-      payment_type:  UserPaymentMethod.payment_types['iOS'],
+      payment_type:  UserPaymentMethod.payment_types['ios'],
+      billing_plan: fetch_billing_plan(user),
       user_payment_transactions_attributes:{
         "0" => user_payment_transaction_attributes(latest_payment)
       }
@@ -96,5 +97,9 @@ class IosPaymentUpdateService
 
   def convert_date_in_utc_format(date)
     (Time.parse date).utc
+  end
+
+  def fetch_billing_plan(user)
+    user.send(:fetch_billing_plan)
   end
 end
