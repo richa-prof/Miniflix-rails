@@ -55,8 +55,8 @@ class PaypalSubscription
     when :create_recurring_profile
       if (billing_plan.trial_days.present? && billing_plan.trial_days != 0)
         {
-          :trial_length    => 1,
-          :trial_period    => billing_plan.interval.capitalize,
+          :trial_length    => billing_plan.trial_days,
+          :trial_period    => 'Day',
           :trial_frequency => 1,
           :outstanding => :next_billing
         }
