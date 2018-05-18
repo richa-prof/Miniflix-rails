@@ -5,7 +5,7 @@ class Api::V1::MovieThumbnailSerializer < ActiveModel::Serializer
 
 
   def main_screenshot
-    object.cloud_front_url(object.movie_screenshot_1.genre_wise_thumb.path)
+    object.cloud_front_url(object.movie_screenshot_1.carousel_thumb.path)
   end
 
   def other_screenshots
