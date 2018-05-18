@@ -79,7 +79,11 @@ class Notification < ApplicationRecord
   end
 
   def movie_detail
-    {movie_id: self.movie.id, name: self.movie.name, realesed: self.movie.created_at, image: ApplicationController.helpers.image_cloud_front_url(self.movie.movie_thumbnail.thumbnail_screenshot.carousel_thumb.path)}
+    {movie_id: self.movie.id, name: self.movie.name, realesed: self.movie.created_at, image: image_cloud_front_url_for(self.movie.movie_thumbnail.thumbnail_screenshot.carousel_thumb.path)}
+  end
+
+  def image_cloud_front_url_for(target_path)
+    'https://' +  ENV['cloud_front_url'] +'/'+ target_path
   end
   # ======= Related to mobile API's END =======
 end
