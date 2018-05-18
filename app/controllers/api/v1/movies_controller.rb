@@ -46,7 +46,12 @@ class Api::V1::MoviesController < Api::V1::ApplicationController
   end
 
   def battleship
+    max_count = params[:video_count]
     movies = Movie.battleship_movies
+    if max_count.present?
+      movies = movies.first(max_count.to_i)
+    end
+
     serialize_movies = ActiveModelSerializers::SerializableResource.new(movies, scope: {current_user: current_user},
         each_serializer: Api::V1::MovieSerializer)
 
