@@ -518,7 +518,9 @@ class User < ActiveRecord::Base
   end
 
   def welcome_mail_for_free_user
-    UserMailer.free_user_signup_email(self).deliver
+    if Rails.env.production?
+      UserMailer.free_user_signup_email(self).deliver
+    end
   end
 
   def send_verification_code
