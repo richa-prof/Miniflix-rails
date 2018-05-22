@@ -88,9 +88,6 @@ gem 'phony_rails'
 #sidekiq
 gem 'sidekiq'
 
-# Sidekiq integration for Capistrano
-gem 'capistrano-sidekiq', github: 'seuros/capistrano-sidekiq'
-
 # For witing Cron jobs
 gem 'whenever', require: false
 
@@ -164,6 +161,7 @@ group :development do
   gem 'capistrano-passenger'
   gem 'capistrano-faster-assets'
   gem 'capistrano-rails-collection'
+  gem 'capistrano-sidekiq'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

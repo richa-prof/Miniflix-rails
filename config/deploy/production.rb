@@ -7,7 +7,11 @@
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
+server '52.33.20.12', user: 'deploy', roles: %w{app db web}
+set :deploy_to, "/data/apps/production/miniflix-rails"
 
+set :stage, "production"
+set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 
 # role-based syntax
 # ==================
@@ -41,11 +45,10 @@
 #
 # Global options
 # --------------
-#  set :ssh_options, {
-#    keys: %w(/home/rlisowski/.ssh/id_rsa),
-#    forward_agent: false,
-#    auth_methods: %w(password)
-#  }
+ set :ssh_options, {
+   keys: %w(/home/rails/rails_work/wes/doc/Miniflix.pem),
+   forward_agent: false
+ }
 #
 # The server-based syntax can be used to override options:
 # ------------------------------------
