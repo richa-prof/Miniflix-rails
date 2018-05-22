@@ -116,6 +116,9 @@ gem 'pnotify-rails'
 # A Datepicker for Twitter Bootstrap, integrated with Rails assets pipeline
 gem 'bootstrap-datepicker-rails'
 
+# provides a set of notifiers for sending notifications when errors occur in application.
+gem 'exception_notification'
+
 group :production, :staging do
   gem 'passenger'
 end
