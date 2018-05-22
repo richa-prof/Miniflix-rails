@@ -92,7 +92,7 @@ class User < ActiveRecord::Base
   scope :without_educational_plan, -> { where.not(registration_plan: 'Educational')  }
   scope :premium_users, -> { without_admin.without_educational_plan }
   scope :paid_users, -> {where(registration_plan: ['Monthly','Annually'])}
-  scope :find_by_month_and_year, ->(month_year){where('extract(month from created_at) = ? and extract(year from created_at) = ? ', month_year.first, month_year.last)}
+  #scope :find_by_month_and_year, ->(month_year){where('extract(month from created_at) = ? and extract(year from created_at) = ? ', month_year.first, month_year.last)}
   # SCOPE ENDS
 
 
