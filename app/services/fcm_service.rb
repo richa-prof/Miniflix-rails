@@ -9,7 +9,7 @@ class FcmService
   end
 
   def send_notification_to_ios(ios_token, options={})
-    notification_message = data[:message]
+    notification_message = options[:message]
 
     begin
       iphone_notification = {
