@@ -195,6 +195,8 @@ namespace :miniflix do
   def exclude_single_quote(name)
     if name.present? && name.include?("'")
       name.gsub("'", "")
+    else
+      name
     end
   end
 end

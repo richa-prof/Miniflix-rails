@@ -1,2 +1,2 @@
-Aws.config[:credentials] = Aws::Credentials.new("AKIAIJXUUTOS4BFWXDJA", "5cbAEZGgXbtyRZFd6G9gq76IYkKLlBPNiK/SH6lU")
-Aws.config[:region] = 'us-west-2'
+Aws.config[:credentials] = Aws::Credentials.new(ENV['S3_KEY'], ENV['S3_SECRET'])
+Aws.config[:region] = ENV['S3_REGION']

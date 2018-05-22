@@ -63,9 +63,8 @@ namespace :task_for_miniflix do
 end
 
 # Commands to run the above tasks:
-# 1. rake task_for_miniflix:update_sign_up_from
-# 2. rake task_for_miniflix:update_registration_plan
-# 3. rake task_for_miniflix:validate_phone_number
+# 1. rake task_for_miniflix:update_registration_plan
+# 2. rake task_for_miniflix:validate_phone_number
 
 # Currently we are saving the users with `(validate: false)` beacuse there are some errors in different different fields. Need to fix all those problems.
 
