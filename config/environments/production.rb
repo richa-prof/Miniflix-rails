@@ -103,4 +103,11 @@ Rails.application.configure do
     domain:                'miniflix.tv',
     enable_starttls_auto: true
   }
+
+  Rails.application.config.middleware.use ExceptionNotification::Rack,
+    :email => {
+      :email_prefix => "exception_mail Production ",
+      :sender_address => %{"Production" <noreply@miniflix.com>},
+      :exception_recipients => %w{sumit@gemsessence.com }
+    }
 end
