@@ -1,17 +1,18 @@
 class IosPaymentUpdateService
 
-  def initialize(user)
+  def initialize(user, mode=nil)
     @user = user
+    @mode = mode
   end
 
   def call
-    verify_receipt_url_and_build_payment_method(@user)
+    verify_receipt_url_and_build_payment_method(@user, @mode)
   end
 
   private
 
-  def verify_receipt_url_and_build_payment_method(user)
-    itune_response = itune_request(user)
+  def verify_receipt_url_and_build_payment_method(user, mode)
+    itune_response = itune_request(user, mode)
     if itune_response['status'] == 0
       latest_payment = fetch_latest_info(itune_response)
       check_and_save_payment_detail(user, latest_payment)
@@ -20,20 +21,31 @@ class IosPaymentUpdateService
     end
   end
 
-  def itune_request(user)
-    response = create_http_request.post(fetch_uri.path, request_data(user), {'Content-Type' => 'application/x-www-form-urlencoded'})
+  def itune_request(user, mode)
+    target_uri = fetch_uri(mode)
+    target_http_request = create_http_request(mode)
+    response = target_http_request.post(target_uri.path, request_data(user), {'Content-Type' => 'application/x-www-form-urlencoded'})
     JSON.parse(response.body)
   end
 
-  def create_http_request
-    http = Net::HTTP.new(fetch_uri.host, fetch_uri.port)
+  def create_http_request(mode)
+    target_uri = fetch_uri(mode)
+    http = Net::HTTP.new(target_uri.host, target_uri.port)
     http.use_ssl = true
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
     http
   end
 
-  def fetch_uri
-    URI.parse(ENV['receipt_url'])
+  def fetch_uri(mode=nil)
+    receipt_url = if mode == 'Production'
+                    ENV['production_receipt_url']
+                  elsif mode == 'Development'
+                    ENV['development_receipt_url']
+                  else
+                    ENV['receipt_url']
+                  end
+
+    URI.parse(receipt_url)
   end
 
   def request_data(user)

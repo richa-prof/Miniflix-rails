@@ -10,7 +10,9 @@ class Api::V1::UserSerializer < ActiveModel::Serializer
   end
 
   def subscription_info
-    if object.cancelled?
+    if object.Educational?
+      I18n.t( 'contents.subscription_info.educational' )
+    elsif object.cancelled?
       I18n.t( 'contents.subscription_info.cancelled',
               cancelation_date: formatted_cancelation_date(object) )
     elsif object.trial? || object.activate?
@@ -20,8 +22,6 @@ class Api::V1::UserSerializer < ActiveModel::Serializer
       I18n.t( 'contents.subscription_info.active',
               price_rate: price_rate,
               charge_date: charge_date )
-    elsif object.Educational?
-      I18n.t( 'contents.subscription_info.educational' )
     else
       I18n.t('contents.subscription_info.no_subscription')
     end
