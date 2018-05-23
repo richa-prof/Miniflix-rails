@@ -595,7 +595,10 @@ span.toggle-close:hover {
 .genere-inner .contslider-sub {
   pointer-events: auto;
 }
-/*Footer*/
+
+/* FOOTER CSS STARTS */
+
+
 footer.main-footer {
   padding: 50px 0;
 }
@@ -614,19 +617,48 @@ footer.main-footer {
   margin-bottom:  15px;
   display:  inline-block;
   width:  100%;
+  font-weight: 400;
+  background: none;
 }
+
+.ftr-social ul li:first-child a, .ftr-social ul li:first-child a:hover {
+  background: none;
+  color: #fff;
+}
+.ftr-social ul li a {
+  background: #2b2b2b;
+  transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  -moz-transition: all ease-in-out .4s;
+  -ms-transition: all ease-in-out .4s;
+  -o-transition: all ease-in-out .4s;
+}
+
 .ftr-sub ul li a .fa {
-  font-size: 28px;
+width: 40px;
+height: 40px;
+text-align: center;
+font-size: 20px;
+padding: 10px 0;
 }
-.ftr-sub ul li a .fa.fa-facebook-official {
-  color: #36528c;
+
+.ftr-social ul li {
+display: inline-block;
+margin-right: 10px;
+}
+
+.ftr-social ul li:first-child {
+    width: 100%;
+    background: none;
+}
+.ftr-social ul li a:hover {
   background: #fff;
-  line-height: 24px;
-  width: 22px;
+  color: #333;
 }
-.ftr-sub ul li a .fa.fa-twitter {
-  color: #55acee;
-}
+
+
+/* FOOTER CSS ENDS */
+
 /*Inner Genere*/
 .genere-inner {
   font-family: 'Roboto Condensed', sans-serif;
@@ -845,13 +877,13 @@ span.progress-inner {
     border: 1px solid #fff;
     padding: 0 15px 0 0;
   }
-  .ftr-social ul li {
+/*  .ftr-social ul li {
     display: inline-block;
     margin: 0px 5px;
   }
   .ftr-sub ul li a .fa.fa-facebook-official {
     background: none;
-  }
+  }*/
   .hssv-txt {
     padding: 40px 15px;
   }
