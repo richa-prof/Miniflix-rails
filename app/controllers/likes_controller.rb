@@ -1,5 +1,6 @@
 class LikesController < ApplicationController
-  before_action :authenticate_staff_user!
+  devise_group :blogger, contains: [:staff_user]
+  before_action :authenticate_blogger!
 
   def create
     @blog = Blog.find(params[:blog_id])

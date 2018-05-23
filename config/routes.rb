@@ -192,7 +192,8 @@ Rails.application.routes.draw do
 
   # Starts routing for Blog Feature
   constraints Constraints::BlogSubdomainConstraint do
-    devise_for :users, as: :staff, :controllers => {:registrations => "registrations"}
+    devise_for :users, as: :staff, :controllers => { registrations: 'registrations',
+                                                     sessions: 'sessions' }
 
     root to: 'blogs#dashboard'
     resources :blogs do

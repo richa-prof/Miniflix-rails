@@ -1,5 +1,6 @@
 class BlogsController < ApplicationController
-  before_action :authenticate_staff_user!, except: [:blog_profile, :show, :index]
+  devise_group :blogger, contains: [:staff_user]
+  before_action :authenticate_blogger!, except: [:blog_profile, :show, :index]
 
   def index
     query = params[:blog_search_query]
