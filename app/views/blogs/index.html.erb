@@ -75,7 +75,7 @@
                       </div>
                     </div>
                     <p>
-                      <%= blog.body.truncate(200).html_safe %>
+                      <%= blog.description.try(:html_safe) %>
                     </p>
                     <div class="blog-inner-link">
                       <%= link_to('Continue Reading', blog_path(id: blog.slug), class: "btn btn-default") %>

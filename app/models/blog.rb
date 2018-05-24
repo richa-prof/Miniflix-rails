@@ -11,8 +11,9 @@ class Blog < ApplicationRecord
   friendly_id :title, use: :slugged
 
   # Validations
-  validates :title, :body, presence: true
-  validates :title, length: { maximum: 60 }
+  validates :title, :body, :description, presence: true
+  validates :title, length: { maximum: 105 }
+  validates :description, length: { maximum: 200 }
 
   # Scopes
   scope :with_search_query, -> (q) { where('title LIKE ? or body LIKE ? ', "%#{q}%", "%#{q}%") if q.present? }

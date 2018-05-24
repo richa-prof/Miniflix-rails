@@ -15,7 +15,7 @@
           <div class="col-md-7">
             <div class="form-group">
               <label>Blog Title</label>
-              <%= f.text_field :title, class: "form-control", placeholder: "(Max 60 Letters)", maxlength: 60, required: true %>
+              <%= f.text_field :title, class: "form-control", placeholder: "(Max 105 Letters)", maxlength: 105, required: true %>
               <%= errors_for(f, :title) %>
             </div>
           </div>
@@ -33,6 +33,17 @@
             </div>
           </div>
         </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Blog Description</label>
+              <%= f.text_field :description, class: "form-control", placeholder: "(Max 200 Letters)", maxlength: 200, required: true %>
+              <%= errors_for(f, :description) %>
+            </div>
+          </div>
+        </div>
+
         <div class="row">
           <div class="col-sm-12">
             <div class="blog-editor">

@@ -75,7 +75,7 @@ class BlogsController < ApplicationController
   private
 
   def blog_params
-    params.require(:blog).permit(:title, :body, :featured_image)
+    params.require(:blog).permit(:title, :body, :description, :featured_image)
   end
 
   def fetch_and_set_blogs_for(user)
