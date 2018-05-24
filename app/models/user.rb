@@ -55,6 +55,11 @@ class User < ActiveRecord::Base
   before_update :assign_subscription_cancel_date, if: 'cancelled?'
   before_save :set_job_for_annual_user_to_change_subscription_status, if: -> {user_choose_annual_plan?}
 
+  before_validation do
+    self.uid = email if uid.blank?
+    self.provider = User.providers['email'] if provider.blank?
+  end
+
   #change phone number in nomalize form before validate
   phony_normalize :phone_number, :unconfirmed_phone_number
 
