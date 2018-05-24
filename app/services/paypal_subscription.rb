@@ -50,7 +50,8 @@ class PaypalSubscription
     when :checkout
       {
         return_url:  paypal_return_url_payment_success(user),
-        cancel_url:  cancel_url_on_payment_cancel(user)
+        cancel_url:  cancel_url_on_payment_cancel(user),
+        ipn_url: paypal_ipn_url
       }
     when :create_recurring_profile
       if (billing_plan.trial_days.present? && billing_plan.trial_days != 0)
@@ -80,6 +81,10 @@ class PaypalSubscription
     else
       "#{ENV['RAILS_API_HOST']}/api/v1/paypal_payments/cancel/#{user.id}"
     end
+  end
+
+  def paypal_ipn_url
+    ENV['PAYPAL_IPN_URL']
   end
 
 end
