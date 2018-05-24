@@ -53,9 +53,9 @@ class Api::V1::MoviesController < Api::V1::ApplicationController
     end
 
     serialize_movies = ActiveModelSerializers::SerializableResource.new(movies, scope: {current_user: current_user},
-        each_serializer: Api::V1::MovieSerializer)
+        each_serializer: Api::V1::BattleshipMovieSerializer)
 
-    render json: { movies: serialize_movies, battleship: true }
+    render json: { movies: serialize_movies }
   end
 
   private
