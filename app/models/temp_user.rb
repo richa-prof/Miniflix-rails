@@ -4,7 +4,7 @@ class TempUser < ApplicationRecord
     # user_hash = user.as_json(only: [:name, :email, :registration_plan])
     # temp_user = self.create(user_hash.merge(password: user.password))
     # temp_user.id
-    temp_user = (social_authenticate.present?) ? eval("find_or_initialize_by(provider: user.provider, uid: user.uid)") : eval("find_or_initialize_by(email: user.email)")
+    temp_user = (social_authenticate.present?) ? eval("find_or_initialize_by(provider: user.provider.try(:downcase), uid: user.uid)") : eval("find_or_initialize_by(email: user.email)")
     temp_user.name = user.name
     temp_user.registration_plan = user.registration_plan
     temp_user.password = user.password
@@ -19,7 +19,7 @@ class TempUser < ApplicationRecord
   end
 
   def self.omniauth(auth)
-    find_or_initialize_by(provider: auth.provider, uid: auth.uid) do |temp_user|
+    find_or_initialize_by(provider: auth.provider.try(:downcase), uid: auth.uid) do |temp_user|
     puts "auth.info==== #{auth.info}"
     temp_user.name = auth.info.name
     temp_user.email = auth.info.email

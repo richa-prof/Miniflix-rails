@@ -185,6 +185,9 @@ class Api::Vm1::SessionsController < Api::Vm1::ApplicationController
       sign_up_from_param = use_params[:sign_up_from].try(:downcase)
       use_params[:sign_up_from] = sign_up_from_param
 
+      provider_param = use_params[:provider].try(:downcase)
+      use_params[:provider] = provider_param
+
       use_params
     end
 
@@ -193,6 +196,9 @@ class Api::Vm1::SessionsController < Api::Vm1::ApplicationController
 
       sign_up_from_param = use_params[:sign_up_from].try(:downcase)
       use_params[:sign_up_from] = sign_up_from_param
+
+      provider_param = use_params[:provider].try(:downcase)
+      use_params[:provider] = provider_param
 
       use_params
     end
