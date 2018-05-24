@@ -5,7 +5,7 @@ class Api::V1::ContactUsController < Api::V1::ApplicationController
     if contact_us.save
       render json: {success: true, message: "Details successfully saved"}
     else
-      render json: {success: false, message: contact_us.errors}
+      render json: { success: false, message: contact_us.errors.full_messages[0] }
     end
   end
 
