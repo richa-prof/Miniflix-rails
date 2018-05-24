@@ -38,11 +38,11 @@ private
   end
 
   def paypal_return_url_payment_success(user)
-    "#{ENV['RAILS_HOST']}/api/v1/paypal_payments/update_payment/#{user.id}"
+    "#{ENV['RAILS_API_HOST']}/api/v1/paypal_payments/update_payment/#{user.id}"
   end
 
   def cancel_url_on_payment_cancel(user)
-    "#{ENV['RAILS_HOST']}/api/v1/paypal_payments/cancel_update/#{user.id}"
+    "#{ENV['RAILS_API_HOST']}/api/v1/paypal_payments/cancel_update/#{user.id}"
   end
 
 end

@@ -17,7 +17,7 @@ module Api::Vm1::Concerns::UserCreate
   end
 
   def update_ios_payment_and_generate_response(user)
-    mode = logged_in_params[:notification_from]
+    mode = user.logged_in_user.try(:notification_from)
     if IosPaymentUpdateService.new(user, mode).call();
       user.save!
       user.create_or_update_logged_in_user(params)

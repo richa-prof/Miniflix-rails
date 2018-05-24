@@ -13,6 +13,9 @@ class IosPaymentUpdateService
 
   def verify_receipt_url_and_build_payment_method(user, mode)
     itune_response = itune_request(user, mode)
+
+    Rails.logger.debug "<<<<< verify_receipt_url_and_build_payment_method::itune_response : #{itune_response}  <<<< itune_response['status']:: #{itune_response['status']} <<<<<"
+
     if itune_response['status'] == 0
       latest_payment = fetch_latest_info(itune_response)
       check_and_save_payment_detail(user, latest_payment)
@@ -24,12 +27,18 @@ class IosPaymentUpdateService
   def itune_request(user, mode)
     target_uri = fetch_uri(mode)
     target_http_request = create_http_request(mode)
+
+    Rails.logger.debug "<<<<< itune_request::user.receipt_data.blank? : #{user.receipt_data.blank?} <<<<<"
+
     response = target_http_request.post(target_uri.path, request_data(user), {'Content-Type' => 'application/x-www-form-urlencoded'})
     JSON.parse(response.body)
   end
 
   def create_http_request(mode)
     target_uri = fetch_uri(mode)
+
+    Rails.logger.debug "<<<<< create_http_request::target_uri : #{target_uri} <<<<<"
+
     http = Net::HTTP.new(target_uri.host, target_uri.port)
     http.use_ssl = true
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE

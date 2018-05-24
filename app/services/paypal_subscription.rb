@@ -68,17 +68,17 @@ class PaypalSubscription
 
   def paypal_return_url_payment_success(user)
     if user.Android?
-      "#{ENV['RAILS_HOST']}/paypal_success/#{user.id}"
+      "#{ENV['RAILS_API_HOST']}/paypal_success/#{user.id}"
     else
-      "#{ENV['RAILS_HOST']}/api/v1/paypal_payments/complete/#{user.id}"
+      "#{ENV['RAILS_API_HOST']}/api/v1/paypal_payments/complete/#{user.id}"
     end
   end
 
   def cancel_url_on_payment_cancel(user)
     if user.Android?
-      "#{ENV['RAILS_HOST']}/paypal_cancel/#{user.id}"
+      "#{ENV['RAILS_API_HOST']}/paypal_cancel/#{user.id}"
     else
-      "#{ENV['RAILS_HOST']}/api/v1/paypal_payments/cancel/#{user.id}"
+      "#{ENV['RAILS_API_HOST']}/api/v1/paypal_payments/cancel/#{user.id}"
     end
   end
 
