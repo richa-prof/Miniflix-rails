@@ -5,6 +5,10 @@ class Api::V1::MovieSerializer < ActiveModel::Serializer
   has_many :user_video_last_stops, serializer: Api::V1::UserVideoLastStopSerializer
   has_many :movie_captions, serializer: Api::V1::MovieCaptionSerializer
 
+  def battleship
+    false
+  end
+
   def video_file
     object.hls_movie_url if valid_user?
   end

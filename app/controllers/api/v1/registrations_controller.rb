@@ -2,7 +2,7 @@ class Api::V1::RegistrationsController < DeviseTokenAuth::RegistrationsControlle
   include Api::V1::Concerns::UserSerializeDataConcern
 
   def sign_up_params
-    params.permit([:email, :password, :password_confirmation, :registration_plan, :name, :sign_up_from, :payment_type])
+    params.permit([:email, :password, :password_confirmation, :registration_plan, :name, :sign_up_from, :payment_type, :battleship])
   end
 
   def render_create_success

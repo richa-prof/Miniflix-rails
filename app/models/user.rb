@@ -578,8 +578,17 @@ class User < ActiveRecord::Base
   end
 
   def fetch_billing_plan
-    billing_plans_interval = ((self.Monthly?) ? "month" : "year")
-    eval("BillingPlan.#{billing_plans_interval}").last
+    if self.Monthly? && self.battleship?
+      battleship_trial_plan
+    else
+      billing_plans_interval = ((self.Monthly?) ? "month" : "year")
+      monthly_plans = eval("BillingPlan.#{billing_plans_interval}")
+      monthly_plans.where.not(stripe_plan_id: ENV['BATTLESHIP_TRIAL_PLAN_ID']).last
+    end
+  end
+
+  def battleship_trial_plan
+    BillingPlan.find_by_stripe_plan_id(ENV['BATTLESHIP_TRIAL_PLAN_ID'])
   end
 
   def payment_method_attribute(payment_type)

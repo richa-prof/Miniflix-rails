@@ -16,9 +16,7 @@ class BillingPlan < ApplicationRecord
   private
 
   def create_stripe_plan
-    if Rails.env.production?
-      Stripe::PlanCreate.new(self).call
-      throw(:abort) if self.errors.any?
-    end
+    Stripe::PlanCreate.new(self).call
+    throw(:abort) if self.errors.any?
   end
 end
