@@ -90,6 +90,8 @@ Rails.application.routes.draw do
     # API's for mobile applications
     namespace :api do
       namespace :vm1 do
+      get 'welcome/app_latest_version' => 'welcome#app_latest_version'
+
       post 'users/contact_us' => 'users#contact_us'
       post 'users/payment_history' => 'users#payment_history'
       post 'users/email_and_notification'
