@@ -100,6 +100,7 @@ Rails.application.routes.draw do
 
       get 'genres/genres' => 'genres#genres'
       post 'genres/genres_wise_movies' =>'genres#genres_wise_movies'
+      get 'genres/genres_with_latest_movie' =>'genres#genres_with_latest_movie'
       post 'genres/id_wise_gener' => 'genres#id_wise_gener_with_movie',as: :id_wise_gener
 
       post 'movies/get_movie_detail' => 'movies#get_movie_detail'

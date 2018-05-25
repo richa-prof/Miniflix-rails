@@ -213,6 +213,8 @@ class Movie < ApplicationRecord
       return super(except: [:created_at, :updated_at, :version_file, :uploader, :s3_multipart_upload_id, :admin_genre_id]).merge(movie_screenshot: movie_screenshot_list, captions: self.movie_captions.map(&:as_json), film_video: fetch_movie_urls, genre_name: genre_name)
     when "genre_wise_list"
       return super(only: [:id, :name]).merge(movie_screenshot: movie_screenshot_list)
+    when 'genres_with_latest_movie'
+      return super(only: [:id, :name, :title, :description, :language, :video_duration]).merge(film_video: fetch_movie_urls, genre_name: genre_name, movie_screenshot: movie_screenshot_list)
     else
       movie_detail =  super(only: [:id, :name, :title, :description, :language, :video_duration]).merge(film_video: fetch_movie_urls, genre_name: genre_name, movie_screenshot: movie_screenshot_list)
       movie_detail.merge!(last_stopped: fetch_last_stop(options)) if options.present?
