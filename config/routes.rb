@@ -201,6 +201,7 @@ Rails.application.routes.draw do
       resources :likes, only: [:create, :destroy]
       resources :comments, only: [:create, :index]
     end
+    resources :blog_subscribers, only: [:new, :create]
     get 'profile/:id' => 'blogs#blog_profile', as: 'profile'
   end
 end

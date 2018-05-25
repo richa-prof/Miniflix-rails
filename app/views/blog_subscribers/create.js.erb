@@ -1,0 +1,10 @@
+var blogSubscriberModalObj = $('#blogSubscriberModal');
+<% if @blog_subscriber.valid? %>
+  blogSubscriberModalObj.modal('hide');
+  blogSubscriberModalObj.find('#blog_subscriber_email').val('');
+<% else %>
+  var errorContainer = blogSubscriberModalObj.find('.error-container');
+  <% error_message = @blog_subscriber.errors.full_messages[0] %>
+  var errorMessage = "<%= error_message %>";
+  errorContainer.text(errorMessage);
+<% end %>

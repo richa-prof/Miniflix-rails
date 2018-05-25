@@ -78,6 +78,9 @@
                       <%= blog.description.try(:html_safe) %>
                     </p>
                     <div class="blog-inner-link">
+                      <%= link_to(new_blog_subscriber_path, class: "btn btn-default blog-subscribe-btn", remote:true) do %>
+                        <i class="fa fa-plus"></i> Subscribe
+                      <% end %>
                       <%= link_to('Continue Reading', blog_path(id: blog.slug), class: "btn btn-default") %>
                     </div>
                     <div class="blg-like-comm-counter">
@@ -102,4 +105,5 @@
   </section>
 </div>
 
+<%= render partial: 'blog_subscribers/blog_subscriber_modal' %>
 <%= render 'shared/blog_footer' %>

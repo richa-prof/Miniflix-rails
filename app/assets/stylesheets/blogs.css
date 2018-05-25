@@ -861,3 +861,9 @@ label.uploadfile-field .form-control {
   padding: 0 15px;
   font-weight: 200;
 }
+
+.blog-inner-add-btn {
+  position: static;
+  padding: 20px 0 0;
+  text-align: right;
+}

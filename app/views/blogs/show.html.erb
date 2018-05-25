@@ -32,7 +32,13 @@
                   </div>
                 </div>
               </div>
+
               <div class="blog-content-single">
+                <div class="blog-inner-add-btn add-blog-btn">
+                  <%= link_to(new_blog_subscriber_path, class: "btn btn-default blog-subscribe-btn", remote:true) do %>
+                    <i class="fa fa-plus"></i> Subscribe
+                  <% end %>
+                </div>
                 <h1><%= @blog.title.html_safe %></h1>
                 <%= @blog.body.html_safe %>
                 <div class="share-video-btn">
@@ -62,5 +68,5 @@
       </div>
     </section>
   </div>
-
+<%= render partial: 'blog_subscribers/blog_subscriber_modal' %>
 <%= render 'shared/blog_footer' %>

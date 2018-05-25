@@ -119,6 +119,8 @@ gem 'bootstrap-datepicker-rails'
 # provides a set of notifiers for sending notifications when errors occur in application.
 gem 'exception_notification'
 
+gem 'useragent'
+
 group :production, :staging do
   gem 'passenger'
 end

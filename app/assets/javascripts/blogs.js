@@ -9,6 +9,19 @@
     return $('.blg-comm-count a');
   };
 
+  blogSubscribeBtn = function() {
+    return $('.blog-subscribe-btn');
+  };
+
+  bindClickEventOnBlogSubscribeBtn = function() {
+    blogSubscribeBtn().click(function() {
+      var blogSubscriberModalObj = $('#blogSubscriberModal');
+      blogSubscriberModalObj.find('#blog_subscriber_email').val('');
+      var errorContainer = blogSubscriberModalObj.find('.error-container');
+      errorContainer.text('');
+    });
+  };
+
   applyRemoteTrueToAjaxPaginationLinks = function() {
     ajaxPaginationObjects().find('.pagination a').attr('data-remote', 'true');
   };
@@ -32,6 +45,10 @@ ready = function() {
 
   if (blogCommentsCountBtn().length) {
     bindClickEventOnBlogCommentsCountBtn();
+  }
+
+  if (blogSubscribeBtn().length) {
+    bindClickEventOnBlogSubscribeBtn();
   }
 };
 
