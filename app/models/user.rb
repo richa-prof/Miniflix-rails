@@ -100,25 +100,6 @@ class User < ActiveRecord::Base
   scope :find_by_month_and_year, ->(month_year){where('extract(month from created_at) = ? and extract(year from created_at) = ? ', month_year.first, month_year.last)}
   # SCOPE ENDS
 
-
-  # ===== Class methods Start =====
-  class << self
-    def send_reset_password_reminder
-      with_migrate_user.each do |user|
-        if user.phone_number.present?
-          user.send_reset_password_reminder_sms
-        end
-
-        if user.email? && user.Web?
-          user.send_reset_password_reminder_email
-        elsif user.iOS? || user.Android?
-          user.send_reset_password_reminder_push_notification
-        end
-      end
-    end
-  end
-  # ===== Class methods End =====
-
   def skip_registration_plan_validation
     social_login || staff? || is_social_login?
   end
