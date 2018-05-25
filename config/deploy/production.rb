@@ -62,3 +62,6 @@ set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 #     auth_methods: %w(publickey password)
 #     # password: "please use keys"
 #   }
+
+set :sidekiq_config, -> { File.join(shared_path, 'config', 'sidekiq.yml') }
+set :sidekiq_env,  fetch(:rack_env, fetch(:rails_env, fetch(:stage)))
