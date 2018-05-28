@@ -3,7 +3,7 @@ class SessionsController < Devise::SessionsController
 
   def create
     staff_user = User.staff.find_by_email(params[:staff_user][:email])
-    if staff_user.staff?
+    if staff_user && staff_user.staff?
       super
     else
       flash[:alert] = 'You are not authorized for this feature!'
