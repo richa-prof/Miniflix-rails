@@ -236,7 +236,8 @@ class Movie < ApplicationRecord
     {
       original: image_url(movie_thumbnail.movie_screenshot_1.carousel_thumb.path),
       thumb330: image_url(movie_thumbnail.thumbnail_screenshot.carousel_thumb.path),
-      thumb640: image_url(movie_thumbnail.thumbnail_640_screenshot.carousel_thumb.path)
+      thumb640: image_url(movie_thumbnail.thumbnail_640_screenshot.carousel_thumb.path),
+      thumb800: movie_thumbnail.thumb_800_url
     }
   end
 

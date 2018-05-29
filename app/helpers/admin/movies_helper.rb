@@ -28,6 +28,8 @@ module Admin::MoviesHelper
       'admin/upload_img640.png'
     when 'thumbnail_screenshot'
       'admin/upload_img330.png'
+    when 'thumbnail_800_screenshot'
+      'admin/upload_img800.png'
     else
       'admin/upload_img.png'
     end

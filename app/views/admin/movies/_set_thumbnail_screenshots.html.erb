@@ -45,4 +45,24 @@
       <label id="thumbnail_640_error" class="cust_error" style="color: red;"></label>
     </div>
   </div>
+
+  <div class="col-md-3 col-sm-12">
+    <div class="fileupload fileupload-new" data-provides="fileupload">
+      <%= link_to("javascript:void(0);", class: 'movie-thumbnail-file-field-wrapper') do %>
+        <div class="fileupload-new thumbnail">
+          <%= render_thumbnail_image_for( is_edit_mode,
+                                          'thumbnail_800_screenshot',
+                                          thumbnail.try(:thumbnail_800_screenshot) ) %>
+        </div>
+        <div class="fileupload-preview fileupload-exists thumbnail"></div>
+      <% end %>
+
+      <%= thumbnail_fields.file_field( :thumbnail_800_screenshot,
+                                       class: 'default movie-thumbnail-file-field',
+                                       id: "thumbnail_800_screenshot",
+                                       accept: "image/*" ) %>
+
+      <label id="thumbnail_800_error" class="cust_error" style="color: red;"></label>
+    </div>
+  </div>
 </div>

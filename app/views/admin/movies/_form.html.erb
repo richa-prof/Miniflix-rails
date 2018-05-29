@@ -206,6 +206,10 @@
 
     var fileInput640 = $("#thumbnail_640_screenshot");
     file640 = fileInput640[0].files && fileInput640[0].files[0];
+
+    var fileInput800 = $("#thumbnail_800_screenshot");
+    file800 = fileInput800[0].files && fileInput800[0].files[0];
+
     var error = false;
     if( file ) {
       var img = new Image();
@@ -261,6 +265,35 @@
         error = true;
       <% end %>
     }
+
+    if( file800 ) {
+      var img800 = new Image();
+      img800.src = window.URL.createObjectURL( file800 );
+
+      img800.onload = function() {
+        var width = img800.naturalWidth,
+          height = img800.naturalHeight;
+
+        window.URL.revokeObjectURL( img800.src );
+
+        if( width == 800 && height == 400 ) {
+          // form.submit();
+        }
+        else {
+            //fail
+          console.log("invalid dimention==>",width,"--height-->",height)
+          $("#thumbnail_800_error").html("Please upload image with 800x400 size only").show();
+          error = true;
+        }
+      };
+    }
+    else { //No file was input or browser doesn't support client side reading
+      <% unless @admin_movie.movie_thumbnail.thumbnail_640_screenshot.present? %>
+        $("#thumbnail_800_error").html("Please upload thumbnail image").show();
+        error = true;
+      <% end %>
+    }
+
     setTimeout(function() {
       if (error){
         console.log("Error in", error)

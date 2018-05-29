@@ -82,7 +82,7 @@ class Admin::MoviesController < ApplicationController
   end
 
   def movie_thumbnail_params
-    params.require(:movie_thumbnail).permit(:movie_screenshot_1, :movie_screenshot_2, :movie_screenshot_3, :thumbnail_screenshot, :thumbnail_640_screenshot)
+    params.require(:movie_thumbnail).permit(:movie_screenshot_1, :movie_screenshot_2, :movie_screenshot_3, :thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot)
   end
 
   def save_movie_thumbnails(movie)
