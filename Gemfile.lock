@@ -424,6 +424,10 @@ GEM
       rack
     rack-test (1.0.0)
       rack (>= 1.0, < 3)
+    rack-tracker (1.6.0)
+      activesupport (>= 3.0)
+      rack (>= 1.4)
+      tilt (>= 1.4)
     rails (5.1.6)
       actioncable (= 5.1.6)
       actionmailer (= 5.1.6)
@@ -630,6 +634,7 @@ DEPENDENCIES
   pry
   puma (~> 3.7)
   rack-cors (= 1.0.1)
+  rack-tracker
   rails (~> 5.1.4)
   rails-controller-testing
   rspec-rails

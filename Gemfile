@@ -121,6 +121,9 @@ gem 'exception_notification'
 
 gem 'useragent'
 
+# For tracking and analytics
+gem 'rack-tracker'
+
 group :production, :staging do
   gem 'passenger'
 end

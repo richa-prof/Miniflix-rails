@@ -41,5 +41,9 @@ module Miniflix
         :methods => [:get, :post, :options, :delete, :put, :patch]
       end
     end
+
+    config.middleware.use(Rack::Tracker) do
+      handler :facebook_pixel, { id: ENV['FACEBOOK_PIXEL_ID'] }
+    end
   end
 end

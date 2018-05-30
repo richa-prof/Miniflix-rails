@@ -12,6 +12,10 @@ class PaymentsController < ApplicationController
     redirect_to 'miniflix://mob?is_payment_success=false&error_code=1&msg=User not found' and return if (user.nil? || params[:registration_plan].nil?)
     @user_payment_method = user.user_payment_methods.last
     @user_payment_method = user.user_payment_methods.build if @user_payment_method.nil?
+
+    @user = user
+    facebook_pixel_event_track('Android user go for Subscription', user_trackable_detail)
+
     session[:android_user] = user.id
   end
 
@@ -27,21 +31,29 @@ class PaymentsController < ApplicationController
       set_registration_plan_for(@user)
       response = Stripe::SubscriptionCreate.new(@user, stripe_token).call if stripe_token
       unless (response && response[:success]) #subscription fail on stripe
+        facebook_pixel_event_track("stripe payment fail", user_trackable_detail)
+
         redirect_to "miniflix://mob?is_payment_success=false&error_code=2&msg=#{@user.errors}"
       else
+        facebook_pixel_event_track("stripe payment success", user_trackable_detail)
+
         redirect_to 'miniflix://mob?is_payment_success=true&error_code=0&msg=Stripe Payment successfully done.'
       end
     end
   end
 
   def paypal_cancel
+    facebook_pixel_event_track('Android user cancel paypal confirmation', user_trackable_detail) if @user
+
     redirect_to 'miniflix://mob?is_payment_success=false&error_code=2&msg=Your payment token is invalid.'
   end
 
   def paypal_success
     if @user.confirm_payment(params[:token], params[:PayerID])
+      facebook_pixel_event_track('Android user paypal payment success', user_trackable_detail)
       redirect_to 'miniflix://mob?is_payment_success=true&error_code=0&msg=Payment successfully done.'
     else
+      facebook_pixel_event_track('Android user paypal payment fail', user_trackable_detail) if @user
       @user.incomplete!
       redirect_to 'miniflix://mob?is_payment_success=false&error_code=2&msg=Your payment token is invalid.'
     end

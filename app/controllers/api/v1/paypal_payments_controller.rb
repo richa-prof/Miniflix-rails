@@ -1,4 +1,5 @@
 class Api::V1::PaypalPaymentsController < Api::V1::ApplicationController
+  include EventTrackConcern
   skip_before_action :verify_authenticity_token, only: [:hook]
   before_action :set_user, except: [:hook]
   before_action :set_user_and_check_condition_for_hook, only: [:hook]
@@ -6,15 +7,20 @@ class Api::V1::PaypalPaymentsController < Api::V1::ApplicationController
   def complete
     #"payment_success & make_payment" is name of component at frontend side
     if @user.confirm_payment(params[:token], params[:PayerID])
+      facebook_pixel_event_track('paypal payment success', user_trackable_detail)
+
       redirect_to paypal_payment_url(t 'payment.paypal.thank_you')
     else
+      facebook_pixel_event_track('paypal payment fail', user_trackable_detail) if @user
+
       @user.incomplete!
       redirect_to paypal_payment_url(t 'payment.paypal.make_payment')
     end
   end
 
   def cancel
-    @user.incomplete!
+    facebook_pixel_event_track('Cancel paypal confirmation', user_trackable_detail) if @user
+
     redirect_to paypal_payment_url(t 'payment.paypal.make_payment')
   end
 

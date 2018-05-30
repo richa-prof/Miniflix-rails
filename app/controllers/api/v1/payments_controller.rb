@@ -1,5 +1,6 @@
 class Api::V1::PaymentsController < Api::V1::ApplicationController
   include Api::V1::Concerns::UserSerializeDataConcern
+  include EventTrackConcern
   before_action :authenticate_user!
   before_action :check_user_valid_for_upgrade_plan, only: [:upgrade]
 
@@ -11,9 +12,15 @@ class Api::V1::PaymentsController < Api::V1::ApplicationController
     else
       set_registration_plan_for(@resource)
       response = Stripe::SubscriptionCreate.new(@resource, stripe_token).call if stripe_token
+      @user = @resource
+
       unless (response && response[:success]) #subscription fail on stripe
+        facebook_pixel_event_track("stripe payment fail", user_trackable_detail)
+
         render_json_for_card_fail(response)
       else
+        facebook_pixel_event_track("stripe payment success", user_trackable_detail)
+
         render_json_for_card_success(response)
       end
     end

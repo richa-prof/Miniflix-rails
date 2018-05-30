@@ -2,6 +2,8 @@ module EventTrackConcern
   extend ActiveSupport::Concern
 
   def facebook_pixel_event_track(event_type, event_parameter=nil)
+    Rails.logger.debug "<<<<< facebook_pixel_event_track::event_type : #{event_type} << event_parameter:: #{event_parameter} <<<<<"
+
     tracker do |t|
       t.facebook_pixel :track_custom, { type: event_type, options: event_parameter  }
     end
@@ -14,6 +16,8 @@ module EventTrackConcern
       registration_plan: @user.registration_plan
     }
     user_hash.merge!(payment_type: fetch_payment_type) if !@user.Educational?
+    Rails.logger.debug "<<<<< user_trackable_detail::user_hash : #{user_hash} <<<<<"
+
     user_hash
   end
 
