@@ -11,6 +11,7 @@ server '52.33.20.12', user: 'deploy', roles: %w{app db web}
 set :deploy_to, "/data/apps/production/miniflix-rails"
 
 set :stage, "production"
+set :whenever_environment, -> { fetch(:stage) }
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 
 # role-based syntax
