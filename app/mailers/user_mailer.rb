@@ -9,8 +9,10 @@ class UserMailer < ApplicationMailer
 
   def reset_password_reminder_email(user)
     subject = 'Reset your Miniflix password'
-    body = "Your temporary password is: #{user.temp_password} Please login and reset your password."
-    mail(to: user.email, subject: subject, body: body, content_type: 'text/html')
+    @user = user
+    user_name = user.name
+    @display_name = user_name.present? ? user_name.titleize : user.email
+    mail(to: user.email, subject: subject)
   end
 
   def staff_member_signup_email(user)
