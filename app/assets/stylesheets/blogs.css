@@ -867,3 +867,7 @@ label.uploadfile-field .form-control {
   padding: 20px 0 0;
   text-align: right;
 }
+
+.blog-title h3 {
+  font-size: 20px;
+}
