@@ -78,9 +78,10 @@ class Movie < ApplicationRecord
       s3_multipart_obj.destroy
     end
 
-    def search(search_key)
-      key = "%#{search_key}%"
-      Movie.where('name LIKE :search OR title LIKE :search OR description LIKE :search or festival_laureates LIKE :search or actors LIKE :search', search: key).order(:name)
+    def search(search_query)
+      key = "%#{search_query}%"
+
+      Movie.where('name LIKE :search OR title LIKE :search OR festival_laureates LIKE :search', search: key).order(:name)
     end
 
     def battleship_movies_name_arr
