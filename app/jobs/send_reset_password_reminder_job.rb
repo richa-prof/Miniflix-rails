@@ -15,7 +15,7 @@ class SendResetPasswordReminderJob < ApplicationJob
 
           if user.email? && user.Web?
             user.send_reset_password_reminder_email
-          elsif user.iOS? || user.Android?
+          elsif user.current_mobile_logged_in_user
             user.send_reset_password_reminder_push_notification
           end
         end

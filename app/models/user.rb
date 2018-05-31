@@ -139,12 +139,21 @@ class User < ActiveRecord::Base
 
   def send_reset_password_reminder_push_notification
     options = { data: { message: notification_message_to_reset_password } }
+    if current_mobile_logged_in_user
+      device_type = current_mobile_logged_in_user.device_type
+      case device_type
+      when LoggedInUser::DEVICE_TYPE_ANDROID
+        fcm_service.send_notification_to_android(logged_in_user_device_tokens, options)
+      when LoggedInUser::DEVICE_TYPE_IOS
+        ios_token = logged_in_user_device_tokens.last
+        fcm_service.send_notification_to_ios(ios_token, options[:data])
+      end
+    end
+  end
 
-    if Android?
-      fcm_service.send_notification_to_android(logged_in_user_device_tokens, options)
-    elsif iOS?
-      ios_token = logged_in_user_device_tokens.last
-      fcm_service.send_notification_to_ios(ios_token, options[:data])
+  def current_mobile_logged_in_user
+    if logged_in_user && logged_in_user.device_type.present? && logged_in_user.device_token.present?
+      logged_in_user
     end
   end
 
