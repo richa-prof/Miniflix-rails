@@ -5,9 +5,9 @@ module BlogsHelper
   def get_share_button(share_on)
     str = case share_on
           when 'facebook'
-            "<i class='fa fa-facebook'></i> Facebook"
+            "<i class='fa fa-facebook'></i>"
           when 'twitter'
-            "<i class='fa fa-twitter'></i> Twitter"
+            "<i class='fa fa-twitter'></i>"
           end
 
     str.html_safe
@@ -15,7 +15,7 @@ module BlogsHelper
 
   def get_share_url(blog, share_on)
     title = blog.title
-    description = blog.body.truncate(150)
+    description = blog.description
     target_url = blog_url(id: blog.slug)
 
     url = case share_on

@@ -58,20 +58,14 @@
                   </div>
                   <div class="blog-short-msg blog-title">
                     <h3><%= blog.title %></h3>
+
                     <div class="share-video-btn">
-                      <div class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" aria-expanded="true">
-                          <i class="fa fa-share"></i> Share
-                        <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                          <% BlogsHelper::SHARE_ON.each do |share_on| %>
-                            <li>
-                              <%= link_to get_share_url(blog, share_on), target: '_blank' do %>
-                                <%= get_share_button(share_on) %>
-                              <% end %>
-                            </li>
-                          <% end %>
-                        </ul>
+                      <div class="blg-share-icons">
+                        <% BlogsHelper::SHARE_ON.each do |share_on| %>
+                            <%= link_to get_share_url(blog, share_on), target: '_blank' do %>
+                              <%= get_share_button(share_on) %>
+                            <% end %>
+                        <% end %>
                       </div>
                     </div>
                     <p>
