@@ -14,7 +14,14 @@ class Api::V1::PaypalPaymentsController < Api::V1::ApplicationController
       facebook_pixel_event_track('paypal payment fail', user_trackable_detail) if @user
 
       @user.incomplete!
-      redirect_to paypal_payment_url(t 'payment.paypal.make_payment')
+
+      target_url = if @user.registration_plan.blank?
+                     paypal_payment_url(t 'payment.paypal.choose_plan')
+                   else
+                     paypal_payment_url(t 'payment.paypal.make_payment')
+                   end
+
+      redirect_to target_url
     end
   end
 
