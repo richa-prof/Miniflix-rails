@@ -163,6 +163,9 @@ class User < ActiveRecord::Base
 
   def checkout_url
     response = PaypalSubscription.new(:checkout, self).call
+    if response
+      self.save
+    end
 
     response.checkout_url
   end
