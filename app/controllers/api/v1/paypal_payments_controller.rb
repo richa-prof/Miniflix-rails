@@ -21,7 +21,13 @@ class Api::V1::PaypalPaymentsController < Api::V1::ApplicationController
   def cancel
     facebook_pixel_event_track('Cancel paypal confirmation', user_trackable_detail) if @user
 
-    redirect_to paypal_payment_url(t 'payment.paypal.make_payment')
+    target_url = if @user.registration_plan.blank?
+                   paypal_payment_url(t 'payment.paypal.choose_plan')
+                 else
+                   paypal_payment_url(t 'payment.paypal.make_payment')
+                 end
+
+    redirect_to target_url
   end
 
   def update_payment
