@@ -1,3 +1,18 @@
+<% content_for :og_meta_tags do %>
+  <!-- Open Graph tags -->
+  <meta property="fb:app_id" content="<%= ENV['FACEBOOK_KEY'] %>" />
+  <meta property="og:title" content="<%= @blog.title %>" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="<%= blog_url(@blog) %>" />
+  <meta property="og:description" content="<%= @blog.description %>" />
+  <meta property="og:image" content="<%= @blog.featured_image_url %>" />
+  <!-- Twitter Card data -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="<%= @blog.title %>">
+  <meta name="twitter:description" content="<%= @blog.description %>">
+  <meta name="twitter:image" content="<%= @blog.featured_image_url %>">
+<% end %>
+
 <%= render 'shared/blog_header' %>
   <div class="main-content">
     <section class="blog-inner-main blog-list-main">
