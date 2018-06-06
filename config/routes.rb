@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   # Starts common routing
   get 'send_download_link' => 'mobile_apps#send_download_link'
+  resources :movies, only: [:show]
 
   # Starts routing for API subdomain
   constraints Constraints::ApiSubdomainConstraint do

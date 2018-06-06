@@ -70,7 +70,8 @@ class Api::V1::BattleshipMovieSerializer < ActiveModel::Serializer
   def get_social_share_url(obj, share_on)
     title = object.title
     description = object.description.truncate(150) rescue ''
-    target_url = object.bitly_url
+    # target_url = object.bitly_url
+    target_url = "#{ENV['RAILS_HOST']}/movies/#{object.slug}"
 
     url = case share_on
           when 'facebook'

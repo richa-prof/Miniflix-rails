@@ -1,0 +1,14 @@
+<% content_for :og_meta_tags do %>
+  <!-- Open Graph tags -->
+  <meta property="fb:app_id" content="<%= ENV['FACEBOOK_KEY'] %>" />
+  <meta property="og:title" content="<%= @movie.title %>" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="<%= movies_og_shareable_url(@movie) %>" />
+  <meta property="og:description" content="<%= @movie.description.truncate(150) %>" />
+  <meta property="og:image" content="<%= main_screenshot_url(@movie) %>" />
+  <!-- Twitter Card data -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="<%= @movie.title %>">
+  <meta name="twitter:description" content="<%= @movie.description.truncate(150) %>">
+  <meta name="twitter:image" content="<%= main_screenshot_url(@movie) %>">
+<% end %>
