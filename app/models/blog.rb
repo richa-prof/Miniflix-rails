@@ -23,4 +23,22 @@ class Blog < ApplicationRecord
 
     self.likes.where(user_id: target_user.id).any?
   end
+
+  def cloud_front_url(path)
+    'https://' +  ENV['cloud_front_url'] +'/'+ path
+  end
+
+  def featured_image_cloud_front_url
+    target_path = featured_image.try(:path)
+
+    if target_path.present?
+      return cloud_front_url(target_path)
+    end
+
+    featured_image_default_url
+  end
+
+  def featured_image_default_url
+    "#{ENV['RAILS_HOST']}/#{featured_image.default_url}"
+  end
 end
