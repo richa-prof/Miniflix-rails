@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180529071006) do
+ActiveRecord::Schema.define(version: 20180605200332) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "city"
@@ -231,6 +231,17 @@ ActiveRecord::Schema.define(version: 20180529071006) do
     t.index ["user_id"], name: "index_logged_in_users_on_user_id"
   end
 
+  create_table "movie_trailers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "file"
+    t.integer "s3_multipart_upload_id"
+    t.bigint "admin_movie_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "uploader"
+    t.index ["admin_movie_id"], name: "index_movie_trailers_on_admin_movie_id"
+    t.index ["s3_multipart_upload_id"], name: "index_movie_trailers_on_s3_multipart_upload_id"
+  end
+
   create_table "movie_versions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "movie_id"
     t.integer "s3_multipart_upload_id"
@@ -435,6 +446,7 @@ ActiveRecord::Schema.define(version: 20180529071006) do
   add_foreign_key "contact_user_replies", "contact_us", column: "contact_us_id"
   add_foreign_key "likes", "blogs"
   add_foreign_key "logged_in_users", "users"
+  add_foreign_key "movie_trailers", "admin_movies"
   add_foreign_key "notifications", "admin_movies"
   add_foreign_key "notifications", "users"
   add_foreign_key "social_media_links", "users"

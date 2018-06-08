@@ -35,6 +35,10 @@
       <div class="box box-primary">
         <!-- /.box-header -->
           <div class="box-body">
+            <% if (is_edit_mode && !@admin_movie.has_trailer?) %>
+              <%= render( partial: 'upload_trailer', locals: { movie: @admin_movie, is_edit_mode: true } ) %>
+            <% end %>
+
             <div class="form-group">
               <%= f.label :name %>
               <%= f.text_field( :name,

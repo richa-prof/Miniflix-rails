@@ -91,6 +91,7 @@ en:
     movies: Movies
     listing_movie_details: Listing Movie Details
     add_new_movie_details: Add new movie details
+    admin_movie: Admin Movie
   title:
     miniflix_admin: Miniflix Admin
     movie:
@@ -162,13 +163,16 @@ en:
     cancel: Cancel
     new_movie: New Movie
     download_now: Download Now
-    watch_now: Watch Now
+    watch_movie: Watch Movie
+    watch_trailer: Watch Trailer
     add_caption: Add Caption
     sign_in: Sign In
   label:
     not_available: Not Available
     background_image:
       is_set: Allow to set Background image for home page
+    upload_movie_trailer: Upload movie trailer
+    add_movie_trailer: Add movie trailer
   invalid_params:
     user:
       empty_image: "Image parameter can't be empty."

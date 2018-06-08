@@ -33,6 +33,7 @@ class Movie < ApplicationRecord
   # ASSOCIATIONS
   belongs_to :genre, class_name: "Genre", foreign_key: "admin_genre_id"
   has_one :movie_thumbnail, dependent: :destroy, foreign_key: "admin_movie_id"
+  has_one :movie_trailer, dependent: :destroy, foreign_key: "admin_movie_id"
   has_many :notifications, dependent: :destroy, foreign_key: "admin_movie_id"
   has_many :user_filmlists, dependent: :destroy, foreign_key: "admin_movie_id"
   has_many :user_video_last_stops, dependent: :destroy, foreign_key: "admin_movie_id"
@@ -112,6 +113,10 @@ class Movie < ApplicationRecord
 
   def set_is_featured_film_false
     self.update(is_featured_film: false)
+  end
+
+  def has_trailer?
+    movie_trailer.try(:file).present?
   end
 
   def write_file

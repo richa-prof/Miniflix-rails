@@ -21,9 +21,34 @@ class Admin::MoviesController < ApplicationController
     @admin_movie.build_movie_thumbnail
   end
 
+  def upload_movie_trailer
+    @movie = Movie.find_by_s3_multipart_upload_id(params[:id])
+  end
+
+  def save_uploaded_movie_trailer
+    success = false
+    movie_id = params[:movie_id]
+    upload_id = params[:upload_id]
+
+    @movie = Movie.find_by_s3_multipart_upload_id(params[:movie_id])
+
+    s3_upload = S3Multipart::Upload.find(upload_id)
+
+    movie_trailer = MovieTrailer.new( admin_movie_id: movie_id,
+                                      s3_multipart_upload_id: upload_id,
+                                      uploader: s3_upload.uploader,
+                                      file: s3_upload.location )
+
+    if movie_trailer.save
+      success = true
+    end
+    render json: { success: success }
+  end
+
   def add_movie_details
-    @admin_movie = Movie.find_by_s3_multipart_upload_id(params[:id])
-    @s3_multipart = S3Multipart::Upload.find(params[:id])
+    movie_trailer = MovieTrailer.find_by_s3_multipart_upload_id(params[:id])
+    @admin_movie = movie_trailer.movie
+    @s3_multipart = S3Multipart::Upload.find(@admin_movie.s3_multipart_upload_id)
   end
 
   # GET /admin/movies/1/edit

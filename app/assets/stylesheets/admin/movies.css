@@ -27,7 +27,7 @@
 }
 
 .movie-watch-download-link {
-  width: 45%;
+  width: 30%;
 }
 
 .movie-block-box-primary {
@@ -42,4 +42,11 @@
 .movie-description-box {
   border-top-width: 0px;
   margin-bottom: 0px;
+}
+.edit_movie_frm .trailer-upload-box {
+  border: none;
+}
+
+.edit_movie_frm .trailer-upload-box > .box-body {
+  padding: 0;
 }

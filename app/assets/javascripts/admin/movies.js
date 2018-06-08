@@ -5,17 +5,25 @@
     return $('#jwPlayerConfigContainer');
   };
 
-  jwplayer_setup = function() {
+  jwplayer_setup = function(objType) {
     var jwPlayerConfig = jwPlayerConfigContainer();
     var hlsUrl = jwPlayerConfig.data('hls-file');
     var originalUrl = jwPlayerConfig.data('original-file');
 
+    if (objType == 'trailer') {
+      var sources = [{
+                file: jwPlayerConfig.data('trailer-file')
+              }]
+    } else {
+      var sources = [{
+                file: hlsUrl
+              },{
+                file: originalUrl
+              }]
+    }
+
     jwplayer("flim_video").setup({
-      sources: [{
-          file: hlsUrl
-        },{
-          file: originalUrl
-        }],
+      sources: sources,
       autostart: true,
       allowscriptaccess: 'always',
       allownetworking: 'all'
@@ -32,6 +40,18 @@
 
   bindClickEventOnFullScreenPlayBtn = function() {
     $('.full-screen-play').off('click').on('click', function(event) {
+      jwplayer_setup();
+      jwplayer_setup_error();
+      $(".player").removeClass('hide');
+      jwplayer("flim_video").setFullscreen(true);
+      jwplayer("flim_video").play(true);
+    })
+  };
+
+  bindClickEventOnPlayTrailerBtn = function() {
+    $('.play-movie-trailer-btn').off('click').on('click', function(event) {
+      jwplayer_setup('trailer');
+      jwplayer_setup_error('trailer');
       $(".player").removeClass('hide');
       jwplayer("flim_video").setFullscreen(true);
       jwplayer("flim_video").play(true);
@@ -58,6 +78,7 @@ var ready;
 ready = function() {
   jwplayer.key = jwPlayerConfigContainer().data('jwplayer-key');
   bindClickEventOnFullScreenPlayBtn();
+  bindClickEventOnPlayTrailerBtn();
   bindChangeEventOnBrowserScreens();
   jwplayer_setup();
   jwplayer_setup_error();

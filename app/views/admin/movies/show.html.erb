@@ -152,9 +152,14 @@
                             <div class="box-header with-border text-center">
                               <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                  <%= link_to( t('links.watch_now'),
+                                  <%= link_to( t('links.watch_movie'),
                                                "javascript:void(0)",
                                                class: "btn btn-primary btn-lg movie-watch-download-link full-screen-play" ) %>
+                                  <% if @admin_movie.has_trailer? %>
+                                  <%= link_to( t('links.watch_trailer'),
+                                               "javascript:void(0)",
+                                               class: "btn btn-primary btn-lg movie-watch-download-link play-movie-trailer-btn" ) %>
+                                  <% end %>
                                   <% if @admin_movie.downloadable %>
                                     <%= link_to( t('links.download_now'),
                                                  @admin_movie.film_video,
