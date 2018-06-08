@@ -6,6 +6,12 @@
 
 <% form_css_class = is_edit_mode ? 'edit_movie_frm' : 'add_movie_details_frm' %>
 
+<div class='upload-trailer-block'>
+  <% if (is_edit_mode && !@admin_movie.has_trailer?) %>
+    <%= render( partial: 'upload_trailer', locals: { movie: @admin_movie, is_edit_mode: true } ) %>
+  <% end %>
+</div>
+
 <!-- form start -->
 <%= form_for( [:admin, @admin_movie],
               html: { id: "frm_admin_movie",
@@ -35,10 +41,6 @@
       <div class="box box-primary">
         <!-- /.box-header -->
           <div class="box-body">
-            <% if (is_edit_mode && !@admin_movie.has_trailer?) %>
-              <%= render( partial: 'upload_trailer', locals: { movie: @admin_movie, is_edit_mode: true } ) %>
-            <% end %>
-
             <div class="form-group">
               <%= f.label :name %>
               <%= f.text_field( :name,

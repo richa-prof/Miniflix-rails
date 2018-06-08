@@ -43,10 +43,11 @@
   border-top-width: 0px;
   margin-bottom: 0px;
 }
-.edit_movie_frm .trailer-upload-box {
+
+.upload-trailer-block .trailer-upload-box {
   border: none;
 }
 
-.edit_movie_frm .trailer-upload-box > .box-body {
+.upload-trailer-block .trailer-upload-box > .box-body {
   padding: 0;
 }
