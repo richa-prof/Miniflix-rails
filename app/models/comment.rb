@@ -4,7 +4,7 @@ class Comment < ApplicationRecord
   # Validations
   validates :body, presence: true
   validates :commenter, presence: true, if: -> { skip_commenter_validation }
-  validates :commenter_email, presence: true, if: -> { skip_commenter_validation }
+  validates :commenter_email, presence: true, :format => Devise.email_regexp, if: -> { skip_commenter_validation }
 
   def by_staff?
     user_id.present?

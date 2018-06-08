@@ -201,7 +201,7 @@ Rails.application.routes.draw do
     root to: 'blogs#dashboard'
     resources :blogs do
       resources :likes, only: [:create, :destroy]
-      resources :comments, only: [:create, :index]
+      resources :comments, only: [:create, :index], :constraints => -> (req) { req.xhr? }
     end
     resources :blog_subscribers, only: [:new, :create]
     get 'profile/:id' => 'blogs#blog_profile', as: 'profile'

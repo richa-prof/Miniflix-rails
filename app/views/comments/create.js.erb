@@ -1,8 +1,23 @@
 $("#comments_<%= @blog.id %>").html("<%= j (render partial: 'blogs/comments', locals: { comments: @comments } ) %>");
-$("#comment_body").val('');
 
-var commenterField = $("#comment_commenter");
+<% if @comment.valid? %>
+  $("#comment_body").val('');
 
-if (commenterField.length) {
-  commenterField.val('');
-}
+  var commenterField = $("#comment_commenter");
+
+  if (commenterField.length) {
+    commenterField.val('');
+  }
+<% else %>
+  <% error_message = @comment.errors.full_messages[0] %>
+  var errorMessage = "<%= error_message %>";
+
+  new PNotify({
+    title: 'Error',
+    text: errorMessage,
+    buttons: {
+      sticker: false
+    }
+  });
+
+<% end %>
