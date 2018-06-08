@@ -21,8 +21,8 @@
             <%= link_to('Blogs', blogs_path, class: "") %>
           </li>
         </ul>
-        <% if staff_user_signed_in? %>
-          <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+          <% if staff_user_signed_in? %>
             <li class="dropdown">
                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> <%= current_staff_user.name %> <span class="caret"></span></a>
                <ul class="dropdown-menu">
@@ -34,8 +34,12 @@
                   </li>
                </ul>
             </li>
-          </ul>
-        <% end %>
+          <% else %>
+            <li class="signup-button">
+              <%= link_to(t('links.sign_in'), root_path) %>
+            </li>
+          <% end %>
+        </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>

@@ -886,3 +886,13 @@ label.uploadfile-field .form-control {
 .blog-short-msg .share-video-btn {
   margin: 10px 0 15px;
 }
+
+.main-header .navbar-default .navbar-nav>li.signup-button>a {
+  background: #fae902;
+  color: #000;
+  border: none;
+  height: 40px;
+  padding: 10px 25px;
+  margin: 5px 0;
+  border-radius: 5px;
+}
