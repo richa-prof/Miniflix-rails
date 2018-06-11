@@ -35,7 +35,7 @@ class Api::V1::MovieSerializer < ActiveModel::Serializer
   end
 
   def trailer_file
-    #T0DO :need to implement trailer functionality, from admin side
+    object.movie_trailer.try(:file)
   end
 
   def social_urls
