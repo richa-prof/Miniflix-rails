@@ -30,18 +30,17 @@ class Admin::MoviesController < ApplicationController
     movie_id = params[:movie_id]
     upload_id = params[:upload_id]
 
-    @movie = Movie.find_by_s3_multipart_upload_id(params[:movie_id])
+    @movie = Movie.find(params[:movie_id])
 
     s3_upload = S3Multipart::Upload.find(upload_id)
+    movie_trailer = @movie.create_movie_trailer( s3_multipart_upload_id: upload_id,
+                                                 uploader: s3_upload.uploader,
+                                                 file: s3_upload.location )
 
-    movie_trailer = MovieTrailer.new( admin_movie_id: movie_id,
-                                      s3_multipart_upload_id: upload_id,
-                                      uploader: s3_upload.uploader,
-                                      file: s3_upload.location )
-
-    if movie_trailer.save
+    if movie_trailer.valid?
       success = true
     end
+
     render json: { success: success }
   end
 
@@ -77,9 +76,17 @@ class Admin::MoviesController < ApplicationController
   # DELETE /admin/movies/1
   def destroy
     s3_multipart = S3Multipart::Upload.find(@admin_movie.s3_multipart_upload_id)
+
+    if @admin_movie.has_trailer?
+      movie_trailer = @admin_movie.movie_trailer
+      s3_multipart_obj = S3Multipart::Upload.find(movie_trailer.s3_multipart_upload_id)
+    end
+
     version_file = @admin_movie.version_file
     @admin_movie.destroy
     Movie.delete_movie_from_s3(s3_multipart, version_file)
+
+    MovieTrailer.delete_file_from_s3(s3_multipart_obj) if s3_multipart_obj
 
     redirect_to admin_movies_url, notice: I18n.t('flash.movie.successfully_deleted')
   end
