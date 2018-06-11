@@ -51,3 +51,11 @@
 .upload-trailer-block .trailer-upload-box > .box-body {
   padding: 0;
 }
+
+.movie-block-box-primary .jwplayer {
+    margin: 2px auto 10px;
+}
+
+.movie-block-box-primary h3.box-title.text-blue {
+    margin-bottom: 20px;
+}

@@ -1,88 +1,87 @@
-// Reference: http://developmentmode.wordpress.com/2011/05/09/defining-custom-functions-on-jquery/
-(function ($) {
+// // Reference: http://developmentmode.wordpress.com/2011/05/09/defining-custom-functions-on-jquery/
+// (function ($) {
 
-  jwPlayerConfigContainer = function() {
-    return $('#jwPlayerConfigContainer');
-  };
+//   isEmptyValue = function(value) {
+//     return (undefined === value || null === value || "" === value)
+//   }
 
-  jwplayer_setup = function(objType) {
-    var jwPlayerConfig = jwPlayerConfigContainer();
-    var hlsUrl = jwPlayerConfig.data('hls-file');
-    var originalUrl = jwPlayerConfig.data('original-file');
+//   jwPlayerConfigContainer = function() {
+//     return $('#jwPlayerConfigContainer');
+//   };
 
-    if (objType == 'trailer') {
-      var sources = [{
-                file: jwPlayerConfig.data('trailer-file')
-              }]
-    } else {
-      var sources = [{
-                file: hlsUrl
-              },{
-                file: originalUrl
-              }]
-    }
+//   jwplayer_setup = function() {
+//     var jwPlayerConfig = jwPlayerConfigContainer();
+//     var hlsUrl = jwPlayerConfig.data('hls-file');
+//     var originalUrl = jwPlayerConfig.data('original-file');
+//     var trailerFileUrl = jwPlayerConfig.data('trailer-file');
 
-    jwplayer("flim_video").setup({
-      sources: sources,
-      autostart: true,
-      allowscriptaccess: 'always',
-      allownetworking: 'all'
-    });
-  };
+//     var sources = [{
+//               file: hlsUrl
+//             },{
+//               file: originalUrl
+//             }]
 
-  jwplayer_setup_error = function() {
-    jwplayer().on('setupError',function(er){
-      $('.full-screen-play').removeClass('full-screen-play');
+//     var videoObject = document.querySelector("div[data-embed-url='video-url1']");
+//     videoObject.id = "player-1";
+//     var newplayerInstance = window.jwplayer(videoObject);
+//     window.player2 = newplayerInstance;
+//     newplayerInstance.setup({
+//       sources: sources,
+//       allowscriptaccess: 'always',
+//       allownetworking: 'all'
+//     });
 
-      $('#err-player').html('<div class="alert alert-danger alert-dismissible" style="margin-top: 12px;"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+ er.message +'</div>');
-    });
-  };
+//     if (!isEmptyValue(trailerFileUrl)) {
+//       var trailerSources = [{
+//                 file: trailerFileUrl
+//               }]
 
-  bindClickEventOnFullScreenPlayBtn = function() {
-    $('.full-screen-play').off('click').on('click', function(event) {
-      jwplayer_setup();
-      jwplayer_setup_error();
-      $(".player").removeClass('hide');
-      jwplayer("flim_video").setFullscreen(true);
-      jwplayer("flim_video").play(true);
-    })
-  };
+//       var trailerVideoObject = document.querySelector("div[data-embed-url='video-url2']");
+//       trailerVideoObject.id = "player-2";
+//       var newplayerInstance = window.jwplayer(trailerVideoObject);
+//       window.player2 = newplayerInstance;
+//       newplayerInstance.setup({
+//         sources: trailerSources,
+//         allowscriptaccess: 'always',
+//         allownetworking: 'all'
+//       });
+//     }
+//   };
 
-  bindClickEventOnPlayTrailerBtn = function() {
-    $('.play-movie-trailer-btn').off('click').on('click', function(event) {
-      jwplayer_setup('trailer');
-      jwplayer_setup_error('trailer');
-      $(".player").removeClass('hide');
-      jwplayer("flim_video").setFullscreen(true);
-      jwplayer("flim_video").play(true);
-    })
-  };
+//   jwplayer_setup_error = function() {
+//     jwplayer().on('setupError',function(er){
+//       $('.full-screen-play').removeClass('full-screen-play');
 
-  bindChangeEventOnBrowserScreens = function() {
-    $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function(el){
+//       $('#err-player').html('<div class="alert alert-danger alert-dismissible" style="margin-top: 12px;"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+ er.message +'</div>');
+//     });
+//   };
 
-      var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen || document.msFullscreenElement;
-      if (state != true){
-        jwplayer("flim_video").pause(true);
-        $(".player").addClass('hide');
-      } else{
-        jwplayer("flim_video").play(true);
-      }
-    });
-  };
+//   bindChangeEventOnBrowserScreens = function() {
+//     $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function(el){
 
-}) (jQuery);
+//       var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen || document.msFullscreenElement;
+//       if (state != true){
+//         jwplayer("flim_video").pause(true);
+//         $(".player").addClass('hide');
+//       } else{
+//         jwplayer("flim_video").play(true);
+//       }
+//     });
+//   };
 
-var ready;
+// }) (jQuery);
 
-ready = function() {
-  jwplayer.key = jwPlayerConfigContainer().data('jwplayer-key');
-  bindClickEventOnFullScreenPlayBtn();
-  bindClickEventOnPlayTrailerBtn();
-  bindChangeEventOnBrowserScreens();
-  jwplayer_setup();
-  jwplayer_setup_error();
-};
+// var ready;
 
-$(document).ready(ready);
-$(document).on('turbolinks:load', ready);
+// ready = function() {
+//   jwplayer.key = jwPlayerConfigContainer().data('jwplayer-key');
+
+//   if (jwPlayerConfigContainer().length) {
+//     bindChangeEventOnBrowserScreens();
+//     jwplayer_setup();
+//     jwplayer_setup_error();
+//   }
+// };
+
+// $(document).ready(ready);
+// $(document).on('turbolinks:load', ready);

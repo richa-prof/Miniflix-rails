@@ -88,6 +88,7 @@ en:
     editing_background_image: Editing Background image
     show: show
     movie: Movie
+    movie_trailer: Movie Trailer
     movies: Movies
     listing_movie_details: Listing Movie Details
     add_new_movie_details: Add new movie details
@@ -162,7 +163,7 @@ en:
     new_image: New Image
     cancel: Cancel
     new_movie: New Movie
-    download_now: Download Now
+    download_now: "[Download Now]"
     watch_movie: Watch Movie
     watch_trailer: Watch Trailer
     add_caption: Add Caption

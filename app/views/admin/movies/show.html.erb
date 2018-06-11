@@ -1,5 +1,4 @@
 <!-- Content Header (Page header) -->
-<%= javascript_include_tag 'admin/movies.js' %>
 <%= render 'shared/jwplayer_config' %>
 
  <div id="err-player"></div>
@@ -152,19 +151,8 @@
                             <div class="box-header with-border text-center">
                               <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                  <%= link_to( t('links.watch_movie'),
-                                               "javascript:void(0)",
-                                               class: "btn btn-primary btn-lg movie-watch-download-link full-screen-play" ) %>
-                                  <% if @admin_movie.has_trailer? %>
-                                  <%= link_to( t('links.watch_trailer'),
-                                               "javascript:void(0)",
-                                               class: "btn btn-primary btn-lg movie-watch-download-link play-movie-trailer-btn" ) %>
-                                  <% end %>
-                                  <% if @admin_movie.downloadable %>
-                                    <%= link_to( t('links.download_now'),
-                                                 @admin_movie.film_video,
-                                                 class: "btn btn-primary btn-lg movie-watch-download-link" ) %>
-                                  <% end %>
+
+                                  <%= render( partial: 'movie_and_trailer_players', locals: { movie: @admin_movie } ) %>
                                 </div>
                               </div>
                             </div>
@@ -204,3 +192,91 @@
   <!-- /.row -->
 </section>
 <!-- /.content -->
+
+<script type="text/javascript">
+  isEmptyValue = function(value) {
+    return (undefined === value || null === value || "" === value)
+  }
+
+  jwPlayerConfigContainer = function() {
+    return $('#jwPlayerConfigContainer');
+  };
+
+  jwplayer_setup = function() {
+    var jwPlayerConfig = jwPlayerConfigContainer();
+    var hlsUrl = jwPlayerConfig.data('hls-file');
+    var originalUrl = jwPlayerConfig.data('original-file');
+    var trailerFileUrl = jwPlayerConfig.data('trailer-file');
+
+    var sources = [{
+              file: hlsUrl
+            },{
+              file: originalUrl
+            }]
+
+    var videoObject = document.querySelector("div[data-embed-url='video-url1']");
+    videoObject.id = "player-1";
+    var newplayerInstance = window.jwplayer(videoObject);
+    window.player2 = newplayerInstance;
+    newplayerInstance.setup({
+      sources: sources,
+      allowscriptaccess: 'always',
+      allownetworking: 'all'
+    });
+
+    if (!isEmptyValue(trailerFileUrl)) {
+      var trailerSources = [{
+                file: trailerFileUrl
+              }]
+
+      var trailerVideoObject = document.querySelector("div[data-embed-url='video-url2']");
+      trailerVideoObject.id = "player-2";
+      var newplayerInstance = window.jwplayer(trailerVideoObject);
+      window.player2 = newplayerInstance;
+      newplayerInstance.setup({
+        sources: trailerSources,
+        allowscriptaccess: 'always',
+        allownetworking: 'all'
+      });
+    }
+  };
+
+  jwplayer_setup_error = function() {
+    jwplayer().on('setupError',function(er){
+      $('.full-screen-play').removeClass('full-screen-play');
+
+      $('#err-player').html('<div class="alert alert-danger alert-dismissible" style="margin-top: 12px;"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+ er.message +'</div>');
+    });
+  };
+
+  bindChangeEventOnBrowserScreens = function() {
+    $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function(el){
+
+      var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen || document.msFullscreenElement;
+      if (state != true){
+        jwplayer("flim_video").pause(true);
+        $(".player").addClass('hide');
+      } else{
+        jwplayer("flim_video").play(true);
+      }
+    });
+  };
+
+var ready;
+
+ready = function() {
+  console.log('>>>>> invoked `ready` function >>>>>');
+
+  jwplayer.key = jwPlayerConfigContainer().data('jwplayer-key');
+
+  if (jwPlayerConfigContainer().length) {
+    bindChangeEventOnBrowserScreens();
+    jwplayer_setup();
+    jwplayer_setup_error();
+  }
+};
+
+$(document).ready(ready);
+$(document).on('turbolinks:load', ready);
+
+</script>
