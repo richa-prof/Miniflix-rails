@@ -6,7 +6,7 @@ class Movie < ApplicationRecord
 
   SHARE_ON = ['facebook', 'twitter']
 
-  SUPPORTED_FORMATS = %w(wmv avi mp4 mkv mov mpeg)
+  SUPPORTED_FORMATS = %w(webm wmv avi mp4 mkv mov mpeg)
 
   TRANSCODE_VERSION = {
     generic_full_hd: '1505471425821-qrjgkg',

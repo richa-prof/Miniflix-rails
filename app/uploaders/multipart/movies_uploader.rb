@@ -6,7 +6,7 @@ class MoviesUploader < ApplicationController
   attach :movies
 
   # Only accept certain file types. Expects an array of valid extensions.
-  accept %w(wmv avi mp4 mkv mov mpeg)
+  accept %w(webm wmv avi mp4 mkv mov mpeg)
 
   # Define the minimum and maximum allowed file sizes (in bytes)
   # limit min: 5*1000*1000, max: 2*1000*1000*1000
