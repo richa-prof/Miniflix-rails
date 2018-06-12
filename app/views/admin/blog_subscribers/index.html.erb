@@ -1,0 +1,85 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    <%= t('heading.admin_blog_subscribers')%>
+  </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <%= render( partial: 'shared/flash_notification', locals: { notice: notice } ) %>
+          <div class="row">
+            <div class="col-lg-10 col-xs-12">
+              <h3 class="box-title admin-box-title"><%= t('heading.listing_blog_subscribers')%></h3></div>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body admin-box-body">
+          <div class="row">
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="box box-primary">
+                <!-- /.box-header -->
+                <div class="box-body">
+                  <table id="tbl_blog_subscribers" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th><%= t('table.blog_subscribers.id')%></th>
+                        <th><%= t('table.blog_subscribers.email')%></th>
+                        <th width="150px"><%= t('table.blog_subscribers.action')%></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% @blog_subscribers.each do |subscriber| %>
+                        <tr>
+                          <td><%= subscriber.id %></td>
+                          <td><%= subscriber.email %></td>
+                          <td width="150px">
+
+                            <%= link_to( admin_blog_subscriber_path(subscriber),
+                                         class: "text-red",
+                                         method: :delete,
+                                         data: { confirm: t('confirm.are_you_sure') } ) do %>
+                              <i class="fa fa-fw fa-trash"></i>
+                            <% end %>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</section>
+<!-- /.content -->
+
+<script>
+  $(document).ready(function() {
+    $('#tbl_blog_subscribers').dataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "aoColumnDefs": [
+        { 'bSortable': false, 'aTargets': [ 1 ] },
+        { "bSearchable": false,"bVisible": false, "aTargets": [ 0 ] }
+      ],
+      "aaSorting": [[0, 'desc']]
+    });
+  });
+</script>

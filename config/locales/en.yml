@@ -39,6 +39,10 @@ en:
       plan: Plan
       registration_date: Registration Date
       action: Action
+    blog_subscribers:
+      id: Id
+      email: Email
+      action: Action
     genres:
       id: Id
       name: Name
@@ -75,12 +79,15 @@ en:
     educational_users_detail: Educational Users Detail
     visitors: Visitors
     free_member: Free Member
+    blog_subscribers: Blog Subscribers
     genres: Genres
     admin_genres: Admin Genres
     listing_admin_genres: Listing Admin Genres
     new_admin_genre: New Admin Genre
     editing_admin_genre: Editing Admin Genre
     view_admin_genre_details: View Admin Genre details
+    listing_blog_subscribers: Listing Blog Subscribers
+    admin_blog_subscribers: Admin Blog Subscribers
     background_image: Background image
     background_images: Background images
     listing_background_images: Listing Background images
@@ -113,6 +120,9 @@ en:
       successfully_deleted: 'User was successfully deleted.'
       image:
         successfully_updated: 'Profile image was successfully updated.'
+    blog_subscriber:
+      not_found: "Blog Subscriber is not found with id: %{id}"
+      successfully_deleted: Blog Subscriber was successfully deleted.
     genre:
       successfully_created: 'Genre was successfully created.'
       successfully_updated: 'Genre was successfully updated.'
