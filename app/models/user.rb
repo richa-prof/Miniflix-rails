@@ -48,6 +48,7 @@ class User < ActiveRecord::Base
   before_create :build_email_notification
   before_create :set_free_user_and_subscription_staus, if: -> { condition_for_free_user}
   after_create :welcome_mail_for_free_user, if: :is_free
+  after_create :subscribe_user_to_mailchimp_list
   after_create :delete_temp_user, if: 'temp_user_id.present?'
   after_validation :send_verification_code, if: ->  { unconfirmed_phone_number_changed? && errors.blank? }
   before_update :assign_unverified_phone_to_phone_number, if: -> { check_condition_for_assign_phone_number }
@@ -99,6 +100,12 @@ class User < ActiveRecord::Base
   scope :paid_users, -> {where(registration_plan: ['Monthly','Annually'])}
   scope :find_by_month_and_year, ->(month_year){where('extract(month from created_at) = ? and extract(year from created_at) = ? ', month_year.first, month_year.last)}
   # SCOPE ENDS
+
+  def subscribe_user_to_mailchimp_list
+    mailchimp_service_obj = MailchimpService.new(self)
+
+    mailchimp_service_obj.subscribe_user_to_list
+  end
 
   def skip_registration_plan_validation
     social_login || staff? || is_social_login?
