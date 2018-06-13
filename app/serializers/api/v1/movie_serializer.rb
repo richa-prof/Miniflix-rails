@@ -71,11 +71,11 @@ class Api::V1::MovieSerializer < ActiveModel::Serializer
     title = object.title
     description = object.description.truncate(150) rescue ''
     # target_url = object.bitly_url
-    target_url = "#{ENV['RAILS_HOST']}/movies/#{object.slug}"
+    target_url = "#{ENV['Host']}/movies/#{object.slug}"
 
     url = case share_on
           when 'facebook'
-            "http://www.facebook.com/sharer/sharer.php?u=#{target_url}&title=#{title}&description=#{description}"
+            "http://www.facebook.com/sharer/sharer.php?u=#{target_url}"
           when 'twitter'
             "https://twitter.com/intent/tweet?url=#{target_url}&text=#{title}"
           end
