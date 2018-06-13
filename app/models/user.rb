@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
   before_create :build_email_notification
   before_create :set_free_user_and_subscription_staus, if: -> { condition_for_free_user}
   after_create :welcome_mail_for_free_user, if: :is_free
-  after_create :subscribe_user_to_mailchimp_list
+  after_create :subscribe_user_to_mailchimp_list, if: 'MailchimpGroup.is_list_ids_available?'
   after_create :delete_temp_user, if: 'temp_user_id.present?'
   after_validation :send_verification_code, if: ->  { unconfirmed_phone_number_changed? && errors.blank? }
   before_update :assign_unverified_phone_to_phone_number, if: -> { check_condition_for_assign_phone_number }

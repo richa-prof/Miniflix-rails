@@ -173,6 +173,7 @@ Rails.application.routes.draw do
       resources :contact_user_replies, only: [:create]
 
       resources :blog_subscribers, only: [:index, :destroy]
+      resources :mailchimp_groups
 
       resources :background_images
       resources :free_members do

@@ -1,0 +1,52 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    <%= t('heading.mailchimp_groups') %>
+  </h1>
+  <ol class="breadcrumb">
+    <%= link_to admin_mailchimp_groups_path, method: :get do %>
+      <i class="fa fa-th"></i> <span><%= t('heading.mailchimp_groups') %></span>
+    <% end %>
+    <li>  </li>
+    <li class="active"><%= t('heading.show') %></li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <%= render( partial: 'shared/flash_notification', locals: { notice: notice } ) %>
+          <div class="row">
+            <div class="col-lg-10 col-xs-12">
+              <h3 class="box-title">
+                <%= t('heading.view_mailchimp_group_details') %>
+              </h3>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <p>
+            <strong>Name:</strong>
+            <%= @mailchimp_group.name %>
+          </p>
+        </div>
+
+        <div class="box-body">
+          <p>
+            <strong>List Id:</strong>
+            <%= @mailchimp_group.list_id %>
+          </p>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</section>
+<!-- /.content -->

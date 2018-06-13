@@ -10,10 +10,11 @@ class MailchimpService
   def subscribe_user_to_list
     begin
       gibbon = Gibbon::Request.new
-      list_id = list_id_to_subscribe_new_user
       body = user_details_hash(@user)
-
-      gibbon.lists(list_id).members.create(body: body)
+      list_ids = mailchimp_list_ids_arr
+      list_ids.each do |list_id|
+        gibbon.lists(list_id).members.create(body: body)
+      end
 
       response = { success: true }
       Rails.logger.debug "<<<<< subscribe_user_to_list <<< success for user_id : #{@user.id} <<<<<"
@@ -30,8 +31,8 @@ class MailchimpService
 
   private
 
-  def list_id_to_subscribe_new_user
-    # TODO: Need to implement dynamic list ids feature on admin side and return the ids here.
+  def mailchimp_list_ids_arr
+    MailchimpGroup.available_list_ids_arr
   end
 
   def user_details_hash(user)

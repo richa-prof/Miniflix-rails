@@ -1,0 +1,47 @@
+<!-- form start -->
+<%= form_for( [:admin, @mailchimp_group] ) do |f| %>
+  <% if @mailchimp_group.errors.any? %>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-default">
+          <div class="box-body">
+            <% @mailchimp_group.errors.full_messages.each do |message| %>
+              <div class="callout callout-success">
+                <p><%= message %></p>
+              </div>
+            <% end %>         
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-12">
+      <!-- general form elements -->
+      <div class="box box-primary">
+          <div class="box-body">
+            <div class="form-group">
+              <%= f.label :name %>
+              <%= f.text_field :name, class: "form-control", placeholder: t('placeholder.mailchimp_group.name'), required: true %>
+            </div>
+          </div>
+          <div class="box-body">
+            <div class="form-group">
+              <%= f.label :list_id %>
+              <%= f.text_field :list_id, class: "form-control", placeholder: t('placeholder.mailchimp_group.list_id'), required: true %>
+            </div>
+          </div>
+          <!-- /.box-body -->
+
+          <div class="box-footer">
+            <%= f.submit nil,class: "btn btn-primary" %>          
+            <%= link_to 'Cancel', admin_genres_path, class: "btn btn-default" %>
+          </div>
+      </div>
+      <!-- /.box -->
+    </div>
+  </div>
+<% end %>

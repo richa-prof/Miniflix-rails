@@ -1,0 +1,100 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    <%= t('heading.admin_mailchimp_groups')%>
+  </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <%= render( partial: 'shared/flash_notification', locals: { notice: notice } ) %>
+          <div class="row">
+            <div class="col-lg-10 col-xs-12">
+              <h3 class="box-title admin-box-title"><%= t('heading.listing_mailchimp_groups')%></h3>
+            </div>
+            <div class="col-lg-2 col-xs-12">
+              <%= link_to( t('links.new_mailchimp_group'),
+                           new_admin_mailchimp_group_path,
+                           class: "btn btn-primary pull-right",
+                           method: :get ) %>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body admin-box-body">
+          <div class="row">
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="box box-primary">
+                <!-- /.box-header -->
+                <div class="box-body">
+                  <table id="tbl_mailchimp_groups" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th><%= t('table.mailchimp_groups.id')%></th>
+                        <th><%= t('table.mailchimp_groups.list_id')%></th>
+                        <th><%= t('table.mailchimp_groups.name')%></th>
+                        <th width="150px"><%= t('table.mailchimp_groups.action')%></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% @mailchimp_groups.each do |group| %>
+                        <tr>
+                          <td><%= group.id %></td>
+                          <td><%= group.list_id %></td>
+                          <td><%= group.name %></td>
+
+                          <td width="150px">
+                            <%= link_to admin_mailchimp_group_path(group), class: "text-green" do %>
+                              <i class="fa fa-fw fa-eye"></i>
+                            <% end %>
+                            <%= link_to edit_admin_mailchimp_group_path(group), class: "text-blue" do %>
+                              <i class="fa fa-fw fa-edit"></i>
+                            <% end %>
+                            <%= link_to( admin_mailchimp_group_path(group),
+                                         class: "text-red",
+                                          method: :delete,
+                                          data: { confirm: t('confirm.are_you_sure') } ) do %>
+                              <i class="fa fa-fw fa-trash"></i>
+                            <% end %>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</section>
+<!-- /.content -->
+
+<script>
+  $(document).ready(function() {
+    $('#tbl_mailchimp_groups').dataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "aoColumnDefs": [
+        { 'bSortable': false, 'aTargets': [ 1 ] },
+        { "bSearchable": false,"bVisible": false, "aTargets": [ 0 ] }
+      ],
+      "aaSorting": [[0, 'desc']]
+    });
+  });
+</script>

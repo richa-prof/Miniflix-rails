@@ -108,6 +108,12 @@
           <% end %>
         </li>
 
+        <li class="<%= 'active' if controller_path == 'admin/mailchimp_groups' && action_name == 'index' %>">
+          <%= link_to admin_mailchimp_groups_path, method: :get do %>
+            <i class="fa fa-user"></i> <span><%= t('heading.mailchimp_groups') %></span>
+          <% end %>
+        </li>
+
         <li class="<%= 'active' if controller_path == 'admin/background_images' %>">
           <%= link_to admin_background_images_path, method: :get do %>
             <i class="fa fa-user"></i> <span><%= t('heading.background_images') %></span>
