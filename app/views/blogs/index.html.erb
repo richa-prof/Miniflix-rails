@@ -69,7 +69,7 @@
                       </div>
                     </div>
                     <p>
-                      <%= blog.description.try(:html_safe) %>
+                      <%= formatted_blog_description(blog) %>
                     </p>
                     <div class="blog-inner-link">
                       <%= link_to(new_blog_subscriber_path, class: "btn btn-default blog-subscribe-btn", remote:true) do %>

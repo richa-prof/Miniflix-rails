@@ -55,7 +55,7 @@
                   <% end %>
                 </div>
                 <h1><%= @blog.title %></h1>
-                <p><%= @blog.description %></p>
+                <p><%= @blog.description.try(:html_safe) %></p>
                 <%= @blog.body.html_safe %>
                 <div class="share-video-btn">
                   <div class="blg-share-heading">

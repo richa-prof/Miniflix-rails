@@ -30,26 +30,19 @@
             <div class="blg-dt-user-profile">
               <i class="fa fa-calendar"></i> <%= blog.created_at.strftime("%m/%d/%Y") %>
             </div>
-            <div class="blog-short-msg">
-              <h3><%= blog.title.truncate(50) %></h3>
+            <div class="blog-short-msg blog-title">
+              <h3><%= blog.title %></h3>
               <div class="share-video-btn">
-                <div class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" aria-expanded="true">
-                    <i class="fa fa-share"></i> Share
-                  <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <% BlogsHelper::SHARE_ON.each do |share_on| %>
-                      <li>
-                        <%= link_to get_share_url(blog, share_on), target: '_blank' do %>
-                          <%= get_share_button(share_on) %>
-                        <% end %>
-                      </li>
-                    <% end %>
-                  </ul>
+                <div class="blg-share-icons">
+                  <% BlogsHelper::SHARE_ON.each do |share_on| %>
+                      <%= link_to get_share_url(blog, share_on), target: '_blank' do %>
+                        <%= get_share_button(share_on) %>
+                      <% end %>
+                  <% end %>
                 </div>
               </div>
               <p>
-                <%= blog.description.try(:html_safe) %>
+                <%= formatted_blog_description(blog) %>
               </p>
               <div class="blog-inner-link">
                 <%= link_to('Continue Reading', blog_path(id: blog.slug), class: "btn btn-default") %>

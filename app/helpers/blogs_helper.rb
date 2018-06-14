@@ -32,6 +32,16 @@ module BlogsHelper
     link.presence || 'javascript:void(0)'
   end
 
+  def formatted_blog_description(blog)
+    description = blog.description
+
+    unless description.blank?
+      description = ActionView::Base.full_sanitizer.sanitize(description)
+    end
+
+    description
+  end
+
   def staff_location(staff)
     staff.address.try(:city).presence || '-'
   end
