@@ -132,7 +132,8 @@ class Movie < ApplicationRecord
 
     file_name = output_key_prefix + new_file_name + '.m3u8'
     movie.version_file = file_name
-    movie.save
+
+    movie.save(validate: false)
   end
 
   def trancode_videos_for_web(s3_upload_obj, file_name_prefix, m3u8_file_name)
