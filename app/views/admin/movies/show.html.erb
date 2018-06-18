@@ -202,6 +202,19 @@
     return $('#jwPlayerConfigContainer');
   };
 
+  caption_data = []
+  <% @admin_movie.movie_captions.active_caption.each do |caption| %>
+    var stringValue = "<%= caption.is_default  %>";
+    var boolValue = stringValue.toLowerCase() == 'true' ? true : false;   //returns true
+
+    caption_data.push({
+      file: "<%= caption.caption_file_cloudfront_url %>",
+      label: "<%= caption.language %>",
+      kind: "captions",
+      default: boolValue
+    })
+  <% end %>
+
   jwplayer_setup = function() {
     var jwPlayerConfig = jwPlayerConfigContainer();
     var hlsUrl = jwPlayerConfig.data('hls-file');
@@ -210,8 +223,6 @@
 
     var sources = [{
               file: hlsUrl
-            },{
-              file: originalUrl
             }]
 
     var videoObject = document.querySelector("div[data-embed-url='video-url1']");
@@ -220,6 +231,8 @@
     window.player2 = newplayerInstance;
     newplayerInstance.setup({
       sources: sources,
+      hlshtml: true,
+      tracks: caption_data,
       allowscriptaccess: 'always',
       allownetworking: 'all'
     });

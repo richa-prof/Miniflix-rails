@@ -19,7 +19,23 @@ class MovieCaption < ApplicationRecord
   validates_presence_of :language, if: :update_caption
   validates_presence_of :caption_file
 
-  # SCOPE
+  # SCOPES
   scope :active_caption, -> { where(status: true) }
   scope :default_caption, -> { where(is_default: true) }
+
+  def as_json
+    {
+      file: caption_file_url,
+      label: language,
+      kind: "captions",
+      default: is_default
+    }
+  end
+
+  def caption_file_cloudfront_url
+    target_path = caption_file.path
+    return if target_path.blank?
+
+    'https://' +  ENV['cloud_front_url'] +'/'+ target_path
+  end
 end
