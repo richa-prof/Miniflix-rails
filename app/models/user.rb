@@ -337,6 +337,16 @@ class User < ActiveRecord::Base
     end
   end
 
+  def fetch_billing_plan
+    if self.Monthly? && self.battleship?
+      battleship_trial_plan
+    else
+      billing_plans_interval = ((self.Monthly?) ? "month" : "year")
+      monthly_plans = eval("BillingPlan.#{billing_plans_interval}")
+      monthly_plans.where.not(stripe_plan_id: ENV['BATTLESHIP_TRIAL_PLAN_ID']).last
+    end
+  end
+
   # ======= Related to mobile API's start =======
   def update_auth_token
     token = Digest::SHA1.hexdigest([Time.now, rand].join)
@@ -575,16 +585,6 @@ class User < ActiveRecord::Base
 
   def set_job_for_annual_user_to_change_subscription_status
     SubscriptionStatusChangeJob.set(wait: 6.hours).perform_later(self.id)
-  end
-
-  def fetch_billing_plan
-    if self.Monthly? && self.battleship?
-      battleship_trial_plan
-    else
-      billing_plans_interval = ((self.Monthly?) ? "month" : "year")
-      monthly_plans = eval("BillingPlan.#{billing_plans_interval}")
-      monthly_plans.where.not(stripe_plan_id: ENV['BATTLESHIP_TRIAL_PLAN_ID']).last
-    end
   end
 
   def battleship_trial_plan
