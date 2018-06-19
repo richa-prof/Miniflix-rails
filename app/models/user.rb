@@ -84,7 +84,8 @@ class User < ActiveRecord::Base
                     twitter: 'twitter' }
   enum role: { admin: 'Admin',
                staff: 'Staff',
-               user: 'User' }
+               user: 'User',
+               marketing_staff: 'marketing_staff' }
   enum subscription_plan_status: { incomplete: 'Incomplete',
                                    trial: 'Trial',
                                    activate: 'Activate',

@@ -7,7 +7,11 @@
           <%= image_tag('admin/user2-160x160.jpg', alt: "User Image", class: "img-circle") %>
         </div>
         <div class="pull-left info">
-          <p>Miniflix Admin</p>
+          <% if marketing_staff_user_signed_in? %>
+            <p>Miniflix Marketing Staff</p>
+          <% else %>
+            <p>Miniflix Admin</p>
+          <% end %>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
@@ -30,95 +34,103 @@
           <%= t('heading.main_navigation') %>
         </li>
 
-        <li class="<%= 'active' if params[:controller] == 'admin/dashboard' %>">
-          <%= link_to admin_dashboard_path, method: "GET" do %>
-            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-          <% end %>
-        </li>
+        <% if marketing_staff_user_signed_in? %>
+          <li class="<%= 'active' if controller_path == 'marketing_staff/genres' %>">
+            <%= link_to marketing_staff_genres_path, method: :get do %>
+              <i class="fa fa-th"></i> <span> <%= t('heading.genres') %> </span>
+            <% end %>
+          </li>
+        <% else %>
+          <li class="<%= 'active' if params[:controller] == 'admin/dashboard' %>">
+            <%= link_to admin_dashboard_path, method: "GET" do %>
+              <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+            <% end %>
+          </li>
 
-        <li class="<%= 'active' if controller_path == 'admin/movies' %>">
-          <%= link_to admin_movies_path, method: :get do %>
-            <i class="fa fa-fw fa-file-movie-o"></i> <span><%= t('heading.movie') %></span>
-          <% end %>
-        </li>
+          <li class="<%= 'active' if controller_path == 'admin/movies' %>">
+            <%= link_to admin_movies_path, method: :get do %>
+              <i class="fa fa-fw fa-file-movie-o"></i> <span><%= t('heading.movie') %></span>
+            <% end %>
+          </li>
 
-        <li class="<%= 'active' if controller_path == 'admin/genres' %>">
-          <%= link_to admin_genres_path, method: :get do %>
-            <i class="fa fa-th"></i> <span> <%= t('heading.genres') %> </span>
-          <% end %>
-        </li>
+          <li class="<%= 'active' if controller_path == 'admin/genres' %>">
+            <%= link_to admin_genres_path, method: :get do %>
+              <i class="fa fa-th"></i> <span> <%= t('heading.genres') %> </span>
+            <% end %>
+          </li>
 
-        <li class="<%= 'active' if params[:controller] == 'admin/staffs' %>">
-          <%= link_to admin_staffs_path, method: :get do %>
-            <i class="fa fa-user"></i> <span> <%= t('heading.staff_members') %></span>
-          <% end %>
-        </li>
+          <li class="<%= 'active' if params[:controller] == 'admin/staffs' %>">
+            <%= link_to admin_staffs_path, method: :get do %>
+              <i class="fa fa-user"></i> <span> <%= t('heading.staff_members') %></span>
+            <% end %>
+          </li>
 
-        <li class="treeview <%= css_class_for_admin_sidebar_treeview %>">
-          <a href="#">
-            <i class="fa fa-user"></i> <span><%= t('heading.users') %></span> <i class="fa fa-angle-left pull-right"></i>
-          </a>
-          <ul class="treeview-menu">
-            <li class="<%= css_class_for_treeview_users_menu('index') %>">
-              <%= link_to admin_users_path, method: :get do %>
-                <i class="fa fa-circle-o"></i> <span><%= t('heading.registration_users') %></span>
-              <% end %>
-            </li>
-            <li class="<%= css_class_for_treeview_users_menu('educational_users') %>">
-              <%= link_to admin_educational_users_path, method: :get do %>
-                <i class="fa fa-circle-o"></i> <span><%= t('heading.educational_users') %></span>
-              <% end %>
-            </li>
+          <li class="treeview <%= css_class_for_admin_sidebar_treeview %>">
+            <a href="#">
+              <i class="fa fa-user"></i> <span><%= t('heading.users') %></span> <i class="fa fa-angle-left pull-right"></i>
+            </a>
+            <ul class="treeview-menu">
+              <li class="<%= css_class_for_treeview_users_menu('index') %>">
+                <%= link_to admin_users_path, method: :get do %>
+                  <i class="fa fa-circle-o"></i> <span><%= t('heading.registration_users') %></span>
+                <% end %>
+              </li>
+              <li class="<%= css_class_for_treeview_users_menu('educational_users') %>">
+                <%= link_to admin_educational_users_path, method: :get do %>
+                  <i class="fa fa-circle-o"></i> <span><%= t('heading.educational_users') %></span>
+                <% end %>
+              </li>
 
-            <li class="<%= css_class_for_treeview_users_menu('monthly_users') %>">
-              <%= link_to admin_monthly_users_path, method: :get do %>
-                <i class="fa fa-circle-o"></i> <span><%= t('heading.monthly_users') %></span>
-              <% end %>
-            </li>
+              <li class="<%= css_class_for_treeview_users_menu('monthly_users') %>">
+                <%= link_to admin_monthly_users_path, method: :get do %>
+                  <i class="fa fa-circle-o"></i> <span><%= t('heading.monthly_users') %></span>
+                <% end %>
+              </li>
 
-            <li class="<%= css_class_for_treeview_users_menu('annually_users') %>">
-              <%= link_to admin_annually_users_path, method: :get do %>
-                <i class="fa fa-circle-o"></i> <span><%= t('heading.annually_users') %></span>
-              <% end %>
-            </li>
+              <li class="<%= css_class_for_treeview_users_menu('annually_users') %>">
+                <%= link_to admin_annually_users_path, method: :get do %>
+                  <i class="fa fa-circle-o"></i> <span><%= t('heading.annually_users') %></span>
+                <% end %>
+              </li>
 
-            <li class="<%= css_class_for_treeview_users_menu('freemium_users') %>">
-              <%= link_to admin_freemium_users_path, method: :get do %>
-                <i class="fa fa-circle-o"></i> <span><%= t('heading.freemium_users') %></span>
-              <% end %>
-            </li>
-          </ul>
-        </li>
+              <li class="<%= css_class_for_treeview_users_menu('freemium_users') %>">
+                <%= link_to admin_freemium_users_path, method: :get do %>
+                  <i class="fa fa-circle-o"></i> <span><%= t('heading.freemium_users') %></span>
+                <% end %>
+              </li>
+            </ul>
+          </li>
 
-        <li class="<%= 'active' if controller_path == 'admin/visitors' && action_name == 'index' %>">
-          <%= link_to admin_visitors_path, method: :get do %>
-            <i class="fa fa-user"></i> <span><%= t('heading.visitors') %></span>
-          <% end %>
-        </li>
+          <li class="<%= 'active' if controller_path == 'admin/visitors' && action_name == 'index' %>">
+            <%= link_to admin_visitors_path, method: :get do %>
+              <i class="fa fa-user"></i> <span><%= t('heading.visitors') %></span>
+            <% end %>
+          </li>
 
-        <li class="<%= 'active' if controller_path == 'admin/free_members' && action_name == 'index' %>">
-          <%= link_to admin_free_members_path, method: :get do %>
-            <i class="fa fa-user"></i> <span><%= t('heading.free_member') %></span>
-          <% end %>
-        </li>
+          <li class="<%= 'active' if controller_path == 'admin/free_members' && action_name == 'index' %>">
+            <%= link_to admin_free_members_path, method: :get do %>
+              <i class="fa fa-user"></i> <span><%= t('heading.free_member') %></span>
+            <% end %>
+          </li>
 
-        <li class="<%= 'active' if controller_path == 'admin/blog_subscribers' && action_name == 'index' %>">
-          <%= link_to admin_blog_subscribers_path, method: :get do %>
-            <i class="fa fa-user"></i> <span><%= t('heading.blog_subscribers') %></span>
-          <% end %>
-        </li>
+          <li class="<%= 'active' if controller_path == 'admin/blog_subscribers' && action_name == 'index' %>">
+            <%= link_to admin_blog_subscribers_path, method: :get do %>
+              <i class="fa fa-user"></i> <span><%= t('heading.blog_subscribers') %></span>
+            <% end %>
+          </li>
 
-        <li class="<%= 'active' if controller_path == 'admin/mailchimp_groups' && action_name == 'index' %>">
-          <%= link_to admin_mailchimp_groups_path, method: :get do %>
-            <i class="fa fa-user"></i> <span><%= t('heading.mailchimp_groups') %></span>
-          <% end %>
-        </li>
+          <li class="<%= 'active' if controller_path == 'admin/mailchimp_groups' && action_name == 'index' %>">
+            <%= link_to admin_mailchimp_groups_path, method: :get do %>
+              <i class="fa fa-user"></i> <span><%= t('heading.mailchimp_groups') %></span>
+            <% end %>
+          </li>
 
-        <li class="<%= 'active' if controller_path == 'admin/background_images' %>">
-          <%= link_to admin_background_images_path, method: :get do %>
-            <i class="fa fa-user"></i> <span><%= t('heading.background_images') %></span>
-          <% end %>
-        </li>
+          <li class="<%= 'active' if controller_path == 'admin/background_images' %>">
+            <%= link_to admin_background_images_path, method: :get do %>
+              <i class="fa fa-user"></i> <span><%= t('heading.background_images') %></span>
+            <% end %>
+          </li>
+        <% end %>
       </ul>
     </section>
     <!-- /.sidebar -->

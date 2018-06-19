@@ -110,6 +110,7 @@ en:
     listing_movie_details: Listing Movie Details
     add_new_movie_details: Add new movie details
     admin_movie: Admin Movie
+    miniflix_marketing_staff: Miniflix Marketing Staff
   title:
     miniflix_admin: Miniflix Admin
     movie:
@@ -163,6 +164,9 @@ en:
     payment_method:
         successfully_updated: 'Your payment method has been updated successfully'
   placeholder:
+    user:
+      email: Enter email
+      password: Password
     genre:
       name: Enter genre name
       color: Enter genre color

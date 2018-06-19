@@ -1,13 +1,13 @@
 <div class="login-box">
-  <%= link_to 'Sign In as marketing staff', new_marketing_staff_user_session_path, class: "btn-fixed-top btn btn-primary pull-right" %>
+  <%= link_to 'Sign In as Admin', new_admin_user_session_path, class: "btn btn-fixed-top btn-primary pull-right" %>
 
   <div class="login-logo">
-    <a href=""><b>Miniflix Admin</b></a>
+    <a href=""><b> <%= t('heading.miniflix_marketing_staff') %> </b></a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
-    <%= form_for(resource, as: resource_name, url: admin_user_session_path) do |f| %>  
+    <%= form_for(resource, as: resource_name, url: marketing_staff_user_session_path) do |f| %>  
       <% if !flash[:error].blank? %>
         <div class="row">
           <div class="col-md-12">
@@ -28,11 +28,6 @@
       </div>
       <div class="row">
         <div class="col-xs-8">
-          <div class="checkbox icheck">
-            <label>
-              <!-- <input type="checkbox"> Remember Me -->
-            </label>
-          </div>
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
@@ -48,7 +43,7 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function () {       
-      $("#new_admin_user").validate({
+      $("#new_marketing_staff_user").validate({
         rules: {
           "email": {required: true,email: true},
           "password": {required: true}

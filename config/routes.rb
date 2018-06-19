@@ -197,6 +197,14 @@ Rails.application.routes.draw do
         end
       end
     end
+
+    namespace :marketing_staff do
+      devise_for :users, as: :marketing_staff, controllers: {
+        sessions: 'marketing_staff/sessions',
+      }
+
+      resources :genres
+    end
   end
 
   # Starts routing for Blog Feature
