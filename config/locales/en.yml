@@ -79,6 +79,7 @@ en:
     premium_users_detail: Premium Users Detail
     premium_users: Premium Users
     staff_members: Staff Members
+    marketing_staff_members: Marketing Staff Members
     users: Users
     educational_users: Educational Users
     educational_users_detail: Educational Users Detail
@@ -131,6 +132,8 @@ en:
       successfully_deleted: 'User was successfully deleted.'
       image:
         successfully_updated: 'Profile image was successfully updated.'
+    marketing_staff:
+      successfully_deleted: 'Marketing Staff was successfully deleted.'
     blog_subscriber:
       not_found: "Blog Subscriber is not found with id: %{id}"
       successfully_deleted: Blog Subscriber was successfully deleted.

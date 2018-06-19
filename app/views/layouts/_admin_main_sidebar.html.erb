@@ -65,6 +65,12 @@
             <% end %>
           </li>
 
+          <li class="<%= 'active' if params[:controller] == 'admin/marketing_staffs' %>">
+            <%= link_to admin_marketing_staffs_path, method: :get do %>
+              <i class="fa fa-user"></i> <span> <%= t('heading.marketing_staff_members') %></span>
+            <% end %>
+          </li>
+
           <li class="treeview <%= css_class_for_admin_sidebar_treeview %>">
             <a href="#">
               <i class="fa fa-user"></i> <span><%= t('heading.users') %></span> <i class="fa fa-angle-left pull-right"></i>

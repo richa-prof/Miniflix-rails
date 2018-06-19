@@ -102,6 +102,14 @@ class User < ActiveRecord::Base
   scope :find_by_month_and_year, ->(month_year){where('extract(month from created_at) = ? and extract(year from created_at) = ? ', month_year.first, month_year.last)}
   # SCOPE ENDS
 
+  # ===== Class methods Start =====
+  class << self
+    def marketing_staff_member_signin_url
+      "#{ENV['RAILS_ADMIN_HOST']}/marketing_staff/users/sign_in"
+    end
+  end
+  # ===== Class methods End =====
+
   def subscribe_user_to_mailchimp_list
     mailchimp_service_obj = MailchimpService.new(self)
 
@@ -109,7 +117,7 @@ class User < ActiveRecord::Base
   end
 
   def skip_registration_plan_validation
-    social_login || staff? || is_social_login?
+    social_login || staff? || marketing_staff? || is_social_login?
   end
 
   def is_social_login?
@@ -117,7 +125,7 @@ class User < ActiveRecord::Base
   end
 
   def skip_sign_up_from_validation
-    staff?
+    staff? || marketing_staff?
   end
 
   def is_payment_verified?
@@ -166,7 +174,11 @@ class User < ActiveRecord::Base
   end
 
   def send_welcome_mail
-    UserMailer.staff_member_signup_email(self).deliver
+    if staff?
+      UserMailer.staff_member_signup_email(self).deliver
+    elsif marketing_staff?
+      UserMailer.marketing_staff_member_signup_email(self).deliver
+    end
   end
 
   def checkout_url

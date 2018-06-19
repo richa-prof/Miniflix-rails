@@ -156,6 +156,12 @@ Rails.application.routes.draw do
         end
       end
 
+      resources :marketing_staffs, only: [:index, :new, :create, :destroy] do
+        collection do
+          get 'check_email'
+        end
+      end
+
       get '/' => 'dashboard#index'
       get 'dashboard' => 'dashboard#index'
       get 'educational_users' => 'users#educational_users'
