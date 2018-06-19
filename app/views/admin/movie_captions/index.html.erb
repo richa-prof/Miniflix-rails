@@ -54,7 +54,11 @@
                         <% @movie_captions.each_with_index do |movie_caption, index| %>
                           <tr>
                             <td data-title="Id"><%= (index + 1) %></td>
-                            <td data-title="file-name"><%= formatted_caption_filename(movie_caption) %></td>
+                            <td data-title="file-name">
+                              <%= link_to movie_caption.caption_file_cloudfront_url do %>
+                                <%= formatted_caption_filename(movie_caption) %>
+                              <% end %>
+                            </td>
                             <td data-title="language"><%= movie_caption.language %></td>
                             <td data-title="status"><%=  movie_caption.status %></td>
                             <td data-title="default-file"><%= "Set as default" if movie_caption.is_default %></td>

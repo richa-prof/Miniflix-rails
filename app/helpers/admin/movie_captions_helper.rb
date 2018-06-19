@@ -13,7 +13,7 @@ module Admin::MovieCaptionsHelper
   end
 
   def formatted_caption_filename(movie_caption)
-    filename = movie_caption.caption_file.try(:filename)
+    filename = movie_caption.caption_file.file.filename rescue nil
 
     return filename if filename.blank?
 
