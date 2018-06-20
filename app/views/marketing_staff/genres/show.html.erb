@@ -4,7 +4,7 @@
     <%= t('heading.genres') %>
   </h1>
   <ol class="breadcrumb">
-    <%= link_to admin_genres_path, method: :get do %>
+    <%= link_to marketing_staff_genres_path, method: :get do %>
       <i class="fa fa-th"></i> <span><%= t('heading.genres') %></span>
     <% end %>
     <li>  </li>
@@ -28,20 +28,28 @@
           </div>
         </div>
         <!-- /.box-header -->
-        <div class="box-body">
-          <p>
-            <strong>Name:</strong>
-            <%= @admin_genre.name %>
-          </p>
-        </div>
+        <%= render( partial: 'admin/genres/genre_deatils', locals: { genre: @admin_genre } ) %>
+      </div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+  </div>
 
-        <div class="box-body">
-          <p>
-            <strong>Description:</strong>
-            <%= @admin_genre.description %>
-          </p>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <%= render( partial: 'shared/flash_notification', locals: { notice: notice } ) %>
+          <div class="row">
+            <div class="col-lg-10 col-xs-12">
+              <h3 class="box-title">
+                <%= t('heading.view_genre_seo_details') %>
+              </h3>
+            </div>
+          </div>
         </div>
-        <!-- /.box-body -->
+        <!-- /.box-header -->
+        <%= render( partial: 'admin/genres/seo_details', locals: { seo_meta: @admin_genre.seo_meta } ) %>
       </div>
       <!-- /.box -->
     </div>

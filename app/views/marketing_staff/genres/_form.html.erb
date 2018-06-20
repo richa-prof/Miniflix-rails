@@ -1,8 +1,8 @@
 <% genre_id = @admin_genre.try(:id) || 0 %>
 <!-- form start -->
-<%= form_for( [:admin, @admin_genre],
+<%= form_for( [:marketing_staff, @admin_genre],
               html: { id: 'frm_admin_genre',
-                      data: { 'check-name-url' => check_genre_name_admin_genres_path(id: genre_id) } } ) do |f| %>
+                      data: { 'check-name-url' => check_genre_name_marketing_staff_genres_path(id: genre_id) } } ) do |f| %>
   <% if @admin_genre.errors.any? %>
     <div class="row">
       <div class="col-md-12">
@@ -12,7 +12,7 @@
               <div class="callout callout-success">
                 <p><%= message %></p>
               </div>
-            <% end %>         
+            <% end %>
           </div>
           <!-- /.box-body -->
         </div>
@@ -25,38 +25,33 @@
     <div class="col-md-12">
       <!-- general form elements -->
       <div class="box box-primary">
-          <div class="box-body">
-            <div class="form-group">
-              <%= f.label :name %>
-              <%= f.text_field :name, class: "form-control", placeholder: t('placeholder.genre.name'), required: true %>
-            </div>
-          </div>
-          <div class="box-body">
-            <div class="form-group">
-              <%= f.label :color %>
-              <%= f.text_field :color, class: "form-control", placeholder: t('placeholder.genre.color'), required: true %>
-            </div>
-          </div>
+        <%= render '/seo_meta/form', :form => f %>
 
-          <div class="box-body">
-            <div class="form-group">
-              <%= f.label :description %>
-              <%= f.text_area( :description,
-                               rows: 3,
-                               class: "form-control",
-                               placeholder: t('placeholder.genre.description'),
-                               required: true ) %>
-            </div>
-          </div>
-
-          <!-- /.box-body -->
-
-          <div class="box-footer">
-            <%= f.submit nil,class: "btn btn-primary" %>          
-            <%= link_to 'Cancel', admin_genres_path, class: "btn btn-default" %>
-          </div>
+        <div class="box-footer">
+          <%= f.submit nil,class: "btn btn-primary" %>
+          <%= link_to 'Cancel', admin_genres_path, class: "btn btn-default" %>
+        </div>
       </div>
       <!-- /.box -->
     </div>
   </div>
 <% end %>
+
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="box-header">
+      <div class="row">
+        <div class="col-lg-10 col-xs-12">
+          <h3 class="box-title">
+            <%= t('heading.view_admin_genre_details') %>
+          </h3>
+        </div>
+      </div>
+    </div>
+    <!-- /.box-header -->
+    <%= render( partial: 'admin/genres/genre_deatils', locals: { genre: @admin_genre } ) %>
+  </div>
+  <!-- /.col -->
+</div>
+<!-- /.row -->

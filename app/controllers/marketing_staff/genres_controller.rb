@@ -24,7 +24,7 @@ class MarketingStaff::GenresController < ApplicationController
   def update
     respond_to do |format|
       if @admin_genre.update(admin_genre_params)
-        format.html { redirect_to admin_genres_url,
+        format.html { redirect_to marketing_staff_genres_url,
                       notice: I18n.t('flash.genre.successfully_updated') }
         format.json { render :index, status: :ok, location: @admin_genre }
       else
@@ -42,7 +42,7 @@ class MarketingStaff::GenresController < ApplicationController
     else
       @admin_genre = Genre.where("name = ? AND id != ?", genre_name, genre_id).first
     end
-         
+
     respond_to do |format|
       format.json { render :json => !@admin_genre }
     end
@@ -56,7 +56,7 @@ class MarketingStaff::GenresController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def admin_genre_params
-      params.require(:genre).permit(:name, :color, :description)
+      params.require(:genre).permit(:browser_title, :meta_description, :meta_keywords, :check_seo_meta_tags)
     end
 
     def genre_id

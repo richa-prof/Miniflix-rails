@@ -1,4 +1,6 @@
 class Genre < ApplicationRecord
+  is_seo_meta
+
   self.table_name = "admin_genres"
   PER_PAGE = 3
 

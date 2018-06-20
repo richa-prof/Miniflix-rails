@@ -92,6 +92,7 @@ en:
     new_admin_genre: New Admin Genre
     editing_admin_genre: Editing Admin Genre
     view_admin_genre_details: View Admin Genre details
+    view_genre_seo_details: View Genre SEO meta tags details
     listing_blog_subscribers: Listing Blog Subscribers
     admin_blog_subscribers: Admin Blog Subscribers
     new_mailchimp_group: New Mailchimp Group
@@ -191,6 +192,7 @@ en:
       star_cast: Enter star cast
       actors: Enter actors
       festival_laureates: Enter festival laureates
+    meta_keywords_help: Enter meta keywords
   confirm:
     are_you_sure: Are you sure?
   links:
@@ -210,6 +212,17 @@ en:
       is_set: Allow to set Background image for home page
     upload_movie_trailer: Upload movie trailer
     add_movie_trailer: Add movie trailer
+    genres:
+      id: 'Id :'
+      name: 'Name :'
+      color: 'Color :'
+      available_movies: 'Available movies :'
+      description: 'Description :'
+    seo_meta:
+      genres:
+        browser_title: 'Browser title :'
+        meta_description: 'Meta description :'
+        meta_keywords: 'Meta Keywords :'
   invalid_params:
     user:
       empty_image: "Image parameter can't be empty."

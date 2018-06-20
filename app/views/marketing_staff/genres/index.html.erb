@@ -19,10 +19,6 @@
               </h3>
             </div>
             <div class="col-lg-2 col-xs-12">
-              <%= link_to( t('links.new_genre'),
-                           new_admin_genre_path,
-                           class: "btn btn-primary pull-right",
-                           method: :get ) %>
             </div>
           </div>
         </div>
@@ -52,17 +48,11 @@
                           <th><%= admin_genre.color %></th>
                           <td><%= admin_genre.movies.count %></td>
                           <td width="150px">
-                            <%= link_to admin_genre_path(admin_genre), class: "text-green" do %>
+                            <%= link_to marketing_staff_genre_path(admin_genre), class: "text-green" do %>
                               <i class="fa fa-fw fa-eye"></i>
                             <% end %>
-                            <%= link_to edit_admin_genre_path(admin_genre), class: "text-blue" do %>
+                            <%= link_to edit_marketing_staff_genre_path(admin_genre), class: "text-blue" do %>
                               <i class="fa fa-fw fa-edit"></i>
-                            <% end %>
-                            <%= link_to( admin_genre_path(admin_genre),
-                                         class: "text-red",
-                                          method: :delete,
-                                          data: { confirm: t('confirm.are_you_sure') } ) do %>
-                              <i class="fa fa-fw fa-trash"></i>
                             <% end %>
                           </td>
                         </tr>

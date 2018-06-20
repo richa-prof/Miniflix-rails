@@ -209,7 +209,11 @@ Rails.application.routes.draw do
         sessions: 'marketing_staff/sessions',
       }
 
-      resources :genres
+      resources :genres, only: [:index, :show, :edit, :update] do
+        collection do
+          get 'check_genre_name/:id' => 'genres#check_genre_name', as: :check_genre_name
+        end
+      end
     end
   end
 
