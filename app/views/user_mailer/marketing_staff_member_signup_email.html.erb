@@ -1,0 +1,25 @@
+<!Doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+</head>
+<body style="font-family: 'Roboto', sans-serif; background: #f3f3f3">
+    <div style="display: block; width: 100%; max-width: 500px; margin: 0 auto; background: #fff">
+        <div style="margin-bottom: 15px; background: #FFEB3B; padding: 30px; color: #4e4e4e;">Hello, <strong><%= @display_name %></strong></div>
+        <div style="background: #fff; padding: 10px 30px 30px; line-height: 24px; letter-spacing: 0.3px; color: #696969;">
+            <p style="margin-bottom: 15px;">
+              Your are registered as Marketing Staff Member by Admin.
+            </p>
+            <p style="margin-bottom: 15px;">
+              Please sign in <a style="color: #3c92ef; font-weight: 700;" href="<%= User.marketing_staff_member_signin_url %>" target="_blank">here</a>, and enter your password <strong><%= @user.temp_password %> </strong>
+            </p>
+
+            <br>
+            <strong>Minflix Team</strong>
+        </div>
+    </div> 
+</body>
+</html>
