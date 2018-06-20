@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180612143314) do
+ActiveRecord::Schema.define(version: 20180619132641) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "city"
@@ -283,6 +283,18 @@ ActiveRecord::Schema.define(version: 20180612143314) do
     t.text "context"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "seo_meta", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "seo_meta_id"
+    t.string "seo_meta_type"
+    t.string "browser_title"
+    t.string "meta_keywords"
+    t.text "meta_description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["id"], name: "index_seo_meta_on_id"
+    t.index ["seo_meta_id", "seo_meta_type"], name: "id_type_index_on_seo_meta"
   end
 
   create_table "social_media_links", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
