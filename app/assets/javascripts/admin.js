@@ -13,6 +13,7 @@
 
 //= require form_helpers
 //= require admin/upload_movies
+//= require admin/custom
 
 //= require underscore
 //= require s3_multipart_modified
