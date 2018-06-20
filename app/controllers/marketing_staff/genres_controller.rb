@@ -23,7 +23,7 @@ class MarketingStaff::GenresController < ApplicationController
   # PATCH/PUT /admin/genres/1.json
   def update
     respond_to do |format|
-      if @admin_genre.update(admin_genre_params)
+      if @admin_genre.update_attributes(admin_genre_params)
         format.html { redirect_to marketing_staff_genres_url,
                       notice: I18n.t('flash.genre.successfully_updated') }
         format.json { render :index, status: :ok, location: @admin_genre }

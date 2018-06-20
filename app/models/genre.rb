@@ -1,8 +1,10 @@
 class Genre < ApplicationRecord
-  is_seo_meta
-
   self.table_name = "admin_genres"
   PER_PAGE = 3
+
+  # Ref.: https://github.com/parndt/seo_meta
+  is_seo_meta
+  add_validations
 
   # ASSOCIATIONS
   has_many :movies, dependent: :destroy, foreign_key: "admin_genre_id"
