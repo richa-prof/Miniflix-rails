@@ -218,6 +218,7 @@ en:
       color: 'Color :'
       available_movies: 'Available movies :'
       description: 'Description :'
+      frontend_view_page_url: 'Frontend View Page Url :'
     seo_meta:
       genres:
         browser_title: 'Browser title :'

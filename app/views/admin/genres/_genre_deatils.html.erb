@@ -28,6 +28,15 @@
 
 <div class="box-body">
   <p>
+    <strong><%= t('label.genres.frontend_view_page_url') %></strong>
+    <%= link_to genre.frontend_view_page_url, target: '_blank' do %>
+      <%= genre.frontend_view_page_url %>
+    <% end %>
+  </p>
+</div>
+
+<div class="box-body">
+  <p>
     <strong><%= t('label.genres.description') %></strong>
     <%= genre.description %>
   </p>

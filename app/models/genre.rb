@@ -23,4 +23,8 @@ class Genre < ApplicationRecord
 
   # SCOPE
   scope :alfa_order, -> { order(:name) }
+
+  def frontend_view_page_url
+    "#{ENV['Host']}/genre/#{self.slug}"
+  end
 end
