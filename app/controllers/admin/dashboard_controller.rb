@@ -1,8 +1,16 @@
 class Admin::DashboardController < ApplicationController
-  before_action :authenticate_admin_user!, only: [:index]
+  # before_action :authenticate_admin_user!, only: [:index]
 
   layout "admin"
   def index
+    if current_marketing_staff_user
+      redirect_to admin_marketing_staffs_path and return
+    elsif current_admin_user
+      # Allow admin user to go ahead.
+    else
+      authenticate_admin_user!
+    end
+
     @unique_month_wise = User.select("created_at").map{ |item| item.created_at.beginning_of_month }.uniq
     @monthly_movies_cnt = Movie.group("created_day").select("count(*)as movies_cnt,DATE_FORMAT(admin_movies.created_at,'%m') as created_day,admin_movies.created_at")
   end

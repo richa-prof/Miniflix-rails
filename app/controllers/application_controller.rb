@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def after_sign_in_path_for(resource)
-    return admin_staffs_path if resource.admin?
+    return admin_dashboard_path if resource.admin?
     return marketing_staff_genres_path if resource.marketing_staff?
     return root_path if resource.staff?
     request.env['omniauth.origin'] || stored_location_for(resource) || root_path
