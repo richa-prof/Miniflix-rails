@@ -896,3 +896,52 @@ label.uploadfile-field .form-control {
   margin: 5px 0;
   border-radius: 5px;
 }
+
+/* ======== Starts for Blog Subscribers Modal ======== */
+
+#blogSubscriberModal .modal-title {
+  font-size: 18px;
+  text-transform: capitalize;
+  font-family: Roboto,sans-serif;
+  font-weight: 300;
+
+}
+.form-group-control {
+  text-align: left;
+  padding: 15px;
+}
+.form-group-control .form-group {
+  margin: 0px;
+  display: inline-block;
+  width: 100%;
+}
+.form-group-control .form-group .form-control {
+  background: none;
+  color: #fff;
+  height: 45px;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+.form-group-control .btn {
+  background: #FFEB3B;
+  color: #333;
+  padding: 10px 25px;
+  font-size: 18px;
+  font-weight: 600;
+  border: none;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  width: 100px;
+}
+.form-group-control .form-input {
+  float: left;
+  width: calc(100% - 100px);
+  width: -webkit-calc(100% - 100px);
+  width: -moz-calc(100% - 100px);
+}
+.form-group-control .form-group .blg-advice {
+  margin-top: 5px;
+  display: inline-block;
+}
+
+/* ======== Ends for Blog Subscribers Modal ======== */
