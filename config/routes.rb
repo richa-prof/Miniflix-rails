@@ -227,7 +227,7 @@ Rails.application.routes.draw do
       resources :likes, only: [:create, :destroy]
       resources :comments, only: [:create, :index], :constraints => -> (req) { req.xhr? }
     end
-    resources :blog_subscribers, only: [:new, :create]
+    resources :blog_subscribers, only: [:create], :constraints => -> (req) { req.xhr? }
     get 'profile/:id' => 'blogs#blog_profile', as: 'profile'
   end
 end

@@ -19,6 +19,7 @@
       blogSubscriberModalObj.find('#blog_subscriber_email').val('');
       var errorContainer = blogSubscriberModalObj.find('.error-container');
       errorContainer.text('');
+      blogSubscriberModalObj.modal('show');
     });
   };
 
