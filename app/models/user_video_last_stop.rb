@@ -7,7 +7,7 @@ class UserVideoLastStop < ApplicationRecord
 
   validates_presence_of :last_stopped, :total_time, :watched_percent
   #callback
-  before_validation :save_watched_percent_of_video
+  before_validation :save_watched_percent_of_video, :save_watched_count_of_video
 
   delegate :title, to: :movie, prefix: :movie,  allow_nil: true
   delegate :name, to: :movie, prefix: :movie,  allow_nil: true
@@ -71,6 +71,17 @@ class UserVideoLastStop < ApplicationRecord
 
   def save_watched_percent_of_video
     self.watched_percent = ((last_stopped.to_i * 100)/total_time.to_i) if (total_time && last_stopped)
+  end
+
+  def save_watched_count_of_video
+    current_watched_count = self.watched_count
+    if current_watched_count.blank? || current_watched_count.zero?
+      updated_watched_count = 1
+    else
+      updated_watched_count = current_watched_count + 1
+    end
+
+    self.watched_count = updated_watched_count
   end
 
   def calculate_remaining_time_in_sec
