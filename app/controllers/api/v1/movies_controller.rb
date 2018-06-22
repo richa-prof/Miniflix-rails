@@ -4,7 +4,9 @@ class Api::V1::MoviesController < Api::V1::ApplicationController
 
   def index
     movies = @genre.movies.paginate(page: params[:page])
-    render json: serialize_movie_response_with_pagination(movies)
+    seo_meta_data = serialize_seo_meta(@genre)
+    movies_data = serialize_movie_response_with_pagination(movies)
+    render json: movies_data.merge({seo_meta: seo_meta_data})
   end
 
   def featured_movie
@@ -63,6 +65,15 @@ class Api::V1::MoviesController < Api::V1::ApplicationController
       serialize_movies = ActiveModelSerializers::SerializableResource.new(movies, scope: {current_user: current_user},
           each_serializer: Api::V1::MovieSerializer)
       {total_page: movies.total_pages, current_page: movies.current_page, movies: serialize_movies}
+    end
+
+    def serialize_seo_meta(genre)
+      seo_meta_obj = genre.seo_meta
+
+      return unless seo_meta_obj.persisted?
+
+      ActiveModelSerializers::SerializableResource.new(seo_meta_obj,
+      each_serializer: Api::V1::SeoMetaSerializer)
     end
 
     def set_genre
