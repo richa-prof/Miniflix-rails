@@ -68,7 +68,7 @@ class Api::V1::MovieSerializer < ActiveModel::Serializer
   end
 
   def get_social_share_url(obj, share_on)
-    title = object.title
+    title = object.name
     description = object.description.truncate(150) rescue ''
     # target_url = object.bitly_url
     target_url = "#{ENV['Host']}/movies/#{object.slug}"
