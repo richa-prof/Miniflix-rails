@@ -11,6 +11,7 @@ class Api::V1::NotificationSerializer < ActiveModel::Serializer
 
   def movie_thumbnail
    movie_thumbnail = object.movie.movie_thumbnail
-   movie_thumbnail.cloud_front_url(movie_thumbnail.thumbnail_screenshot.path)
+
+   CommonHelpers.cloud_front_url(movie_thumbnail.thumbnail_screenshot.path)
   end
 end

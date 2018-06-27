@@ -25,7 +25,7 @@ class MovieCaption < ApplicationRecord
 
   def as_json
     {
-      file: caption_file_url,
+      file: caption_file_cloudfront_url,
       label: language,
       kind: "captions",
       default: is_default
@@ -33,9 +33,6 @@ class MovieCaption < ApplicationRecord
   end
 
   def caption_file_cloudfront_url
-    target_path = caption_file.path
-    return if target_path.blank?
-
-    'https://' +  ENV['cloud_front_url'] +'/'+ target_path
+    CommonHelpers.cloud_front_url(caption_file.path)
   end
 end

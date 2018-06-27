@@ -4,7 +4,7 @@ module MoviesHelper
     movie_thumbnail = movie.movie_thumbnail
     carousel_thumb = movie_thumbnail.movie_screenshot_1.carousel_thumb.path
 
-    movie_thumbnail.cloud_front_url(carousel_thumb)
+    CommonHelpers.cloud_front_url(carousel_thumb)
   end
 
   def movies_og_shareable_url(movie)

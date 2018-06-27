@@ -25,7 +25,7 @@
               </div>
             <% end %>
             <div class="blog-main-image">
-              <%= image_tag(blog.featured_image_url(:medium)) %>
+              <%= image_tag(blog.featured_image_medium_url) %>
             </div>
             <div class="blg-dt-user-profile">
               <i class="fa fa-calendar"></i> <%= blog.created_at.strftime("%m/%d/%Y") %>

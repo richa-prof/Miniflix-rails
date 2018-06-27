@@ -54,4 +54,10 @@ module BlogsHelper
       profile_path(user)
     end
   end
+
+  def staff_profile_image(user)
+    path = user.image.try(:staff_medium).try(:path)
+
+    CommonHelpers.cloud_front_url(path)
+  end
 end

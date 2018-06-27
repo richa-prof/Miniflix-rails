@@ -19,7 +19,10 @@ class Notification < ApplicationRecord
 
       @notificationMessage = "Miniflix has added new movie : #{@adminMovie.name}"
 
-      @data = { notifications_id: 0,message: @notificationMessage,created_at: Time.now.to_s,movie_id: @adminMovie.id,name: @adminMovie.name,realesed: @adminMovie.created_at.to_s,image: @adminMovie.movie_thumbnail.thumbnail_screenshot.url.to_s}
+      data_image_url = CommonHelpers.cloud_front_url(@adminMovie.movie_thumbnail.try(:thumbnail_screenshot).try(:path))
+
+      @data = { notifications_id: 0,message: @notificationMessage,created_at: Time.now.to_s,movie_id: @adminMovie.id,name: @adminMovie.name,realesed: @adminMovie.created_at.to_s,image: data_image_url.try(:to_s) }
+
       if device == 'android'
         android_user_tokens = [].push(token)
         fcm = FCM.new(ENV['FCM_API_KEY'])
@@ -79,11 +82,7 @@ class Notification < ApplicationRecord
   end
 
   def movie_detail
-    {movie_id: self.movie.id, name: self.movie.name, realesed: self.movie.created_at, image: image_cloud_front_url_for(self.movie.movie_thumbnail.thumbnail_screenshot.carousel_thumb.path)}
-  end
-
-  def image_cloud_front_url_for(target_path)
-    'https://' +  ENV['cloud_front_url'] +'/'+ target_path
+    movie.movie_details_hash_for_notification
   end
   # ======= Related to mobile API's END =======
 end

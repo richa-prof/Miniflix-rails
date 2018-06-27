@@ -40,7 +40,7 @@
               <div class="col-md-6">
                 <div class="blog-list-single">
                   <div class="blog-main-image">
-                    <%= image_tag (blog.featured_image_url(:large)) %>
+                    <%= image_tag (blog.featured_image_large_url) %>
                   </div>
                   <div class="blog-upload-usr-dt">
                     <div class="blg-dt">
@@ -48,7 +48,7 @@
                     </div>
                     <div class="blg-user">
                       <div class="blg-usr-pro-img">
-                        <%= image_tag blog_user.image_url %>
+                        <%= image_tag staff_profile_image(blog_user) %>
                       </div>
                       <div class="blg-usr-nm">
                         <%= link_to( blog_user.name, profile_path_for(blog_user) ) %>

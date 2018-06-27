@@ -35,7 +35,7 @@ class Api::V1::BattleshipMovieSerializer < ActiveModel::Serializer
   end
 
   def trailer_file
-    object.movie_trailer.try(:file)
+    object.movie_trailer.try(:file_cloudfront_url)
   end
 
   def social_urls

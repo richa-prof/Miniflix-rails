@@ -22,9 +22,8 @@
                     <%= link_to "#", class: "link_notification b-b-1" do %>
                       <div class="row">
                         <div class="col-xs-2">
-
-                          <%#= image_tag('thumb.jpg', alt: "Notification",class: 'img_notification') %>
-                          <%= image_tag(notification.admin_movie.admin_movie_thumbnail.thumbnail_screenshot.url.to_s, alt: "Notification",class: 'img_notification') %>
+                          <% notification_img_url = CommonHelpers.cloud_front_url(notification.movie.movie_thumbnail.try(:thumbnail_screenshot).try(:path)) %>
+                          <%= image_tag(notification_img_url, alt: "Notification",class: 'img_notification') %>
                         </div>
                         <div class="col-xs-10">
                           <div class="row">

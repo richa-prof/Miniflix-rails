@@ -20,4 +20,10 @@ class MovieTrailer < ApplicationRecord
   end
   # ===== Class methods End =====
 
+  def file_cloudfront_url
+    s3_upload = S3Multipart::Upload.find(s3_multipart_upload_id)
+    target_path = s3_upload.try(:key)
+
+    CommonHelpers.cloud_front_url(target_path)
+  end
 end

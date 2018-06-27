@@ -12,8 +12,9 @@ development:
   #mandrill api key
   Mandrill: MANDRILL_KEY
 
-  #cloud_front_url for image
-  cloud_front_url: CLOUDFRONT_IMAGE_URL
+  # cloudfront url's for fetching S3 files.
+  CLOUD_FRONT_URL: CLOUD_FRONT_URL
+  VERSION_FILE_CLOUD_FRONT_URL: VERSION_FILE_CLOUD_FRONT_URL
 
   #mailling credentials
   Mailer_Email: MAILER_EMAIL

@@ -41,7 +41,7 @@
                   <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                       <h2 class="box-title text-blue">
-                        <%= @admin_movie.title || not_available %>
+                        <%= @admin_movie.name || not_available %>
                       </h2>
                       <p class="margin-btm-zero">
                         <%= movie_posted_on_details_for(@admin_movie) %>
@@ -59,21 +59,13 @@
                           <li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>
                         </ol>
                         <div class="carousel-inner">
-                          <div class="item active">
-                            <%= image_tag(movie_thumbnail.movie_screenshot_1, class: "movie_thumbnail") if movie_thumbnail.present? %>
-                            <div class="carousel-caption">
+                          <% movie_thumbnail.thumb_screenshots_arr.each_with_index do |screenshot, index| %>
+                            <div class="item <%= 'active' if index.zero? %>">
+                              <%= image_tag(screenshot.presence || '', class: "movie_thumbnail") if movie_thumbnail.present? %>
+                              <div class="carousel-caption">
+                              </div>
                             </div>
-                          </div>
-                          <div class="item">
-                            <%= image_tag(movie_thumbnail.movie_screenshot_2, class: "movie_thumbnail") if movie_thumbnail.present? %>
-                            <div class="carousel-caption">
-                            </div>
-                          </div>
-                          <div class="item">
-                            <%= image_tag(movie_thumbnail.movie_screenshot_3, class: "movie_thumbnail") if movie_thumbnail.present? %>
-                            <div class="carousel-caption">
-                            </div>
-                          </div>
+                          <%end%>
                         </div>
                         <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
                           <span class="fa fa-angle-left"></span>

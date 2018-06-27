@@ -1,7 +1,7 @@
 module UsersHelper
 
   def image_cloud_front_url(path)
-    url = 'https://' +  ENV['cloud_front_url'] +'/'+ path
+    CommonHelpers.cloud_front_url(path)
   end
 
   def check_page_type(page, genre)

@@ -104,7 +104,7 @@ class Movie < ApplicationRecord
 
   # ===== Instance methods Start =====
   def hls_movie_url
-    "https://s3-us-west-1.amazonaws.com/#{ENV['S3_OUTPUT_BUCKET']}/#{version_file}"
+    ENV['VERSION_FILE_CLOUD_FRONT_URL'] + version_file if version_file.present?
   end
 
   def active_movie_captions
@@ -231,32 +231,37 @@ class Movie < ApplicationRecord
 
   def fetch_movie_urls
     movie_urls = {}
-    movie_urls[:hls] = "https://s3-us-west-1.amazonaws.com/#{ENV['S3_OUTPUT_BUCKET']}/#{version_file}"
+
+    movie_urls[:hls] = ENV['VERSION_FILE_CLOUD_FRONT_URL'] + version_file if version_file.present?
+
     self.movie_versions.each do |version|
-      movie_urls["video_"+version.resolution.to_s]  = "https://s3-us-west-1.amazonaws.com/#{ENV['S3_INPUT_BUCKET']}/#{version.film_video}"
+      movie_urls["video_"+version.resolution.to_s]  = CommonHelpers.cloud_front_url(version.film_video)
     end
+
     movie_urls
   end
 
   def movie_screenshot_list
     movie_thumbnail = self.movie_thumbnail
-    {
-      original: image_url(movie_thumbnail.movie_screenshot_1.carousel_thumb.path),
-      thumb330: image_url(movie_thumbnail.thumbnail_screenshot.carousel_thumb.path),
-      thumb640: image_url(movie_thumbnail.thumbnail_640_screenshot.carousel_thumb.path),
-      thumb800: movie_thumbnail.thumb_800_url
-    }
-  end
-
-  def image_url(path)
-    'https://' +  ENV['cloud_front_url'] +'/'+ path if path.present?
+    movie_thumbnail.screenshot_urls_map
   end
 
   def fetch_last_stop(user)
     user_video_last_stop = user.user_video_last_stops.find_by(admin_movie_id: self.id)
     user_video_last_stop.present? ? user_video_last_stop.last_stopped : 0
   end
-  # ======= Related to mobile API's start =======
+
+  def movie_details_hash_for_notification
+    target_path = movie_thumbnail.thumbnail_screenshot.carousel_thumb.try(:path)
+
+    { movie_id: id,
+      name: name,
+      realesed: created_at,
+      image: CommonHelpers.cloud_front_url(target_path)
+    }
+  end
+
+  # ======= Related to mobile API's end =======
 
   private
 

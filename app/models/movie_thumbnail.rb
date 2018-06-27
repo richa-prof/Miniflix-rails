@@ -9,15 +9,28 @@ class MovieThumbnail < ApplicationRecord
 	mount_uploader :thumbnail_640_screenshot, MovieThumbnailUploader
   mount_uploader :thumbnail_800_screenshot, MovieThumbnailUploader
 
-  def cloud_front_url(path)
-    # ENV['cloud_front_url'] + path
-    'https://' +  ENV['cloud_front_url'] +'/'+ path
+  def thumb_screenshots_arr
+    screen_shot_array = []
+    [:movie_screenshot_1, :movie_screenshot_2, :movie_screenshot_3].each do |screen_shot|
+      screen_shot_array << (CommonHelpers.cloud_front_url(self.send(screen_shot).path))
+    end
+
+    screen_shot_array
+  end
+
+  def screenshot_urls_map
+    {
+      original: image_url(movie_screenshot_1.carousel_thumb.path),
+      thumb330: image_url(thumbnail_screenshot.carousel_thumb.path),
+      thumb640: image_url(thumbnail_640_screenshot.carousel_thumb.path),
+      thumb800: thumb_800_url
+    }
   end
 
   def thumb_800_url
     target_path = thumbnail_800_screenshot.try(:path)
     if target_path.present?
-      return cloud_front_url(target_path)
+      return image_url(target_path)
     end
 
     thumbnail_800_screenshot_default_url
@@ -27,5 +40,9 @@ class MovieThumbnail < ApplicationRecord
     dir_path = ActionController::Base.helpers.asset_path('admin/default_thumb800.jpg')
 
     "#{ENV['RAILS_HOST']}/#{dir_path}"
+  end
+
+  def image_url(path)
+    CommonHelpers.cloud_front_url(path)
   end
 end

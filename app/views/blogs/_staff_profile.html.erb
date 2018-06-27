@@ -6,7 +6,7 @@
         <div class="usr-pro-header">
           <div class="usr-profile-img-wrapper">
             <div class="upi-pic">
-              <%= image_tag(staff.image_url(:staff_medium)) %>
+              <%= image_tag(staff_profile_image(staff)) %>
               <% if own_profile %>
                 <div class="edit-user-profile">
                   <%= link_to(edit_staff_user_registration_path) do %>
