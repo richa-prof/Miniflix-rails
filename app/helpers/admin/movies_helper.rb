@@ -14,7 +14,7 @@ module Admin::MoviesHelper
 
   def render_thumbnail_image_for(is_edit_mode, thumbnail_type, thumbnail_screenshot)
     target_image_url = if is_edit_mode && thumbnail_screenshot.present?
-                        thumbnail_screenshot.url
+                        CommonHelpers.cloud_front_url(thumbnail_screenshot.path)
                       else
                         get_default_thumbnail_url_for(thumbnail_type)
                       end
