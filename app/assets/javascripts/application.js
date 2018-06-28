@@ -15,6 +15,7 @@
 //= require rails-ujs
 //= require turbolinks
 //= require ckeditor/init
+//= require init_ckeditor
 
 //= require intlTelInput
 //= require utils

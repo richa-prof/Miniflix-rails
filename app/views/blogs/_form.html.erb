@@ -49,7 +49,7 @@
             <div class="blog-editor">
               <h3>Editor</h3>
               <div id="editor" class="main-blog-editor">
-              <%= f.cktext_area :body, value: @blog.body, required: true %>
+              <%= f.cktext_area :body, value: @blog.body, class: 'ckeditor', required: true %>
               </div>
             </div>
             <%= errors_for(f, :body) %>
