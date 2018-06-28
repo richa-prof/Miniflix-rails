@@ -1,3 +1,5 @@
 /* iCheck plugin skins
 ----------------------------------- */
-@import "minimal/_all.css";
+/*
+*= require admin/minimal/_all
+*/
