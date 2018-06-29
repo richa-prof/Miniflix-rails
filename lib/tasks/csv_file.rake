@@ -40,4 +40,17 @@ namespace :csv_file do
   def is_payment_method_available?(user)
     user.user_payment_methods.blank? ? 'NA' : 'Yes'
   end
+
+  desc 'Generate most watched movies CSV file'
+  task generate_most_watched_movies_csv_file: :environment do
+    CSV.open("tmp/most_watched_movies.csv","w") do |csv|
+      column_names = ['movie id', 'movie name', 'movie title', 'views count']
+      csv << column_names
+      Movie.popular_movies.each do |movie|
+        csv << [movie.id, movie.name, movie.title, movie.total_watches]
+      end
+    end
+  end
 end
+
+# RAILS_ENV=production bundle exec rake csv_file:generate_most_watched_movies_csv_file
