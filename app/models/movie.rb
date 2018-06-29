@@ -99,6 +99,17 @@ class Movie < ApplicationRecord
     def battleship_movies
       Movie.where(name: Movie.battleship_movies_name_arr)
     end
+
+    def popular_movies(target_count=nil)
+      movies_arr = Movie.joins(:user_video_last_stops)
+                   .group("admin_movies.id")
+                   .select("admin_movies.*, sum(user_video_last_stops.watched_count) AS total_watches")
+                   .order("total_watches DESC")
+
+      return movies_arr unless target_count.present?
+
+      movies_arr.first(target_count)
+    end
   end
   # ===== Class methods End =====
 

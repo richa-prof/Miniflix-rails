@@ -43,7 +43,7 @@ class Api::V1::MoviesController < Api::V1::ApplicationController
   end
 
   def popular_movies
-    movies = Movie.last 3
+    movies = Movie.popular_movies(3)
     render json: movies, scope: {current_user: current_user}
   end
 
