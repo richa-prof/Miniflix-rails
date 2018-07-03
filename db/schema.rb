@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180621144835) do
+ActiveRecord::Schema.define(version: 20180703074319) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "city"
@@ -395,7 +395,7 @@ ActiveRecord::Schema.define(version: 20180621144835) do
     t.integer "role_id"
     t.string "role_type"
     t.float "last_stopped", limit: 24
-    t.integer "total_time"
+    t.float "total_time", limit: 24
     t.float "watched_percent", limit: 24
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

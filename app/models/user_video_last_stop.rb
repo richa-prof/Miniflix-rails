@@ -54,11 +54,6 @@ class UserVideoLastStop < ApplicationRecord
   end
 
   def current_time
-    # curr_hour = (last_stopped/3600.to_f).round
-    # rem_sec = last_stopped%3600
-    # curr_min = (rem_sec/60).floor
-    # curr_sec = (rem_sec%60).round
-    # curr_hour.to_s.rjust(2, '0')+":"+curr_min.to_s.rjust(2, '0')+":"+curr_sec.to_s.rjust(2, '0')
     last_stopped > 59 ? last_stopped > 3599 ? Time.at(last_stopped).utc.strftime("%H:%M:%S") : Time.at(last_stopped).utc.strftime("%M:%S") : Time.at(last_stopped).utc.strftime("%S")
   end
 
@@ -85,6 +80,6 @@ class UserVideoLastStop < ApplicationRecord
   end
 
   def calculate_remaining_time_in_sec
-     (total_time - last_stopped).round
+    (total_time - last_stopped).round
   end
 end
