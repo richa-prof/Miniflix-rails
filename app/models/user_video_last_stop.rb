@@ -35,7 +35,9 @@ class UserVideoLastStop < ApplicationRecord
   # ===== Class methods End =====
 
   def remaining_time
-    Time.at(calculate_remaining_time_in_sec).utc.strftime("%H:%M:%S")
+    target_time_in_utc = Time.at(calculate_remaining_time_in_sec).utc
+
+    target_time_in_utc.to_s(:hour_minute_second_colon_separated_format)
   end
 
   # ======= Related to mobile API's START =======
@@ -54,7 +56,7 @@ class UserVideoLastStop < ApplicationRecord
   end
 
   def current_time
-    last_stopped > 59 ? last_stopped > 3599 ? Time.at(last_stopped).utc.strftime("%H:%M:%S") : Time.at(last_stopped).utc.strftime("%M:%S") : Time.at(last_stopped).utc.strftime("%S")
+    last_stopped > 59 ? last_stopped > 3599 ? Time.at(last_stopped).utc.to_s(:hour_minute_second_colon_separated_format) : Time.at(last_stopped).utc.strftime("%M:%S") : Time.at(last_stopped).utc.strftime("%S")
   end
 
   def formated_updated_at
