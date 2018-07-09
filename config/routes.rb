@@ -7,6 +7,12 @@ Rails.application.routes.draw do
   mount S3Multipart::Engine => "/s3_multipart"
   mount Ckeditor::Engine => '/ckeditor'
 
+  # Indexing robots.txt route
+  get '/robots', to: redirect('/robots.txt'), format: false
+  get '/robots.:format' => 'robots#index'
+
+  get '/sitemap.xml.gz', to: redirect("#{ENV['CLOUD_FRONT_URL']}sitemaps/sitemap.xml.gz"), as: :sitemap
+
   # Starts common routing
   get 'send_download_link' => 'mobile_apps#send_download_link'
   resources :movies, only: [:show]

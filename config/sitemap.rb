@@ -1,0 +1,1 @@
+MiniflixSitemap.generate_sitemap

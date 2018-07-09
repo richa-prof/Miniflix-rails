@@ -22,3 +22,8 @@
 every 2.days do
   rake "user_reset_password:send_reset_password_reminder"
 end
+
+every 1.day, :at => '5:00 am' do
+  rake "sitemap:refresh:no_ping"
+  rake "sitemap:upload_to_s3"
+end
