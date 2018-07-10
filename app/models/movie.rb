@@ -45,6 +45,7 @@ class Movie < ApplicationRecord
   # CALLBACKS
   before_save :create_bitly_url, if: -> { slug_changed? }
   after_create :write_file
+  after_update :send_notification
 
 
   # SCOPES
@@ -274,6 +275,10 @@ class Movie < ApplicationRecord
 
   # ======= Related to mobile API's end =======
 
+  def new_movie_added_notification_message
+    I18n.t( 'contents.movie.new_movie_added_notification_message', movie_name: self.name )
+  end
+
   private
 
   def create_bitly_url
@@ -285,4 +290,9 @@ class Movie < ApplicationRecord
      "#{ENV['Host']}/movies/#{self.slug}"
   end
 
+  def send_notification
+    if title_was.nil? && title.present?
+      Notification.send_movie_added_push_notification(self)
+    end
+  end
 end

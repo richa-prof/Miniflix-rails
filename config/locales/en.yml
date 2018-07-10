@@ -263,6 +263,7 @@ en:
       upload_movie_thumbnail: Upload movie thumbnail
       admin_movie_downloadable: Allow to downloadable this movie by user
       admin_movie_is_featured_film: Allow to set this film as a featured film for home page
+      new_movie_added_notification_message: "Miniflix has added new movie : %{movie_name}"
   content:
     movie:
       posted_on_details: "Posted on %{formatted_date} by admin"
