@@ -1,0 +1,1242 @@
+<%= javascript_include_tag 'welcome', 'data-turbolinks-track' => true %>
+<%= stylesheet_link_tag    'welcome', media: 'all', 'data-turbolinks-track' => true %>
+
+<% @i=0 %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel themecolor">
+      <div class="panel-heading" style="background-color: #616161; color: white; font-weight: bold;">
+        <h3>
+          API HELP
+        </h3>
+      </div>
+      <div class="panel-body" style="padding: 15px;">
+          <div class="row ">
+            <div class="col-md-12">
+              <table id="apiList" style="width: 100%%;">
+                <tr style="border-radius: 5px;">
+                  <th style="width: 1%;">No</th>
+                  <th style="width: 5%;">Method</th>
+                  <th style="width: 70%;">URL</th>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="get">GET</td>
+                  <td><%= @target_host+"welcome/app_latest_version" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>get application latest version</p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"welcome/app_latest_version" %></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"users/contact_us" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>contact as a eductaional</p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"users/contact_us" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr></tr>
+                      <tr>
+                        <td>contact_us[name]</td>
+                        <td>string</td>
+                        <td>name</td>
+                      </tr>
+                      <tr></tr>
+                      <tr>
+                        <td>contact_us[email]</td>
+                        <td>string</td>
+                        <td>Email</td>
+                      </tr>
+                      <tr></tr>
+                      <tr>
+                        <td>contact_us[school]</td>
+                        <td>string</td>
+                        <td>school</td>
+                      </tr>
+                      <tr></tr>
+                      <tr>
+                        <td>contact_us[occupation]</td>
+                        <td>string</td>
+                        <td>occupation</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"users/payment_history" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>get payment history of the user</p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"users/payment_history" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>user_id</td>
+                        <td>integer</td>
+                        <td>user id</td>
+                      </tr>
+                      <tr>
+                        <td>offset</td>
+                        <td>integer</td>
+                        <td>index</td>
+                      </tr>
+                      <tr>
+                        <td>limit</td>
+                        <td>integer</td>
+                        <td>limit</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"users/email_and_notification" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>For email and notification settings </p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"users/email_and_notification" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>email_and_notification[user_id]</td>
+                        <td>integer</td>
+                        <td>user id</td>
+                      </tr>
+                      <tr>
+                        <td>email_and_notification[product_updates]</td>
+                        <td>boolean</td>
+                        <td>product updates</td>
+                      </tr>
+                      <tr>
+                        <td>email_and_notification[films_added]</td>
+                        <td>boolean</td>
+                        <td>films_added</td>
+                      </tr>
+                      <tr>
+                        <td>email_and_notification[special_offers_and_promotions]</td>
+                        <td>boolean</td>
+                        <td>special_offers_and_promotions</td>
+                      </tr>
+                      <tr>
+                        <td>email_and_notification[better_product]</td>
+                        <td>boolean</td>
+                        <td>special_offers_and_promotions</td>
+                      </tr>
+                      <tr>
+                        <td>email_and_notification[do_not_send]</td>
+                        <td>boolean</td>
+                        <td>do_not_send</td>
+                      </tr>
+                      <tr>
+                        <td>email_and_notification[product_updates_email]</td>
+                        <td>boolean</td>
+                        <td>product_updates_email</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"users/update_profile" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>for update user profile </p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"users/update_profile" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>user[user_id]</td>
+                        <td>integer</td>
+                        <td>user_id</td>
+                      </tr>
+                      <tr>
+                        <td>user[name]</td>
+                        <td>integer</td>
+                        <td>name</td>
+                      </tr>
+                      <tr>
+                        <td>user[email]</td>
+                        <td>string</td>
+                        <td>email</td>
+                      </tr>
+                      <tr>
+                        <td>user[password]</td>
+                        <td>stirng</td>
+                        <td>password</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"users/update_registration_plan" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>update temp_user's plan</p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"users/update_registration_plan" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>user_id</td>
+                        <td>string</td>
+                        <td>user's id</td>
+                      </tr>
+                      <tr>
+                        <td>registration_plan</td>
+                        <td>string</td>
+                        <td>name of the plan(<%= User.registration_plans.keys.join('/') %>)</td>
+                      </tr>
+                      <tr>
+                        <td> UserType </td>
+                        <td> string </td>
+                        <td>User/TempUser</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <%if Rails.env.staging? %>
+                  <tr>
+                    <td><%= @i+=1 %></td>
+                    <td id="delete"> Delete </td>
+                    <td><%= @target_host+"users/:id" %></td>
+                  </tr>
+                  <tr>
+                    <td colspan="3">
+                    <h5>Description :</h5>
+                    <p>Delete test user only for staging environment </p>
+                    <h5>Friendly Url :</h5>
+                    <p><%= @target_host+"users/:id" %></p>
+                    <h5>Parameters :</h5>
+                      <table>
+                        <tr>
+                          <td>Parameter Name</td>
+                          <td>DataType</td>
+                          <td>Description</td>
+                        </tr>
+                        <tr>
+                          <td> id </td>
+                          <td> integer </td>
+                          <td>user's id</td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                <% end %>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="get">GET</td>
+                  <td><%= @target_host+"genres/genres" %>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                    <h5>Description :</h5>
+                    <p>get all categories</p>
+                    <h5>Friendly Url :</h5>
+                    <p><%= @target_host+"genres/genres" %></p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"genres/genres_wise_movies" %>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                    <h5>Description :</h5>
+                    <p>For get all catogories with movies.</p>
+                    <h5>Friendly Url :</h5>
+                    <p><%= @target_host+"genres/genres_wise_movies" %></p>
+                    <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>user_id</td>
+                        <td>integer</td>
+                        <td>id of the logged in user</td>
+                      </tr>
+                      <tr>
+                        <td>device_id</td>
+                        <td>integer</td>
+                        <td>device id if user not logged in</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"genres/id_wise_gener" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>get id wise gener with movies</p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"genres/id_wise_gener" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>id of the gener</td>
+                      </tr>
+                      <tr>
+                        <td>offset</td>
+                        <td>integer</td>
+                        <td>index of movie</td>
+                      </tr>
+                      <tr>
+                        <td>limit</td>
+                        <td>integer</td>
+                        <td>limit</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"movies/get_movie_detail" %>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                    <h5>Description :</h5>
+                    <p>For get movie details.</p>
+                    <h5>Friendly Url :</h5>
+                    <p><%= @target_host+"movies/get_movie_detail/:id" %></p>
+                    <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>id</td>
+                        <td>integer</td>
+                        <td>Movie id</td>
+                      </tr>
+                      <tr>
+                        <td>user_id</td>
+                        <td>integer</td>
+                        <td>Logged in user id</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"movies/get_all_movie_by_movie_name_or_genre_name" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>Get all movie by movie name or genre name </p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"movies/get_all_movie_by_movie_name_or_genre_name" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>movie_name/genre_name</td>
+                        <td>string</td>
+                        <td>pass genre_name or movie_name</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"movies/add_movie_my_list" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>Get add movie into my list </p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"movies/add_movie_my_list" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>user_id</td>
+                        <td>integer</td>
+                        <td>user id</td>
+                      </tr>
+                      <tr>
+                        <td>movie_id</td>
+                        <td>integer</td>
+                        <td>movie_id</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"movies/my_list_movies" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>Get add movie into my list </p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"movies/my_list_movies" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>user_id</td>
+                        <td>integer</td>
+                        <td>user id</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"movies/remove_my_list_movie" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>remove movie into my list </p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"movies/remove_my_list_movie" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>user_id</td>
+                        <td>integer</td>
+                        <td>user id</td>
+                      </tr>
+                      <tr>
+                        <td>movie_id</td>
+                        <td>integer</td>
+                        <td>movie_id</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"movies/search_movie_with_genre" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>for search movie with genre name</p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"movies/search_movie_with_genre" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>movie_name</td>
+                        <td>string</td>
+                        <td>movie_name</td>
+                      </tr>
+                      <tr>
+                        <td>genre_id</td>
+                        <td>integer</td>
+                        <td>id of genre</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"movies/add_to_recently_watched" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>add movie to recently watched</p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"movies/add_to_recently_watched" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>user_id</td>
+                        <td>string</td>
+                        <td>logged in user's id</td>
+                      </tr>
+                      <tr>
+                        <td>device_id</td>
+                        <td>string</td>
+                        <td>device id if user not logged in</td>
+                      </tr>
+                      <tr>
+                        <td>current_time</td>
+                        <td>string</td>
+                        <td>current time</td>
+                      </tr>
+                      <tr>
+                        <td>total_time</td>
+                        <td>string</td>
+                        <td>total time</td>
+                      </tr>
+                      <tr>
+                        <td>movie_id</td>
+                        <td>integer</td>
+                        <td>id of movie</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"movies/add_multiple_to_recently_watched" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>Add multiple recently watched movie</p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"movies/add_multiple_to_recently_watched" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>user_id</td>
+                        <td>string</td>
+                        <td>logged in user's id</td>
+                      </tr>
+                      <tr>
+                        <td>device_id</td>
+                        <td>string</td>
+                        <td>device id if user not logged in</td>
+                      </tr>
+                      <tr>
+                        <td>movie_list</td>
+                        <td>hash</td>
+                        <td>list of recently watched movie</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"movies/get_watched_movie_count_visitor" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>For get watched movies count by visitor</p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"movies/get_watched_movie_count_visitor" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>device_id</td>
+                        <td>string</td>
+                        <td>device_id of visitor</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"movies/add_to_recently_watched_visitor" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>Add movie in visitor's recent watch</p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"movies/add_to_recently_watched_visitor" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>device_id</td>
+                        <td>string</td>
+                        <td>device_id of visitor</td>
+                      </tr>
+                      <tr>
+                        <td>movie_id</td>
+                        <td>string</td>
+                        <td>movie id watched by visitor</td>
+                      </tr>
+                      <tr>
+                        <td>current_time </td>
+                        <td>string</td>
+                        <td>(don't know exact format)</td>
+                      </tr>
+                      <tr>
+                        <td>total_time </td>
+                        <td>string</td>
+                        <td>(don't know exact format)</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"notifications/get_notifications" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>update user's plan</p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"notifications/get_notifications" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>user_id</td>
+                        <td>string</td>
+                        <td>logged in user's id</td>
+                      </tr>
+                      <tr>
+                        <td>offset</td>
+                        <td>integer</td>
+                        <td>index of notifications</td>
+                      </tr>
+                      <tr>
+                        <td>limit</td>
+                        <td>integer</td>
+                        <td>limit</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"notifications/delete_notifications" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>update user's plan</p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"notifications/delete_notifications" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>user_id</td>
+                        <td>string</td>
+                        <td>logged in user's id</td>
+                      </tr>
+                      <tr>
+                        <td>notification_ids</td>
+                        <td>string</td>
+                        <td>notification ids as comma separated (ex:- "1,2,3,4")</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"notifications/send_test_notification" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>For send notification for testing</p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"notifications/send_test_notification" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>device</td>
+                        <td>string</td>
+                        <td>iOS/android</td>
+                      </tr>
+                      <tr>
+                        <td>token</td>
+                        <td>string</td>
+                        <td>Devise token</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"sessions/edit_phone_number" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>for edit phone number </p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"sessions/edit_phone_number" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>user[user_id]</td>
+                        <td>integer</td>
+                        <td>user id</td>
+                      </tr>
+                      <tr>
+                        <td>user[phone_number]</td>
+                        <td>string</td>
+                        <td>phone number</td>
+                      </tr>
+                      <tr>
+                        <td>user[password]</td>
+                        <td>string</td>
+                        <td>current password</td>
+                      </tr>
+                      <tr>
+                        <td>user[verification_code]</td>
+                        <td>string</td>
+                        <td>verification code</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"sessions/change_password" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>for edit password </p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"sessions/change_password" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>user[user_id]</td>
+                        <td>integer</td>
+                        <td>user id</td>
+                      </tr>
+                      <tr>
+                        <td>user[current_password]</td>
+                        <td>string</td>
+                        <td>current_password</td>
+                      </tr>
+                      <tr>
+                        <td>user[new_password]</td>
+                        <td>string</td>
+                        <td>new_password</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"sessions/forgot_password" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>for forgot password </p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"sessions/forgot_password" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>email</td>
+                        <td>string</td>
+                        <td>email id</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"sessions/sign_in" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>for Sign in</p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"sessions/sign_in" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>user[email]</td>
+                        <td>string</td>
+                        <td>email</td>
+                      </tr>
+                      <tr>
+                        <td>user[password]</td>
+                        <td>string</td>
+                        <td>password</td>
+                      </tr>
+                      <tr>
+                        <td>user[device_type]</td>
+                        <td>string</td>
+                        <td>device type e.g: iOS/Android</td>
+                      </tr>
+                      <tr>
+                        <td>user[device_token]</td>
+                        <td>string</td>
+                        <td>device token</td>
+                      </tr>
+                      <tr>
+                        <td>user[notification_from]</td>
+                        <td>string</td>
+                        <td>notification_from  e.g: “Development/Production”
+                        </td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"sessions/sign_up" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>for Sign up </p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"sessions/sign_up" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>user[name]</td>
+                        <td>string</td>
+                        <td>name</td>
+                      </tr>
+                      <tr>
+                        <td>user[email]</td>
+                        <td>string</td>
+                        <td>email</td>
+                      </tr>
+                      <tr>
+                        <td>user[password]</td>
+                        <td>string</td>
+                        <td>password</td>
+                      </tr>
+                      <tr>
+                        <td>user[registration_plan]</td>
+                        <td>string</td>
+                        <td>user registration plan (<%= User.registration_plans.keys.join('/') %>)</td>
+                      </tr>
+                      <tr>
+                        <td>user[sign_up_from]</td>
+                        <td>string</td>
+                        <td>from where to sign up (<%= User.sign_up_froms.keys.join('/') %>)</td>
+                      </tr>
+                      <tr>
+                        <td>user[device_type]</td>
+                        <td>string</td>
+                        <td>device type e.g: iOS/Android</td>
+                      </tr>
+                      <tr>
+                        <td>user[device_token]</td>
+                        <td>string</td>
+                        <td>device token</td>
+                      </tr>
+                      <tr>
+                        <td>user[notification_from]</td>
+                        <td>string</td>
+                        <td>notification_from  e.g: “Development/Production”
+                        </td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"sessions/social_sign_in" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>for social sign in</p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"sessions/social_sign_in" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>user[uid]</td>
+                        <td>string</td>
+                        <td>uid</td>
+                      </tr>
+                      <tr>
+                        <td>user[provider]</td>
+                        <td>string</td>
+                        <td>Provider</td>
+                      </tr>
+                      <tr>
+                        <td>user[name]</td>
+                        <td>string</td>
+                        <td>name of the user</td>
+                      </tr>
+                      <tr>
+                        <td>user[email]</td>
+                        <td>string</td>
+                        <td>email</td>
+                      </tr>
+                      <tr>
+                        <td>user[image]</td>
+                        <td>string</td>
+                        <td>image</td>
+                      </tr>
+                      <tr>
+                        <td>user[registration_plan]</td>
+                        <td>string</td>
+                        <td>Plan (<%= User.registration_plans.keys.join('/') %>)</td>
+                      </tr>
+                      <tr>
+                        <td>user[sign_up_from]</td>
+                        <td>string</td>
+                        <td>from where to sign up(<%= User.sign_up_froms.keys.join('/') %>)</td>
+                      </tr>
+                      <tr>
+                        <td>user[device_type]</td>
+                        <td>string</td>
+                        <td>device type e.g: iOS/Android</td>
+                      </tr>
+                      <tr>
+                        <td>user[device_token]</td>
+                        <td>string</td>
+                        <td>device token</td>
+                      </tr>
+                      <tr>
+                        <td>user[notification_from]</td>
+                        <td>string</td>
+                        <td>notification_from  e.g: “Development/Production”
+                        </td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"sessions/sign_out" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>Sign out from app</p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"sessions/sign_out" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>user_id</td>
+                        <td>string</td>
+                        <td>logged in user's id</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"payments/cancel_subscription" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>for cancel subscription</p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"payments/cancel_subscription" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>id</td>
+                        <td>string</td>
+                        <td>user id who want to cancel subscription</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"payments/reactive_cancelled_payment" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>for reactive subscription</p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"payments/reactive_cancelled_payment" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>id</td>
+                        <td>string</td>
+                        <td>user id who want to reactive subscription</td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"payments/update_receipt_data_of_user" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>for update payment information only for ios user</p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"payments/update_receipt_data_of_user" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td>receipt_data</td>
+                        <td>string</td>
+                        <td>provided by itune after complete subscription </td>
+                      </tr>
+                      <tr>
+                        <td> registration_plan </td>
+                        <td>string</td>
+                        <td> plan(<%= User.registration_plans.keys.join('/') %>) </td>
+                      </tr>
+                      <tr>
+                        <td> UserType </td>
+                        <td>String</td>
+                        <td> user type (TempUser/User) determine which user need to update receipt data either older user or newly subscribe user </td>
+                      </tr>
+                      <tr></tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= @i+=1 %></td>
+                  <td id="post">POST</td>
+                  <td><%= @target_host+"users/get_user_by_id" %></td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <h5>Description :</h5>
+                  <p>get user by user id</p>
+                  <h5>Friendly Url :</h5>
+                  <p><%= @target_host+"users/get_user_by_id" %></p>
+                  <h5>Parameters :</h5>
+                    <table>
+                      <tr>
+                        <td>Parameter Name</td>
+                        <td>DataType</td>
+                        <td>Description</td>
+                      </tr>
+                      <tr>
+                        <td> user_id</td>
+                        <td> integer </td>
+                        <td> fetch user by id</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

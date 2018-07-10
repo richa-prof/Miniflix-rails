@@ -27,6 +27,9 @@ Rails.application.routes.draw do
     get 'paypal_success/:user_id' => 'payments#paypal_success'
     get 'paypal_cancel/:user_id' => 'payments#paypal_cancel'
 
+    #api and help doc
+    get 'welcome/api_help' => 'welcome#api_help'
+
     # API's for React Site
     namespace :api do
       namespace :v1 do
