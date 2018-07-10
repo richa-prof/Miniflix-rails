@@ -400,8 +400,11 @@ class User < ActiveRecord::Base
   end
 
   def is_valid_payment?
-    last_transaction = UserPaymentTransaction.joins(:user_payment_method => :user).where('user_payment_methods.user_id = ?', self.id).last
-    last_transaction.present? && (last_transaction.payment_expire_date >= Time.now)
+    (trial? || activate?) && is_paid_user?
+  end
+
+  def is_paid_user?
+    self.Monthly? || self.Annually?
   end
 
   def check_user_free_or_not
