@@ -114,6 +114,7 @@ en:
     admin_movie: Admin Movie
     miniflix_marketing_staff: Miniflix Marketing Staff
     sitemap: Sitemap
+    static_pages: Static Pages
   title:
     miniflix_admin: Miniflix Admin
     movie:
@@ -143,6 +144,10 @@ en:
       successfully_created: 'Genre was successfully created.'
       successfully_updated: 'Genre was successfully updated.'
       successfully_deleted: 'Genre was successfully deleted.'
+    seo_meta:
+      successfully_created: 'Seo Meta was successfully created.'
+      successfully_updated: 'Seo Meta was successfully updated.'
+      successfully_deleted: 'Seo Meta was successfully deleted.'
     background_image:
       successfully_created: 'Background was successfully created.'
       successfully_updated: 'Background was successfully updated.'
@@ -225,6 +230,7 @@ en:
         browser_title: 'Browser title :'
         meta_description: 'Meta description :'
         meta_keywords: 'Meta Keywords :'
+      frontend_view_page_url: 'Frontend View Page Url :'
   invalid_params:
     user:
       empty_image: "Image parameter can't be empty."

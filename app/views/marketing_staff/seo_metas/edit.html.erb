@@ -1,0 +1,24 @@
+<div class="container">
+  <h1></h1>
+  <%= form_for @seo_meta, url: marketing_staff_seo_meta_path(@seo_meta) do |form| %>
+    <% if @seo_meta.errors.any? %>
+      <div id="error_explanation">
+        <h2>
+          There are some errors in saving this seo meta:
+        </h2>
+        <ul>
+          <% @seo_meta.errors.full_messages.each do |message| %>
+            <li>
+              <%= message %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="form-group">
+      <%= form.label :page_name %>
+      <%= form.select :page_name, SeoMetum::PAGE_NAMES.map {|page_name| [page_name.humanize, page_name]}, {include_blank: "Select page"}, { class: "form-control" } %>
+    </div>
+    <%= render 'marketing_staff/seo_metas/form', form: form %>
+  <% end %>
+</div>

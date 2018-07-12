@@ -1,0 +1,26 @@
+<tr>
+  <td>
+    <%= seo_meta.page_name.humanize if seo_meta.page_name.present? %>
+  </td>
+  <td>
+    <%= seo_meta.browser_title %>
+  </td>
+  <td>
+    <%= seo_meta.meta_keywords %>
+  </td>
+  <td>
+    <%= link_to marketing_staff_seo_meta_path(seo_meta), class: "text-green" do %>
+      <i class="fa fa-fw fa-eye"></i>
+    <% end %>
+
+    <%= link_to edit_marketing_staff_seo_meta_path(seo_meta), class: "text-blue" do %>
+      <i class="fa fa-fw fa-edit"></i>
+    <% end %>
+    <%= link_to( marketing_staff_seo_meta_path(seo_meta),
+                 class: "text-red",
+                  method: :delete,
+                  data: { confirm: t('confirm.are_you_sure') } ) do %>
+      <i class="fa fa-fw fa-trash"></i>
+    <% end %>
+  </td>
+</tr>

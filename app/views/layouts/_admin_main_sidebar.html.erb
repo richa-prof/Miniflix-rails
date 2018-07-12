@@ -40,6 +40,12 @@
               <i class="fa fa-th"></i> <span> <%= t('heading.genres') %> </span>
             <% end %>
           </li>
+
+          <li class="<%= 'active' if controller_path == 'marketing_staff/seo_metas' %>">
+            <%= link_to marketing_staff_seo_metas_path, method: :get do %>
+              <i class="fa fa-tag"></i> <span> <%= t('heading.static_pages') %> </span>
+            <% end %>
+          </li>
         <% else %>
           <li class="<%= 'active' if params[:controller] == 'admin/dashboard' %>">
             <%= link_to admin_dashboard_path, method: "GET" do %>
