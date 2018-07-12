@@ -621,10 +621,11 @@ footer.main-footer {
   background: none;
 }
 
-.ftr-social ul li:first-child a, .ftr-social ul li:first-child a:hover {
+.ftr-social ul li:first-child a, .ftr-social ul li:first-child a:hover, .ftr-social ul li:nth-child(2) a, .ftr-social ul li:nth-child(2) a:hover {
   background: none;
   color: #fff;
 }
+
 .ftr-social ul li a {
   background: #2b2b2b;
   transition: all .4s ease-in-out;
@@ -647,7 +648,7 @@ display: inline-block;
 margin-right: 10px;
 }
 
-.ftr-social ul li:first-child {
+.ftr-social ul li:first-child, .ftr-social ul li:nth-child(2) {
     width: 100%;
     background: none;
 }

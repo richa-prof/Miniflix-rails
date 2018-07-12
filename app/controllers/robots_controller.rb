@@ -14,6 +14,6 @@ class RobotsController < ApplicationController
   def canonical_host?
     Rails.logger.debug "<<<< RobotsController::request.host : #{request.host} <<<<"
 
-    request.host == 'live.miniflix.tv'
+    request.host == 'blog.miniflix.tv'
   end
 end
