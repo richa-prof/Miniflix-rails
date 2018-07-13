@@ -1,21 +1,51 @@
-<div class="container" id="amenity-new">
-  <h2></h2>
-  <%= form_for @seo_meta, url: marketing_staff_seo_metas_path do |form| %>
-    <% if @seo_meta.errors.any? %>
-      <div id="error_explanation">
-        <h2>
-          <%= pluralize(@seo_meta.errors.count, "error") %>
-          prohibited this seo_meta from being saved:
-        </h2>
-        <ul>
-          <% @seo_meta.errors.full_messages.each do |message| %>
-            <li>
-              <%= message %>
-            </li>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    <%= t('heading.static_page_meta_tags') %>
+  </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <div class="row">
+            <div class="col-lg-12 col-xs-12">
+              <h3 class="box-title">
+                <%= t('seo', scope: 'seo_meta.form') %>
+              </h3>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <%= form_for @seo_meta, url: marketing_staff_seo_metas_path do |form| %>
+            <% if @seo_meta.errors.any? %>
+              <div id="error_explanation">
+                <h2>
+                  <%= pluralize(@seo_meta.errors.count, "error") %>
+                  prohibited this seo_meta from being saved:
+                </h2>
+                <ul>
+                  <% @seo_meta.errors.full_messages.each do |message| %>
+                    <li>
+                      <%= message %>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+            <%= render 'marketing_staff/seo_metas/form', form: form %>
           <% end %>
-        </ul>
+        </div>
+        <!-- /.box-body -->
       </div>
-    <% end %>
-    <%= render 'marketing_staff/seo_metas/form', form: form %>
-  <% end %>
-</div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</section>
+<!-- /.content -->

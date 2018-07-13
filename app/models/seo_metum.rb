@@ -17,9 +17,17 @@ class SeoMetum < ActiveRecord::Base
   validates_uniqueness_of :page_name, if: "seo_meta_id.blank? && seo_meta_type.blank?"
 
   def frontend_view_page_url
-    case self.page_name
-    when 'home_page'
-      ENV['Host']
-    end
+    target_page_name = if is_home_page?
+                        nil
+                      else
+                        page_name
+                      end
+    "#{ENV['Host']}/#{target_page_name}"
+  end
+
+  private
+
+  def is_home_page?
+    page_name == 'home_page'
   end
 end
