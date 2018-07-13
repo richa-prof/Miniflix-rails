@@ -24,10 +24,9 @@
           <%= form_for @seo_meta, url: marketing_staff_seo_metas_path do |form| %>
             <% if @seo_meta.errors.any? %>
               <div id="error_explanation">
-                <h2>
-                  <%= pluralize(@seo_meta.errors.count, "error") %>
-                  prohibited this seo_meta from being saved:
-                </h2>
+                <h4>
+                  There are some errors while saving this seo meta tag:
+                </h4>
                 <ul>
                   <% @seo_meta.errors.full_messages.each do |message| %>
                     <li>

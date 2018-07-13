@@ -11,7 +11,7 @@ class SeoMetum < ActiveRecord::Base
   # and for getting the object at line:
   # /app/controllers/api/v1/seo_metas_controller.rb#L24
   # the react dev end code must be aware with these values.
-  PAGE_NAMES = ['home_page']
+  PAGE_NAMES = ['home_page', 'about_us', 'help_center', 'term_of_services', 'privacy_policy']
 
   validates_presence_of :page_name, :browser_title, :meta_keywords, :meta_description, if: "seo_meta_id.blank? && seo_meta_type.blank?"
   validates_uniqueness_of :page_name, if: "seo_meta_id.blank? && seo_meta_type.blank?"
