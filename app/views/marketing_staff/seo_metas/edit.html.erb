@@ -15,10 +15,6 @@
         </ul>
       </div>
     <% end %>
-    <div class="form-group">
-      <%= form.label :page_name %>
-      <%= form.select :page_name, SeoMetum::PAGE_NAMES.map {|page_name| [page_name.humanize, page_name]}, {include_blank: "Select page"}, { class: "form-control" } %>
-    </div>
     <%= render 'marketing_staff/seo_metas/form', form: form %>
   <% end %>
 </div>

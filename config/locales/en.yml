@@ -148,6 +148,7 @@ en:
       successfully_created: 'Seo Meta was successfully created.'
       successfully_updated: 'Seo Meta was successfully updated.'
       successfully_deleted: 'Seo Meta was successfully deleted.'
+      not_found: "Seo Meta data is not found for page: %{page_name}"
     background_image:
       successfully_created: 'Background was successfully created.'
       successfully_updated: 'Background was successfully updated.'

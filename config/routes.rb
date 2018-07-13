@@ -85,6 +85,8 @@ Rails.application.routes.draw do
         resource :stripe_payments, only: [] do
           post 'hook'
         end
+
+        resources :seo_metas, only: [:index]
       end
     end
 
