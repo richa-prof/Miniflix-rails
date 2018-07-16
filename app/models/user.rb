@@ -259,7 +259,7 @@ class User < ActiveRecord::Base
                      message: (I18n.t 'suspend_subscription.success') }
       else
         response = { success: false,
-                     message: response.errors[0][:messages][0] }
+                     message: ppr_response.errors[0][:messages][0] }
       end
     else
       stripe_service_obj = StripeService.new(subscription_id)
