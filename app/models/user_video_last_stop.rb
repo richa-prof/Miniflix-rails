@@ -11,6 +11,7 @@ class UserVideoLastStop < ApplicationRecord
 
   delegate :title, to: :movie, prefix: :movie,  allow_nil: true
   delegate :name, to: :movie, prefix: :movie,  allow_nil: true
+  delegate :slug, to: :movie, prefix: :movie,  allow_nil: true
 
   #pagination per page value
   self.per_page = PER_PAGE
