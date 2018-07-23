@@ -3,8 +3,15 @@ class Api::V1::UserEmailNotificationsController < Api::V1::ApplicationController
 
   def index
     user_email_notification = current_user.user_email_notification
-    email_notification_serializer = ActiveModelSerializers::SerializableResource.new(user_email_notification, serializer: Api::V1::UserEmailNotificationSerializer).serializable_hash
-    render json: {success: true, user_email_notification: email_notification_serializer}
+    if user_email_notification.present?
+      email_notification_serializer = ActiveModelSerializers::SerializableResource.new(user_email_notification, serializer: Api::V1::UserEmailNotificationSerializer).serializable_hash
+      response = { success: true,
+                   user_email_notification: email_notification_serializer}
+    else
+      response = { success: false }
+    end
+
+    render json: response
   end
 
   def update
