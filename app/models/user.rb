@@ -41,6 +41,10 @@ class User < ActiveRecord::Base
   UPDATE_SUBSCRIPTION = "subscription plan for update"
   ADMIN_EMAIL = 'admin@admin.com'
   PAYMENT_TYPE_PAYPAL = 'paypal'
+  PLATFORMS = {
+    web: 'web',
+    android: 'android'
+  }
 
   # CALLBACKS
   after_initialize :set_default_subscription_plan, if: -> { new_record?}
@@ -181,8 +185,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def checkout_url
-    response = PaypalSubscription.new(:checkout, self).call
+  def checkout_url(platform=nil)
+    response = PaypalSubscription.new(:checkout, self, platform).call
     if response
       self.save
     end
@@ -644,7 +648,7 @@ class User < ActiveRecord::Base
   end
 
   def update_or_upgrade_payment_confirmation(agreement_id, upgrade_payment=nil)
-    cancel_previous_subscription
+    cancel_previous_subscription if latest_payment_method.present?
     assign_registration_plan_and_build_payment_method if upgrade_payment
     self.subscription_id = agreement_id
     self.build_user_payment_method(UserPaymentMethod.payment_types['paypal'])

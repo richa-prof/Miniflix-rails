@@ -24,7 +24,7 @@ class PaymentsController < ApplicationController
     payment_type = user_payment_method_params[:payment_type].try(:downcase)
     if payment_type == User::PAYMENT_TYPE_PAYPAL
       set_registration_plan_for(@user)
-      redirect_url = @user.checkout_url
+      redirect_url = @user.checkout_url(User::PLATFORMS[:android])
       redirect_to redirect_url and return if redirect_url
       redirect_to 'miniflix://mob?is_payment_success=false&error_code=2&msg=Your paypal access token is invalid.'
     else

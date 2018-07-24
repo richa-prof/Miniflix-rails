@@ -1,8 +1,9 @@
 class PaypalSubscription
 
-  def initialize(action, user)
+  def initialize(action, user, platform=nil)
     @action = action
     @user = user
+    @platform = platform
   end
 
   def call
@@ -68,7 +69,7 @@ class PaypalSubscription
   end
 
   def paypal_return_url_payment_success(user)
-    if user.Android?
+    if is_current_platform_android?
       "#{ENV['RAILS_API_HOST']}/paypal_success/#{user.id}"
     else
       "#{ENV['RAILS_API_HOST']}/api/v1/paypal_payments/complete/#{user.id}"
@@ -76,7 +77,7 @@ class PaypalSubscription
   end
 
   def cancel_url_on_payment_cancel(user)
-    if user.Android?
+    if is_current_platform_android?
       "#{ENV['RAILS_API_HOST']}/paypal_cancel/#{user.id}"
     else
       "#{ENV['RAILS_API_HOST']}/api/v1/paypal_payments/cancel/#{user.id}"
@@ -87,4 +88,7 @@ class PaypalSubscription
     ENV['PAYPAL_IPN_URL']
   end
 
+  def is_current_platform_android?
+    @platform.try(:downcase) == User::PLATFORMS[:android]
+  end
 end
