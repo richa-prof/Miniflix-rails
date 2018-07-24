@@ -56,12 +56,6 @@ module BlogsHelper
   end
 
   def staff_profile_image(user)
-    path = user.image.try(:staff_medium).try(:path)
-
-    if path.present?
-      return CommonHelpers.cloud_front_url(path)
-    end
-
-    user.image.default_url
+    user.profile_image_url
   end
 end

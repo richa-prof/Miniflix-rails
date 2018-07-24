@@ -364,6 +364,16 @@ class User < ActiveRecord::Base
     end
   end
 
+  def profile_image_url
+    path = image.try(:staff_medium).try(:path)
+
+    if path.present?
+      return CommonHelpers.cloud_front_url(path)
+    end
+
+    image.default_url
+  end
+
   # ======= Related to mobile API's start =======
   def update_auth_token
     token = Digest::SHA1.hexdigest([Time.now, rand].join)
