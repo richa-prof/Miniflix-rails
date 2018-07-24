@@ -2,13 +2,22 @@
   <!-- Open Graph tags -->
   <meta property="fb:app_id" content="<%= ENV['FACEBOOK_KEY'] %>" />
   <meta property="og:title" content="<%= @movie.title %>" />
-  <meta property="og:type" content="article" />
+  <meta property="og:type" content="video.other" />
   <meta property="og:url" content="<%= movies_og_shareable_url(@movie) %>" />
-  <meta property="og:description" content="<%= @movie.description.truncate(150) %>" />
+  <meta property="og:description" content="<%= @movie.description %>" />
   <meta property="og:image" content="<%= main_screenshot_url(@movie) %>" />
+
+  <meta property="og:video" content="<%= @movie.movie_trailer.try(:file_cloudfront_url) %>" />
+  <meta property="og:video:secure_url" content="<%= @movie.movie_trailer.try(:file_cloudfront_url) %>" />
+  <meta property="og:video:type" content="video/mp4" />
+  <meta property="og:video:width" content="640" />
+  <meta property="og:video:height" content="360" />
+
   <!-- Twitter Card data -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="<%= @movie.title %>">
-  <meta name="twitter:description" content="<%= @movie.description.truncate(150) %>">
+  <meta name="twitter:description" content="<%= @movie.description %>">
   <meta name="twitter:image" content="<%= main_screenshot_url(@movie) %>">
 <% end %>
+
+<%= link_to(movies_og_shareable_url(@movie), class: "btn btn-default") %>
