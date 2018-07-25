@@ -126,11 +126,11 @@
           var tbl_payment = "<div class=\"row\"><div class=\"col-lg-10 col-xs-12\"><h4 class=\"box-title\">Payment details</h4></div></div>";
           tbl_payment += "<table id=\"exampleTable_" + i + "\"  class=\"table table-bordered table-hover\" >";
           tbl_payment += "<thead> <tr> <th>First Name</th> <th>Last Name</th> <th>Payment Type</th> <th>Service Period</th> <th>Amount</th> </tr> </tr> </thead> <tbody>";
-          var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
           $.each( theData, function( index, value ){
-            var first_name = value.first_name ? value.first_name : " --- ";
-            var last_name = value.last_name ? value.last_name : " --- ";
-            var expiration_month = value.expiration_month ? monthNames[(value.expiration_month - 1)]+"," : "";
+            var first_name = value.payer_first_name ? value.payer_first_name : " --- ";
+            var last_name = value.payer_last_name ? value.payer_last_name : " --- ";
+
             tbl_payment += "<tr> <td>"+first_name+"</td> <td>"+last_name+"</td><td>"+value.payment_type+"</td><td>"+value.service_period+"</td><td>$"+value.amount+"</td> </tr>";
           });
           tbl_payment += "</tbody> </table>";

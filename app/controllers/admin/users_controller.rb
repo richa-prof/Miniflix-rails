@@ -34,13 +34,12 @@ class Admin::UsersController < ApplicationController
 
   def get_user_payment_details
     user = User.find(params[:id])
-    user_payment_methods = user.user_payment_methods
 
-    user_payment_list = user_payment_methods.map do |payment_method|
-                          prepare_user_payment_method_map(payment_method)
-                        end
+    transactions = user.my_transactions
 
-    render :json => user_payment_list
+    transactions_list = transactions.as_json(root: false, only: :amount, methods: [:payer_first_name, :payer_last_name, :payment_type, :service_period])
+
+    render :json => transactions_list
   end
 
   def get_monthly_revenue
@@ -61,11 +60,5 @@ class Admin::UsersController < ApplicationController
                     notice: I18n.t('flash.user.successfully_deleted') }
       format.json { head :no_content }
     end
-  end
-
-  private
-
-  def prepare_user_payment_method_map(object)
-    object.as_json(root: false, only: [:first_name, :last_name, :payment_type, :amount], methods: [:service_period])
   end
 end
