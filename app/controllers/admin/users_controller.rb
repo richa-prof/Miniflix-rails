@@ -34,7 +34,6 @@ class Admin::UsersController < ApplicationController
 
   def get_user_payment_details
     user = User.find(params[:id])
-
     user_payment_methods = user.user_payment_methods
 
     user_payment_list = user_payment_methods.map do |payment_method|
@@ -67,6 +66,6 @@ class Admin::UsersController < ApplicationController
   private
 
   def prepare_user_payment_method_map(object)
-   object.as_json(root: false, only: [:first_name, :last_name, :payment_type, :card_number, :expiration_month, :expiration_year, :amount], methods: [:service_period])
+    object.as_json(root: false, only: [:first_name, :last_name, :payment_type, :amount], methods: [:service_period])
   end
 end
