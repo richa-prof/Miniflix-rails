@@ -6,6 +6,17 @@ class UserPaymentTransaction < ApplicationRecord
 
   delegate :payment_type, to: :user_payment_method, prefix: :transcation,  allow_nil: true
 
+  # SCOPES
+  scope :without_invalid_transaction_ids, -> { where.not(transaction_id: nil)  }
+
+  # ===== Class methods Start =====
+  class << self
+    def total_income_of_current_month
+      total_amount = without_invalid_transaction_ids.where('created_at >= ?', Time.now.beginning_of_month).sum(:amount)
+    end
+  end
+  # ===== Class methods End =====
+
   def payer_first_name
     user_payment_method.first_name
   end
