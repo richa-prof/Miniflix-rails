@@ -48,16 +48,16 @@ class User < ActiveRecord::Base
 
   # CALLBACKS
   after_initialize :set_default_subscription_plan, if: -> { new_record?}
-  before_validation :valid_for_Education_plan, if: 'Educational?', on: :create
+  before_validation :valid_for_Education_plan, if: -> { Educational? }, on: :create
   before_create :build_email_notification
   before_create :set_free_user_and_subscription_staus, if: -> { condition_for_free_user}
   after_create :welcome_mail_for_free_user, if: :is_free
-  after_create :subscribe_user_to_mailchimp_list, if: 'MailchimpGroup.is_list_ids_available?'
-  after_create :delete_temp_user, if: 'temp_user_id.present?'
+  after_create :subscribe_user_to_mailchimp_list, if: -> { MailchimpGroup.is_list_ids_available? }
+  after_create :delete_temp_user, if: -> { temp_user_id.present? }
   after_validation :send_verification_code, if: ->  { unconfirmed_phone_number_changed? && errors.blank? }
   before_update :assign_unverified_phone_to_phone_number, if: -> { check_condition_for_assign_phone_number }
   before_update :make_migrate_user_false, if: -> { can_make_migrate_user_false? }
-  before_update :assign_subscription_cancel_date, if: 'cancelled?'
+  before_update :assign_subscription_cancel_date, if: -> { cancelled? }
   before_save :set_job_for_annual_user_to_change_subscription_status, if: -> {user_choose_annual_plan?}
 
   before_validation do
