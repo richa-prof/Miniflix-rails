@@ -176,6 +176,10 @@ en:
         successfully_updated: 'Your card details has been updated successfully'
     payment_method:
         successfully_updated: 'Your payment method has been updated successfully'
+    payment_transaction:
+      successfully_saved: 'Transaction details has been saved successfully'
+      already_present: 'Transaction details already present'
+
   placeholder:
     user:
       email: Enter email

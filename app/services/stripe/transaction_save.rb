@@ -11,14 +11,16 @@ class Stripe::TransactionSave
   private
 
   def parse_webhook_params_and_save_transaction_detail(user, invoice_detail)
-     unless check_transaction_detail_present_or_not(user, invoice_detail)
-       create_transaction_detail_and_update_subscription_status(user, invoice_detail)
-       {sucess: true, message: "successfully detail save"}
-     else
-       {sucess: true, message: "Detail already present"}
-     end
-  rescue Exception => e
-    {sucess: false, message: e.message}
+    begin
+      unless check_transaction_detail_present_or_not(user, invoice_detail)
+        create_transaction_detail_and_update_subscription_status(user, invoice_detail)
+        { sucess: true, message: I18n.t('flash.payment_transaction.successfully_saved') }
+      else
+        { sucess: true, message: I18n.t('flash.payment_transaction.already_present') }
+      end
+    rescue Exception => e
+      { sucess: false, message: e.message }
+    end
   end
 
   def create_transaction_detail_and_update_subscription_status(user, invoice_detail)

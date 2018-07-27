@@ -37,8 +37,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
   end
 
   def billing_details
-    user_transactions = UserPaymentTransaction.joins(:user_payment_method => :user).where('user_payment_methods.user_id = ?', current_user.id).order(created_at:'desc')
-
+    user_transactions = current_user.my_transactions.order(created_at:'desc')
     user_transaction_serializer = ActiveModelSerializers::SerializableResource.new(user_transactions, each_serializer: Api::V1::UserPaymentTransactionSerializer)
 
     render json: { user_payment_transactions: user_transaction_serializer }
