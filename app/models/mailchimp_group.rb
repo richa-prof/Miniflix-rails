@@ -14,6 +14,8 @@ class MailchimpGroup < ApplicationRecord
     end
 
     def is_list_ids_available?
+      return false unless Rails.env.production?
+
       available_list_ids_arr.any?
     end
   end
