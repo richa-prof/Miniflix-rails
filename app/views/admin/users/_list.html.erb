@@ -40,6 +40,9 @@
                       <tr>
                         <th><%= t('table.admin_side_users.user_name') %></th>
                         <th><%= t('table.admin_side_users.email')%></th>
+                        <th><%= t('table.admin_side_users.sign_up_from')%></th>
+                        <th><%= t('table.admin_side_users.registration_plan')%></th>
+                        <th><%= t('table.admin_side_users.subscription_status')%></th>
                         <th><%= t('table.admin_side_users.registration_date')%></th>
                         <th><%= t('table.admin_side_users.action')%></th>
                       </tr>
@@ -49,6 +52,15 @@
                         <tr>
                           <td data-title="User Name" data-uid=<%= user.id %> ><%= user.name %></td>
                           <td data-title="Email"><%= user.email %></td>
+                          <td data-title="<%= t('table.admin_side_users.sign_up_from')%>">
+                            <%= user.sign_up_from.try(:humanize) %>
+                          </td>
+                          <td data-title="<%= t('table.admin_side_users.registration_plan')%>">
+                            <%= user.registration_plan %>
+                          </td>
+                          <td data-title="<%= t('table.admin_side_users.subscription_status')%>">
+                            <%= user.subscription_plan_status %>
+                          </td>
                           <td data-title="Registration Date"><%= user.created_at.strftime('%d %B %Y') %></td>
                           <td data-title="Action">
                             <%= link_to( admin_user_path(user),
@@ -169,7 +181,7 @@
         "info": true,
         "autoWidth": false,
         "aoColumnDefs": [
-          { 'bSortable': false, 'aTargets': [ 0,4 ] }
+          { 'bSortable': false, 'aTargets': [ 0,7 ] }
         ],
         "aaSorting": [[1, 'asc']]
       });
@@ -183,7 +195,7 @@
         "info": true,
         "autoWidth": false,
         "aoColumnDefs": [
-          { 'bSortable': false, 'aTargets': [ 3 ] }
+          { 'bSortable': false, 'aTargets': [ 6 ] }
         ]
       });
   <% end %>

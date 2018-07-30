@@ -145,7 +145,7 @@
         <% end %>
 
         <li>
-          <%= link_to sitemap_path, method: :get do %>
+          <%= link_to "#{ENV['BLOG_HOST']}#{sitemap_path}", method: :get do %>
             <i class="fa fa-sitemap"></i> <span><%= t('heading.sitemap') %></span>
           <% end %>
         </li>
