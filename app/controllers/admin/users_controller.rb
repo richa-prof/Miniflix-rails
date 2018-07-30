@@ -54,7 +54,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def destroy
-    User.find(params[:id]).destroy
+    User.friendly.find(params[:id]).destroy
     respond_to do |format|
       format.html { redirect_to admin_users_path,
                     notice: I18n.t('flash.user.successfully_deleted') }
