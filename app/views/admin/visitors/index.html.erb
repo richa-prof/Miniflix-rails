@@ -32,6 +32,7 @@
                         <tr>
                           <th>Id</th>
                           <th>Name</th>
+                          <th>Associated User Id</th>
                           <th>Email</th>
                           <th>School</th>
                           <th>Occupation</th>
@@ -44,6 +45,7 @@
                           <tr>
                             <td data-title="Id"><%= visitor.id %></td>
                             <td data-title="Name"><%= visitor.name %></td>
+                            <td><%= visitor.associated_user_id %></td>
                             <td data-title="Email"><%= visitor.email %></td>
                             <td data-title="School"><%= visitor.school %></td>
                             <td data-title="Occupation"><%= visitor.occupation %></td>
@@ -94,7 +96,7 @@
       "info": true,
       "autoWidth": false,
       "aoColumnDefs": [
-        { 'bSortable': false, 'aTargets': [ 5 ] },
+        { 'bSortable': false, 'aTargets': [ 6 ] },
         { "bSearchable": false,"bVisible": false, "aTargets": [ 0 ] }
       ],
       "aaSorting": [[0, 'desc']]

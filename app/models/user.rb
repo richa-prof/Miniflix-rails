@@ -114,6 +114,10 @@ class User < ActiveRecord::Base
   end
   # ===== Class methods End =====
 
+  def total_amount_paid
+    my_transactions.sum(:amount)
+  end
+
   def subscribe_user_to_mailchimp_list
     mailchimp_service_obj = MailchimpService.new(self)
 

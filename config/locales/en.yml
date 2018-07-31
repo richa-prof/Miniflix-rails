@@ -42,6 +42,7 @@ en:
       sign_up_from: Platform
       subscription_status: Subscription Status
       registration_plan: Plan
+      paid_amount: Paid Amount
     blog_subscribers:
       id: Id
       email: Email
