@@ -46,9 +46,15 @@
                       <% @background_images.each do |image| %>
                         <tr>
                           <td>
-                            <%= image_tag( image.image_file_cloud_front_url,
-                                           height: '32',
-                                           width: '32') %>
+                            <%= link_to( image.image_file_cloud_front_url,
+                                         "data-toggle" => "lightbox",
+                                         "data-title" => "Background Image" ) do %>
+
+                              <%= image_tag( image.image_file_cloud_front_url,
+                                             height: '32',
+                                             width: '32',
+                                             class: "img-fluid") %>
+                            <% end %>
                           </td>
                           <% if image.is_set.present? %>
                             <td><%= image.is_set %></td>
@@ -86,3 +92,10 @@
   </div>
   <!-- /.row -->
 </section>
+
+<script type="text/javascript">
+  $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
+    event.preventDefault();
+    $(this).ekkoLightbox();
+  });
+</script>

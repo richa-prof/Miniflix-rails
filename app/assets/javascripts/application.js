@@ -20,6 +20,7 @@
 //= require intlTelInput
 //= require utils
 //= require pnotify
+//= require lightbox-bootstrap
 
 //= require footer
 //= require form_helpers
