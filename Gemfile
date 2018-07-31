@@ -127,6 +127,9 @@ gem 'useragent'
 # For tracking and analytics
 gem 'rack-tracker'
 
+# Check and verify in-app receipts from the AppStore and the PlayStore.
+gem 'candy_check'
+
 group :production, :staging do
   gem 'passenger'
 end
