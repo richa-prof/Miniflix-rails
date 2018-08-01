@@ -26,8 +26,8 @@ class UserPaymentTransaction < ApplicationRecord
   end
 
   def service_period
-    use_payment_expire_date = payment_expire_date.to_s(:month_date_year_slash_separated_format)
-    use_payment_date = payment_date.to_s(:month_date_year_slash_separated_format)
+    use_payment_expire_date = payment_expire_date.to_s(:full_date_abbr_month_and_year_format)
+    use_payment_date = payment_date.to_s(:full_date_abbr_month_and_year_format)
 
     "#{use_payment_date} - #{use_payment_expire_date}"
   end
