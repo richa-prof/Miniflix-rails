@@ -43,6 +43,7 @@ en:
       subscription_status: Subscription Status
       registration_plan: Plan
       paid_amount: Paid Amount
+      is_free: Is Free
     blog_subscribers:
       id: Id
       email: Email
