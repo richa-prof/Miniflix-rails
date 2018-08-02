@@ -1,33 +1,103 @@
 namespace :analyse_users do
   desc "analyse DB users"
   task generate_users_detailed_csv_file: :environment do
-    CSV.open("tmp/detailed_users_list.csv","w") do |csv|
-      column_names = ['id', 'email', 'name', 'sign_up_from', 'is_free', 'registration_plan', 'subscription_plan', 'payment_method_available', 'customer_id', 'subscription_id', 'receipt_url', 'total_amount_paid', 'registration_date', 'provider', 'suspicious']
+    # Generate All users list csv file
+    CSV.open("tmp/all_users_list.csv","w") do |csv|
+      column_names = ['id', 'email', 'name', 'sign_up_from', 'is_free', 'registration_plan', 'subscription_status', 'payment_method_available', 'transaction_available', 'customer_id', 'subscription_id', 'receipt_url', 'total_amount_paid', 'registration_date', 'provider', 'suspicious']
       csv << column_names
-      User.find_each do |user|
-        csv << [user.id, user.email, user.name, user.sign_up_from, is_free?(user), user.registration_plan, user.subscription_plan_status, is_payment_method?(user), user.customer_id, user.subscription_id, is_receipt_url?(user), total_paid_amount(user), registration_date(user), user.provider, '']
+      User.user.find_each do |user|
+        csv << [user.id, user.email, user.name, user.sign_up_from, is_free?(user), user.registration_plan, user.subscription_plan_status, is_payment_method?(user), any_transaction?(user), user.customer_id, user.subscription_id, is_receipt_url?(user), total_paid_amount(user), registration_date(user), user.provider, '']
+      end
+    end
+
+    # Generate Educational users list csv file
+    CSV.open("tmp/educational_users_list.csv","w") do |csv|
+      column_names = ['id', 'email', 'name', 'sign_up_from', 'is_free', 'registration_plan', 'subscription_status', 'payment_method_available', 'transaction_available', 'customer_id', 'subscription_id', 'receipt_url', 'total_amount_paid', 'registration_date', 'provider', 'suspicious']
+      csv << column_names
+      User.user.Educational.find_each do |user|
+        csv << [user.id, user.email, user.name, user.sign_up_from, is_free?(user), user.registration_plan, user.subscription_plan_status, is_payment_method?(user), any_transaction?(user), user.customer_id, user.subscription_id, is_receipt_url?(user), total_paid_amount(user), registration_date(user), user.provider, '']
+      end
+    end
+
+
+    # Generate Monthly users list csv file
+    CSV.open("tmp/monthly_users_list.csv","w") do |csv|
+      column_names = ['id', 'email', 'name', 'sign_up_from', 'is_free', 'registration_plan', 'subscription_status', 'payment_method_available', 'transaction_available', 'customer_id', 'subscription_id', 'receipt_url', 'total_amount_paid', 'registration_date', 'provider', 'suspicious']
+      csv << column_names
+      User.user.Monthly.find_each do |user|
+        csv << [user.id, user.email, user.name, user.sign_up_from, is_free?(user), user.registration_plan, user.subscription_plan_status, is_payment_method?(user), any_transaction?(user), user.customer_id, user.subscription_id, is_receipt_url?(user), total_paid_amount(user), registration_date(user), user.provider, '']
+      end
+    end
+
+    # Generate Annually users list csv file
+    CSV.open("tmp/annually_users_list.csv","w") do |csv|
+      column_names = ['id', 'email', 'name', 'sign_up_from', 'is_free', 'registration_plan', 'subscription_status', 'payment_method_available', 'transaction_available', 'customer_id', 'subscription_id', 'receipt_url', 'total_amount_paid', 'registration_date', 'provider', 'suspicious']
+      csv << column_names
+      User.user.Annually.find_each do |user|
+        csv << [user.id, user.email, user.name, user.sign_up_from, is_free?(user), user.registration_plan, user.subscription_plan_status, is_payment_method?(user), any_transaction?(user), user.customer_id, user.subscription_id, is_receipt_url?(user), total_paid_amount(user), registration_date(user), user.provider, '']
+      end
+    end
+
+    # Generate Freemium users list csv file
+    CSV.open("tmp/freemium_users_list.csv","w") do |csv|
+      column_names = ['id', 'email', 'name', 'sign_up_from', 'is_free', 'registration_plan', 'subscription_status', 'payment_method_available', 'transaction_available', 'customer_id', 'subscription_id', 'receipt_url', 'total_amount_paid', 'registration_date', 'provider', 'suspicious']
+      csv << column_names
+      User.user.Freemium.find_each do |user|
+        csv << [user.id, user.email, user.name, user.sign_up_from, is_free?(user), user.registration_plan, user.subscription_plan_status, is_payment_method?(user), any_transaction?(user), user.customer_id, user.subscription_id, is_receipt_url?(user), total_paid_amount(user), registration_date(user), user.provider, '']
+      end
+    end
+
+    # Generate No plan users list csv file
+    CSV.open("tmp/no_plan_users_list.csv","w") do |csv|
+      column_names = ['id', 'email', 'name', 'sign_up_from', 'is_free', 'registration_plan', 'subscription_status', 'payment_method_available', 'transaction_available', 'customer_id', 'subscription_id', 'receipt_url', 'total_amount_paid', 'registration_date', 'provider', 'suspicious']
+      csv << column_names
+
+      without_registration_plan_users = User.user.where(" registration_plan IS NULL OR registration_plan = ?", '' )
+
+      without_registration_plan_users.find_each do |user|
+        csv << [user.id, user.email, user.name, user.sign_up_from, is_free?(user), user.registration_plan, user.subscription_plan_status, is_payment_method?(user), any_transaction?(user), user.customer_id, user.subscription_id, is_receipt_url?(user), total_paid_amount(user), registration_date(user), user.provider, '']
+      end
+    end
+
+    # Generate Free Members list csv file
+    CSV.open("tmp/free_members_list.csv","w") do |csv|
+      column_names = ['Id', 'Email', 'Associated UserId', 'User Created', 'suspicious']
+      csv << column_names
+
+      FreeMember.find_each do |user|
+        csv << [user.id, user.email, user.associated_user_id, associated_user_present?(user), '']
+      end
+    end
+
+    # Generate Visitors(ContactUs) list csv file
+    CSV.open("tmp/visitors_list.csv","w") do |csv|
+      column_names = ['Id', 'Email', 'Name', 'Associated UserId', 'User Created', 'School', 'Occupation', 'suspicious']
+      csv << column_names
+
+      ContactUs.find_each do |user|
+        csv << [user.id, user.email, user.name, user.associated_user_id, associated_user_present?(user), user.school, user.occupation, '']
       end
     end
   end
 
   task generate_suspicious_users_detailed_csv_file: :environment do
     CSV.open("tmp/detailed_suspicious_users_list.csv","w") do |csv|
-      column_names = ['id', 'email', 'name', 'sign_up_from', 'registration_plan', 'subscription_plan', 'payment_method_available', 'customer_id', 'subscription_id', 'receipt_url', 'total_amount_paid', 'registration_date', 'provider', 'is_free', 'suspicious']
+      column_names = ['id', 'email', 'name', 'sign_up_from', 'registration_plan', 'subscription_status', 'payment_method_available', 'transaction_available', 'customer_id', 'subscription_id', 'receipt_url', 'total_amount_paid', 'registration_date', 'provider', 'is_free', 'suspicious']
       csv << column_names
 
       invalid_users.each do |user|
-        csv << [user.id, user.email, user.name, user.sign_up_from, user.registration_plan, user.subscription_plan_status, is_payment_method?(user), user.customer_id, user.subscription_id, is_receipt_url?(user), total_paid_amount(user), registration_date(user), user.provider, is_free?(user), '']
+        csv << [user.id, user.email, user.name, user.sign_up_from, user.registration_plan, user.subscription_plan_status, is_payment_method?(user), any_transaction?(user), user.customer_id, user.subscription_id, is_receipt_url?(user), total_paid_amount(user), registration_date(user), user.provider, is_free?(user), '']
       end
     end
   end
 
   task generate_filtered_suspicious_users_detailed_csv_file: :environment do
     CSV.open("tmp/detailed_filtered_suspicious_users_list.csv","w") do |csv|
-      column_names = ['id', 'email', 'name', 'sign_up_from', 'registration_plan', 'subscription_plan', 'payment_method_available', 'customer_id', 'subscription_id', 'receipt_url', 'total_amount_paid', 'registration_date', 'provider', 'is_free', 'suspicious']
+      column_names = ['id', 'email', 'name', 'sign_up_from', 'registration_plan', 'subscription_status', 'payment_method_available', 'transaction_available', 'customer_id', 'subscription_id', 'receipt_url', 'total_amount_paid', 'registration_date', 'provider', 'is_free', 'suspicious']
       csv << column_names
 
       invalid_users_without_transactions.each do |user|
-        csv << [user.id, user.email, user.name, user.sign_up_from, user.registration_plan, user.subscription_plan_status, is_payment_method?(user), user.customer_id, user.subscription_id, is_receipt_url?(user), total_paid_amount(user), registration_date(user), user.provider, is_free?(user), '']
+        csv << [user.id, user.email, user.name, user.sign_up_from, user.registration_plan, user.subscription_plan_status, is_payment_method?(user), any_transaction?(user), user.customer_id, user.subscription_id, is_receipt_url?(user), total_paid_amount(user), registration_date(user), user.provider, is_free?(user), '']
       end
     end
   end
@@ -98,6 +168,14 @@ namespace :analyse_users do
     end
   end
 
+  def any_transaction?(user)
+    if user.is_paid_user?
+      user.my_transactions.blank? ? 'No' : 'Yes'
+    else
+      user.my_transactions.blank? ? '-' : 'Yes'
+    end
+  end
+
   def total_paid_amount(user)
     if user.check_user_free_or_not
       '-'
@@ -112,6 +190,10 @@ namespace :analyse_users do
 
   def is_free?(user)
     user.is_free ? 'Yes' : 'No'
+  end
+
+  def associated_user_present?(user)
+    user.associated_user.present? ? 'Yes' : 'No'
   end
 end
 
