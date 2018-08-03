@@ -1,7 +1,7 @@
 class FreeMember < ApplicationRecord
 
   # ASSOCIATIONS
-  validates :email, uniqueness: true, presence: true
+  validates :email, uniqueness: true, presence: true, format: Devise.email_regexp
 
   def associated_user
     User.find_by_email(email)
