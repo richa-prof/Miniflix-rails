@@ -137,6 +137,41 @@ namespace :analyse_users do
     puts ">>>>>>>>>>> Total users affected:: #{@count} >>>>>"
   end
 
+  task set_subscription_plan_status_to_expired_for_invalid_users_with_free_member: :environment do
+    user_logger = Logger.new("#{Rails.root}/log/suspicious_users_with_free_member_operation.log")
+
+    target_users = free_invalid_users
+
+    user_logger.debug ">>>>>>>>>>> Total invalid_users_without_transactions users:: #{target_users.count} >>>>>"
+    puts ">>>>>>>>>>> Total invalid_users_without_transactions users:: #{target_users.count} >>>>>"
+    @count = 0
+
+    target_users.each do |user|
+
+      user_logger.debug ">>>>>>>>>>> processing for user:: id: #{user.id}, email: #{user.email}, subscription_plan_status: #{user.subscription_plan_status} >>>>>>>>>>>"
+      puts ">>>>>>>>>>> processing for user:: id: #{user.id}, email: #{user.email}, subscription_plan_status: #{user.subscription_plan_status} >>>>>>>>>>>"
+
+      if user.expired!
+        user_logger.debug ">>>>>>>>>>> successfully updated user:: id: #{user.id}, email: #{user.email} >>>>>>>>>>>"
+        puts ">>>>>>>>>>> successfully updated user:: id: #{user.id}, email: #{user.email} >>>>>>>>>>>"
+
+        @count += 1
+      else
+        user_logger.debug ">>>>>>>>>>> updation failed for user:: id: #{user.id}, email: #{user.email} >>>>>>>>>>>"
+        puts ">>>>>>>>>>> updation failed for user:: id: #{user.id}, email: #{user.email} >>>>>>>>>>>"
+      end
+
+      user_logger.debug ">>>>>>>>>>> process end for user:: id: #{user.id}, email: #{user.email}, subscription_plan_status: #{user.subscription_plan_status} >>>>>>>>>>>"
+      puts ">>>>>>>>>>> process end for user:: id: #{user.id}, email: #{user.email}, subscription_plan_status: #{user.subscription_plan_status} >>>>>>>>>>>"
+
+      user_logger.debug "==========================================================="
+      puts "==========================================================="
+    end
+
+    user_logger.debug ">>>>>>>>>>> Total users affected:: #{@count} >>>>>"
+    puts ">>>>>>>>>>> Total users affected:: #{@count} >>>>>"
+  end
+
   def invalid_users_without_transactions
     invalid_users.select{|user| user.user_payment_methods.blank? && user.my_transactions.blank? }
   end
@@ -199,9 +234,21 @@ namespace :analyse_users do
   def associated_user_present?(user)
     user.associated_user.present? ? 'Yes' : 'No'
   end
+
+  def free_invalid_users
+    users = User.where.not(role: 'Admin').where("is_free = ? AND registration_plan IN (?) AND subscription_plan_status IN (?)", true, ['Monthly', 'Annually'], ['Activate', 'Trial'])
+
+    users.select{|u| is_user_free_member?(u) }
+  end
+
+  def is_user_free_member?(user)
+    u = FreeMember.find_by_email(user.email)
+    u.blank?
+  end
 end
 
 # RAILS_ENV=production bundle exec rake analyse_users:generate_users_detailed_csv_file
 # RAILS_ENV=production bundle exec rake analyse_users:generate_suspicious_users_detailed_csv_file
 # RAILS_ENV=production bundle exec rake analyse_users:generate_filtered_suspicious_users_detailed_csv_file
 # RAILS_ENV=production bundle exec rake analyse_users:set_subscription_plan_status_to_expired_for_invalid_users_without_transactions
+# RAILS_ENV=production bundle exec rake analyse_users:set_subscription_plan_status_to_expired_for_invalid_users_with_free_member
