@@ -184,6 +184,8 @@ en:
     payment_transaction:
       successfully_saved: 'Transaction details has been saved successfully'
       already_present: 'Transaction details already present'
+    omniauth:
+      signup_fail: "You are already registered with us using this email via provider %{provider}. Please try login with that provider!"
 
   placeholder:
     user:
