@@ -64,8 +64,8 @@ class Api::V1::PaypalPaymentsController < Api::V1::ApplicationController
   # called on payment_confimration from payPal.
   # For more info Refer IPN(instant payment notification)
   def hook
-    if is_recurring_payment_failed && !@user.expired?
-      @user.expired!
+    if is_recurring_payment_failed
+      @user.expired! unless @user.expired?
     else
       PaypalTransactionService.new(@user, params).call
     end
@@ -113,9 +113,15 @@ class Api::V1::PaypalPaymentsController < Api::V1::ApplicationController
         if ['expired', 'failed'].include?(payment_status)
           result = true
         end
+      elsif @user && is_recurring_payment_outstanding_payment_failed
+        result = true
       end
 
       result
+    end
+
+    def is_recurring_payment_outstanding_payment_failed
+      (params['txn_type'] == 'recurring_payment_outstanding_payment_failed')
     end
 
     def paypal_payment_url(action_name)
