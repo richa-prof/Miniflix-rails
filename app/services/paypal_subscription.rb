@@ -41,6 +41,7 @@ class PaypalSubscription
       description: billing_plan.description,
       period: billing_plan.interval.capitalize,
       frequency: 1, #once in interval
+      failed: 1, # MAXFAILEDPAYMENTS
       start_at: Time.now
     }.merge(extra_option(action, billing_plan, user))
 
