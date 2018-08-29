@@ -129,6 +129,39 @@ namespace :set_user_subscription_plan_status do
     user_logger.debug ">>>>>>>>>>> Total interrupted_users:: #{@interrupted_users.count} >>>>> #{@interrupted_users}"
     puts ">>>>>>>>>>> Total interrupted_users:: #{@interrupted_users.count} >>>>> #{@interrupted_users}"
   end
+
+  task sync_user_subscription_plan_status_with_paypal_having_outstanding_balance: :environment do
+    user_logger = Logger.new("#{Rails.root}/log/sync_user_status_having_outstanding_bal.log")
+    @result = []
+    payment_methods = UserPaymentMethod.active.paypal
+    subscription_ids = payment_methods.map {|pm| pm.user.subscription_id}.uniq
+    subscription_ids.each do |id|
+      user = User.find_by_subscription_id(id)
+      ppr = PayPal::Recurring.new(profile_id: id)
+      profile = ppr.profile
+      outstanding_bal = profile.outstanding_balance.to_i
+      failed_count = profile.failed_count.to_i
+
+      has_outstanding_bal = outstanding_bal > 0
+      failed = failed_count > 0
+
+      if failed || has_outstanding_bal
+        if user.expired!
+          user_logger.debug ">>>>>>>>>>> successfully updated user:: id: #{user.id}, email: #{user.email} >>>>>>>>>>>"
+          puts ">>>>>>>>>>> successfully updated user:: id: #{user.id}, email: #{user.email} >>>>>>>>>>>"
+
+          @result << { user_id: user.id, user_email: user.email, user_status: user.subscription_plan_status, payment_gateway_status: ppr.profile.try(:status) }
+        else
+          user_logger.debug ">>>>>>>>>>> updation failed for user:: id: #{user.id}, email: #{user.email} >>>>>>>>>>>"
+          puts ">>>>>>>>>>> updation failed for user:: id: #{user.id}, email: #{user.email} >>>>>>>>>>>"
+        end
+      end
+
+    end
+
+    user_logger.debug ">>>>>>>>>>> Total users affected:: #{@result.count} >>>>> #{@result}"
+    puts ">>>>>>>>>>> Total users affected:: #{@result.count} >>>>> #{@result}"
+  end
 end
 
 # Command to run the above task::
@@ -136,3 +169,5 @@ end
 # 1. RAILS_ENV=production bundle exec rake set_user_subscription_plan_status:sync_user_subscription_plan_status_with_payment_gateway
 
 # 2. RAILS_ENV=production bundle exec rake set_user_subscription_plan_status:sync_ios_users_subscription_status
+
+# 3. RAILS_ENV=production bundle exec rake set_user_subscription_plan_status:sync_user_subscription_plan_status_with_paypal_having_outstanding_balance
