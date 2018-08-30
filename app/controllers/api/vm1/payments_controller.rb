@@ -53,14 +53,14 @@ class Api::Vm1::PaymentsController < Api::Vm1::ApplicationController
       if @object.class.name == "TempUser"
         user = User.new(fetch_user_hash_from_temp_user)
         if user.valid?
-          response = update_ios_payment_and_generate_response(user)
+          response = update_ios_payment_and_generate_response(user, params)
         else
           response = { code: "1",status: "Error",message: user.errors}
         end
       else
         @object.registration_plan = params[:registration_plan] if params[:registration_plan]
         @object.receipt_data = params[:receipt_data]
-        response = update_ios_payment_and_generate_response(@object)
+        response = update_ios_payment_and_generate_response(@object, params)
       end
     rescue Exception => e
       response = {code: "-1", status: "Error", message: e.message}

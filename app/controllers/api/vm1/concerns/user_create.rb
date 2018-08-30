@@ -16,14 +16,14 @@ module Api::Vm1::Concerns::UserCreate
     {code: "0", status: "Success", message: "Sign in successfully", user: user.create_hash ,is_sign_up: is_sign_up,is_valid_payment: is_login, upgradable_user: user.valid_for_monthly_plan?}
   end
 
-  def update_ios_payment_and_generate_response(user)
+  def update_ios_payment_and_generate_response(user, extra_params={})
     mode = params[:build_type] rescue nil
 
     unless mode
       mode = user.logged_in_user.try(:notification_from)
     end
 
-    if IosPaymentUpdateService.new(user, mode).call();
+    if IosPaymentUpdateService.new(user, mode, extra_params).call();
       user.save!
       user.create_or_update_logged_in_user(params)
       { code: "0", status: "Success", message: "Payment successfully Updated", user: user.create_hash, is_valid_payment: user.check_login}

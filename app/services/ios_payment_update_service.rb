@@ -1,8 +1,9 @@
 class IosPaymentUpdateService
 
-  def initialize(user, mode=nil)
+  def initialize(user, mode=nil, extra_params={})
     @user = user
     @mode = mode
+    @extra_params = extra_params
   end
 
   def call
@@ -58,7 +59,9 @@ class IosPaymentUpdateService
   end
 
   def request_data(user)
-    {'receipt-data': user.receipt_data,password: ENV['iOS_password'], 'exclude-old-transactions': true }.to_json
+    { 'receipt-data': user.receipt_data,
+       password: ENV['iOS_password'],
+       'exclude-old-transactions': true }.to_json
   end
 
   def fetch_latest_info(itune_response)
@@ -66,6 +69,8 @@ class IosPaymentUpdateService
   end
 
   def check_and_save_payment_detail(user, latest_payment)
+    assign_user_details(user, @extra_params)
+
     user_payment_method = user.user_payment_methods.last
     if user_payment_method.present?
       check_transaction_detail_and_build_payment_transaction(user_payment_method, latest_payment)
@@ -112,7 +117,8 @@ class IosPaymentUpdateService
     {
       payment_date:  convert_date_in_utc_format(latest_payment['purchase_date']),
       payment_expire_date: convert_date_in_utc_format(latest_payment['expires_date']),
-      transaction_id: latest_payment['transaction_id']
+      transaction_id: latest_payment['transaction_id'],
+      amount: @extra_params['transaction_amount']
     }
   end
 
@@ -122,5 +128,18 @@ class IosPaymentUpdateService
 
   def fetch_billing_plan(user)
     user.send(:fetch_billing_plan)
+  end
+
+  def assign_user_details(user, extra_params)
+    subscription_plan_status = extra_params['subscription_plan_status']
+    registration_plan = extra_params['registration_plan']
+
+    if User.subscription_plan_statuses.values.include?(subscription_plan_status)
+      user.subscription_plan_status = subscription_plan_status
+    end
+
+    if User.registration_plans.values.include?(registration_plan)
+      user.registration_plan = registration_plan
+    end
   end
 end

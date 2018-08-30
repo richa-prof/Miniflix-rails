@@ -225,7 +225,7 @@ class Api::Vm1::SessionsController < Api::Vm1::ApplicationController
 
     def ios_user_sign_up(user)
       mode = logged_in_params[:notification_from]
-      if IosPaymentUpdateService.new(user, mode).call();
+      if IosPaymentUpdateService.new(user, mode, params).call();
         user_create_and_generate_response(user)
       else
         {code: "-1", status: "Error", message: "user can't create, something wrong with ios receipt"}
