@@ -247,9 +247,12 @@ class User < ActiveRecord::Base
       paypal_subscription_id = self.subscription_id
       response = Stripe::SubscriptionUpdate.new(self, token).call
       cancel_previous_paypal_subscription(paypal_subscription_id) if response[:success]
-    else
+    elsif latest_payment_method.card?
       response = Stripe::UpdateCard.new(self, token).call
+    else
+      response = Stripe::SubscriptionUpdate.new(self, token).call
     end
+
     response
   end
 
