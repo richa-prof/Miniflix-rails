@@ -133,6 +133,7 @@ Rails.application.routes.draw do
 
       post 'payments/cancel_subscription'
       post 'payments/reactive_cancelled_payment'
+      post 'payments/ios_webhook'
       post 'payments/update_receipt_data_of_user' => 'payments#update_receipt_data_of_user'
 
       post 'notifications/get_notifications' => 'notifications#get_notifications'

@@ -3,6 +3,14 @@ class Api::Vm1::PaymentsController < Api::Vm1::ApplicationController
   before_action :authenticate_api, only: [:cancel_subscription, :reactive_cancelled_payment]
   before_action :authenticate_ios_user_api, only: [:update_receipt_data_of_user]
 
+  def ios_webhook
+    PAYMENT_LOGGER.debug "<<< Api::Vm1::PaymentsController::ios_webhook : parameters: #{params} <<<"
+
+    response = ParseAppStoreHookService.new(params).call
+
+    render json: response
+  end
+
   def cancel_subscription
     user_payment_method = api_user.user_payment_methods.last
     begin
