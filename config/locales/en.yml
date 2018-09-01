@@ -270,8 +270,10 @@ en:
   suspend_subscription:
     success: Subscription has been canceled successfully.
     already_canceled: Subscription is already canceled.
+    error: you can't cancel your Subscription!
   reactivate_subscription:
     success: Subscription has been reactivated successfully.
+    error: you can't reactivate your Subscription!
 
   contents:
     subscription_info:

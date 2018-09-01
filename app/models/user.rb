@@ -269,10 +269,13 @@ class User < ActiveRecord::Base
         response = { success: false,
                      message: ppr_response.errors[0][:messages][0] }
       end
-    else
+    elsif latest_payment_method.card?
       stripe_service_obj = StripeService.new(subscription_id)
       response = stripe_service_obj.suspend_subscription
       self.cancelled! if response[:success]
+    else
+      response = { success: false,
+                   message: (I18n.t 'suspend_subscription.error') }
     end
 
     response
@@ -303,7 +306,7 @@ class User < ActiveRecord::Base
                      message: ppr_response.errors[0][:messages][0] }
       end
 
-    else
+    elsif latest_payment_method.card?
       stripe_service_obj = StripeService.new(subscription_id)
 
       response = stripe_service_obj.reactivate_subscription
@@ -321,6 +324,9 @@ class User < ActiveRecord::Base
           self.expired!
         end
       end
+    else
+      response = { success: true,
+                   message: (I18n.t 'reactivate_subscription.error') }
     end
 
     response
