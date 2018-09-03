@@ -75,7 +75,7 @@
                               <%= link_to admin_movie_path(admin_movie), class: "text-green", data: { turbolinks: false } do %>
                                 <i class="fa fa-fw fa-eye"></i>
                               <% end %>
-                              <%= link_to edit_admin_movie_path(admin_movie), class: "text-blue" do %>
+                              <%= link_to edit_admin_movie_path(admin_movie), data: { turbolinks: false }, class: "text-blue" do %>
                                 <i class="fa fa-fw fa-edit"></i>
                               <% end %>
                               <%= link_to( admin_movie_path(admin_movie),

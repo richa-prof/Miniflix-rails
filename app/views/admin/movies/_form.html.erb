@@ -1,5 +1,3 @@
-<%= javascript_include_tag 'admin/bootstrap-fileupload.js', 'data-turbolinks-track' => true %>
-
 <% released_date = @admin_movie.released_date ? @admin_movie.released_date.strftime("%m/%d/%Y") : "" %>
 <% posted_date = @admin_movie.posted_date ? @admin_movie.posted_date.strftime("%m/%d/%Y") : "" %>
 <% movie_thumbnail = @admin_movie.movie_thumbnail %>
