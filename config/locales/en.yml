@@ -183,6 +183,7 @@ en:
         error: "Error in validating App Store receipt data. The App Store server's verifyReceipt endpoint responded with status: %{status}"
     webhook:
       information_updated: information updated successfully!
+      information_missing: some information is missing!
     payment_method:
         successfully_updated: 'Your payment method has been updated successfully'
     payment_transaction:

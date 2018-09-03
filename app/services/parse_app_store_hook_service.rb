@@ -9,22 +9,29 @@ class ParseAppStoreHookService
     if user.present?
       do_process(user)
     else
-      { success: true,
-        message: I18n.t('flash.webhook.information_updated') }
+      { success: false,
+        message: I18n.t('flash.webhook.information_missing') }
     end
   end
 
   private
     def do_process(user)
+      response = { success: false,
+                   message: I18n.t('flash.webhook.information_missing') }
+
       if user.present?
         if notification_type == 'CANCEL'
           unless user.expired?
             if user.expired!
               PAYMENT_LOGGER.debug "<<< ParseAppStoreHookService::do_process : user_id: #{user.id} <<<"
+              response = { success: true,
+                           message: I18n.t('flash.webhook.information_updated') }
             end
           end
         end
       end
+
+      response
     end
 
     def notification_type
