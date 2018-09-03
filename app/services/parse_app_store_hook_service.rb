@@ -4,7 +4,7 @@ class ParseAppStoreHookService
   end
 
   def call
-    user = User.find_by_receipt_data(@payload['password'])
+    user = User.find_by_receipt_data(receipt_data) if receipt_data
 
     if user.present?
       do_process(user)
@@ -18,13 +18,21 @@ class ParseAppStoreHookService
     def do_process(user)
       if user.present?
         if notification_type == 'CANCEL'
-          user.expired! unless user.expired?
+          unless user.expired?
+            if user.expired!
+              PAYMENT_LOGGER.debug "<<< ParseAppStoreHookService::do_process : user_id: #{user.id} <<<"
+            end
+          end
         end
       end
     end
 
     def notification_type
       @payload['notification_type']
+    end
+
+    def receipt_data
+      @payload['password']
     end
 end
 
