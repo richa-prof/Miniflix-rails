@@ -40,6 +40,9 @@ gem 'mandrill-api'
 # A wrapper for MailChimp API
 gem 'gibbon'
 
+# for using Ionicons
+gem 'ionicons-rails'
+
 #Rack Middleware for handling Cross-Origin Resource Sharing (CORS), which makes cross-origin AJAX possible.
 gem 'rack-cors', '1.0.1', :require => 'rack/cors'
 
