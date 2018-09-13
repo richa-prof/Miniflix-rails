@@ -40,7 +40,7 @@ class Api::Vm1::SessionsController < Api::Vm1::ApplicationController
       else
         user = User.new(user_params)
         if user.valid?
-          if user.Educational? || user.Freemium?
+          if user.Educational?
             api_response = check_for_education_and_freemium_plan(user)
           else
             api_response = generate_response_for_paid_user(user)
@@ -63,17 +63,14 @@ class Api::Vm1::SessionsController < Api::Vm1::ApplicationController
           response = user_login_and_generate_response(user)
         else
           user = User.new(social_user_params)
-          user.registration_plan = "Freemium" if user.Android?
 
           if user.valid? || user.invalid_only?('registration_plan')
-            if user.iOS?
-              temp_user_id = TempUser.save_user_detail_into_temp_user(user, "social_authenticate")
-              temp_user = TempUser.find (temp_user_id)
-              headers['authenticate'] = temp_user.update_auth_token
-              response = {code: "0", status: "Success", message: "Select plan for further process", temp_user: TempUser.json_content(temp_user_id), is_sign_up: true,is_valid_payment: false }
-            else
-              response = user_create_and_generate_response(user)
-            end
+            response = user_create_and_generate_response(user)
+
+            response[:message] = "Select plan for further process"
+
+            response = response.merge({ is_sign_up: true })
+
           else
             response = {code: "-1", status: "Error", message: user.errors}
           end
@@ -256,10 +253,9 @@ class Api::Vm1::SessionsController < Api::Vm1::ApplicationController
     end
 
     def android_paid_user(user)
-      temp_user_id = TempUser.save_user_detail_into_temp_user(user)
-      temp_user = TempUser.find (temp_user_id)
-      headers['authenticate'] = temp_user.update_auth_token
-      {code: "0", status: "Success", message: "Choose payment type for further process", temp_user: TempUser.json_content(temp_user_id)}
+      user.save
+      headers['authenticate'] = user.update_auth_token
+      {code: "0", status: "Success", message: "Choose payment type for further process", user: user.as_json(except: [:created_at, :updated_at, :password, :auth_token])}
     end
 
     def forgot_password_redirect_url

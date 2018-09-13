@@ -53,7 +53,6 @@ class User < ActiveRecord::Base
   before_create :set_free_user_and_subscription_staus, if: -> { condition_for_free_user}
   after_create :welcome_mail_for_free_user, if: :is_free
   after_create :subscribe_user_to_mailchimp_list, if: -> { MailchimpGroup.is_list_ids_available? }
-  after_create :delete_temp_user, if: -> { temp_user_id.present? }
   after_validation :send_verification_code, if: ->  { unconfirmed_phone_number_changed? && errors.blank? }
   before_update :assign_unverified_phone_to_phone_number, if: -> { check_condition_for_assign_phone_number }
   before_update :make_migrate_user_false, if: -> { can_make_migrate_user_false? }
@@ -210,7 +209,6 @@ class User < ActiveRecord::Base
 
   def confirm_payment(token, payer_id)
     assign_token_and_customer_id(token, payer_id)
-    assign_registration_plan_to_android_user if self.Freemium?
     response = PaypalSubscription.new(:create_recurring_profile, self).call
 
     Rails.logger.debug "<<<<< confirm_payment::response : #{response} <<<<<"
@@ -435,7 +433,7 @@ class User < ActiveRecord::Base
   end
 
   def check_user_free_or_not
-    self.Freemium? || self.Educational?
+    self.Educational?
   end
 
   def create_or_update_logged_in_user(params)
@@ -646,10 +644,6 @@ class User < ActiveRecord::Base
     self.customer_id = payer_id
   end
 
-  def assign_registration_plan_to_android_user
-    self.registration_plan = User.registration_plans['Monthly']
-  end
-
   def payment_cofirmation_setting(agreement_id)
     Rails.logger.debug "<<<<< payment_cofirmation_setting::agreement_id : #{agreement_id} <<<<<"
     self.valid_for_thankyou_page = true
@@ -710,10 +704,5 @@ class User < ActiveRecord::Base
 
   def user_choose_annual_plan?
     self.registration_plan_changed? && self.Annually? && self.trial?
-  end
-
-  def delete_temp_user
-    temp_user = TempUser.find temp_user_id
-    temp_user.delete
   end
 end
