@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180712120444) do
+ActiveRecord::Schema.define(version: 20180919121844) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "city"
@@ -307,22 +307,6 @@ ActiveRecord::Schema.define(version: 20180712120444) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_social_media_links_on_user_id"
-  end
-
-  create_table "temp_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "registration_plan"
-    t.string "email"
-    t.string "name"
-    t.string "password"
-    t.string "sign_up_from"
-    t.string "uid"
-    t.string "provider"
-    t.string "token"
-    t.string "auth_token"
-    t.string "image"
-    t.string "expires_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "user_email_notifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
           :recoverable, :rememberable, :trackable, :validatable, :omniauthable
   include DeviseTokenAuth::Concerns::User
 
-  attr_accessor :skip_callbacks, :temp_user_id, :social_login, :paypal_token, :payment_type
+  attr_accessor :skip_callbacks, :social_login, :paypal_token, :payment_type
 
   mount_uploader :image, ImageUploader
 

@@ -142,7 +142,7 @@ class PaymentsController < ApplicationController
     @user.as_json(except: [:created_at, :updated_at, :id])
   end
 
-  def check_validity_of_temp_user
+  def check_validity_of_user
     @user = User.find(params[:id])
     if @user.id != session[:user_id]
       redirect_to 'miniflix://mob?is_payment_success=false&error_code=1&msg=Invalid Request' and return
