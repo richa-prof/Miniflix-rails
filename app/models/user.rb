@@ -397,7 +397,10 @@ class User < ActiveRecord::Base
   end
 
   def as_json(options={})
-    user_hash = super(except: [:role,:created_at, :updated_at, :password_digest, :receipt_data, :auth_token, :image, :provider, :uid, :migrate_user, :slug, :allow_password_change, :valid_for_thankyou_page]).reject { |k, v| v.nil? }.merge(super["logged_in_user"]).merge(super["user_email_notification"]).merge(isPaymentSettingsAllow: self.payment_setting_allow?,  is_validPlan: is_valid_payment? )
+    user_hash = super(except: [:role,:created_at, :updated_at, :password_digest, :receipt_data, :auth_token, :image, :provider, :uid, :migrate_user, :slug, :allow_password_change, :valid_for_thankyou_page]).reject { |k, v| v.nil? }
+    user_hash = user_hash.merge(super["logged_in_user"]) if super["logged_in_user"]
+    user_hash = user_hash.merge(super["user_email_notification"]) if super["user_email_notification"]
+    user_hash = user_hash.merge(isPaymentSettingsAllow: self.payment_setting_allow?,  is_validPlan: is_valid_payment? )
 
     if self.image.present?
       user_hash = user_hash.merge( image: self.image_url )
