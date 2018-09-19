@@ -164,6 +164,7 @@ group :development, :test do
   gem 'shoulda-callback-matchers'
   gem 'simplecov', require: false
   gem 'pry'
+  gem 'rb-readline'
 
   # Use Puma as the app server
   gem 'puma', '~> 3.7'
