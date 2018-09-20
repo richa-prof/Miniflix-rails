@@ -113,7 +113,7 @@ class PaymentsController < ApplicationController
   end
 
   def choose_layout
-    if [ 'android_payment_old_user_view', 'android_payment_process_for_old_user'].include?params[:action]
+    if [ 'android_payment_old_user_view', 'android_payment_process_for_old_user', 'android_payment_view', 'do_payment_android'].include?params[:action]
       "app_layout"
     else
       "application"

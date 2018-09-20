@@ -23,7 +23,7 @@ Rails.application.routes.draw do
     }
 
     get 'android_payment_view' => 'payments#android_payment_view'
-    patch 'do_payment_android/:id' => 'payments#do_payment_android'
+    post 'do_payment_android/:id' => 'payments#do_payment_android'
     get 'android_payment_old_user_view' => 'payments#android_payment_old_user_view'
     patch 'android_payment_process_for_old_user/:id' => 'payments#android_payment_process_for_old_user'
     get 'paypal_success/:user_id' => 'payments#paypal_success'
