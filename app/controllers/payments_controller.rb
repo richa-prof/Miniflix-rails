@@ -9,12 +9,11 @@ class PaymentsController < ApplicationController
 
   def android_payment_view
     @user = User.find_by_id(params[:id])
-    if @user.blank?
-      redirect_to 'miniflix://mob?is_payment_success=false&error_code=1&msg=user not found'
-    else
-      session[:user_id] = @user.id
-      puts "---------pay view-----#{session[:user_id]}"
-    end
+    redirect_to 'miniflix://mob?is_payment_success=false&error_code=1&msg=user not found' and return if @user.blank?
+
+    @user_payment_method = @user.user_payment_methods.last
+    @user_payment_method = @user.user_payment_methods.build if @user_payment_method.nil?
+    session[:user_id] = @user.id
   end
 
   def do_payment_android
@@ -41,15 +40,14 @@ class PaymentsController < ApplicationController
   end
 
   def android_payment_old_user_view
-    user = User.find_by_id params[:id]
-    redirect_to 'miniflix://mob?is_payment_success=false&error_code=1&msg=User not found' and return if (user.nil? || params[:registration_plan].nil?)
-    @user_payment_method = user.user_payment_methods.last
-    @user_payment_method = user.user_payment_methods.build if @user_payment_method.nil?
+    @user = User.find_by_id params[:id]
+    redirect_to 'miniflix://mob?is_payment_success=false&error_code=1&msg=User not found' and return if (@user.nil? || params[:registration_plan].nil?)
+    @user_payment_method = @user.user_payment_methods.last
+    @user_payment_method = @user.user_payment_methods.build if @user_payment_method.nil?
 
-    @user = user
     facebook_pixel_event_track('Android user go for Subscription', user_trackable_detail)
 
-    session[:android_user] = user.id
+    session[:android_user] = @user.id
   end
 
 
