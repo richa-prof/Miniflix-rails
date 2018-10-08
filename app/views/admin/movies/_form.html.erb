@@ -1,5 +1,3 @@
-<%= javascript_include_tag 'admin/bootstrap-fileupload.js', 'data-turbolinks-track' => true %>
-
 <% released_date = @admin_movie.released_date ? @admin_movie.released_date.strftime("%m/%d/%Y") : "" %>
 <% posted_date = @admin_movie.posted_date ? @admin_movie.posted_date.strftime("%m/%d/%Y") : "" %>
 <% movie_thumbnail = @admin_movie.movie_thumbnail %>
@@ -254,13 +252,13 @@
 
         window.URL.revokeObjectURL( img640.src );
 
-        if( width == 640 && height == 420 ) {
+        if( width == 600 && height == 300 ) {
           // form.submit();
         }
         else {
             //fail
           console.log("invalid dimention==>",width,"--height-->",height)
-          $("#thumbnail_640_error").html("Please upload image with 640x420 size only").show();
+          $("#thumbnail_640_error").html("Please upload image with 600x300 size only").show();
           error = true;
         }
       };

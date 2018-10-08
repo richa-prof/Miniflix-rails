@@ -67,7 +67,7 @@
         </div>
         <div class="user-blogs-view-edit">
           <div class="usr-profile-blog-heading">
-            <h3>My Blogs</h3>
+            <h3><%= t('heading.blogs') %></h3>
           </div>
           <div id="blogs_list_<%=staff.id%>">
             <%= render partial: 'staff_blogs', locals: { blogs: blogs, staff: staff } %>

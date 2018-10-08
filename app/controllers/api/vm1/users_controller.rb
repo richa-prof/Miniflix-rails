@@ -79,16 +79,18 @@ class Api::Vm1::UsersController < Api::Vm1::ApplicationController
   end
 
   def destroy
-    if Rails.env.staging? || Rails.env.development?
+    response = if Rails.env.staging? || Rails.env.development?
       begin
         user = User.find params[:id]
         user.destroy
-        response = {code: "0", status: "Success", message: "user delete successfully"}
+        { code: "0", status: "Success", message: "user delete successfully" }
+      rescue ActiveRecord::RecordNotFound => e
+        { code: "-1", status: "Error", message: 'user not found in the DB' }
       rescue Exception => e
-        response = {code: "-1", status: "Error", message: user.errors}
+        { code: "-1", status: "Error", message: user.errors }
       end
     else
-      response = {code: "1", status: "Error", message: "you can not delete user for #{Rails.env} environment"}
+      { code: "1", status: "Error", message: "you can not delete user for #{Rails.env} environment" }
     end
     render json: response
   end

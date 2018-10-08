@@ -25,7 +25,7 @@ module Admin::MoviesHelper
   def get_default_thumbnail_url_for(thumbnail_type)
     case thumbnail_type
     when 'thumbnail_640_screenshot'
-      'admin/upload_img640.png'
+      'admin/upload_img640.jpg'
     when 'thumbnail_screenshot'
       'admin/upload_img330.png'
     when 'thumbnail_800_screenshot'

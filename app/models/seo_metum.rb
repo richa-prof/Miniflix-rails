@@ -20,7 +20,7 @@ class SeoMetum < ActiveRecord::Base
     target_page_name = if is_home_page?
                         nil
                       else
-                        page_name
+                        "page/#{page_name}"
                       end
     "#{ENV['Host']}/#{target_page_name}"
   end

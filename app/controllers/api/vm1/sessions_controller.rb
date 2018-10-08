@@ -225,10 +225,33 @@ class Api::Vm1::SessionsController < Api::Vm1::ApplicationController
 
     def ios_user_sign_up(user)
       mode = logged_in_params[:notification_from]
-      if IosPaymentUpdateService.new(user, mode).call();
-        user_create_and_generate_response(user)
+
+      response = IosPaymentUpdateService.new(user, mode, params[:user]).call();
+
+      if response[:success]
+        user.build_logged_in_user(logged_in_params)
+
+        if user.save
+          user_detailed_hash = user.create_hash.merge(transaction_amount: response[:transaction].try(:amount))
+          headers['authenticate'] = user.update_auth_token
+
+          { code: "0",
+            status: "Success",
+            message: "Sign up successfully",
+            user: user_detailed_hash,
+            upgradable_user: user.valid_for_monthly_plan?,
+            is_valid_payment: user.check_login }
+        else
+          { code: "-1",
+            status: "Error",
+            message: "user can't create. #{user.errors.full_messages[0]}" }
+        end
       else
-        {code: "-1", status: "Error", message: "user can't create, something wrong with ios receipt"}
+        PAYMENT_LOGGER.debug "<<< Api::Vm1::SessionsController::ios_user_sign_up : user_id: #{user.id}, error: #{response[:error]}, parameters: #{params} <<<"
+
+        { code: "-1",
+          status: "Error",
+          message: "user can't create. #{response[:error]}" }
       end
     end
 

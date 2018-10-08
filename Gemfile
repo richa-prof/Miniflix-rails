@@ -28,6 +28,8 @@ gem 'jquery-validation-rails'
 # For making masks on form fields and HTML elements
 gem 'jquery_mask_rails'
 
+gem 'lightbox-bootstrap-rails', '~> 5.1', '>= 5.1.0.1'
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
@@ -37,6 +39,9 @@ gem 'mandrill-api'
 
 # A wrapper for MailChimp API
 gem 'gibbon'
+
+# for using Ionicons
+gem 'ionicons-rails'
 
 #Rack Middleware for handling Cross-Origin Resource Sharing (CORS), which makes cross-origin AJAX possible.
 gem 'rack-cors', '1.0.1', :require => 'rack/cors'
@@ -126,6 +131,9 @@ gem 'useragent'
 
 # For tracking and analytics
 gem 'rack-tracker'
+
+# Check and verify in-app receipts from the AppStore and the PlayStore.
+gem 'candy_check'
 
 group :production, :staging do
   gem 'passenger'

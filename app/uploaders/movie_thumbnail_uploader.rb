@@ -36,6 +36,22 @@ class MovieThumbnailUploader < CarrierWave::Uploader::Base
     process resize_to_fit: [867, 470]
   end
 
+  # version :thumb_600 do
+  #   process resize_to_fit: [600, 300]
+  # end
+
+  # to recreate_versions
+  # @arr = []
+  # MovieThumbnail.find_each do |thumbnail|
+  #   begin
+  #     thumbnail.thumbnail_640_screenshot.recreate_versions! if thumbnail.thumbnail_640_screenshot.present?
+  #   rescue Exception => e
+  #     @arr << [thumbnail.id, e.message]
+  #   end
+
+  # end
+  # puts @arr
+
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
   def extension_white_list

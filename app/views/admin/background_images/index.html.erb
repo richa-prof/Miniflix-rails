@@ -43,22 +43,32 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <% @background_images.each do |background_image| %>
+                      <% @background_images.each do |image| %>
                         <tr>
-                          <td><%= image_tag(background_image.image_file_url, height: '32', width: '32') %></td>
-                          <% if background_image.is_set.present? %>
-                            <td><%= background_image.is_set %></td>
+                          <td>
+                            <%= link_to( image.image_file_cloud_front_url,
+                                         "data-toggle" => "lightbox",
+                                         "data-title" => "Background Image" ) do %>
+
+                              <%= image_tag( image.image_file_cloud_front_url,
+                                             height: '32',
+                                             width: '32',
+                                             class: "img-fluid") %>
+                            <% end %>
+                          </td>
+                          <% if image.is_set.present? %>
+                            <td><%= image.is_set %></td>
                           <% else %>
                             <td>false</td>
                           <% end %>
                           <td width="150px">
-                            <%= link_to admin_background_image_path(id: background_image.id ), class: "text-green" do %>
+                            <%= link_to admin_background_image_path(id: image.id ), class: "text-green" do %>
                               <i class="fa fa-fw fa-eye"></i>
                             <% end %>
-                            <%= link_to edit_admin_background_image_path(background_image.id), class: "text-blue" do %>
+                            <%= link_to edit_admin_background_image_path(image.id), class: "text-blue" do %>
                               <i class="fa fa-fw fa-edit"></i>
                             <% end %>
-                            <%= link_to( admin_background_image_path( id: background_image.id ),
+                            <%= link_to( admin_background_image_path( id: image.id ),
                                          class: "text-red",
                                          method: :delete,
                                          data: { confirm: t('confirm.are_you_sure') } ) do %>
@@ -82,3 +92,10 @@
   </div>
   <!-- /.row -->
 </section>
+
+<script type="text/javascript">
+  $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
+    event.preventDefault();
+    $(this).ekkoLightbox();
+  });
+</script>

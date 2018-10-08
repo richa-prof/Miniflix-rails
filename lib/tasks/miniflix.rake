@@ -103,7 +103,7 @@ namespace :miniflix do
         id, image_file, is_set, created_at, updated_at
       )
       VALUES (
-        #{row["id"]}, '#{row["background_image"]}', '#{row["is_set"]}', #{change_date_time_into_string(row["created_at"])}, #{change_date_time_into_string(row["updated_at"])}
+        #{row["id"]}, '#{row["backaground_image"]}', '#{row["is_set"]}', #{change_date_time_into_string(row["created_at"])}, #{change_date_time_into_string(row["updated_at"])}
       )
     "
   end

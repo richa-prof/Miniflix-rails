@@ -5,15 +5,14 @@ module Admin::DashboardHelper
   end
 
   def get_total_user_count
-    User.where(role: "User").count
+    User.user.count
   end
 
   def get_visitor_count
      ContactUs.count
   end
 
-  def total_income_of_current_month
-    amount = UserPaymentTransaction.where('created_at >= ?', Time.now.beginning_of_month).where.not(transaction_id: nil).sum(:amount)
+  def get_formatted_total_amount(amount)
     number_with_precision(amount, precision: 2)
   end
 

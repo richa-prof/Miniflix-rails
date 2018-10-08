@@ -33,6 +33,7 @@
                       <tr>
                         <th>Id</th>
                         <th>Email</th>
+                        <th>Associated User Id</th>
                         <th width="150px">Action</th>
                       </tr>
                     </thead>
@@ -41,6 +42,7 @@
                         <tr>
                           <td><%= free_member.id %></td>
                           <td><%= free_member.email %></td>
+                          <td><%= free_member.associated_user_id %></td>
                           <td width="150px">
                             <%= link_to admin_free_member_path(free_member), class: "text-red", method: :delete, data: { confirm: 'Are you sure?' } do %>
                               <i class="fa fa-fw fa-trash"></i>
@@ -75,7 +77,7 @@
       "info": true,
       "autoWidth": false,
       "aoColumnDefs": [
-        { 'bSortable': false, 'aTargets': [ 1 ] },
+        { 'bSortable': false, 'aTargets': [ 3 ] },
         { "bSearchable": false,"bVisible": false, "aTargets": [ 0 ] }
       ],
       "aaSorting": [[0, 'desc']]

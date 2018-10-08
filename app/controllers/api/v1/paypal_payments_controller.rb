@@ -64,7 +64,12 @@ class Api::V1::PaypalPaymentsController < Api::V1::ApplicationController
   # called on payment_confimration from payPal.
   # For more info Refer IPN(instant payment notification)
   def hook
-    PaypalTransactionService.new(@user, params).call
+    if is_recurring_payment_failed
+      @user.expired! unless @user.expired?
+    else
+      PaypalTransactionService.new(@user, params).call
+    end
+
     render json: {success: true}
   end
 
@@ -89,7 +94,7 @@ class Api::V1::PaypalPaymentsController < Api::V1::ApplicationController
     def check_condition_for_hook
       Rails.logger.debug "<<<<< check_condition_for_hook::user : #{@user.try(:inspect)} << #{params[:payment_status]} <<<<<"
 
-      ( @user && (is_recurring_payment_profile_created || is_recurring_payment_deducted) )
+      ( @user && (is_recurring_payment_profile_created || is_recurring_payment_deducted || is_recurring_payment_failed) )
     end
 
     def is_recurring_payment_profile_created
@@ -97,7 +102,26 @@ class Api::V1::PaypalPaymentsController < Api::V1::ApplicationController
     end
 
     def is_recurring_payment_deducted
-      (params['txn_type'] == 'recurring_payment') && (params[:payment_status].downcase == 'completed')
+      (params['txn_type'] == 'recurring_payment') && (params[:payment_status].try(:downcase) == 'completed')
+    end
+
+    def is_recurring_payment_failed
+      result = false
+      if @user && (params['txn_type'] == 'recurring_payment')
+        payment_status = params[:payment_status].try(:downcase)
+
+        if ['expired', 'failed'].include?(payment_status)
+          result = true
+        end
+      elsif @user && is_recurring_payment_outstanding_payment_failed
+        result = true
+      end
+
+      result
+    end
+
+    def is_recurring_payment_outstanding_payment_failed
+      (params['txn_type'] == 'recurring_payment_outstanding_payment_failed')
     end
 
     def paypal_payment_url(action_name)

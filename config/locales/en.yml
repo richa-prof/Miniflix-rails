@@ -39,6 +39,11 @@ en:
       plan: Plan
       registration_date: Registration Date
       action: Action
+      sign_up_from: Platform
+      subscription_status: Subscription Status
+      registration_plan: Plan
+      paid_amount: Paid Amount
+      is_free: Is Free
     blog_subscribers:
       id: Id
       email: Email
@@ -74,7 +79,7 @@ en:
 
   heading:
     main_navigation: MAIN NAVIGATION
-    registration_users_detail: Registration Users Detail
+    registration_users_detail: All Registered User Details
     registration_users: Registration Users
     premium_users_detail: Premium Users Detail
     premium_users: Premium Users
@@ -85,6 +90,7 @@ en:
     educational_users_detail: Educational Users Detail
     visitors: Visitors
     free_member: Free Member
+    blogs: Blogs
     blog_subscribers: Blog Subscribers
     genres: Genres
     admin_genres: Admin Genres
@@ -173,8 +179,19 @@ en:
     payment:
       card:
         successfully_updated: 'Your card details has been updated successfully'
+      receipt_data:
+        error: "Error in validating App Store receipt data. The App Store server's verifyReceipt endpoint responded with status: %{status}"
+    webhook:
+      information_updated: information updated successfully!
+      information_missing: some information is missing!
     payment_method:
         successfully_updated: 'Your payment method has been updated successfully'
+    payment_transaction:
+      successfully_saved: 'Transaction details has been saved successfully'
+      already_present: 'Transaction details already present'
+    omniauth:
+      signup_fail: "You are already registered with us using this email via provider %{provider}. Please try login with that provider!"
+
   placeholder:
     user:
       email: Enter email
@@ -256,8 +273,10 @@ en:
   suspend_subscription:
     success: Subscription has been canceled successfully.
     already_canceled: Subscription is already canceled.
+    error: you can't cancel your Subscription!
   reactivate_subscription:
     success: Subscription has been reactivated successfully.
+    error: you can't reactivate your Subscription!
 
   contents:
     subscription_info:

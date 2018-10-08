@@ -41,19 +41,23 @@ class User < ActiveRecord::Base
   UPDATE_SUBSCRIPTION = "subscription plan for update"
   ADMIN_EMAIL = 'admin@admin.com'
   PAYMENT_TYPE_PAYPAL = 'paypal'
+  PLATFORMS = {
+    web: 'web',
+    android: 'android'
+  }
 
   # CALLBACKS
   after_initialize :set_default_subscription_plan, if: -> { new_record?}
-  before_validation :valid_for_Education_plan, if: 'Educational?', on: :create
+  before_validation :valid_for_Education_plan, if: -> { Educational? }, on: :create
   before_create :build_email_notification
   before_create :set_free_user_and_subscription_staus, if: -> { condition_for_free_user}
   after_create :welcome_mail_for_free_user, if: :is_free
-  after_create :subscribe_user_to_mailchimp_list, if: 'MailchimpGroup.is_list_ids_available?'
-  after_create :delete_temp_user, if: 'temp_user_id.present?'
+  after_create :subscribe_user_to_mailchimp_list, if: -> { MailchimpGroup.is_list_ids_available? }
+  after_create :delete_temp_user, if: -> { temp_user_id.present? }
   after_validation :send_verification_code, if: ->  { unconfirmed_phone_number_changed? && errors.blank? }
   before_update :assign_unverified_phone_to_phone_number, if: -> { check_condition_for_assign_phone_number }
   before_update :make_migrate_user_false, if: -> { can_make_migrate_user_false? }
-  before_update :assign_subscription_cancel_date, if: 'cancelled?'
+  before_update :assign_subscription_cancel_date, if: -> { cancelled? }
   before_save :set_job_for_annual_user_to_change_subscription_status, if: -> {user_choose_annual_plan?}
 
   before_validation do
@@ -109,6 +113,10 @@ class User < ActiveRecord::Base
     end
   end
   # ===== Class methods End =====
+
+  def total_amount_paid
+    my_transactions.sum(:amount)
+  end
 
   def subscribe_user_to_mailchimp_list
     mailchimp_service_obj = MailchimpService.new(self)
@@ -181,8 +189,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def checkout_url
-    response = PaypalSubscription.new(:checkout, self).call
+  def checkout_url(platform=nil)
+    response = PaypalSubscription.new(:checkout, self, platform).call
     if response
       self.save
     end
@@ -239,9 +247,12 @@ class User < ActiveRecord::Base
       paypal_subscription_id = self.subscription_id
       response = Stripe::SubscriptionUpdate.new(self, token).call
       cancel_previous_paypal_subscription(paypal_subscription_id) if response[:success]
-    else
+    elsif latest_payment_method.card?
       response = Stripe::UpdateCard.new(self, token).call
+    else
+      response = Stripe::SubscriptionUpdate.new(self, token).call
     end
+
     response
   end
 
@@ -259,12 +270,15 @@ class User < ActiveRecord::Base
                      message: (I18n.t 'suspend_subscription.success') }
       else
         response = { success: false,
-                     message: response.errors[0][:messages][0] }
+                     message: ppr_response.errors[0][:messages][0] }
       end
-    else
+    elsif latest_payment_method.card?
       stripe_service_obj = StripeService.new(subscription_id)
       response = stripe_service_obj.suspend_subscription
       self.cancelled! if response[:success]
+    else
+      response = { success: false,
+                   message: (I18n.t 'suspend_subscription.error') }
     end
 
     response
@@ -295,7 +309,7 @@ class User < ActiveRecord::Base
                      message: ppr_response.errors[0][:messages][0] }
       end
 
-    else
+    elsif latest_payment_method.card?
       stripe_service_obj = StripeService.new(subscription_id)
 
       response = stripe_service_obj.reactivate_subscription
@@ -313,6 +327,9 @@ class User < ActiveRecord::Base
           self.expired!
         end
       end
+    else
+      response = { success: true,
+                   message: (I18n.t 'reactivate_subscription.error') }
     end
 
     response
@@ -358,6 +375,16 @@ class User < ActiveRecord::Base
       monthly_plans = eval("BillingPlan.#{billing_plans_interval}")
       monthly_plans.where.not(stripe_plan_id: ENV['BATTLESHIP_TRIAL_PLAN_ID']).last
     end
+  end
+
+  def profile_image_url
+    path = image.try(:staff_medium).try(:path)
+
+    if path.present?
+      return CommonHelpers.cloud_front_url(path)
+    end
+
+    image.default_url
   end
 
   # ======= Related to mobile API's start =======
@@ -644,7 +671,7 @@ class User < ActiveRecord::Base
   end
 
   def update_or_upgrade_payment_confirmation(agreement_id, upgrade_payment=nil)
-    cancel_previous_subscription
+    cancel_previous_subscription if latest_payment_method.present?
     assign_registration_plan_and_build_payment_method if upgrade_payment
     self.subscription_id = agreement_id
     self.build_user_payment_method(UserPaymentMethod.payment_types['paypal'])

@@ -3,6 +3,14 @@ class Api::Vm1::PaymentsController < Api::Vm1::ApplicationController
   before_action :authenticate_api, only: [:cancel_subscription, :reactive_cancelled_payment]
   before_action :authenticate_ios_user_api, only: [:update_receipt_data_of_user]
 
+  def ios_webhook
+    PAYMENT_LOGGER.debug "<<< Api::Vm1::PaymentsController::ios_webhook : parameters: #{params} <<<"
+
+    response = ParseAppStoreHookService.new(params).call
+
+    render json: response
+  end
+
   def cancel_subscription
     user_payment_method = api_user.user_payment_methods.last
     begin
@@ -53,14 +61,14 @@ class Api::Vm1::PaymentsController < Api::Vm1::ApplicationController
       if @object.class.name == "TempUser"
         user = User.new(fetch_user_hash_from_temp_user)
         if user.valid?
-          response = update_ios_payment_and_generate_response(user)
+          response = update_ios_payment_and_generate_response(user, params)
         else
           response = { code: "1",status: "Error",message: user.errors}
         end
       else
         @object.registration_plan = params[:registration_plan] if params[:registration_plan]
         @object.receipt_data = params[:receipt_data]
-        response = update_ios_payment_and_generate_response(@object)
+        response = update_ios_payment_and_generate_response(@object, params)
       end
     rescue Exception => e
       response = {code: "-1", status: "Error", message: e.message}
