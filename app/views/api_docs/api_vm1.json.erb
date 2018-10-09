@@ -1,0 +1,143 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  contact:
+    name: Miniflix Mobile API
+  description: >-
+     
+  termsOfService: ''
+  title: Miniflix
+
+schemes:
+  - http
+basePath: /api/vm1
+produces:
+  - application/json
+
+paths:
+  /sessions/sign_in:
+    post:
+      tags:
+      - "Session"
+      summary: "user signin"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "body with params"
+          schema:
+            $ref: '#/definitions/LoginUserInput'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/LoginUserResponse'
+
+  /sessions/sign_up:
+    post:
+      tags:
+      - "Registration"
+      summary: 'User signup'
+      parameters:
+        - in: body
+          name: "body"
+          description: "body with params"
+          schema:
+            $ref: '#/definitions/SignupUserInput'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/SignupUserResponse'
+
+definitions:
+  LoginUserInput:
+    properties:
+      user:
+        type: object
+        properties:
+          email:
+            type: string
+          password:
+            type: string
+            format: password
+          device_type:
+            type: string
+          device_token:
+            type: string
+          notification_from:
+            type: string
+
+  LoginUserResponse:
+    properties:
+      code:
+        type string
+      status:
+        type: string
+      user:
+        $ref: '#/definitions/UserInfo'
+      is_sign_up:
+        type: boolean
+      is_valid_payment:
+        type: boolean
+      upgradable_user:
+        type: boolean
+
+  UserInfo:
+    type: object
+    properties:
+      registration_plan:
+        type: string
+      subscription_plan_status:
+        type: string
+      id:
+        type: integer
+      email:
+        type: string
+      name:
+        type: string
+      sign_up_from:
+        type: string
+      is_free:
+        type: boolean
+      device_type:
+        type: string
+      device_token:
+        type: string
+      notification_from:
+        type: string
+      product_updates:
+        type: boolean
+      films_added:
+        type: boolean
+      special_offers_and_promotions:
+        type: boolean
+      better_product:
+        type: boolean
+      do_not_send:
+        type: boolean
+      isPaymentSettingsAllow:
+        type: boolean
+      is_validPlan:
+        type: boolean
+
+  SignupUserInput:
+    properties:
+      user: 
+        type: object
+        parameters:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        registration_plan:
+          type: string
+        sign_up_from:
+          type: string
+        device_type:
+          type: string
+        device_token:
+          type: string
+        notification_from:
+          type: string

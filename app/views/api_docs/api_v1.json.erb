@@ -1,0 +1,74 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  contact:
+    name: Miniflix React API
+  description: >-
+     
+  termsOfService: ''
+  title: Miniflix
+
+schemes:
+  - http
+basePath: /api/v1
+produces:
+  - application/json
+
+securityDefinitions:
+  access-token:
+    name: access-token
+    in: header
+    description: logged in user access token
+    type: apiKey
+  client:
+    name: client
+    in: header
+    description: logged in user auth token
+    type: apiKey
+  uid:
+    name: uid
+    in: header
+    description: logged in user email
+    type: apiKey
+  expiry:
+    name: expiry
+    in: header
+    description: logged in user's token expiry date
+    type: apiKey
+
+paths:
+  /auth/sign_in:
+    post:
+      tags:
+      - "Session"
+      summary: "user signin"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "body with params"
+          schema:
+            $ref: '#/definitions/LoginUserInput'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/LoginUserResponse'
+
+definitions:
+
+  LoginUserInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+        format: password
+
+  LoginUserResponse:
+    properties:
+      success:
+        type: boolean
+      errors:
+        type: object
+      data:
+        $ref: '#/definitions/UserInfo'

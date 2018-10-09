@@ -498,6 +498,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
+    rb-readline (0.5.5)
     rbvmomi (1.11.7)
       builder (~> 3.0)
       json (>= 1.8)
@@ -690,6 +691,7 @@ DEPENDENCIES
   rack-tracker
   rails (~> 5.1.4)
   rails-controller-testing
+  rb-readline
   rspec-rails
   s3_multipart
   sass-rails (~> 5.0)
