@@ -58,18 +58,9 @@ class Api::Vm1::PaymentsController < Api::Vm1::ApplicationController
 
   def update_receipt_data_of_user
     begin
-      if @object.class.name == "TempUser"
-        user = User.new(fetch_user_hash_from_temp_user)
-        if user.valid?
-          response = update_ios_payment_and_generate_response(user, params)
-        else
-          response = { code: "1",status: "Error",message: user.errors}
-        end
-      else
-        @object.registration_plan = params[:registration_plan] if params[:registration_plan]
-        @object.receipt_data = params[:receipt_data]
-        response = update_ios_payment_and_generate_response(@object, params)
-      end
+      @object.registration_plan = params[:registration_plan] if params[:registration_plan]
+      @object.receipt_data = params[:receipt_data]
+      response = update_ios_payment_and_generate_response(@object, params)
     rescue Exception => e
       response = {code: "-1", status: "Error", message: e.message}
     end
@@ -78,13 +69,8 @@ class Api::Vm1::PaymentsController < Api::Vm1::ApplicationController
 
   private
 
-  def fetch_user_hash_from_temp_user
-    @object.registration_plan = params[:registration_plan] if params[:registration_plan]
-    @object.as_json(except: [:created_at, :updated_at, :id, :auth_token]).merge(temp_user_id: @object.id, receipt_data: params[:receipt_data])
-  end
-
   def authenticate_ios_user_api
-    @object = eval("#{params[:UserType]}.find_by_id_and_auth_token(params[:user_id], request.headers['authentication'])") if params[:user_id] && request.headers['authentication'] && params[:receipt_data]
+    @object = User.find_by_id_and_auth_token(params[:user_id], request.headers['authentication']) if params[:user_id] && request.headers['authentication'] && params[:receipt_data]
     render json: {code: '-1', status: 'unauthorize request'} and return if @object.nil?
   end
 end

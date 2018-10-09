@@ -1,7 +1,7 @@
 class Api::Vm1::UsersController < Api::Vm1::ApplicationController
   include Api::Vm1::Concerns::UserCreate
   before_action :authenticate_api, only: [:payment_history, :email_and_notification, :update_profile, :get_user_by_id]
-  before_action :authenticate_user_and_temp_user, only: [:update_registration_plan]
+  before_action :authenticate_user, only: [:update_registration_plan]
 
   def contact_us
     begin
@@ -114,8 +114,8 @@ class Api::Vm1::UsersController < Api::Vm1::ApplicationController
       @object.as_json(except: [:created_at, :updated_at, :id])
     end
 
-    def authenticate_user_and_temp_user
-      @object = eval("#{params[:UserType]}.find_by_id_and_auth_token(params[:user_id], request.headers['authentication'])") if params[:user_id] && request.headers['authentication'] && params[:registration_plan]
+    def authenticate_user
+      @object = User.find_by_id_and_auth_token(params[:user_id], request.headers['authentication']) if params[:user_id] && request.headers['authentication'] && params[:registration_plan]
       render json: {code: '-1', status: 'unauthorize request'} and return if @object.nil?
     end
 

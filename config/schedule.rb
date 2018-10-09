@@ -19,9 +19,9 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every 2.days do
-  rake "user_reset_password:send_reset_password_reminder"
-end
+# every 2.days do
+#   rake "user_reset_password:send_reset_password_reminder"
+# end
 
 every 1.day, :at => '5:00 am' do
   rake "sitemap:refresh:no_ping"
