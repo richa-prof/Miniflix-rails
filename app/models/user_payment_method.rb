@@ -36,7 +36,7 @@ class UserPaymentMethod < ApplicationRecord
 
   def deactive_user_payment_method
     user = self.user
-    user.user_payment_methods.update_all(status: UserPaymentMethod.statuses["inactive"])
+    user.user_payment_methods.update_all(status: UserPaymentMethod.statuses["inactive"]) unless user.user_payment_methods.blank?
     self.status = UserPaymentMethod.statuses["active"]
   end
 end
