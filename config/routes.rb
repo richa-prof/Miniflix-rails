@@ -29,6 +29,9 @@ Rails.application.routes.draw do
     get 'paypal_success/:user_id' => 'payments#paypal_success'
     get 'paypal_cancel/:user_id' => 'payments#paypal_cancel'
 
+    #api and help doc
+    get 'welcome/api_help' => 'welcome#api_help'
+
     # API's for React Site
     namespace :api do
       namespace :v1 do
@@ -244,5 +247,14 @@ Rails.application.routes.draw do
     end
     resources :blog_subscribers, only: [:create], :constraints => -> (req) { req.xhr? }
     get 'profile/:id' => 'blogs#blog_profile', as: 'profile'
+  end
+
+  resources :api_docs, only: [] do
+    collection do
+      get :v1
+      get :vm1
+      get '/v1/api_v1', to: "api_docs#api_v1", constraints: { format: 'json' }
+      get '/vm1/api_vm1', to: "api_docs#api_vm1", constraints: { format: 'json' }
+    end
   end
 end
