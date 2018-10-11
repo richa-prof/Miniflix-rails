@@ -4,7 +4,7 @@ info:
   contact:
     name: Miniflix Mobile API
   description: >-
-     
+
   termsOfService: ''
   title: Miniflix
 
@@ -14,12 +14,19 @@ basePath: /api/vm1
 produces:
   - application/json
 
+securityDefinitions:
+  authentication:
+    name: authentication
+    in: header
+    description: logged in user access token
+    type: apiKey
+
 paths:
   /sessions/sign_in:
     post:
       tags:
       - "Session"
-      summary: "user signin"
+      summary: "User Email signin"
       parameters:
         - in: "body"
           name: "body"
@@ -35,10 +42,10 @@ paths:
   /sessions/sign_up:
     post:
       tags:
-      - "Registration"
-      summary: 'User signup'
+      - "Session"
+      summary: 'User Email signup'
       parameters:
-        - in: body
+        - in: "body"
           name: "body"
           description: "body with params"
           schema:
@@ -48,6 +55,564 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/SignupUserResponse'
+
+  /sessions/social_sign_in:
+    post:
+      tags:
+      - "Session"
+      summary: "User social signup/signin"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "body with params"
+          schema:
+            $ref: '#/definitions/SocialSigninInput'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/SocialSigninResponse'
+
+  /sessions/sign_out:
+    delete:
+      tags:
+      - "Session"
+      summary: 'User sign out'
+      security:
+        - authentication: []
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "body with params"
+          schema:
+            properties:
+              user_id:
+                type: integer
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              code:
+                type: string
+              status:
+                type: string
+              message:
+                type: string
+
+  /sessions/edit_phone_number:
+    post:
+      tags:
+      - "User Update"
+      summary: 'Edit phone no'
+      security:
+        - authentication: []
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "body with params"
+          schema:
+            properties:
+              user_id:
+                type: integer
+              user:
+                type: object
+                properties:
+                  phone_number:
+                    type: string
+                  verification_code:
+                    type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              code:
+                type: string
+              status:
+                type: string
+              message:
+                type: string
+              user:
+                $ref: '#/definitions/UserInfoWithPlan'
+
+  /sessions/change_password:
+    post:
+      tags:
+        - "User Update"
+      summary: 'Change password'
+      security:
+        - authentication: []
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "body with params"
+          schema:
+            properties:
+              user_id:
+                type: string
+              user:
+                type: object
+                properties:
+                  new_password:
+                    type: string
+                  current_password:
+                    type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              code:
+                type: string
+              status:
+                type: string
+              message:
+                type: string
+              user:
+                $ref: '#/definitions/UserInfoWithPlan'
+
+  /sessions/forgot_password:
+    post:
+      tags:
+        - "Forget password"
+      summary: 'Forget password'
+      security:
+        - authentication: []
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "body with params"
+          schema:
+            properties:
+              email:
+                type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              code:
+                type: string
+              status:
+                type: string
+              message:
+                type: string
+
+  /payments/cancel_subscription:
+    post:
+      tags:
+      - "Subscription"
+      summary: "Cancle subscription"
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              code:
+                type: string
+              status:
+                type: string
+              message:
+                type: string
+              user:
+                $ref: '#/definitions/UserInfoWithPlan'
+
+  /payments/reactive_cancelled_payment:
+    post:
+      tags:
+      - "Subscription"
+      summary: "Reactive cancelled subscription"
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              code:
+                type: string
+              status:
+                type: string
+              message:
+                type: string
+              user:
+                $ref: '#/definitions/UserInfoWithPlan'
+
+  /payments/update_receipt_data_of_user:
+    post:
+      tags:
+      - "Subscription"
+      summary: 'Update IOS receipt data'
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+            registration_plan:
+              type: string
+            receipt_data:
+              type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              code:
+                type: string
+              status:
+                type: string
+              message:
+                type: string
+              user:
+                $ref: '#/definitions/UserInfoWithPlan'
+
+  /users/get_user_by_id:
+    post:
+      tags:
+      - "Get user by id"
+      summary: 'Get user by id'
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              code:
+                type: string
+              status:
+                type: string
+              message:
+                type: string
+              user:
+                $ref: '#/definitions/UserInfoWithPlan'
+              upgradable_user:
+                type: boolean
+              is_valid_payment:
+                type: boolean
+
+  /users/contact_us:
+    post:
+      tags:
+      - "Contact Us"
+      summary: 'contact us'
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          $ref: '#/definitions/ContactUsInput'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ContactUsResponse'
+
+  /users/payment_history:
+    post:
+      tags:
+      - "Payment History"
+      summary: 'List of payment history'
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+            offset:
+              type: integer
+            limit:
+              type: integer
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/PaymentHistoryResponse'
+
+  /users/email_and_notification:
+    post:
+      tags:
+      - "Email notification"
+      summary: 'Email notification'
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          $ref: '#/definitions/EmailNotificaionInput'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/EmailNotificaionResponse'
+
+  /users/update_profile:
+    post:
+      tags:
+      - "User Update"
+      summary: "Update user profile"
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+            user:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              code:
+                type: string
+              status:
+                type: string
+              message:
+                type: string
+              user:
+                $ref: '#/definitions/UserInfoWithPlan'
+
+  /users/update_registration_plan:
+    post:
+      tags:
+      - "User Update"
+      summary: 'Update user registration plan'
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+            registration_plan:
+              type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              code:
+                type: string
+              status:
+                type: integer
+              message:
+                type: integer
+
+  /notifications/get_notifications:
+    post:
+      tags:
+      - "Ntification"
+      summary: 'Fetch all the notifications'
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+            offset:
+              type: integer
+            limit:
+              type: integer
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/NotificationResponse'
+
+  /notifications/delete_notifications:
+    post:
+      tags:
+      - "Ntification"
+      summary: 'Fetch all the notifications'
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+            notification_ids:
+              type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              code:
+                type: string
+              status:
+                type: string
+              message:
+                type: string
+
+  /notifications/send_test_notification:
+    post:
+      tags:
+      - "Ntification"
+      summary: 'Fetch all the notifications'
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            device:
+              type: string
+            token:
+              type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              code:
+                type: string
+              status:
+                type: string
+              msg:
+                type: string
+
+  /genres/genres:
+    get:
+      tags:
+      - "Genres"
+      summary: 'Fetch all the genres'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/GenresResponse'
+
+  /genres/genres_wise_movies:
+    post:
+      tags:
+      - "Genres"
+      summary: 'Fetch all the gener with movie'
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+            devise_id:
+              type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            #ref: '#/definitions/GenreWiseMovieResponse'
+
+  /genres/genres_with_latest_movie:
+    get:
+      tags:
+      - "Genres"
+      summary: 'Give all genre and one latest movie for each genre'
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+            devise_id:
+              type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            #ref: '#/definitions/GenreLatestMovieResponse'
+
+  /genres/id_wise_gener:
+    post:
+      tags:
+      - "Genres"
+      summary: 'Fetch all the notifications'
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+            offset:
+              type: integer
+            limit:
+              type: integer
+      responses:
+        200:
+          description: OK
+          schema:
+            #ref: '#/definitions/IdWiseGenreResponse'
 
 definitions:
   LoginUserInput:
@@ -74,7 +639,7 @@ definitions:
       status:
         type: string
       user:
-        $ref: '#/definitions/UserInfo'
+        $ref: '#/definitions/UserInfoWithPlan'
       is_sign_up:
         type: boolean
       is_valid_payment:
@@ -82,7 +647,7 @@ definitions:
       upgradable_user:
         type: boolean
 
-  UserInfo:
+  UserInfoWithPlan:
     type: object
     properties:
       registration_plan:
@@ -120,24 +685,458 @@ definitions:
       is_validPlan:
         type: boolean
 
+  UserInfoWithoutPlan:
+    type: object
+    properties:
+      subscription_plan_status:
+        type: string
+      id:
+        type: integer
+      email:
+        type: string
+      name:
+        type: string
+      sign_up_from:
+        type: string
+      is_free:
+        type: boolean
+      device_type:
+        type: string
+      device_token:
+        type: string
+      notification_from:
+        type: string
+      product_updates:
+        type: boolean
+      films_added:
+        type: boolean
+      special_offers_and_promotions:
+        type: boolean
+      better_product:
+        type: boolean
+      do_not_send:
+        type: boolean
+      isPaymentSettingsAllow:
+        type: boolean
+      is_validPlan:
+        type: boolean
+
   SignupUserInput:
     properties:
-      user: 
+      type: object
+      properties:
+        user:
+          type: object
+          parameters:
+            name:
+              type: string
+            email:
+              type: string
+            password:
+              type: string
+            registration_plan:
+              type: string
+            sign_up_from:
+              type: string
+            device_type:
+              type: string
+            device_token:
+              type: string
+            notification_from:
+              type: string
+
+  SignupUserResponse:
+    properties:
+      code:
+        type: string
+      status:
+        type: string
+      message:
+        type: string
+      user:
         type: object
-        parameters:
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+          email:
+            type: string
+          registration_plan:
+            type: string
+          sign_up_from:
+            type: string
+          subscription_plan_status:
+            type: string
+          is_free:
+            type: boolean
+          isPaymentSettingsAllow:
+            type: boolean
+          is_validPlan:
+            type: boolean
+
+  SocialSigninInput:
+    properties:
+      user:
+        type: object
+        properties:
+          uid:
+            type: string
+          provider:
+            type: string
+          name:
+            type: string
+          email:
+            type: string
+          image:
+            type: string
+          registration_plan:
+            type: string
+          sign_up_from:
+            type: string
+          device_type:
+            type: string
+          device_token:
+            type: string
+          notification_from:
+            type: string
+
+  SocialSigninResponse:
+    properties:
+      code:
+        type: integer
+      status:
+        type: string
+      message:
+        type: string
+      user:
+        $ref: '#/definitions/UserInfoWithoutPlan'
+      upgradable_user:
+        type: string false
+      is_valid_payment:
+        type: string false
+      is_sign_up:
+        type: string true
+
+  ContactUsInput:
+    properties:
+      contact_us:
+        type: object
+        properties:
+          name:
+            type: string
+          email:
+            type: string
+          school:
+            type: string
+          occupation:
+            type: string
+
+  ContactUsResponse:
+    properties:
+      code:
+        type: string
+      status:
+        type: string
+      message:
+        type: string
+      contact_us:
+        type: object
+        properties:
+          name:
+            type: string
+          email:
+            type: string
+          school:
+            type: string
+          occupation:
+            type: string
+
+  PaymentHistoryResponse:
+    properties:
+      code:
+        type: string
+      status:
+        type: string
+      message:
+        type: string
+      user_payment:
+        type: object
+        properties:
+          id:
+            type: integer
+          payment_date:
+            type: datetime
+          payment_expire_date:
+            type: datetime
+          transaction_id:
+            type: string
+          amount:
+            type: float
+          payment_type:
+            type: string
+
+  EmailNotificaionInput:
+    properties:
+      user_id:
+        type: string
+      email_and_notification:
+        type: object
+        properties:
+          product_updates:
+            type: boolean
+          films_added:
+            type: boolean
+          special_offers_and_promotions:
+            type: boolean
+          better_product:
+            type: boolean
+          do_not_send:
+            type: boolean
+
+  EmailNotificaionResponse:
+    properties:
+      code:
+        type: string
+      status:
+        type: string
+      message:
+        type: string
+      email_and_notification:
+        type: object
+        properties:
+          id:
+            type: integer
+          user_id:
+            type: integer
+          product_updates:
+            type: boolean
+          films_added:
+            type: boolean
+          special_offers_and_promotions:
+            type: boolean
+          better_product:
+            type: boolean
+          do_not_send:
+            type: boolean
+
+  NotificationResponse:
+    properties:
+      code:
+        type string
+      status:
+        type: string
+      message:
+        type: string
+      notification:
+        type: object
+        properties:
+          id:
+            type: integer
+          admin_movie_id:
+            type: integer
+          user_id:
+            type: integer
+          message:
+            type: string
+          created_at:
+            type: datetime
+          updated_at:
+            type: datetime
+
+  GenresResponse:
+    properties:
+      code:
+        type string
+      status:
+        type: string
+      message:
+        type: string
+      genres:
+        type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+          color:
+            type: string
+
+  GenreWiseMovieResponse:
+    properties:
+      code:
+        type: string
+      status:
+        type: string
+      message:
+        type: string
+      genres:
+        type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+          color:
+            type: string
+          movies:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              movie_screenshot:
+                type: array
+      recentaly_watched:
+        type: object
+        properties:
+          id:
+            type: integer
+          movie_id:
+            type: integer
+          last_stopped:
+            type: integer
+          watched_percent:
+            type: integer
+          time_left_text:
+            type: integer
+          image_330:
+            type: string
+          image_640:
+            type: string
+          film_video:
+            type: string
+          current_time:
+            type: datetime
+          remaining_time:
+            type: datetime
+          updated_at:
+            type: datetime
+          captions:
+            type: object
+            properties:
+              file:
+                type: string
+              label:
+                type: string
+              kind:
+                type: string
+              default:
+                type: boolean
+
+  GenreLatestMovieResponse:
+    properties:
+      code:
+        type: string
+      status:
+        type: string
+      message:
+        type: string
+      genres:
+        type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+          color:
+            type: string
+          latest_movie:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              title:
+                type: string
+              description:
+                type: text
+              language:
+                type: string
+              video_duration:
+                type: integer
+              film_video:
+                type: array
+              genre_name:
+                type: string
+              movie_screenshot:
+                type: array
+      recentaly_watched:
+        type: object
+        properties:
+          id:
+            type: integer
+          movie_id:
+            type: integer
+          last_stopped:
+            type: integer
+          watched_percent:
+            type: integer
+          time_left_text:
+            type: integer
+          image_330:
+            type: string
+          image_640:
+            type: string
+          film_video:
+            type: string
+          current_time:
+            type: datetime
+          remaining_time:
+            type: datetime
+          updated_at:
+            type: datetime
+          captions:
+            type: object
+            properties:
+              file:
+                type: string
+              label:
+                type: string
+              kind:
+                type: string
+              default:
+                type: boolean
+
+  IdWiseGenreResponse:
+    code:
+      type: string
+    status:
+      type: string
+    message:
+      type: string
+    genre:
+      type: object
+      properties:
+        id:
+          type: integer
         name:
           type: string
-        email:
+        color:
           type: string
-        password:
-          type: string
-        registration_plan:
-          type: string
-        sign_up_from:
-          type: string
-        device_type:
-          type: string
-        device_token:
-          type: string
-        notification_from:
-          type: string
+        movies:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            title:
+              type: string
+            description:
+              type: text
+            language:
+              type: string
+            video_duration:
+              type: integer
+            film_video:
+              type: array
+            genre_name:
+              type: string
+            movie_screenshot:
+              type: array
+            last_stopped:
+              type: inetger
+
