@@ -564,7 +564,7 @@ paths:
         200:
           description: OK
           schema:
-            #ref: '#/definitions/GenreWiseMovieResponse'
+            $ref: '#/definitions/GenreWiseMovieResponse'
 
   /genres/genres_with_latest_movie:
     get:
@@ -587,7 +587,7 @@ paths:
         200:
           description: OK
           schema:
-            #ref: '#/definitions/GenreLatestMovieResponse'
+            $ref: '#/definitions/GenreLatestMovieResponse'
 
   /genres/id_wise_gener:
     post:
@@ -612,7 +612,297 @@ paths:
         200:
           description: OK
           schema:
-            #ref: '#/definitions/IdWiseGenreResponse'
+            $ref: '#/definitions/IdWiseGenreResponse'
+
+  /movies/get_movie_detail:
+    post:
+      tags:
+      - "Movies"
+      summary: 'Get movie details'
+      security:
+        - authentication: []
+      parameters:
+      - in: "path"
+        name: id
+        dsecription: "id of movie"
+        type: integer
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+            devise_type:
+              type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/MovieResponse'
+
+  /movies/get_all_movie_by_movie_name_or_genre_name:
+    post:
+      tags:
+      - "Movies"
+      summary: "Search by movie name and genre name"
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+            devise_type:
+              type: string
+            movie_name:
+              type: string
+            genre_name:
+              type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/MovieGenreSearchResponse'
+
+  /movies/search_movie_with_genre:
+    post:
+      tags:
+      - "Movies"
+      summary: 'Search movie by genre name'
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+            devise_type:
+              type: string
+            movie_name:
+              type: string
+            genre_id:
+              type: integer
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/GenreSearchResponse'
+
+  /movies/add_movie_my_list:
+    post:
+      tags:
+      - "Movies"
+      summary: "Add movie to my list"
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+            movie_id:
+              type: integer
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/AddMyListResponse'
+
+  /movies/remove_my_list_movie:
+    post:
+      tags:
+      - "Movies"
+      summary: "Remove movie from my list"
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+            movie_id:
+              type: integer
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              code:
+                type: string
+              status:
+                type: string
+              message:
+                type: string
+
+  /movies/my_list_movies:
+    post:
+      tags:
+      - "Movies"
+      summary: "My list movies"
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/MyListMovieResponse'
+
+  /movies/add_to_recently_watched:
+    post:
+      tags:
+      - "Movies"
+      summary: "Add movie to recently watch"
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+            devise_id:
+              type: string
+            current_time:
+              type: string
+            total_time:
+              type: string
+            movie_id:
+              type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/RecentlyWatchResponse'
+
+  /movies/add_multiple_to_recently_watched:
+    post:
+      tags:
+      - "Movies"
+      summary: "Add multiple movies to recently watched"
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+            devise_id:
+              type: string
+            movie_list:
+              type: array
+              items:
+                type: object
+                properties:
+                  movie_id:
+                    type: string
+                  current_time:
+                    type: string
+                  total_time:
+                    type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/MultipalRecentlyWatchResponse'
+
+  /movies/add_to_recently_watched_visitor:
+    post:
+      tags:
+      - "Movies"
+      summary: "Add recently watched visitor"
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+            devise_id:
+              type: string
+            current_time:
+              type: string
+            total_time:
+              type: string
+            movie_id:
+              type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/RecentlyWatchVisitorResponse'
+
+  /movies/get_watched_movie_count_visitor:
+    post:
+      tags:
+      - "Movies"
+      summary: 'Get watched movie count visitor'
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            devise_id:
+              type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/VisitorWatchedCountResponse'
+
+  /movies/latest_movies:
+    get :
+      tags:
+      - "Movies"
+      summary: "Get latest movies"
+      security:
+        - authentication: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body with params"
+        schema:
+          properties:
+            user_id:
+              type: string
+            limit:
+              type: integer
+            devise_type:
+              type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/LatestMoviesResponse'
 
 definitions:
   LoginUserInput:
@@ -991,39 +1281,7 @@ definitions:
       recentaly_watched:
         type: object
         properties:
-          id:
-            type: integer
-          movie_id:
-            type: integer
-          last_stopped:
-            type: integer
-          watched_percent:
-            type: integer
-          time_left_text:
-            type: integer
-          image_330:
-            type: string
-          image_640:
-            type: string
-          film_video:
-            type: string
-          current_time:
-            type: datetime
-          remaining_time:
-            type: datetime
-          updated_at:
-            type: datetime
-          captions:
-            type: object
-            properties:
-              file:
-                type: string
-              label:
-                type: string
-              kind:
-                type: string
-              default:
-                type: boolean
+          $ref: '#/definitions/RecentlyWatched'
 
   GenreLatestMovieResponse:
     properties:
@@ -1101,42 +1359,309 @@ definitions:
                 type: boolean
 
   IdWiseGenreResponse:
-    code:
-      type: string
-    status:
-      type: string
-    message:
-      type: string
-    genre:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        color:
-          type: string
-        movies:
+    properties:
+      code:
+        type: string
+      status:
+        type: string
+      message:
+        type: string
+      genre:
+        type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+          color:
+            type: string
+          movies:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              title:
+                type: string
+              description:
+                type: text
+              language:
+                type: string
+              video_duration:
+                type: integer
+              film_video:
+                type: array
+              genre_name:
+                type: string
+              movie_screenshot:
+                type: array
+              last_stopped:
+                type: inetger
+
+  MovieResponse:
+    properties:
+      code:
+        type: string
+      status:
+        type: string
+      message:
+        type: string
+      movie:
+        type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+          title:
+            type: string
+          description:
+            type: text
+          video_type:
+            type: string
+          video_size:
+            type: string
+          video_format:
+            type: string
+          directed_by:
+            type: string
+          released_date:
+            type: date
+          language:
+            type: string
+          posted_date:
+            type: date
+          star_cast:
+            type: string
+          actors:
+            type: string
+          downloadable:
+            type: boolean
+          video_duration:
+            type: string
+          festival_laureates:
+            type: string
+          is_featured_film:
+            type: boolean
+          bitly_url:
+            type: string
+          slug:
+            type: string
+          is_valid_payment:
+            type: boolean
+          is_active:
+            type: boolean
+          last_stopped:
+            type: integer
+          movie_screenshot:
+            type: array
+          captions:
+            type: object
+            properties:
+              file:
+                type: string
+              label:
+                type: string
+              kind:
+                type: string
+              default:
+                type: boolean
+          film_video:
+            type: array
+          genre_name:
+            type: string
+
+  MovieGenreSearchResponse:
+    properties:
+      code:
+        type: string
+      status:
+        type: string
+      message:
+        type: string
+      movie:
+        type: array
+        items:
+          type: object
+          properties:
+            $ref: '#/definitions/MovieJson'
+      genere:
+        type: array
+        items:
           type: object
           properties:
             id:
               type: integer
             name:
               type: string
-            title:
+            color:
               type: string
-            description:
-              type: text
-            language:
-              type: string
-            video_duration:
-              type: integer
-            film_video:
-              type: array
-            genre_name:
-              type: string
-            movie_screenshot:
-              type: array
-            last_stopped:
-              type: inetger
 
+  GenreSearchResponse:
+    properties:
+      code:
+        type: string
+      status:
+        type: string
+      message:
+        type: string
+      movie:
+        type: array
+        items:
+          type: object
+          properties:
+            $ref: '#/definitions/MovieJsonWithOption'
+
+  AddMyListResponse:
+    properties:
+      code:
+        type: string
+      status:
+        type: string
+      message:
+        type: string
+      movie:
+        type: object
+        properties:
+          $ref: '#/definitions/MovieJson'
+
+  MyListMovieResponse:
+    properties:
+      code:
+        type: string
+      status:
+        type: string
+      message:
+        type: string
+      my_list:
+        type: array
+        items:
+          type: object
+          properties:
+            $ref: '#/definitions/MovieJsonWithOption'
+
+  RecentlyWatchResponse:
+    properties:
+      code:
+        type: string
+      status:
+        type: string
+      message:
+        type: string
+      movie:
+        type: object
+        properties:
+          $ref: '#/definitions/RecentlyWatched'
+
+  MultipalRecentlyWatchResponse:
+    properties:
+      code:
+        type: string
+      status:
+        type: string
+      message:
+        type: string
+      adde_movies:
+        type: array
+        items:
+          type: object
+          properties:
+            #ref: '#/definitions/RecentlyWatched'
+      not_added_movie_ids:
+        type: array
+
+  RecentlyWatchVisitorResponse:
+    properties:
+      code:
+        type: string
+      status:
+        type: string
+      message:
+        type: string
+      movie:
+        type: object
+        properties:
+          $ref: '#/definitions/RecentlyWatched'
+
+  VisitorWatchedCountResponse:
+    properties:
+      code:
+        type: string
+      status:
+        type: string
+      message:
+        type: string
+      watched_movie_count:
+        type: integer
+
+  LatestMoviesResponse:
+    properties:
+      code:
+        type: string
+      status:
+        type: string
+      movies:
+        type: object
+        properties:
+          $ref: '#/definitions/MovieJson'
+
+  MovieJson:
+    id:
+      type: string
+    name:
+      type: string
+    title:
+      type: string
+    description:
+      type: text
+    language:
+      type: string
+    video_duration:
+      type: integer
+    film_video:
+      type: array
+    genre_name:
+      type: string
+    movie_screenshot:
+      type: array
+
+  MovieJsonWithOption:
+    $ref: '#/definitions/MovieJson'
+    last_stopped:
+      type: integer
+
+  RecentlyWatched:
+    id:
+      type: integer
+    movie_id:
+      type: integer
+    last_stopped:
+      type: integer
+    watched_percent:
+      type: integer
+    time_left_text:
+      type: integer
+    image_330:
+      type: string
+    image_640:
+      type: string
+    film_video:
+      type: string
+    current_time:
+      type: datetime
+    remaining_time:
+      type: datetime
+    updated_at:
+      type: datetime
+    captions:
+      type: object
+      properties:
+        file:
+          type: string
+        label:
+          type: string
+        kind:
+          type: string
+        default:
+          type: boolean
