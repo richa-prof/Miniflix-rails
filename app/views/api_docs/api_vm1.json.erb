@@ -22,6 +22,17 @@ securityDefinitions:
     type: apiKey
 
 paths:
+  /welcome/app_latest_version:
+    get:
+      tags:
+      - App version
+      summary: "Get latest app version"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/AppVersionResponse'
+
   /sessions/sign_in:
     post:
       tags:
@@ -614,27 +625,26 @@ paths:
           schema:
             $ref: '#/definitions/IdWiseGenreResponse'
 
-  /movies/get_movie_detail:
+  /movies/get_movie_detail/{movieId}:
     post:
-      tags:
-      - "Movies"
-      summary: 'Get movie details'
+      summary: Get movie details
       security:
         - authentication: []
       parameters:
-      - in: "path"
-        name: id
-        dsecription: "id of movie"
-        type: integer
-      - in: "body"
-        name: "body"
-        description: "body with params"
-        schema:
-          properties:
-            user_id:
-              type: string
-            devise_type:
-              type: string
+        - in: path
+          name: movieId
+          required: true
+          type: integer
+          dsecription: id of movie
+        - in: "body"
+          name: "body"
+          description: "body with params"
+          schema:
+            properties:
+              user_id:
+                type: string
+              devise_type:
+                type: string
       responses:
         200:
           description: OK
@@ -905,6 +915,15 @@ paths:
             $ref: '#/definitions/LatestMoviesResponse'
 
 definitions:
+  AppVersionResponse:
+    properties:
+      code:
+        type: string
+      status:
+        type: string
+      latestVersion:
+        type: integer
+
   LoginUserInput:
     properties:
       user:
@@ -925,7 +944,7 @@ definitions:
   LoginUserResponse:
     properties:
       code:
-        type string
+        type: string
       status:
         type: string
       user:
@@ -1013,27 +1032,25 @@ definitions:
 
   SignupUserInput:
     properties:
-      type: object
-      properties:
-        user:
-          type: object
-          parameters:
-            name:
-              type: string
-            email:
-              type: string
-            password:
-              type: string
-            registration_plan:
-              type: string
-            sign_up_from:
-              type: string
-            device_type:
-              type: string
-            device_token:
-              type: string
-            notification_from:
-              type: string
+      user:
+        type: object
+        properties:
+          name:
+            type: string
+          email:
+            type: string
+          password:
+            type: string
+          registration_plan:
+            type: string
+          sign_up_from:
+            type: string
+          device_type:
+            type: string
+          device_token:
+            type: string
+          notification_from:
+            type: string
 
   SignupUserResponse:
     properties:
@@ -1102,11 +1119,11 @@ definitions:
       user:
         $ref: '#/definitions/UserInfoWithoutPlan'
       upgradable_user:
-        type: string false
+        type: boolean
       is_valid_payment:
-        type: string false
+        type: boolean
       is_sign_up:
-        type: string true
+        type: boolean
 
   ContactUsInput:
     properties:
@@ -1156,13 +1173,13 @@ definitions:
           id:
             type: integer
           payment_date:
-            type: datetime
+            type: string
           payment_expire_date:
-            type: datetime
+            type: string
           transaction_id:
             type: string
           amount:
-            type: float
+            type: number
           payment_type:
             type: string
 
@@ -1213,7 +1230,7 @@ definitions:
   NotificationResponse:
     properties:
       code:
-        type string
+        type: string
       status:
         type: string
       message:
@@ -1230,14 +1247,14 @@ definitions:
           message:
             type: string
           created_at:
-            type: datetime
+            type: string
           updated_at:
-            type: datetime
+            type: string
 
   GenresResponse:
     properties:
       code:
-        type string
+        type: string
       status:
         type: string
       message:
@@ -1261,26 +1278,31 @@ definitions:
       message:
         type: string
       genres:
-        type: object
-        properties:
-          id:
-            type: integer
-          name:
-            type: string
-          color:
-            type: string
-          movies:
-            type: object
-            properties:
-              id:
-                type: integer
-              name:
-                type: string
-              movie_screenshot:
-                type: array
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            color:
+              type: string
+            movies:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  movie_screenshot:
+                    $ref: '#/definitions/MovieScreenshot'
+                      
       recentaly_watched:
-        type: object
-        properties:
+        type: array
+        items:
           $ref: '#/definitions/RecentlyWatched'
 
   GenreLatestMovieResponse:
@@ -1310,17 +1332,17 @@ definitions:
               title:
                 type: string
               description:
-                type: text
+                type: string
               language:
                 type: string
               video_duration:
                 type: integer
               film_video:
-                type: array
+                $ref: '#/definitions/FilmVideo'
               genre_name:
                 type: string
               movie_screenshot:
-                type: array
+                $ref: '#/definitions/MovieScreenshot'
       recentaly_watched:
         type: object
         properties:
@@ -1341,11 +1363,11 @@ definitions:
           film_video:
             type: string
           current_time:
-            type: datetime
+            type: string
           remaining_time:
-            type: datetime
+            type: string
           updated_at:
-            type: datetime
+            type: string
           captions:
             type: object
             properties:
@@ -1385,19 +1407,19 @@ definitions:
               title:
                 type: string
               description:
-                type: text
+                type: string
               language:
                 type: string
               video_duration:
                 type: integer
               film_video:
-                type: array
+                $ref: '#/definitions/FilmVideo'
               genre_name:
                 type: string
               movie_screenshot:
-                type: array
+                $ref: '#/definitions/MovieScreenshot'
               last_stopped:
-                type: inetger
+                type: integer
 
   MovieResponse:
     properties:
@@ -1417,7 +1439,7 @@ definitions:
           title:
             type: string
           description:
-            type: text
+            type: string
           video_type:
             type: string
           video_size:
@@ -1427,11 +1449,11 @@ definitions:
           directed_by:
             type: string
           released_date:
-            type: date
+            type: string
           language:
             type: string
           posted_date:
-            type: date
+            type: string
           star_cast:
             type: string
           actors:
@@ -1455,20 +1477,22 @@ definitions:
           last_stopped:
             type: integer
           movie_screenshot:
-            type: array
+            $ref: '#/definitions/MovieScreenshot'
           captions:
-            type: object
-            properties:
-              file:
-                type: string
-              label:
-                type: string
-              kind:
-                type: string
-              default:
-                type: boolean
-          film_video:
             type: array
+            items:
+              type: object
+              properties:
+                file:
+                  type: string
+                label:
+                  type: string
+                kind:
+                  type: string
+                default:
+                  type: boolean
+          film_video:
+            $ref: '#/definitions/FilmVideo'
           genre_name:
             type: string
 
@@ -1483,9 +1507,7 @@ definitions:
       movie:
         type: array
         items:
-          type: object
-          properties:
-            $ref: '#/definitions/MovieJson'
+          $ref: '#/definitions/MovieJson'
       genere:
         type: array
         items:
@@ -1509,9 +1531,7 @@ definitions:
       movie:
         type: array
         items:
-          type: object
-          properties:
-            $ref: '#/definitions/MovieJsonWithOption'
+          $ref: '#/definitions/MovieJsonWithOption'
 
   AddMyListResponse:
     properties:
@@ -1522,9 +1542,7 @@ definitions:
       message:
         type: string
       movie:
-        type: object
-        properties:
-          $ref: '#/definitions/MovieJson'
+        $ref: '#/definitions/MovieJson'
 
   MyListMovieResponse:
     properties:
@@ -1537,9 +1555,7 @@ definitions:
       my_list:
         type: array
         items:
-          type: object
-          properties:
-            $ref: '#/definitions/MovieJsonWithOption'
+          $ref: '#/definitions/MovieJsonWithOption'
 
   RecentlyWatchResponse:
     properties:
@@ -1550,9 +1566,7 @@ definitions:
       message:
         type: string
       movie:
-        type: object
-        properties:
-          $ref: '#/definitions/RecentlyWatched'
+        $ref: '#/definitions/RecentlyWatched'
 
   MultipalRecentlyWatchResponse:
     properties:
@@ -1565,9 +1579,7 @@ definitions:
       adde_movies:
         type: array
         items:
-          type: object
-          properties:
-            #ref: '#/definitions/RecentlyWatched'
+          $ref: '#/definitions/RecentlyWatched'
       not_added_movie_ids:
         type: array
 
@@ -1580,9 +1592,7 @@ definitions:
       message:
         type: string
       movie:
-        type: object
-        properties:
-          $ref: '#/definitions/RecentlyWatched'
+        $ref: '#/definitions/RecentlyWatched'
 
   VisitorWatchedCountResponse:
     properties:
@@ -1602,66 +1612,113 @@ definitions:
       status:
         type: string
       movies:
-        type: object
-        properties:
-          $ref: '#/definitions/MovieJson'
+        $ref: '#/definitions/MovieJson'
 
   MovieJson:
-    id:
-      type: string
-    name:
-      type: string
-    title:
-      type: string
-    description:
-      type: text
-    language:
-      type: string
-    video_duration:
-      type: integer
-    film_video:
-      type: array
-    genre_name:
-      type: string
-    movie_screenshot:
-      type: array
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      title:
+        type: string
+      description:
+        type: string
+      language:
+        type: string
+      video_duration:
+        type: integer
+      film_video:
+        $ref: '#/definitions/FilmVideo'
+      genre_name:
+        type: string
+      movie_screenshot:
+        $ref: '#/definitions/MovieScreenshot'
 
   MovieJsonWithOption:
-    $ref: '#/definitions/MovieJson'
-    last_stopped:
-      type: integer
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      title:
+        type: string
+      description:
+        type: string
+      language:
+        type: string
+      video_duration:
+        type: integer
+      film_video:
+        $ref: '#/definitions/FilmVideo'
+      genre_name:
+        type: string
+      movie_screenshot:
+        $ref: '#/definitions/MovieScreenshot'
+      last_stopped:
+        type: integer
 
   RecentlyWatched:
-    id:
-      type: integer
-    movie_id:
-      type: integer
-    last_stopped:
-      type: integer
-    watched_percent:
-      type: integer
-    time_left_text:
-      type: integer
-    image_330:
-      type: string
-    image_640:
-      type: string
-    film_video:
-      type: string
-    current_time:
-      type: datetime
-    remaining_time:
-      type: datetime
-    updated_at:
-      type: datetime
-    captions:
-      type: object
-      properties:
-        file:
-          type: string
-        label:
-          type: string
-        kind:
-          type: string
-        default:
-          type: boolean
+    type: object
+    properties:
+      id:
+        type: integer
+      movie_id:
+        type: integer
+      last_stopped:
+        type: integer
+      watched_percent:
+        type: integer
+      time_left_text:
+        type: integer
+      image_330:
+        type: string
+      image_640:
+        type: string
+      film_video:
+        type: string
+      current_time:
+        type: string
+      remaining_time:
+        type: string
+      updated_at:
+        type: string
+      captions:
+        type: array
+        items:
+          type: object
+          properties:
+            file:
+              type: string
+            label:
+              type: string
+            kind:
+              type: string
+            default:
+              type: boolean
+
+  FilmVideo:
+    type: object
+    properties:
+      hls: 
+        type: string
+      video_720:
+        type: string
+      video_480:
+        type: string
+      video_320:
+        type: string
+
+  MovieScreenshot:
+    type: object
+    properties:
+      original: 
+        type: string
+      thumb330:
+        type: string
+      thumb640:
+        type: string
+      thumb800: 
+        type: string
