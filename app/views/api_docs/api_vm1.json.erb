@@ -126,6 +126,8 @@ paths:
             properties:
               user_id:
                 type: integer
+              countries: 
+                type: string
               user:
                 type: object
                 properties:
@@ -417,6 +419,9 @@ paths:
                   type: string
                 email:
                   type: string
+                password:
+                  type: string
+                  format: password
       responses:
         200:
           description: OK
@@ -456,9 +461,9 @@ paths:
               code:
                 type: string
               status:
-                type: integer
+                type: string
               message:
-                type: integer
+                type: string
 
   /notifications/get_notifications:
     post:
