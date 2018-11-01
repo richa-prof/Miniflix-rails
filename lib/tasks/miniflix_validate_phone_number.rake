@@ -1,4 +1,4 @@
-namespace :task_for_miniflix do
+namespace :miniflix do
   desc "Update the user's phone_number field to nil if it's not a valid phone_number with phony_formatted."
   task validate_phone_number: :environment do
     count = 0
@@ -15,36 +15,6 @@ namespace :task_for_miniflix do
     end
     Rails.logger.debug "<<<<<<<<< #{count} rows affected <<<<<<<<<"
     puts "<<<<<<<<< #{count} rows affected <<<<<<<<<"
-  end
-
-  desc "Update registration_plan if it is blank"
-  task update_registration_plan: :environment do
-
-    users = User.select{ |u| u if u.registration_plan.blank? }
-
-    count = 0
-
-    Rails.logger.debug "=======update registration_plan from users======="
-
-    users.each do |user|
-      Rails.logger.debug "sign_up_from: #{user.sign_up_from}, registration_plan: #{user.registration_plan}"
-      puts "sign_up_from: #{user.sign_up_from}, registration_plan: #{user.registration_plan}"
-      Rails.logger.debug "=======Processing for user_id: #{user.id}======="
-      puts "=======Processing for user_id: #{user.id}======="
-
-      if user.Web?
-        user.subscription_plan_status = User.subscription_plan_statuses['incomplete']
-        user.registration_plan = User.registration_plans['Monthly']
-        save_record(user)
-        count += 1
-      elsif user.Android?
-        user.registration_plan = User.registration_plans['Freemium']
-        save_record(user)
-        count += 1
-      end
-    end 
-    Rails.logger.debug "<<<<<<<<< #{count} rows Updated <<<<<<<<<"
-    puts "<<<<<<<<< #{count} rows Updated<<<<<<<<<"
   end
 
   def is_validate_phone_number? phone_number
