@@ -4,12 +4,13 @@ info:
   contact:
     name: Miniflix React API
   description: >-
-     
+
   termsOfService: ''
   title: Miniflix
 
+host: stag-api.miniflix.tv
 schemes:
-  - http
+  - https
 basePath: /api/v1
 produces:
   - application/json
@@ -33,10 +34,48 @@ securityDefinitions:
   expiry:
     name: expiry
     in: header
-    description: logged in user's token expiry date
+    description: logged in user token expiry date
     type: apiKey
 
 paths:
+  /auth:
+    post:
+      tags:
+      - Registration
+      summary: "user signup"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: 'body with params'
+          schema:
+            $ref: '#/definitions/SignupUserInput'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/LoginUserResponse'
+
+    put:
+      tags:
+      - Registration
+      summary: Edit user details
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      parameters:
+        - in: "body"
+          name: "body"
+          description: 'body with params'
+          schema:
+            $ref: '#/definitions/EditUserInput'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/LoginUserResponse'
+
   /auth/sign_in:
     post:
       tags:
@@ -54,6 +93,731 @@ paths:
           schema:
             $ref: '#/definitions/LoginUserResponse'
 
+  /auth/sign_out:
+    delete:
+      tags:
+      - "Session"
+      summary: "user signout"
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              success:
+                type: boolean
+
+  /auth/password:
+    post:
+      tags:
+      - Password
+      summary: 'Reset password'
+      parameters:
+        - in: body
+          name: body
+          description: 'body with params'
+          schema:
+            $ref: '#/definitions/ResetPasswordInput'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ResetPasswordResponse'
+
+    put:
+      tags:
+      - Password
+      summary: 'Update password'
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      parameters:
+        - in: body
+          name: body
+          description: 'body with params'
+          schema:
+            $ref: '#/definitions/UpdatePasswordInput'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/LoginUserResponse'
+
+  /auth/validate_token.json:
+    get:
+      tags:
+      - Validate Token
+      summary: 'Validate Token'
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/LoginUserResponse'
+
+  /mobile_apps/share_app_link.json:
+    get:
+      tags:
+      - Share Link
+      summary: 'Share Link'
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      parameters:
+        - in: body
+          name: body
+          description: 'body with params'
+          schema:
+            properties:
+              phone_number:
+                type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ShareAppResponse'
+
+  /genres/{genre_id}/movies:
+    get:
+      tags:
+      - Genres
+      summary: 'Get Movies'
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      parameters:
+        - in: "path"
+          name: genre_id
+          description: "genre id"
+          required: true
+          type: integer
+        - in: body
+          name: body
+          schema:
+            properties:
+              page:
+                type: integer
+      responses:
+        200:
+          description: ok
+          schema:
+            $ref: '#/definitions/MoviesResponses'
+
+  /genres:
+    get:
+      tags:
+        - Genres
+      summary: 'Get Genres'
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      parameters:
+        - in: body
+          name: body
+          description: 'body with params'
+          schema:
+            properties:
+              page:
+                type: integer
+              pagination:
+                type: boolean
+      responses:
+        200:
+          description: ok
+          schema:
+            $ref: '#/definitions/GenresResponses'
+
+  /movies/featured_movie:
+    get:
+      tags:
+      - Movies
+      summary: 'Get Featured Movie'
+      responses:
+        200:
+          description: ok
+          schema:
+            $ref: '#/definitions/MovieResponses'
+
+  /movies/search:
+    get:
+      tags:
+      - Movies
+      summary: 'Search Movie'
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      parameters:
+        - in: body
+          name: body
+          description: 'body with params'
+          schema:
+            properties:
+              search_key:
+                type: string
+              page:
+                type: integer
+      responses:
+        200:
+          description: ok
+          schema:
+            $ref: '#/definitions/SearchMovieResponses'
+
+  /movies/my_playlist:
+    get:
+      tags:
+      - Movies
+      summary: 'User Playlist'
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      parameters:
+        - in: body
+          name: body
+          description: 'body with params'
+          schema:
+            properties:
+              page:
+                type: integer
+      responses:
+        200:
+          description: ok
+          schema:
+            $ref: '#/definitions/MyPlaylistResponses'
+
+  /movies/popular_movies:
+    get:
+      tags:
+      - Movies
+      summary: 'Poppular Movies'
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: ok
+          schema:
+            $ref: '#/definitions/MyPlaylistResponses'
+
+  /movies/battleship:
+    get:
+      tags:
+      - Movies
+      summary: 'Battleship Movies'
+      parameters:
+        - in: body
+          name: body
+          description: 'body with params'
+          schema:
+            properties:
+              video_count:
+                type: integer
+              page:
+                type: integer
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: ok
+          schema:
+            $ref: '#/definitions/MyPlaylistResponses'
+
+  /movies/{id}/add_and_remove_to_my_playlist:
+    get:
+      tags:
+      - Movies
+      summary: 'Add and remove movie from my list'
+      parameters:
+        - in: path
+          name: id
+          description: 'Movie Id'
+          required: true
+          type: integer
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: ok
+          schema:
+            $ref: '#/definitions/AddAndRemoveMyPlaylistResponses'
+
+  /movies/{movie_id}/user_video_last_stops:
+    post:
+      tags:
+      - Movies
+      summary: 'User movie last stop details'
+      parameters:
+        - in: path
+          name: movie_id
+          description: 'Movie Id'
+          required: true
+          type: integer
+        - in: body
+          name: body
+          schema:
+            properties:
+              total_time:
+                type: number
+              last_stopped:
+                type: number
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: ok
+          schema:
+            $ref: '#/definitions/UserVideoLastStopsResponses'
+
+  /movies/{id}:
+    get:
+      tags:
+      - Movies
+      summary: "Get Movie details"
+      parameters:
+        - in: path
+          name: id
+          description: "Movie id"
+          type: integer
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/MovieResponses'
+
+  /contact_us:
+    post:
+      tags:
+      - Contact us
+      summary: "Contact us details"
+      parameters:
+        - in: body
+          name: body
+          description: "body"
+          schema:
+            $ref: '#/definitions/ContactUsInput'
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ContactUsResponse'
+
+  /notifications:
+    get:
+      tags:
+      - Notifications
+      summary: "Get notifications"
+      parameters:
+        - in: "path"
+          name: "path"
+          description: "path"
+          schema:
+            properties:
+              page:
+                type: integer
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/NotificationResponse'
+
+  /notifications/delete_notifications:
+    delete:
+      tags:
+      - Notifications
+      summary: "Delete notifications"
+      parameters:
+        - in: "path"
+          name: "path"
+          description: "path"
+          schema:
+            properties:
+              ids:
+                type: array
+                items:
+                  type: integer
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+
+  /users/update_profile:
+    put:
+      tags:
+      - User update
+      summary: "Update user details"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "body"
+          schema:
+            properties:
+              user:
+                type: object
+                properties:
+                  image:
+                    type: string
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+        content-type: "multipart/form-data"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/LoginUserResponse'
+
+  /user_email_notifications:
+    get:
+      tags:
+      - Email Notification
+      summary: "get email notification"
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/EmailNotificationResponse'
+
+    put:
+      tags:
+      - Email Notification
+      summary: "get email notification"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "body"
+          schema:
+            $ref: '#/definitions/EmailNotificationInput'
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/EmailNotificationResponse'
+
+  /users/send_verification_code:
+    put:
+      tags:
+      - Verification code
+      summary: "Get verification code"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "body"
+          schema:
+            $ref: '#/definitions/VerificationInput'
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/LoginUserResponse'
+
+  /users/verify_verification_code:
+    put:
+      tags:
+      - Verification code
+      summary: "verify verification code"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "body"
+          schema:
+            $ref: '#/definitions/VerifyVerificationInput'
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/LoginUserResponse'
+
+  /users/my_activity:
+    get:
+      tags:
+      - My Activity
+      summary: "Get user activity"
+      parameters:
+        - in: "path"
+          name: "path"
+          description: "path"
+          schema:
+            properties:
+              page:
+                type: integer
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ActivityResponse'
+
+  /users/make_invalid_for_thankyou_page:
+    get:
+      tags:
+      - Thank you page
+      summary: "Thank you page invalid"
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              success:
+                type: boolean
+
+  /payments/upgrade:
+    put:
+      tags:
+      - Payment
+      summary: "upgrade payment"
+      parameters:
+        - in: "path"
+          name: "path"
+          description: "path"
+          schema:
+            properties:
+              payment_type:
+                type: string
+              stripe_token:
+                type: string
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: OK
+          schema:
+            oneOf:
+              - $ref: '#/definitions/PaymentUpgradeResponse'
+              - $ref: '#/definitions/LoginUserResponse'
+
+  /payments:
+    put:
+      tags:
+      - Payment
+      summary: "payment"
+      parameters:
+        - in: "path"
+          name: "path"
+          description: "path"
+          schema:
+            properties:
+              payment_type:
+                type: string
+              stripe_token:
+                type: string
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: OK
+          schema:
+            oneOf:
+              - $ref: '#/definitions/PaymentUpgradeResponse'
+              - $ref: '#/definitions/LoginUserResponse'
+
+    post:
+      tags:
+      - Payment
+      summary: "payment"
+      parameters:
+        - in: "path"
+          name: "path"
+          description: "path"
+          schema:
+            properties:
+              payment_type:
+                type: string
+              stripe_token:
+                type: string
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/LoginUserResponse'
+
+  /users/stripe_card_details:
+    get:
+      tags:
+      - Stripe details
+      summary: "get stripe card"
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              success:
+                type: boolean
+              card_number:
+                type: string
+
+  /payments/suspend:
+    get:
+      tags:
+      - Payment
+      summary: "suspend the susbscription"
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/PaymentSuspendResponse'
+
+  /payments/reactivate:
+    get:
+      tags:
+      - Payment
+      summary: "reactive the subscription"
+      parameters:
+        - in: "path"
+          name: "path"
+          description: "path"
+          schema:
+            properties:
+              page_name:
+                type: string
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/MetaResponse'
+
+  /seo_metas:
+    get:
+      tags:
+      - Seo Meta
+      summary: "get meta details"
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              success:
+                type: boolean
+              card_number:
+                type: string
+
+  /users/billing_details:
+    get:
+      tags:
+      - Payment
+      summary: "get billing details"
+      security:
+      - access-token: []
+        client: []
+        uid: []
+        expiry: []
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/BillingDetails'
+
 definitions:
 
   LoginUserInput:
@@ -68,7 +832,583 @@ definitions:
     properties:
       success:
         type: boolean
-      errors:
-        type: object
-      data:
+      user:
         $ref: '#/definitions/UserInfo'
+
+  UserInfo:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      email:
+        type: string
+      provider:
+        type: string
+      registration_plan:
+        type: string
+      phone_number:
+        type: string
+      customer_id:
+        type: string
+      subscription_id:
+        type: string
+      cancelation_date:
+        type: string
+      receipt_data:
+        type: string
+      subscription_plan_status:
+        type: string
+      image:
+        type: object
+        properties:
+          staff_medium:
+            type: object
+            properties:
+              url:
+                type: string
+      sign_up_from:
+        type: string
+      payment_verified:
+        type: boolean
+      migrate_user:
+        type: boolean
+      valid_for_thankyou_page:
+        type: boolean
+      current_payment_method:
+        type: string
+      subscription_info:
+        type: string
+
+  SignupUserInput:
+    properties:
+      battleship:
+        type: boolean
+      name:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+        format: password
+      confirm_password:
+        type: string
+        format: password
+      payment_type:
+        type: string
+      registration_plan:
+        type: string
+      sign_up_from:
+        type: string
+      stripe_token:
+        type: string
+
+  ResetPasswordInput:
+    properties:
+      email:
+        type: string
+      redirect_url:
+        type: string
+  ResetPasswordResponse:
+    properties:
+      status:
+        type: string
+      message:
+        type: string
+
+  UpdatePasswordInput:
+    properties:
+      current_password:
+        type: string
+        format: password
+      password:
+        type: string
+        format: password
+      password_confirmation:
+        type: string
+        format: password
+
+  EditUserInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+        format: password
+
+  ShareAppResponse:
+    properties:
+      success:
+        type: boolean
+      message:
+        type: string
+
+  MoviesResponses:
+    properties:
+      total_page:
+        type: integer
+      current_page:
+        type: integer
+      movies:
+        type: array
+        items:
+          $ref: '#/definitions/MovieResponses'
+      seo_meta:
+        $ref: '#/definitions/SeoMetaResponses'
+
+  GenresResponses:
+    properties:
+      total_page:
+        type: integer
+      current_page:
+        type: integer
+      genres:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: integer
+            slug:
+              type: string
+            name:
+              type: string
+            color:
+              type: string
+            description:
+              type: string
+            seo_meta:
+              $ref: '#/definitions/SeoMetaResponses'
+
+  SeoMetaResponses:
+    type: object
+    properties:
+      id:
+        type: integer
+      title:
+        type: string
+      keywords:
+        type: string
+      description:
+        type: string
+
+  GenreResponses:
+    type: object
+    properties:
+      id:
+        type: integer
+      slug:
+        type: string
+      name:
+        type: string
+      color:
+        type: string
+      description:
+        type: string
+
+  SearchMovieResponses:
+    properties:
+      total_page:
+        type: integer
+      current_page:
+        type: integer
+      movies:
+        type: array
+        items:
+          $ref: '#/definitions/MovieResponses'
+
+  SocialUrls:
+    type: object
+    properties:
+      facebook:
+        type: string
+      twitter:
+        type: string
+
+  MovieThumbnail:
+    type: object
+    properties:
+      main_screenshot:
+        type: string
+      other_screenshots:
+        type: array
+        items:
+          type: string
+
+  MovieCaptions:
+    type: array
+    items:
+      type: object
+      properties:
+        language:
+          type: string
+        caption_file:
+          type: string
+        is_default:
+          type: boolean
+
+  MyPlaylistResponses:
+    properties:
+      current_page:
+        type: integer
+      movies:
+        type: array
+        items:
+          $ref: '#/definitions/MovieResponses'
+
+  AddAndRemoveMyPlaylistResponses:
+    properties:
+      success:
+        type: boolean
+      message:
+        type: string
+      is_liked:
+        type: boolean
+      movie_id:
+        type: integer
+
+  MovieResponses:
+    properties:
+      id:
+        type: integer
+      slug:
+        type: string
+      name:
+        type: string
+      title:
+        type: string
+      click_count:
+        type: object
+        properties:
+          facebook:
+            type: integer
+          twitter:
+            type: integer
+      description:
+        type: string
+      directed_by:
+        type: string
+      festival_laureates:
+        type: string
+      genre:
+        $ref: '#/definitions/GenreResponses'
+      genre_name:
+        type: string
+      is_featured_film:
+        type: boolean
+      is_liked:
+        type: boolean
+      language:
+        type: string
+      movie_captions:
+        $ref: '#/definitions/MovieCaptions'
+      movie_thumbnail:
+        $ref: '#/definitions/MovieThumbnail'
+      released_date:
+        type: string
+      social_urls:
+        $ref: '#/definitions/SocialUrls'
+      trailer_file:
+        type: string
+      user_video_last_stops:
+        type: string
+      video_duration:
+        type: string
+      video_file:
+        type: string
+      total_page:
+        type: integer
+
+  UserVideoLastStopsResponses:
+    properties:
+      success:
+        type: boolean
+      movie:
+        $ref: '#/definitions/MovieResponses'
+
+  ContactUsInput:
+    properties:
+      contact_us:
+        type: object
+        properties:
+          name:
+            type: string
+          email:
+            type: string
+          school:
+            type: string
+          occupation:
+            type: string
+
+  ContactUsResponse:
+    properties:
+      success:
+        type: boolean
+      message:
+        type: string
+
+  NotificationResponse:
+    properties:
+      total_page:
+        type: integer
+      current_page:
+        type: integer
+      notifications:
+        type: array
+        items:
+          properties:
+            id:
+              type: integer
+            message:
+              type: string
+            movie_name:
+              type: string
+            created_at:
+              type: string
+            movie_thumbnail:
+              type: string
+
+  EmailNotificationResponse:
+    success:
+      type: boolean
+      user_email_notification:
+        type: object
+        properties:
+          id:
+            type: integer
+          product_updates:
+            type: boolean
+          films_added:
+            type: boolean
+          special_offers_and_promotions:
+            type: boolean
+          better_product:
+            type: boolean
+          do_not_send:
+            type: boolean
+
+  EmailNotificationInput:
+    properties:
+      user_email_notification:
+        type: object
+        properties:
+          id:
+            type: boolean
+          product_updates:
+            type: boolean
+          films_added:
+            type: boolean
+          special_offers_and_promotions:
+            type: boolean
+          better_product:
+            type: boolean
+          do_not_send:
+            type: boolean
+
+  VerificationInput:
+    properties:
+      users:
+        type: object
+        properties:
+          current_password:
+            type: string
+            format: password
+          unconfirmed_phone_number:
+            type: string
+
+  VerifyVerificationInput:
+    properties:
+      users:
+        type: object
+        properties:
+          current_password:
+            type: string
+            format: password
+          unconfirmed_phone_number:
+            type: string
+          verification_code:
+            type: string
+
+  ActivityResponse:
+    properties:
+      total_page:
+        type: integer
+      current_page:
+        type: integer
+      activity:
+        type: array
+        items:
+          properties:
+            movie_name:
+              type: string
+            movie_title:
+              type: string
+            movie_slug:
+              type: string
+            last_updated:
+              type: string
+            remaining_time:
+              type: string
+
+  PaymentUpgradeResponse:
+    properties:
+      success:
+        type: boolean
+      redirect_url:
+        type: string
+
+  PaymentSuspendResponse:
+    success:
+      type: boolean
+    subscription:
+      $ref: '#/definitions/SubscriptionDetails'
+    message:
+      type: string
+    user:
+      $ref: '#/definitions/UserInfo'
+
+  SubscriptionDetails:
+    type: object
+    properties:
+      id:
+        type: string
+      object:
+        type: string
+      application_fee_percent:
+        type: string
+      billing:
+        type: string
+      billing_cycle_anchor:
+        type: integer
+      cancel_at_period_end:
+        type: boolean
+      canceled_at:
+        type: integer
+      created:
+        type: integer
+      current_period_end:
+        type: integer
+      current_period_start:
+        type: integer
+      customer:
+        type: string
+      days_until_due:
+        type: string
+      discount:
+        type: string
+      ended_at:
+        type: string
+      items:
+        type: object
+        properties:
+          object:
+            type: string
+          data:
+            type: array
+            items:
+              properties:
+                id:
+                  type: string
+                object:
+                  type: string
+                created:
+                  type: integer
+                metadata:
+                  type: object
+                plan:
+                  $ref: '#/definitions/planDetails'
+                quantity:
+                  type: integer
+                subscription:
+                  type: string
+          has_more:
+            type: boolean
+          total_count:
+            type: integer
+          url:
+            type: string
+    livemode:
+      type: boolean
+    metadata:
+      type: object
+    plan:
+      $ref: '#/definitions/planDetails'
+    quantity:
+      type: integer
+    start:
+      type: integer
+    status:
+      type: string
+    tax_percent:
+      type: string
+    trial_end:
+      type: integer
+    trial_start:
+      type: integer
+
+  planDetails:
+    type: object
+    properties:
+      id:
+        type: string
+      object:
+        type: string
+      active:
+        type: boolean
+      aggregate_usage:
+        type: string
+      amount:
+        type: integer
+      billing_scheme:
+        type: string
+      created:
+        type: integer
+      currency:
+        type: string
+      interval:
+        type: string
+      interval_count:
+        type: integer
+      livemode:
+        type: boolean
+      metadata:
+        type: object
+      name:
+        type: string
+      nickname:
+        type: string
+      product:
+        type: string
+      statement_descriptor:
+        type: string
+      tiers:
+        type: string
+      tiers_mode:
+        type: string
+      transform_usage:
+        type: string
+      trial_period_days:
+        type: integer
+      usage_type:
+        type: string
+
+  MetaResponse:
+    success:
+      type: boolean
+      meta_data:
+        type: object
+        properties:
+          id:
+            type: integer
+          title:
+            type: string
+          keywords:
+            type: string
+          description:
+            type: string
+
+  BillingDetails:
+    properties:
+      user_payment_transactions:
+        type: array
