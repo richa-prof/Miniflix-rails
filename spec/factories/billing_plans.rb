@@ -3,8 +3,8 @@ FactoryBot.define do
     name "MyString"
     description "MyString"
     amount 1
-    currency ""
-    interval "MyString"
+    currency "USD"
+    interval "Month"
     trial_days 1
   end
 end

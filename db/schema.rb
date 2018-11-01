@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180919121844) do
+ActiveRecord::Schema.define(version: 20180928091621) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "city"
@@ -333,29 +333,10 @@ ActiveRecord::Schema.define(version: 20180919121844) do
 
   create_table "user_payment_methods", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "user_id"
-    t.string "first_name"
-    t.string "last_name"
-    t.integer "zip_code"
     t.string "payment_type", null: false
-    t.string "old_card_number"
-    t.integer "old_expiration_month"
-    t.integer "old_expiration_year"
-    t.integer "old_card_CVC"
-    t.string "card_token"
-    t.float "amount", limit: 24
     t.boolean "is_send_expiration_mail"
-    t.datetime "payment_date"
-    t.datetime "payment_expire_date"
     t.string "agreement_id"
     t.string "paypal_plan_id"
-    t.string "encrypted_card_CVC"
-    t.string "encrypted_card_CVC_iv"
-    t.string "encrypted_card_number"
-    t.string "encrypted_card_number_iv"
-    t.string "encrypted_expiration_month"
-    t.string "encrypted_expiration_month_iv"
-    t.string "encrypted_expiration_year"
-    t.string "encrypted_expiration_year_iv"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "billing_plan_id"
