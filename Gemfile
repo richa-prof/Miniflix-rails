@@ -115,9 +115,6 @@ gem 's3_multipart'
 # For flexible authentication solution with Warden
 gem 'devise'
 
-# For Token based authentication for JSON APIs
-gem 'devise_token_auth'
-
 #For JavaScript flash notifications.
 gem 'pnotify-rails'
 
@@ -154,6 +151,8 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
+  gem 'capistrano-rails-console', require: false
+  gem 'dotenv-rails'
   gem 'selenium-webdriver'
   gem "rspec-rails"
   gem 'factory_bot_rails'
@@ -165,6 +164,9 @@ group :development, :test do
   gem 'simplecov', require: false
   gem 'pry'
   gem 'rb-readline'
+  gem 'pry-byebug'
+  gem 'pry-rails'
+  gem 'pry-stack_explorer'
 
   # Use Puma as the app server
   gem 'puma', '~> 3.7'
@@ -188,6 +190,10 @@ group :development do
   gem 'capistrano-faster-assets'
   gem 'capistrano-rails-collection'
   gem 'capistrano-sidekiq'
+end
+
+group :test do
+  gem 'json_spec'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

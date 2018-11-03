@@ -1,0 +1,56 @@
+# Common configuration.
+AllCops:
+  # Include common Ruby source files.
+  Exclude:
+    - 'vendor/**/*'
+    - 'tmp/**/*'
+    - 'backup/**/*'
+    - 'bundler_stubs/**/*'
+    - 'node_modules/**/*'
+    - 'log/**/*'
+    - '.bundle/**/*'
+    - 'config/**/*'
+    - 'config/environments/**'
+    - 'config/application.rb'
+    - 'bin/**/*'
+    - 'temp/**/*'
+    - 'db/schema.rb'
+    - 'spec/support/**/*'
+    - 'app/controllers/concerns/broadcasted.rb'
+    - 'Gemfile.lock'
+
+Documentation:
+  Enabled: false
+Metrics/LineLength:
+  Max: 120
+  IgnoredPatterns: ['(\A|\s)#']
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/BarePercentLiterals:
+  Enabled: false
+Style/PercentLiteralDelimiters:
+  Enabled: false
+Style/UnneededPercentQ:
+  Enabled: false
+Metrics/MethodLength:
+  Enabled: false
+Metrics/AbcSize:
+  Enabled: false
+Metrics/CyclomaticComplexity:
+  Enabled: false
+Metrics/PerceivedComplexity:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: false
+Metrics/BlockLength:
+  Enabled: false
+Metrics/ParameterLists:
+  Enabled: false
+Style/OptionalArguments:
+  Enabled: false
+Style/AsciiComments:
+  Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+Metrics/ModuleLength:
+  Enabled: false
