@@ -97,7 +97,7 @@ class Api::Vm1::UsersController < Api::Vm1::ApplicationController
   #  Get
   #  /check_email_exists
   def check_email_exists
-    render json: { exists: User.find_for_authentication(email: params[:email]).present? }
+    render json: { user: User.find_for_authentication(email: params[:email]).present? }
   end
 
   private
