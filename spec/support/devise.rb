@@ -7,3 +7,7 @@ RSpec.configure do |config|
     Warden.test_reset!
   end
 end
+
+def authenticate_api(user)
+  request.headers['authentication'] = user.update_auth_token
+end
