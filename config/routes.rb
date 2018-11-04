@@ -104,6 +104,7 @@ Rails.application.routes.draw do
       post 'users/update_registration_plan'
       post 'users/get_user_by_id'
       delete 'users/:id' => 'users#destroy'
+      get 'users/check_email_exists' => 'users#check_email_exists'
 
       get 'genres/genres' => 'genres#genres'
       post 'genres/genres_wise_movies' =>'genres#genres_wise_movies'

@@ -47,7 +47,7 @@ set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 # Global options
 # --------------
  set :ssh_options, {
-   keys: %w(/home/rails/rails_work/wes/doc/Miniflix.pem),
+   keys: %w(~/.ssh/miniflix.pem),
    forward_agent: false,
  }
 #
