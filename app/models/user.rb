@@ -259,7 +259,7 @@ class User < ActiveRecord::Base
   end
 
   def suspend_subscription
-    if latest_payment_method.paypal?
+    if latest_payment_method && latest_payment_method.paypal?
       ppr_response = suspend_paypal_subscription(subscription_id)
       if ppr_response.valid?
         self.cancelled!
@@ -270,7 +270,7 @@ class User < ActiveRecord::Base
         response = { success: false,
                      message: ppr_response.errors[0][:messages][0] }
       end
-    elsif latest_payment_method.card?
+    elsif latest_payment_method && latest_payment_method.card?
       stripe_service_obj = StripeService.new(subscription_id)
       response = stripe_service_obj.suspend_subscription
       self.cancelled! if response[:success]

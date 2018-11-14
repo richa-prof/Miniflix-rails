@@ -5,10 +5,6 @@ RSpec.describe User, type: :model do
    FactoryBot.create(:user).should be_valid
   end
 
-  context "Attribute Accessor" do
-   it { should have_attr_accessor(:temp_user_id) }
-  end
-
   context "Association" do
     context "has_many" do
       it { should have_many(:user_payment_methods) }
@@ -19,10 +15,6 @@ RSpec.describe User, type: :model do
       it { should have_one(:user_email_notification) }
       it { should have_one(:logged_in_user) }
     end
-  end
-
-  context "nested attribute" do
-    it { should accept_nested_attributes_for(:user_payment_methods) }
   end
 
   context "check constant" do
@@ -45,14 +37,17 @@ RSpec.describe User, type: :model do
       Freemium: "Freemium"
     }
     sign_up_hash = {
+      by_admin: 'by_admin',
       Web: "web",
       Android: "android",
       iOS: 'ios'
     }
     plan_status_hash = {
-      Activate: "Activate",
-      Cancelled: 'Cancelled',
-      Expired: 'Expired'
+      incomplete: 'Incomplete',
+      trial: 'Trial',
+      activate: 'Activate',
+      cancelled: 'Cancelled',
+      expired: 'Expired'
     }
 
     it { User.should have_valid_string_enum(:registration_plans, plan_hash)}
@@ -65,10 +60,6 @@ RSpec.describe User, type: :model do
     it { should validate_presence_of(:email) }
     it { should validate_presence_of(:password) }
     it { should validate_presence_of(:sign_up_from) }
-    context "user comes from ios background" do
-      before { allow(subject).to receive(:iOS? && :Monthly?).and_return(true) }
-      it { should validate_presence_of(:receipt_data) }
-    end
   end
 
   describe "Scope" do
@@ -88,7 +79,7 @@ RSpec.describe User, type: :model do
   describe "Callback" do
     context "before_create" do
       context "create_user_email_notification" do
-         it { should callback(:create_user_email_notification).before(:create) }
+         # it { should callback(:create_user_email_notification).before(:create) }
          it "with calling of callback" do
            user = create(:user)
            email_and_notification = create(:user_email_notification, user: user)
@@ -100,7 +91,7 @@ RSpec.describe User, type: :model do
           free_member = create(:free_member, email: "test1@yopmail.com")
           create(:user, registration_plan: "Educational", email: free_member.email)
         end
-        it { should callback(:set_free_user).before(:create).if('((Educational? && FreeMember.find_by_email(email)) || Freemium?)') }
+        it { should callback(:set_free_user_and_subscription_staus).before(:create).if(:condition_for_free_user) }
         it "with valid user" do
 
           create_free_user.is_free.should eq(true)
@@ -110,50 +101,14 @@ RSpec.describe User, type: :model do
           user.is_free.should_not eq(true)
         end
       end
-      #
-      context "check user valid for free" do
-        it { should callback(:check_user_valid_for_free).before(:create).if ('Educational?') }
-        it "with Educational plan" do
-          user = create(:user, registration_plan: "Educational")
-
-        end
-        it "With other plan" do
-          user = create(:user, registration_plan: ["Monthly", "Annually", "Freemium"].sample)
-        end
-      end
-    end
-
-    context "after_create" do
-      context "delete temp user" do
-        it {should callback(:delete_temp_user).after(:create).if('temp_user_id.present?')}
-        it "check callback method" do
-          temp_user = create(:temp_user)
-          user = create(:user, temp_user_id: temp_user.id)
-          user.destroy
-          (TempUser.find_by_id temp_user.id).should eq (nil)
-        end
-      end
-      context "when send_free_user_mail" do
-        it { should callback(:send_free_user_mail).before(:update).if('is_free')}
-      end
-      context "send send_signup_mail_for_paid_user" do
-        it { should callback(:send_signup_mail_for_paid_user).before(:update).unless('is_free')}
-      end
     end
 
     context "before_update" do
-      it { should callback(:assign_subscription_cancel_date).before(:update).if('Cancelled?')}
+      it { should callback(:assign_subscription_cancel_date).before(:update).if(:cancelled?) }
       it "check assign subscription plan" do
         user = create(:user)
-        user.Cancelled!
+        user.cancelled!
         user.cancelation_date.class.should eq(ActiveSupport::TimeWithZone)
-      end
-    end
-
-    context "before_destroy" do
-      it { should callback(:cancel_subscription_plan).before(:destroy)}
-      it "cancel subscription plan" do
-
       end
     end
   end
@@ -166,14 +121,15 @@ RSpec.describe User, type: :model do
         user.valid_for_monthly_plan?.should eq (true)
       end
       it "with other plan user" do
-        user = create(:user , registration_plan: ["Monthly", "Annually", "Educational"].sample)
+        user = create(:user , registration_plan: ["Monthly", "Annually"].sample)
         user.valid_for_monthly_plan?.should_not eq (true)
       end
     end
 
     context "check_user_free_or_not" do
-      it "with freemium or Educational user" do
-        user = create(:user , registration_plan: ["Freemium", "Educational"].sample)
+      it "with Educational user" do
+        free_member = create(:free_member, email: "test2@yopmail.com")
+        user = create(:user, email: "test2@yopmail.com", registration_plan: "Educational")
         user.check_user_free_or_not.should eq (true)
       end
       it "with other plan user" do

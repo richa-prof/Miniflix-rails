@@ -9,7 +9,6 @@ RSpec.describe UserPaymentTransaction, type: :model do
   end
 
   context "check validation" do
-    it { should validate_presence_of(:payment_expire_date) }
     it { should validate_uniqueness_of(:transaction_id)}
   end
 
