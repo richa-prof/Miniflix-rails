@@ -115,6 +115,9 @@ gem 's3_multipart'
 # For flexible authentication solution with Warden
 gem 'devise'
 
+# For Token based authentication for JSON APIs
+gem 'devise_token_auth'
+
 #For JavaScript flash notifications.
 gem 'pnotify-rails'
 
