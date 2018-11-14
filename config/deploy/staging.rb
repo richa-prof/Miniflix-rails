@@ -46,10 +46,10 @@ set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 #
 # Global options
 # --------------
- set :ssh_options, {
-   keys: %w(/home/rails/rails_work/wes/doc/Miniflix.pem),
-   forward_agent: false,
- }
+set :ssh_options, {
+    keys: %w(~/.ssh/miniflix.pem),
+    forward_agent: false,
+}
 #
 # The server-based syntax can be used to override options:
 # ------------------------------------
