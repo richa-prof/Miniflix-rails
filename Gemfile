@@ -190,6 +190,7 @@ group :development do
   gem 'capistrano-bundler'
   gem 'capistrano-rvm'
   gem 'capistrano-passenger'
+  gem 'capistrano-rake', require: false
   gem 'capistrano-faster-assets'
   gem 'capistrano-rails-collection'
   gem 'capistrano-sidekiq'

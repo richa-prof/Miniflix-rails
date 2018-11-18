@@ -38,6 +38,7 @@ require "capistrano/passenger"
 require 'capistrano/faster_assets'
 require 'capistrano/rails/collection'
 require 'capistrano/sidekiq'
+require 'capistrano/rake'
 
 require "whenever/capistrano"
 require 'capistrano/rails/console'
