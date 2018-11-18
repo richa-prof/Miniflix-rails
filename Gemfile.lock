@@ -106,6 +106,8 @@ GEM
       capistrano-bundler (~> 1.1)
     capistrano-rails-collection (0.1.0)
       capistrano-rails (~> 1.1)
+    capistrano-rake (0.2.0)
+      capistrano (>= 3.0)
     capistrano-rvm (0.1.2)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
@@ -650,6 +652,7 @@ DEPENDENCIES
   capistrano-passenger
   capistrano-rails
   capistrano-rails-collection
+  capistrano-rake
   capistrano-rvm
   capistrano-sidekiq
   capybara (~> 2.13)
@@ -721,4 +724,4 @@ RUBY VERSION
    ruby 2.5.0p0
 
 BUNDLED WITH
-   1.16.1
+   1.16.2
