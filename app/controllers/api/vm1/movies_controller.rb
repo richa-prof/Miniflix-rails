@@ -21,11 +21,11 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
   def get_all_movie_by_movie_name_or_genre_name
     begin
       if params[:movie_name]
-        @movies = Movie.where("lower(name) LIKE (?) ","%#{params[:movie_name].downcase}%")
+        @movies = Movie.where("lower(name) LIKE (?) ","%#{params[:movie_name].downcase}%").offset(params[:offset]).limit(params[:limit])
         if @movies.present?
           @response = { code: "0",status: "Success",message: "Successfully  movie found",movie: @movies.as_json}
         else
-          @response = { code: "1",status: "Error",message: "Movie not found"}
+          @response = { movie: @movies.as_json }
         end
       else
         @genres = Genre.where("lower(name) LIKE (?) ","%#{params[:genre_name].downcase}%")
@@ -90,9 +90,9 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
     begin
       my_movies = Movie.joins(:user_filmlists).where('user_filmlists.user_id = ?', api_user.id).order('user_filmlists.created_at DESC').offset(params[:offset]).limit(params[:limit])
       if my_movies.present?
-        api_response = { code: "0",status: "Success",message: "Successfully get all movies for my list",my_list: my_movies.as_json(api_user)}
+        api_response = { code: "0",status: "Success",message: "Successfully get all movies for my list", my_list: my_movies.as_json(api_user)}
       else
-        api_response = { code: "1",status: "Error",message: "No any my list movie found"}
+        api_response = { my_list: my_movies.as_json(api_user)}
       end
     rescue Exception => e
       api_response = {code: "-1", status: "Error", message: e.message}
