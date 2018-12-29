@@ -53,14 +53,14 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
         if @movies.present?
           @response = { code: "0",status: "Success",message: "Successfully  movie found",movie: @movies.as_json(api_user)}
         else
-          @response = { code: "1",status: "Error",message: "Movie not found"}
+          @response = { movie: []}
         end
       else
         @movies=Movie.where(admin_genre_id: params[:genre_id])
         if @movies.present?
           @response = { code: "0",status: "Success",message: "Successfully  movie found",movie: @movies.as_json(api_user)}
         else
-          @response = { code: "1",status: "Error",message: "Movie not found"}
+          @response = { movie: []}
         end
       end
     rescue Exception => e
