@@ -556,7 +556,7 @@ GEM
     rspec-support (3.7.1)
     ruby_dep (1.5.0)
     rubyzip (1.2.1)
-    s3_multipart (0.0.10.6)
+    s3_multipart (0.0.10.4)
       uuid (>= 2.3.6)
       xml-simple (>= 1.1.2)
     sass (3.5.6)
@@ -640,7 +640,7 @@ GEM
       execjs (>= 0.3.0, < 3)
     underscore-rails (1.8.3)
     useragent (0.16.10)
-    uuid (2.3.8)
+    uuid (2.3.9)
       macaddr (~> 1.0)
     warden (1.2.7)
       rack (>= 1.0)
@@ -729,7 +729,7 @@ DEPENDENCIES
   rails-controller-testing
   rb-readline
   rspec-rails
-  s3_multipart
+  s3_multipart (= 0.0.10.4)
   sass-rails (~> 5.0)
   selenium-webdriver
   seo_meta
@@ -757,4 +757,4 @@ RUBY VERSION
    ruby 2.5.0p0
 
 BUNDLED WITH
-   1.16.2
+   1.17.2

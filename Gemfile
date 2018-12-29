@@ -110,7 +110,7 @@ gem 'aws-sdk', '~> 2'
 gem 'underscore-rails'
 
 # For Direct multipart uploading to Amazon S3
-gem 's3_multipart'
+gem 's3_multipart', "0.0.10.4"
 
 # For flexible authentication solution with Warden
 gem 'devise'
