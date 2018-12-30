@@ -2,22 +2,22 @@ development:
   access_key_id: "AKIAIJXUUTOS4BFWXDJA"
   secret_access_key: "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"
   bucket: "miniflix-development"
-  revision: ENV['Revision']
+  revision: "0.0.10.6"
 
 production:
   access_key_id: "AKIAIJXUUTOS4BFWXDJA"
   secret_access_key: "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"
   bucket: "miniflix-video"
-  revision: ENV['Revision']
+  revision: "0.0.10.6"
 
 staging:
   access_key_id: "AKIAIJXUUTOS4BFWXDJA"
   secret_access_key: "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"
   bucket: "miniflix-staging-video"
-  revision: ENV['Revision']
+  revision: "0.0.10.6"
 
 test:
   access_key_id: "AKIAIJXUUTOS4BFWXDJA"
   secret_access_key: "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"
   bucket: "miniflix-text-video"
-  revision: ENV['Revision']
+  revision: "0.0.10.6"

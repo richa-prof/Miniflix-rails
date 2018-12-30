@@ -556,7 +556,7 @@ GEM
     rspec-support (3.7.1)
     ruby_dep (1.5.0)
     rubyzip (1.2.1)
-    s3_multipart (0.0.10.4)
+    s3_multipart (0.0.10.6)
       uuid (>= 2.3.6)
       xml-simple (>= 1.1.2)
     sass (3.5.6)
@@ -729,7 +729,7 @@ DEPENDENCIES
   rails-controller-testing
   rb-readline
   rspec-rails
-  s3_multipart (= 0.0.10.4)
+  s3_multipart (= 0.0.10.6)
   sass-rails (~> 5.0)
   selenium-webdriver
   seo_meta
