@@ -11,9 +11,9 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
       movie = Movie.find(params[:id])
       valid_payment = api_user.try(:check_login) || false
       movie_hash = movie.as_json("full_movie_detail").merge(is_valid_payment: valid_payment, is_active: movie.movie_view_by_user?(api_user.try(:id)), last_stopped: last_stopped)
-      api_response = { code: "0",status: "Success",message: "Successfully  movie details found", movie: movie_hash}
+      api_response = { code: "0",status: "Success",message: "Successfully  movie details found", notification: [movie_hash] }
     rescue Exception => e
-      api_response = {:code => "-1",:status => "Error",:message => e.message}
+      api_response = {:code => "-1",:status => "Error",:message => e.message, notification: []}
     end
     render json: api_response
   end
@@ -23,9 +23,9 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
       if params[:movie_name]
         @movies = Movie.where("lower(name) LIKE (?) ","%#{params[:movie_name].downcase}%").offset(params[:offset]).limit(params[:limit])
         if @movies.present?
-          @response = { code: "0",status: "Success",message: "Successfully  movie found",movie: @movies.as_json}
+          @response = { code: "0",status: "Success",message: "Successfully  movie found",notification: @movies.as_json}
         else
-          @response = { movie: @movies.as_json }
+          @response = { code: "1",status: "Error",message: "Not found",  notification: @movies.as_json }
         end
       else
         @genres = Genre.where("lower(name) LIKE (?) ","%#{params[:genre_name].downcase}%")
@@ -33,13 +33,13 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
           @genres= @genres.map do |genre|
             create_json_genres genre
           end
-          @response = { code: "0",status: "Success",message: "Successfully genere Found",genere: @genres}
+          @response = { code: "0",status: "Success", message: "Successfully genere Found", notification: @genres}
         else
-          @response = { code: "1",status: "Error",message: "No any genres not found"}
+          @response = { code: "1",status: "Error",message: "No any genres not found",  notification: @genres.as_json}
         end
       end
     rescue Exception => e
-      @response = {:code => "-1",:status => "Error",:message => e.message}
+      @response = {:code => "-1", :status => "Error", :message => e.message, notification: []}
     end
     render json: @response
   end
@@ -51,20 +51,20 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
       if params[:movie_name].present? && params[:genre_id].present?
         @movies=Movie.where("lower(name) LIKE (?) ","%#{params[:movie_name].downcase}%").where(admin_genre_id: params[:genre_id])
         if @movies.present?
-          @response = { code: "0",status: "Success",message: "Successfully  movie found",movie: @movies.as_json(api_user)}
+          @response = { code: "0",status: "Success",message: "Successfully  movie found", notification: @movies.as_json(api_user)}
         else
-          @response = { movie: []}
+          @response = { code: "-1", status: "Error", message: "Not found", notification: []}
         end
       else
         @movies=Movie.where(admin_genre_id: params[:genre_id])
         if @movies.present?
-          @response = { code: "0",status: "Success",message: "Successfully  movie found",movie: @movies.as_json(api_user)}
+          @response = { code: "0",status: "Success", message: "Successfully  movie found", notification: @movies.as_json(api_user)}
         else
-          @response = { movie: []}
+          @response =  { code: "-1", status: "Error", message: "Not found", notification: []}
         end
       end
     rescue Exception => e
-      @response = {:code => "-1",:status => "Error",:message => e.message}
+      @response = {:code => "-1",:status => "Error",:message => e.message, notification: []}
     end
     render json: @response
   end
@@ -72,14 +72,14 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
   def add_movie_my_list
     filmlist = api_user.user_filmlists.find_by_admin_movie_id(params[:movie_id])
     if filmlist.present?
-      api_response = { code: "3",status: "Error",message: "Movie already added to my list" }
+      api_response = { code: "3",status: "Error",message: "Movie already added to my list", notification: filmlist }
     else
       begin
         movie = Movie.find params[:movie_id]
         api_user.user_filmlists.create!(admin_movie_id: params[:movie_id])
-        api_response = { code: "0",status: "Success",message: "Movie added successfully to my list",my_list: movie.as_json}
+        api_response = { code: "0",status: "Success",message: "Movie added successfully to my list", notification: [movie]}
       rescue Exception => e
-        api_response = {:code => "-1",:status => "Error",:message => e.message}
+        api_response = {:code => "-1",:status => "Error",:message => e.message, notification: []}
       end
     end
     render json: api_response
@@ -90,12 +90,12 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
     begin
       my_movies = Movie.joins(:user_filmlists).where('user_filmlists.user_id = ?', api_user.id).order('user_filmlists.created_at DESC').offset(params[:offset]).limit(params[:limit])
       if my_movies.present?
-        api_response = { code: "0",status: "Success",message: "Successfully get all movies for my list", my_list: my_movies.as_json(api_user)}
+        api_response = { code: "0",status: "Success",message: "Successfully get all movies for my list", notification: my_movies.as_json(api_user)}
       else
-        api_response = { my_list: my_movies.as_json(api_user)}
+        api_response = { code: "1",status: "Error",message: "No any my list movie found", notification: []}
       end
     rescue Exception => e
-      api_response = {code: "-1", status: "Error", message: e.message}
+      api_response = {code: "-1", status: "Error", message: e.message, notification: []}
     end
     render json: api_response
   end
@@ -105,9 +105,9 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
     my_movie = api_user.user_filmlists.find_by_admin_movie_id (params[:movie_id])
     api_response = if my_movie.present?
        my_movie.delete
-      { code: "0",status: "Success",message: "Movie successfully removed from your list"}
+      { code: "0",status: "Success",message: "Movie successfully removed from your list", notification: [my_movie.as_json]}
     else
-      { code: "3",status: "Error",message: "Movie not found in your list" }
+      { code: "3",status: "Error", message: "Movie not found in your list", notification: [] }
     end
     render json: api_response
   end
@@ -134,10 +134,10 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
         @user_video_last_stop = create_json_recentaly_watched @user_video_last_stop
         @response = { code: "0",status: "Success",message: "Successfully added/updated to recently watched list",movie: @user_video_last_stop}
       else
-        @response = {:code => "1",:status => "Error",:message => "Please pass valid parameteres"}
+        @response = {:code => "1",:status => "Error",:message => "Please pass valid parameteres", notification: []}
       end
     rescue Exception => e
-      @response = {:code => "-1",:status => "Error",:message => e.message}
+      @response = {:code => "-1",:status => "Error",:message => e.message, notification: []}
     end
     render json: @response
   end
@@ -161,10 +161,10 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
         @user_video_last_stop = create_json_recentaly_watched @user_video_last_stop
         @response = { code: "0",status: "Success",message: "Successfully added/updated to recently watched list",movie: @user_video_last_stop}
       else
-        @response = {:code => "1",:status => "Error",:message => "Please pass valid parameteres"}
+        @response = {:code => "1",:status => "Error",:message => "Please pass valid parameteres", notification: []}
       end
     rescue Exception => e
-      @response = {:code => "-1",:status => "Error",:message => e.message}
+      @response = {:code => "-1",:status => "Error",:message => e.message, notification: []}
     end
     render json: @response
   end
@@ -196,12 +196,12 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
             @not_added.push(movie[:movie_id].to_s)
           end
         end # loop
-        @response = { code: "0",status: "Success",message: "Successfully added/updated to recently watched list",adde_movies: @recently_watched_movies,not_added_movie_ids: @not_added}
+        @response = { code: "0",status: "Success",message: "Successfully added/updated to recently watched list", adde_movies: @recently_watched_movies, not_added_movie_ids: @not_added}
       else
-        @response = {:code => "1",:status => "Error",:msg => "Please pass movie_list/user_id"}
+        @response = {:code => "1",:status => "Error", :msg => "Please pass movie_list/user_id", notification: []}
       end
     rescue Exception => e
-      @response = {:code => "-1",:status => "Error",:msg => e.message}
+      @response = {:code => "-1",:status => "Error",:msg => e.message, notification: []}
     end
     render json: @response
   end
@@ -211,12 +211,12 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
       if params[:device_id].present?
         @visitor = Visitor.find_by_device_id(params[:device_id])
         @visitor.try(:user_video_last_stops).try(:count).to_i
-        @response = { code: "0",status: "Success",message: "Watched movie cout of visitor",watched_movie_count: @visitor.try(:user_video_last_stops).try(:count).to_i}
+        @response = { code: "0",status: "Success",message: "Watched movie count of visitor", watched_movie_count: @visitor.try(:user_video_last_stops).try(:count).to_i}
       else
-        @response = {:code => "1",:status => "Error",:message => "Please pass device_id"}
+        @response = {:code => "1",:status => "Error",:message => "Please pass device_id", notification: []}
       end
     rescue Exception => e
-      @response = {:code => "-1",:status => "Error",:message => e.message}
+      @response = {:code => "-1",:status => "Error",:message => e.message, notification: []}
     end
     render json: @response
   end
