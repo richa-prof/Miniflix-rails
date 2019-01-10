@@ -25,7 +25,7 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
         if @movies.present?
           @response = { code: "0",status: "Success",message: "Successfully  movie found", movies: @movies.as_json}
         else
-          @response = { code: "1",status: "Error",message: "Not found",  movies: [] }
+          @response = { code: "0",status: "Success",message: "Not found",  movies: [] }
         end
       else
         @genres = Genre.where("lower(name) LIKE (?) ","%#{params[:genre_name].downcase}%")
@@ -35,7 +35,7 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
           end
           @response = { code: "0",status: "Success", message: "Successfully genere Found", genres: @genres}
         else
-          @response = { code: "1",status: "Error",message: "No any genres not found",  genres: []}
+          @response = { code: "0",status: "Success",message: "No any genres not found",  genres: []}
         end
       end
     rescue Exception => e
@@ -53,14 +53,14 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
         if @movies.present?
           @response = { code: "0",status: "Success",message: "Successfully  movie found", movies: @movies.as_json(api_user)}
         else
-          @response = { code: "-1", status: "Error", message: "Not found", movies: []}
+          @response = { code: "0", status: "Success", message: "Not found", movies: []}
         end
       else
         @movies=Movie.where(admin_genre_id: params[:genre_id])
         if @movies.present?
           @response = { code: "0",status: "Success", message: "Successfully  movie found", movies: @movies.as_json(api_user)}
         else
-          @response =  { code: "-1", status: "Error", message: "Not found", movies: []}
+          @response =  { code: "0", status: "Success", message: "Not found", movies: []}
         end
       end
     rescue Exception => e
@@ -92,7 +92,7 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
       if my_movies.present?
         api_response = { code: "0",status: "Success",message: "Successfully get all movies for my list", my_movies: my_movies.as_json(api_user)}
       else
-        api_response = { code: "1",status: "Error",message: "No any my list movie found",   my_movies: []}
+        api_response = { code: "0",status: "Success",message: "No any my list movie found",   my_movies: []}
       end
     rescue Exception => e
       api_response = {code: "-1", status: "Error", message: e.message, notification: []}
@@ -107,7 +107,7 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
        my_movie.delete
       { code: "0",status: "Success",message: "Movie successfully removed from your list", my_movie: my_movie}
     else
-      { code: "3",status: "Error", message: "Movie not found in your list", my_movie: [] }
+      { code: "0",status: "Success", message: "Movie not found in your list", my_movie: [] }
     end
     render json: api_response
   end
@@ -134,7 +134,7 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
         @user_video_last_stop = create_json_recentaly_watched @user_video_last_stop
         @response = { code: "0",status: "Success",message: "Successfully added/updated to recently watched list", movie: @user_video_last_stop}
       else
-        @response = {:code => "1",:status => "Error",:message => "Please pass valid parameteres"}
+        @response = {:code => "0",:status => "Success",:message => "Please pass valid parameteres"}
       end
     rescue Exception => e
       @response = {:code => "-1",:status => "Error",:message => e.message}
@@ -161,7 +161,7 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
         @user_video_last_stop = create_json_recentaly_watched @user_video_last_stop
         @response = { code: "0",status: "Success",message: "Successfully added/updated to recently watched list",movie: @user_video_last_stop}
       else
-        @response = {:code => "1",:status => "Error",:message => "Please pass valid parameteres", movie: []}
+        @response = {:code => "0",:status => "Success",:message => "Please pass valid parameteres", movie: []}
       end
     rescue Exception => e
       @response = {:code => "-1",:status => "Error",:message => e.message}
@@ -198,7 +198,7 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
         end # loop
         @response = { code: "0",status: "Success",message: "Successfully added/updated to recently watched list", adde_movies: @recently_watched_movies, not_added_movie_ids: @not_added}
       else
-        @response = {:code => "1",:status => "Error", :msg => "Please pass movie_list/user_id", adde_movies: [], not_added_movie_ids: []}
+        @response = {:code => "0",:status => "Success", :msg => "Please pass movie_list/user_id", adde_movies: [], not_added_movie_ids: []}
       end
     rescue Exception => e
       @response = {:code => "-1",:status => "Error",:msg => e.message}
@@ -213,7 +213,7 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
         @visitor.try(:user_video_last_stops).try(:count).to_i
         @response = { code: "0",status: "Success",message: "Watched movie count of visitor", watched_movie_count: @visitor.try(:user_video_last_stops).try(:count).to_i}
       else
-        @response = {:code => "1",:status => "Error",:message => "Please pass device_id"}
+        @response = {:code => "0",:status => "Success",:message => "Please pass device_id"}
       end
     rescue Exception => e
       @response = {:code => "-1",:status => "Error",:message => e.message}
