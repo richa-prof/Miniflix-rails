@@ -94,7 +94,7 @@ gem 'friendly_id', '~> 5.2.3'
 gem 'phony_rails'
 
 #sidekiq
-gem 'sidekiq'
+gem 'sidekiq', '5.1.3'
 
 # For witing Cron jobs
 gem 'whenever', require: false
@@ -185,7 +185,7 @@ group :development do
   #for mailing
   gem 'letter_opener'
 
-  gem 'capistrano'
+  gem 'capistrano', "~> 3.10.1"
   gem 'capistrano-rails'
   gem 'capistrano-bundler'
   gem 'capistrano-rvm'
