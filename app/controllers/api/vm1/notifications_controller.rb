@@ -6,7 +6,7 @@ class Api::Vm1::NotificationsController < Api::Vm1::ApplicationController
     if notifications.present?
       api_response = {code: "0", status: "Success", message: "notifications", notification: notifications.as_json}
     else
-      api_response = { code: "0", status: "Success", message: "notifications not found."}
+      api_response = { code: "0", status: "Success", message: "notifications not found.", notification: []}
     end
     render json: api_response
   end
