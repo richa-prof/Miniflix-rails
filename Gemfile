@@ -96,7 +96,7 @@ gem 'friendly_id', '~> 5.2.3'
 gem 'phony_rails'
 
 #sidekiq
-gem 'sidekiq'
+gem 'sidekiq', '5.1.3'
 
 # For witing Cron jobs
 gem 'whenever', require: false
@@ -112,7 +112,7 @@ gem 'aws-sdk', '~> 2'
 gem 'underscore-rails'
 
 # For Direct multipart uploading to Amazon S3
-gem 's3_multipart'
+gem 's3_multipart', "0.0.10.6"
 
 # For flexible authentication solution with Warden
 gem 'devise'
@@ -156,6 +156,8 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
+  gem 'capistrano-rails-console', require: false
+  gem 'dotenv-rails'
   gem 'selenium-webdriver'
   gem "rspec-rails"
   gem 'factory_bot_rails'
@@ -167,6 +169,9 @@ group :development, :test do
   gem 'simplecov', require: false
   gem 'pry'
   gem 'rb-readline'
+  gem 'pry-byebug'
+  gem 'pry-rails'
+  gem 'pry-stack_explorer'
 
   # Use Puma as the app server
   gem 'puma', '~> 3.7'
@@ -182,7 +187,7 @@ group :development do
   #for mailing
   gem 'letter_opener'
 
-  gem 'capistrano'
+  gem 'capistrano', "~> 3.10.1"
   gem 'capistrano-rails'
   gem 'capistrano-bundler'
   gem 'capistrano-rvm'
@@ -191,6 +196,10 @@ group :development do
   gem 'capistrano-faster-assets'
   gem 'capistrano-rails-collection'
   gem 'capistrano-sidekiq'
+end
+
+group :test do
+  gem 'json_spec'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

@@ -1,12 +1,12 @@
 class Api::Vm1::NotificationsController < Api::Vm1::ApplicationController
-  before_action :authenticate_api, only: [:get_notifications, :delete_notifications]
+  before_action :authenticate_api, only: [:get_notifications, :delete_notifications, :mark_notification]
 
   def get_notifications
     notifications = api_user.notifications.order(created_at: :desc).offset(params[:offset]).limit(params[:limit])
     if notifications.present?
       api_response = {code: "0", status: "Success", message: "notifications", notification: notifications.as_json}
     else
-      api_response = { code: "0", status: "Success", message: "notifications not found."}
+      api_response = { code: "0", status: "Success", message: "notifications not found.", notification: []}
     end
     render json: api_response
   end
@@ -34,5 +34,17 @@ class Api::Vm1::NotificationsController < Api::Vm1::ApplicationController
       @response = {:code => "-1",:status => "Error",:msg => e.message}
     end
     render :json=> @response
+  end
+
+  def mark_notification
+    user = User.find(params[:user_id])
+    notification = user.notifications.find(params[:notification_id])
+    if notification
+      notification.update!(is_read: true)
+      response = {:code => "0",:status => "success",:msg => "Notification marked as read!", notification: notification.as_json}
+    else
+      response = {:code => "0",:status => "success",:msg => "Not found in list of your notifications!", notification: []}
+    end
+    render :json => response
   end
 end

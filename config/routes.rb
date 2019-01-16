@@ -104,6 +104,7 @@ Rails.application.routes.draw do
       post 'users/update_registration_plan'
       post 'users/get_user_by_id'
       delete 'users/:id' => 'users#destroy'
+      get 'users/check_email_exists' => 'users#check_email_exists'
 
       get 'genres/genres' => 'genres#genres'
       post 'genres/genres_wise_movies' =>'genres#genres_wise_movies'
@@ -141,6 +142,7 @@ Rails.application.routes.draw do
       post 'notifications/get_notifications' => 'notifications#get_notifications'
       post 'notifications/delete_notifications' => 'notifications#delete_notifications'
       post 'notifications/send_test_notification' => 'notifications#send_test_notification'
+      post 'notifications/mark_notification' => 'notifications#mark_notification'
       end
     end
   end
