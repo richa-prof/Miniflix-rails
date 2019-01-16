@@ -5,7 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-ruby '2.5.0'
+ruby '2.5.3'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
 
@@ -16,6 +16,8 @@ gem 'mysql2'
 gem 'sass-rails', '~> 5.0'
 
 gem 'bootstrap-sass'
+
+gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 
 # the font-awesome font bundled as an asset for the asset pipeline
 gem "font-awesome-rails"
@@ -52,7 +54,7 @@ gem 'coffee-rails', '~> 4.2'
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
-gem 'therubyracer'
+# gem 'therubyracer'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
@@ -160,7 +162,7 @@ group :development, :test do
   gem 'faker'
   gem 'shoulda-matchers'
   gem 'rails-controller-testing'
-  gem 'database_cleaner'
+  # gem 'database_cleaner'
   gem 'shoulda-callback-matchers'
   gem 'simplecov', require: false
   gem 'pry'
