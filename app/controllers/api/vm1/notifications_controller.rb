@@ -47,4 +47,13 @@ class Api::Vm1::NotificationsController < Api::Vm1::ApplicationController
     end
     render :json => response
   end
+
+  def mark_unread_notifications
+    user = User.find(params[:user_id])
+    user.notifications.each do |notification|
+      notification.update!(is_read: false)
+    end
+    response = {:code => "0",:status => "success",:msg => "Notification marked as unread!", notification: user.notifications}
+    render :json => response
+  end
 end
