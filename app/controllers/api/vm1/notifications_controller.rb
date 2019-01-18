@@ -53,7 +53,7 @@ class Api::Vm1::NotificationsController < Api::Vm1::ApplicationController
     user.notifications.each do |notification|
       notification.update!(is_read: false)
     end
-    response = {:code => "0",:status => "success",:msg => "Notification marked as unread!", notification: user.notifications}
+    response = {:code => "0",:status => "success",:msg => "Notification marked as unread!", notification: user.notifications.as_json}
     render :json => response
   end
 end
