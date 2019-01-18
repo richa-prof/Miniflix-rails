@@ -143,6 +143,7 @@ Rails.application.routes.draw do
       post 'notifications/delete_notifications' => 'notifications#delete_notifications'
       post 'notifications/send_test_notification' => 'notifications#send_test_notification'
       post 'notifications/mark_notification' => 'notifications#mark_notification'
+      get 'notifications/mark_unread_notifications' => 'notifications#mark_unread_notifications'
       end
     end
   end
