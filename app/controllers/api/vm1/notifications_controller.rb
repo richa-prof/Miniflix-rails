@@ -1,6 +1,6 @@
 class Api::Vm1::NotificationsController < Api::Vm1::ApplicationController
   before_action :authenticate_api, only: [:get_notifications, :delete_notifications, :mark_notification]
-
+  protect_from_forgery with: :null_session, only: :mark_unread_notifications
   def get_notifications
     notifications = api_user.notifications.order(created_at: :desc).offset(params[:offset]).limit(params[:limit])
     if notifications.present?
