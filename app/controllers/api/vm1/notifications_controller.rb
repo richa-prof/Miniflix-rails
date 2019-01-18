@@ -40,9 +40,9 @@ class Api::Vm1::NotificationsController < Api::Vm1::ApplicationController
     @notification = Notification.where(user_id: params[:user_id], id: params[:notification_id]).first
     if @notification
       @notification.update!(is_read: true)
-      response = {:code => "0",:status => "success",:message => "Notification marked as read!", notification: @notification.as_json}
+      response = {:code => "0",:status => "Success",:message => "Notification marked as read!", notification: @notification.as_json}
     else
-      response = {:code => "0",:status => "success",:message => "Not found in list of your notifications!", notification: []}
+      response = {:code => "0",:status => "Success",:message => "Not found in list of your notifications!", notification: []}
     end
     render :json => response
   end
@@ -53,9 +53,9 @@ class Api::Vm1::NotificationsController < Api::Vm1::ApplicationController
       user.notifications.each do |notification|
         notification.update!(is_read: false)
       end
-      response = {:code => "0",:status => "success",:message => "Notification marked as unread!", notification: user.notifications.as_json}
+      response = {:code => "0",:status => "Success",:message => "Notification marked as unread!", notification: user.notifications.as_json}
     else
-      response = {:code => "0",:status => "success", :message => "Not found!", notification: []}
+      response = {:code => "0",:status => "Success", :message => "Not found!", notification: []}
     end
     render :json => response
   end
