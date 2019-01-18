@@ -1,6 +1,6 @@
 class Api::Vm1::NotificationsController < Api::Vm1::ApplicationController
   before_action :authenticate_api, only: [:get_notifications, :delete_notifications, :mark_notification]
-  protect_from_forgery with: :null_session, only: :mark_unread_notifications
+  protect_from_forgery with: :null_session, only: [:mark_unread_notifications]
   def get_notifications
     notifications = api_user.notifications.order(created_at: :desc).offset(params[:offset]).limit(params[:limit])
     if notifications.present?
@@ -37,11 +37,10 @@ class Api::Vm1::NotificationsController < Api::Vm1::ApplicationController
   end
 
   def mark_notification
-    user = User.find(params[:user_id])
-    notification = user.notifications.find(params[:notification_id])
-    if notification
+    @notification = Notification.where(user_id: params[:user_id], id: params[:notification_id]).first
+    if @notification
       notification.update!(is_read: true)
-      response = {:code => "0",:status => "success",:message => "Notification marked as read!", notification: notification.as_json}
+      response = {:code => "0",:status => "success",:message => "Notification marked as read!", notification: @notification.as_json}
     else
       response = {:code => "0",:status => "success",:message => "Not found in list of your notifications!", notification: []}
     end
