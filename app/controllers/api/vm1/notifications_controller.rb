@@ -54,7 +54,6 @@ class Api::Vm1::NotificationsController < Api::Vm1::ApplicationController
         notification.update!(is_read: false)
       end
       response = {:code => "0",:status => "success",:message => "Notification marked as unread!", notification: user.notifications.as_json}
-      render :json => response
     else
       response = {:code => "0",:status => "success", :message => "Not found!", notification: []}
     end
