@@ -41,19 +41,24 @@ class Api::Vm1::NotificationsController < Api::Vm1::ApplicationController
     notification = user.notifications.find(params[:notification_id])
     if notification
       notification.update!(is_read: true)
-      response = {:code => "0",:status => "success",:msg => "Notification marked as read!", notification: notification.as_json}
+      response = {:code => "0",:status => "success",:message => "Notification marked as read!", notification: notification.as_json}
     else
-      response = {:code => "0",:status => "success",:msg => "Not found in list of your notifications!", notification: []}
+      response = {:code => "0",:status => "success",:message => "Not found in list of your notifications!", notification: []}
     end
     render :json => response
   end
 
   def mark_unread_notifications
     user = User.find(params[:user_id])
-    user.notifications.each do |notification|
-      notification.update!(is_read: false)
+    if user
+      user.notifications.each do |notification|
+        notification.update!(is_read: false)
+      end
+      response = {:code => "0",:status => "success",:message => "Notification marked as unread!", notification: user.notifications.as_json}
+      render :json => response
+    else
+      response = {:code => "0",:status => "success", :message => "Not found!", notification: []}
     end
-    response = {:code => "0",:status => "success",:msg => "Notification marked as unread!", notification: user.notifications.as_json}
     render :json => response
   end
 end
