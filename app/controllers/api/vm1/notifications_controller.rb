@@ -66,7 +66,7 @@ class Api::Vm1::NotificationsController < Api::Vm1::ApplicationController
       user.notifications.each do |notification|
         notification.update!(is_read: true)
       end
-      response = {:code => "0",:status => "Success",:message => "All notifications marked as read!", notification: user.notifications.as_json}
+      response = {:code => "0",:status => "Success",:message => "All notifications marked as read!"}
     else
       response = {:code => "0",:status => "Success", :message => "Not found!", notification: []}
     end
