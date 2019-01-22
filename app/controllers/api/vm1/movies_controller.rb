@@ -1,7 +1,8 @@
 class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
   include UsersHelper
   before_action :authenticate_api, only: [:my_list_movies, :add_movie_my_list, :remove_my_list_movie]
-  before_action :authenticate_according_to_devise, only: [:get_movie_detail, :get_all_movie_by_movie_name_or_genre_name, :search_movie_with_genre, :add_to_recently_watched, :add_to_recently_watched_visitor, :add_multiple_to_recently_watched, :latest_movies ]
+  before_action :authenticate_according_to_devise, only: [ :get_all_movie_by_movie_name_or_genre_name, :search_movie_with_genre, :add_to_recently_watched, :add_to_recently_watched_visitor, :add_multiple_to_recently_watched, :latest_movies ]
+  protect_from_forgery with: :null_session, only: [:get_movie_detail]
 
 
   def get_movie_detail
