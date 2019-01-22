@@ -235,7 +235,7 @@ Rails.application.routes.draw do
     get '/robots', to: redirect('/robots.txt'), format: false
     get '/robots.:format' => 'robots#index'
 
-    get '/sitemap.xml.gz', to: redirect("#{ENV['CLOUD_FRONT_URL']}sitemaps/sitemap.xml.gz"), as: :sitemap
+    get '/sitemap.xml.gz', to: redirect("https://d32c9chnc7rnl8.cloudfront.net/sitemaps/sitemap.xml.gz"), as: :sitemap
 
     devise_for :users, as: :staff, :controllers => { registrations: 'registrations',
                                                      sessions: 'sessions' }
