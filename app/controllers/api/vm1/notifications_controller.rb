@@ -1,5 +1,5 @@
 class Api::Vm1::NotificationsController < Api::Vm1::ApplicationController
-  before_action :authenticate_api, only: [:get_notifications, :delete_notifications, :mark_notification]
+  before_action :authenticate_api, only: [:get_notifications, :delete_notifications, :mark_notification, :mark_all_notifications]
   protect_from_forgery with: :null_session, only: [:mark_unread_notifications]
   def get_notifications
     notifications = api_user.notifications.order(created_at: :desc).offset(params[:offset]).limit(params[:limit])
@@ -54,6 +54,19 @@ class Api::Vm1::NotificationsController < Api::Vm1::ApplicationController
         notification.update!(is_read: false)
       end
       response = {:code => "0",:status => "Success",:message => "Notification marked as unread!", notification: user.notifications.as_json}
+    else
+      response = {:code => "0",:status => "Success", :message => "Not found!", notification: []}
+    end
+    render :json => response
+  end
+
+  def mark_all_notifications
+    user = User.find(params[:user_id])
+    if user
+      user.notifications.each do |notification|
+        notification.update!(is_read: true)
+      end
+      response = {:code => "0",:status => "Success",:message => "All notifications marked as read!", notification: user.notifications.as_json}
     else
       response = {:code => "0",:status => "Success", :message => "Not found!", notification: []}
     end
