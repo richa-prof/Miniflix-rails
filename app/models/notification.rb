@@ -61,7 +61,7 @@ class Notification < ApplicationRecord
     end
 
     def test_notification(token,device)
-      @adminMovie = Movie.first
+      @adminMovie = Movie.order("RAND()").limit(1).first
 
       notification_message = movie.new_movie_added_notification_message
 
