@@ -1,0 +1,84 @@
+<%# Third(if adding new series; second - if do not) page of series upload %>
+<%# <%= javascript_include_tag 'admin/upload_series', 'data-turbolinks-track' => true %>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    <%= t('heading.admin_episode') %>
+  </h1>
+</section>
+
+<!-- Main content -->
+<section class="content add-episode-content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box content-container">
+        <div class="box-header">
+          <div class="row">
+            <div class="col-lg-12 col-xs-12">
+              <h3 class="box-title"><%= t('heading.add_new_episode_details') %></h3>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-header -->
+
+                    <div class="box box-primary">
+                <div class="box-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="episode_name">Episode Name</label>
+                            <input type="text" class="form-control valid" placeholder="Enter name" aria-required="true" aria-invalid="false" id="episode_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="episode_season">Season</label>
+                            <input type="text" class="form-control valid" placeholder="Enter season" aria-required="true" aria-invalid="false" id="episode_season">
+                        </div>
+                        <div class="form-group">
+                            <label for="episode_description">Description</label>
+                            <textarea type="text" class="form-control valid" placeholder="Enter description" aria-required="true" aria-invalid="false" id="episode_description" maxlength="450" rows="5"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="episode_duration">Duration</label>
+                            <input type="text" class="form-control valid" placeholder="00:00:00" aria-required="true" aria-invalid="false" id="episode_duration">
+                        </div>
+                        <div class="form-group">
+                            <label for="episode_seasons">Seasons</label>
+                            <input type="text" class="form-control valid" placeholder="Enter number of seasons" aria-required="true" aria-invalid="false" id="episode_seasons">
+                        </div>
+                        <div class="form-group">
+                            <label for="episode_language">Language</label>
+                            <input type="text" class="form-control valid" placeholder="Enter language" aria-required="true" aria-invalid="false" id="episode_language">
+                        </div>
+                        <div class="form-group">
+                            <label for="episode_genre">Genre</label>
+                            <select class="form-control valid" id="episode_genre" aria-required="true" aria-invalid="false">
+                                <option value selected>Select Genre</option>
+                                <option value="0">Genre 1</option>
+                                <option value="1">Genre 2</option>
+                                <option value="2">Genre 3</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="episode_release_year">Released date</label>
+                            <%# Insert datepicker here %>
+                        </div>
+                        <div class="form-group">
+                            <label for="episode_actors">Star cast</label>
+                            <input type="text" class="form-control valid" placeholder="Enter actors" aria-required="true" aria-invalid="false" id="episode_actors">
+                        </div>
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary">Add Episode</button>
+                            <%= link_to t('links.cancel'), admin_movies_path, class: "btn btn-default" %>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</section>
+<!-- /.content -->

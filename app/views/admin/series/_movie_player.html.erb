@@ -1,0 +1,14 @@
+<%# Change to series %>
+<figure data-embed-type="jwplayer" data-embed-url="video-url1" data-embed-loaded="false">
+  <div itemscope="" itemtype="http://schema.org/VideoObject">
+    <div data-embed-url="video-url1" class="jw-player"></div>
+  </div>
+</figure>
+<h3 class="box-title text-blue">
+  <%= t('heading.movie') %>
+  <% if movie.downloadable %>
+    <%= link_to( t('links.download_now'),
+                 movie.film_video,
+                 class: "" ) %>
+  <% end %>
+</h3>
