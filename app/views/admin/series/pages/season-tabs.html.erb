@@ -1,0 +1,37 @@
+<section>
+<div class="season-tabs">
+  <button class="season-tab tablink current-tab" onclick="openSeason(event, 'season_1')">Season 1</button>
+  <button class="season-tab tablink" onclick="openSeason(event, 'season_2')">Season 2</button>
+  <button class="season-tab tablink" onclick="openSeason(event, 'season_3')">Season 3</button>
+</div>
+  <div id="season_1" class="season">
+  <%# Insert players here %>
+  1
+</div>
+
+<div id="season_2" class="season" style="display:none">
+  <%# Insert players here %>
+  2
+</div>
+
+<div id="season_3" class="season" style="display:none">
+  <%# Insert players here %>
+  3
+</div>
+</section>
+
+<script>
+  function openSeason(evt, season) {
+  var i, x, tablinks;
+  x = document.getElementsByClassName("season");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < x.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" current-tab", "");
+  }
+  document.getElementById(season).style.display = "block";
+  evt.currentTarget.className += " current-tab";
+}
+</script>

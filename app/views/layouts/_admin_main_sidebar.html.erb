@@ -59,6 +59,12 @@
             <% end %>
           </li>
 
+          <li class="<%= 'active' if controller_path == 'admin/movies' %>">
+            <%= link_to admin_movies_path, method: :get do %>
+              <i class="fa fa-fw fa-file-movie-o"></i> <span>Series</span>
+            <% end %>
+          </li>
+
           <li class="<%= 'active' if controller_path == 'admin/genres' %>">
             <%= link_to admin_genres_path, method: :get do %>
               <i class="fa fa-th"></i> <span> <%= t('heading.genres') %> </span>
