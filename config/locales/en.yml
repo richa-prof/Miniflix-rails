@@ -133,6 +133,7 @@ en:
     sitemap: Sitemap
     static_pages: Static Pages
     static_page_meta_tags: Static Page Meta Tags
+    listing_series_details: Listing Serials Details
   title:
     miniflix_admin: Miniflix Admin
     movie:
@@ -242,6 +243,7 @@ en:
     watch_trailer: Watch Trailer
     add_caption: Add Caption
     sign_in: Sign In
+    add_new_serial: Add new
   label:
     not_available: Not Available
     background_image:

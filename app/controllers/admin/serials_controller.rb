@@ -4,4 +4,8 @@ class Admin::SerialsController < ApplicationController
   def index
     @admin_serials = Serial.all
   end
+
+  def new
+    @admin_serial = Serial.new
+  end
 end
