@@ -76,6 +76,17 @@ en:
       star_cast: Star cast
       featured_film: Featured film
       action: Action
+    serials:
+      year: Released year
+      id: id
+      title: Title
+      description: Description
+      seasons: Seasons
+      genre: Genre
+      directed_by: Directed by
+      language: Language
+      star_cast: Star cast
+      action: Action
 
   heading:
     main_navigation: MAIN NAVIGATION

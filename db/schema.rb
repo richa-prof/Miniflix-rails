@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190115172506) do
+ActiveRecord::Schema.define(version: 20190131175158) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "city"
@@ -114,6 +114,19 @@ ActiveRecord::Schema.define(version: 20190115172506) do
     t.string "stripe_plan_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "admin_serials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "title", null: false
+    t.date "year"
+    t.bigint "admin_genre_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "directed_by", null: false
+    t.string "star_cast", null: false
+    t.text "description", null: false
+    t.string "language", null: false
+    t.index ["admin_genre_id"], name: "index_admin_serials_on_admin_genre_id"
   end
 
   create_table "background_images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -429,6 +442,7 @@ ActiveRecord::Schema.define(version: 20190115172506) do
   add_foreign_key "admin_movie_captions", "admin_movies"
   add_foreign_key "admin_movie_thumbnails", "admin_movies"
   add_foreign_key "admin_movies", "admin_genres"
+  add_foreign_key "admin_serials", "admin_genres"
   add_foreign_key "blogs", "users"
   add_foreign_key "comments", "blogs"
   add_foreign_key "contact_user_replies", "contact_us", column: "contact_us_id"
