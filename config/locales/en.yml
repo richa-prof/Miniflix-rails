@@ -87,6 +87,7 @@ en:
       language: Language
       star_cast: Star cast
       action: Action
+      series: Series
 
   heading:
     main_navigation: MAIN NAVIGATION
@@ -133,7 +134,7 @@ en:
     sitemap: Sitemap
     static_pages: Static Pages
     static_page_meta_tags: Static Page Meta Tags
-    listing_series_details: Listing Serials Details
+    listing_series_details: Listing Series Details
   title:
     miniflix_admin: Miniflix Admin
     movie:

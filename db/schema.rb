@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190131175158) do
+ActiveRecord::Schema.define(version: 20190202123953) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "city"
@@ -126,7 +126,9 @@ ActiveRecord::Schema.define(version: 20190131175158) do
     t.string "star_cast", null: false
     t.text "description", null: false
     t.string "language", null: false
+    t.string "slug"
     t.index ["admin_genre_id"], name: "index_admin_serials_on_admin_genre_id"
+    t.index ["slug"], name: "index_admin_serials_on_slug", unique: true
   end
 
   create_table "background_images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

@@ -9,7 +9,7 @@
     <%= t('heading.movies') %>
   </h1>
   <ol class="breadcrumb">
-    <%= link_to admin_movies_path, method: :get do %>
+    <%= link_to admin_serials_path, method: :get do %>
       <i class="fa fa-fw fa-file-movie-o"></i> <span><%= t('heading.movie') %></span>
     <% end %>
     <li>  </li>
@@ -17,8 +17,7 @@
   </ol>
 </section>
 
-<% movie_thumbnail = @admin_movie.movie_thumbnail %>
-<% movie_genre = @admin_movie.genre %>
+<% serial_genre = @admin_serial.genre %>
 <% not_available = t('label.not_available') %>
 
 <!-- Main content -->
@@ -42,10 +41,9 @@
                   <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                       <h2 class="box-title text-blue">
-                        <%= @admin_movie.name || not_available %>
+                        <%= @admin_serial.title || not_available %>
                       </h2>
                       <p class="margin-btm-zero">
-                        <%= movie_posted_on_details_for(@admin_movie) %>
                       </p>
                     </div>
                   </div>
@@ -86,10 +84,10 @@
                               <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                   <h3 class="box-title text-blue">
-                                    <%= t('title.movie.genre') %>
+                                    <%= t('title.serials.genre') %>
                                   </h3>
 
-                                  <p class="margin-btm-zero"><%= movie_genre.try(:name) || not_available %></p>
+                                  <p class="margin-btm-zero"><%= serial_genre.try(:name) || not_available %></p>
                                 </div>
                               </div>
                             </div>
@@ -103,7 +101,7 @@
                                   <h3 class="box-title text-blue">
                                     <%= t('title.movie.directed_by') %>
                                   </h3>
-                                  <p class="margin-btm-zero"><%= @admin_movie.directed_by || not_available %></p>
+                                  <p class="margin-btm-zero"><%= @admin_serial.directed_by || not_available %></p>
                                 </div>
                               </div>
                             </div>
@@ -117,7 +115,7 @@
                                   <h3 class="box-title text-blue">
                                     <%= t('title.movie.released_on') %>
                                   </h3>
-                                  <p class="margin-btm-zero"><%= formatted_released_date_for(@admin_movie) %></p>
+                                  <p class="margin-btm-zero"><%= formatted_released_date_for(@admin_serial) %></p>
                                 </div>
                               </div>
                             </div>
@@ -131,7 +129,7 @@
                                   <h3 class="box-title text-blue">
                                     <%= t('title.movie.stars_cast') %>
                                   </h3>
-                                  <p class="star_cast"><%= @admin_movie.star_cast || not_available  %></p>
+                                  <p class="star_cast"><%= @admin_serial.star_cast || not_available  %></p>
                                 </div>
                               </div>
                             </div>
@@ -159,9 +157,9 @@
                               <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                   <h3 class="box-title text-blue">
-                                    <%= t('title.movie.movie_story') %>
+                                    <%= t('title.serials.description') %>
                                   </h3>
-                                  <p class="margin-btm-zero"><%= @admin_movie.description %></p>
+                                  <p class="margin-btm-zero"><%= @admin_serial.description %></p>
                                 </div>
                               </div>
                             </div>
@@ -183,107 +181,6 @@
     <!-- /.col -->
   </div>
   <!-- /.row -->
+
 </section>
 <!-- /.content -->
-
-<%# Uncomment when changed to series %>
-<script type="text/javascript">
-//   isEmptyValue = function(value) {
-//     return (undefined === value || null === value || "" === value)
-//   }
-
-//   jwPlayerConfigContainer = function() {
-//     return $('#jwPlayerConfigContainer');
-//   };
-
-//   caption_data = []
-//   <% @admin_movie.movie_captions.active_caption.each do |caption| %>
-//     var stringValue = "<%= caption.is_default  %>";
-//     var boolValue = stringValue.toLowerCase() == 'true' ? true : false;   //returns true
-
-//     caption_data.push({
-//       file: "<%= caption.caption_file_cloudfront_url %>",
-//       label: "<%= caption.language %>",
-//       kind: "captions",
-//       default: boolValue
-//     })
-//   <% end %>
-
-//   jwplayer_setup = function() {
-//     var jwPlayerConfig = jwPlayerConfigContainer();
-//     var hlsUrl = jwPlayerConfig.data('hls-file');
-//     var originalUrl = jwPlayerConfig.data('original-file');
-//     var trailerFileUrl = jwPlayerConfig.data('trailer-file');
-
-//     var sources = [{
-//               file: hlsUrl
-//             }]
-
-//     var videoObject = document.querySelector("div[data-embed-url='video-url1']");
-//     videoObject.id = "player-1";
-//     var newplayerInstance = window.jwplayer(videoObject);
-//     window.player2 = newplayerInstance;
-//     newplayerInstance.setup({
-//       sources: sources,
-//       hlshtml: true,
-//       tracks: caption_data,
-//       allowscriptaccess: 'always',
-//       allownetworking: 'all'
-//     });
-
-//     if (!isEmptyValue(trailerFileUrl)) {
-//       var trailerSources = [{
-//                 file: trailerFileUrl
-//               }]
-
-//       var trailerVideoObject = document.querySelector("div[data-embed-url='video-url2']");
-//       trailerVideoObject.id = "player-2";
-//       var newplayerInstance = window.jwplayer(trailerVideoObject);
-//       window.player2 = newplayerInstance;
-//       newplayerInstance.setup({
-//         sources: trailerSources,
-//         allowscriptaccess: 'always',
-//         allownetworking: 'all'
-//       });
-//     }
-//   };
-
-//   jwplayer_setup_error = function() {
-//     jwplayer().on('setupError',function(er){
-//       $('.full-screen-play').removeClass('full-screen-play');
-
-//       $('#err-player').html('<div class="alert alert-danger alert-dismissible" style="margin-top: 12px;"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+ er.message +'</div>');
-//     });
-//   };
-
-//   bindChangeEventOnBrowserScreens = function() {
-//     $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function(el){
-
-//       var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen || document.msFullscreenElement;
-//       if (state != true){
-//         jwplayer("flim_video").pause(true);
-//         $(".player").addClass('hide');
-//       } else{
-//         jwplayer("flim_video").play(true);
-//       }
-//     });
-//   };
-
-// var ready;
-
-// ready = function() {
-//   console.log('>>>>> invoked `ready` function >>>>>');
-
-//   jwplayer.key = jwPlayerConfigContainer().data('jwplayer-key');
-
-//   if (jwPlayerConfigContainer().length) {
-//     bindChangeEventOnBrowserScreens();
-//     jwplayer_setup();
-//     jwplayer_setup_error();
-//   }
-// };
-
-// $(document).ready(ready);
-// $(document).on('turbolinks:load', ready);
-
-</script>
