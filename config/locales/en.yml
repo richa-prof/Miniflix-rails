@@ -135,6 +135,7 @@ en:
     static_pages: Static Pages
     static_page_meta_tags: Static Page Meta Tags
     listing_series_details: Listing Series Details
+    serie: Serie
   title:
     miniflix_admin: Miniflix Admin
     movie:

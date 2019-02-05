@@ -1,26 +1,24 @@
 <%# Change to series %>
 
-<% released_date = @admin_movie.released_date ? @admin_movie.released_date.strftime("%m/%d/%Y") : "" %>
-<% posted_date = @admin_movie.posted_date ? @admin_movie.posted_date.strftime("%m/%d/%Y") : "" %>
-<% movie_thumbnail = @admin_movie.movie_thumbnail %>
+<% released_date = @admin_serial.year ? @admin_serial.year.strftime("%m/%d/%Y") : "" %>
 
 <% form_css_class = is_edit_mode ? 'edit_movie_frm' : 'add_movie_details_frm' %>
 
 <!-- form start -->
-<%= form_for( [:admin, @admin_movie],
+<%= form_for( [:admin, @admin_serial],
               html: { id: "frm_admin_series",
                       class: form_css_class,
                       multipart: true } ) do |f| %>
-  <% if @admin_movie.errors.any? %>
+  <% if @admin_serial.errors.any? %>
     <div class="row">
       <div class="col-md-12">
         <div class="box box-default">
           <div class="box-body">
-            <% @admin_movie.errors.full_messages.each do |message| %>
+            <% @admin_serial.errors.full_messages.each do |message| %>
               <div class="callout callout-success">
                 <p><%= message %></p>
               </div>
-            <% end %>         
+            <% end %>
           </div>
           <!-- /.box-body -->
         </div>
@@ -36,8 +34,8 @@
         <!-- /.box-header -->
           <div class="box-body">
             <div class="form-group">
-              <%= f.label :series_name %>
-              <%= f.text_field( :name,
+              <%= f.label :series_title %>
+              <%= f.text_field( :title,
                                 class: "form-control",
                                 placeholder: t('placeholder.movie.name') ) %>
             </div>
@@ -61,7 +59,7 @@
             </div>
 
             <div class="form-group">
-              <%= fields_for :movie_thumbnail, movie_thumbnail do |thumbnail_fields| %>
+              <%= fields_for :serial_thumbnail, movie_thumbnail do |thumbnail_fields| %>
                 <div class="row">
                   <div class="col-md-9 col-sm-12">
                     <%= render( partial: 'set_movie_screenshots',
@@ -98,11 +96,11 @@
             </div>
 
             <div class="form-group">
-              <%= f.label :released_date %>            
+              <%= f.label :released_date %>
               <%= f.text_field( :released_date,
                                 class: "form-control date-picker",
                                 placeholder: t('placeholder.movie.released_date'),
-                                value: released_date ) %>         
+                                value: released_date ) %>
             </div>
 
             <div class="form-group">
@@ -126,7 +124,7 @@
           <%# Change button text to Continue %>
             <%= f.submit nil, class: "btn btn-primary" %>
             <%= link_to t('links.cancel'), admin_movies_path, class: "btn btn-default" %>
-          </div>      
+          </div>
       </div>
       <!-- /.box -->
     </div>

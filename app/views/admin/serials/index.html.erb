@@ -68,7 +68,9 @@
                                 <%= link_to admin_serial_path(admin_serial), class: "text-green", data: { turbolinks: false } do %>
                                   <i class="fa fa-fw fa-eye"></i>
                                 <% end %>
-                                <a href=""><i class="fa fa-fw fa-edit text-blue"></i></a>
+                                <%= link_to edit_admin_serial_path(admin_serial), class: "text-green", data: { turbolinks: false } do %>
+                                  <i class="fa fa-fw fa-edit text-blue"></i>
+                                <% end %>
                                 <a href=""><i class="fa fa-fw fa-trash text-red"></i></a>
                                 <a href=""><i class="fa fa-file-text-o"></i></a>
                             </td>

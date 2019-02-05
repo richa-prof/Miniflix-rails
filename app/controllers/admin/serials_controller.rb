@@ -11,7 +11,10 @@ class Admin::SerialsController < ApplicationController
     @admin_serial = Serial.new
   end
   def show
-    
+  end
+
+  def edit
+    #code
   end
   private
 
