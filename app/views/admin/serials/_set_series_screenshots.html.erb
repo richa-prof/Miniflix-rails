@@ -1,5 +1,5 @@
 <%# Change to series %>
-<% thumbnail = movie.movie_thumbnail %>
+<% thumbnail = @admin_serial.seasons.first.movies.first.movie_thumbnail if @admin_serial.seasons.first.movies.first %>
 
 <label for="admin_movie_thumbnails">
   <%= t('label.movie.upload_movie_screenshots') %>

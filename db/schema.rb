@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190202123953) do
+ActiveRecord::Schema.define(version: 20190207115355) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "city"
@@ -79,8 +79,10 @@ ActiveRecord::Schema.define(version: 20190202123953) do
     t.datetime "updated_at", null: false
     t.string "bitly_url"
     t.string "slug"
+    t.bigint "season_id"
     t.index ["admin_genre_id"], name: "index_admin_movies_on_admin_genre_id"
     t.index ["s3_multipart_upload_id"], name: "index_admin_movies_on_s3_multipart_upload_id"
+    t.index ["season_id"], name: "index_admin_movies_on_season_id"
   end
 
   create_table "admin_paypal_access_tokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -127,6 +129,7 @@ ActiveRecord::Schema.define(version: 20190202123953) do
     t.text "description", null: false
     t.string "language", null: false
     t.string "slug"
+    t.integer "seasons_number"
     t.index ["admin_genre_id"], name: "index_admin_serials_on_admin_genre_id"
     t.index ["slug"], name: "index_admin_serials_on_slug", unique: true
   end
@@ -301,6 +304,12 @@ ActiveRecord::Schema.define(version: 20190202123953) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "seasons", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "admin_serial_id"
+    t.integer "season_number"
+    t.index ["admin_serial_id"], name: "index_seasons_on_admin_serial_id"
+  end
+
   create_table "seo_meta", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "seo_meta_id"
     t.string "seo_meta_type"
@@ -444,6 +453,7 @@ ActiveRecord::Schema.define(version: 20190202123953) do
   add_foreign_key "admin_movie_captions", "admin_movies"
   add_foreign_key "admin_movie_thumbnails", "admin_movies"
   add_foreign_key "admin_movies", "admin_genres"
+  add_foreign_key "admin_movies", "seasons"
   add_foreign_key "admin_serials", "admin_genres"
   add_foreign_key "blogs", "users"
   add_foreign_key "comments", "blogs"
@@ -453,6 +463,7 @@ ActiveRecord::Schema.define(version: 20190202123953) do
   add_foreign_key "movie_trailers", "admin_movies"
   add_foreign_key "notifications", "admin_movies"
   add_foreign_key "notifications", "users"
+  add_foreign_key "seasons", "admin_serials"
   add_foreign_key "social_media_links", "users"
   add_foreign_key "user_email_notifications", "users"
   add_foreign_key "user_filmlists", "admin_movies"

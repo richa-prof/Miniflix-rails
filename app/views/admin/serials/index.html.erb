@@ -57,7 +57,7 @@
                             <td data-title="Id"><%= admin_serial.id %></td>
                             <td data-title="Name"><%= admin_serial.title%></td>
                             <td data-title="Description"><%= admin_serial.description%></td>
-                            <td data-title="Seasons">2</td>
+                            <td data-title="Seasons"><%=admin_serial.seasons.count%></td>
                             <td data-title="Genre"><%= admin_serial.find_genre(admin_serial.admin_genre_id)%></td>
                             <td data-title="Directed by"><%= admin_serial.directed_by%></td>
                             <td data-title="Released year"><%= admin_serial.year.year%></td>
@@ -71,7 +71,9 @@
                                 <%= link_to edit_admin_serial_path(admin_serial), class: "text-green", data: { turbolinks: false } do %>
                                   <i class="fa fa-fw fa-edit text-blue"></i>
                                 <% end %>
-                                <a href=""><i class="fa fa-fw fa-trash text-red"></i></a>
+                                <%= link_to admin_serial_path(admin_serial), method: :delete, class: "text-green", data: { confirm: t('confirm.are_you_sure') } do %>
+                                  <i class="fa fa-fw fa-trash text-red"></i>
+                                <% end %>
                                 <a href=""><i class="fa fa-file-text-o"></i></a>
                             </td>
                           </tr>

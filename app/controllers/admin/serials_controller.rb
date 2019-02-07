@@ -16,6 +16,11 @@ class Admin::SerialsController < ApplicationController
   def edit
     #code
   end
+
+  def destroy
+    @admin_serial.destroy
+    redirect_to admin_serials_url, notice: I18n.t('flash.serial.successfully_deleted')
+  end
   private
 
   def set_admin_serial

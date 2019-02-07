@@ -3,7 +3,7 @@
 <% released_date = @admin_serial.year ? @admin_serial.year.strftime("%m/%d/%Y") : "" %>
 
 <% form_css_class = is_edit_mode ? 'edit_movie_frm' : 'add_movie_details_frm' %>
-
+<% movie_thumbnail = @admin_serial.seasons.first.movies.first.movie_thumbnail if @admin_serial.seasons.first.movies.first %>
 <!-- form start -->
 <%= form_for( [:admin, @admin_serial],
               html: { id: "frm_admin_series",
@@ -37,7 +37,7 @@
               <%= f.label :series_title %>
               <%= f.text_field( :title,
                                 class: "form-control",
-                                placeholder: t('placeholder.movie.name') ) %>
+                                placeholder: t('placeholder.serial.title') ) %>
             </div>
 
             <div class="form-group">
@@ -45,7 +45,7 @@
               <%= f.text_area( :description,
                                rows: 5,
                                class: "form-control description-textarea",
-                               placeholder: t('placeholder.movie.description') ) %>
+                               placeholder: t('placeholder.serial.description') ) %>
             </div>
 
             <div class="form-group">
@@ -62,8 +62,8 @@
               <%= fields_for :serial_thumbnail, movie_thumbnail do |thumbnail_fields| %>
                 <div class="row">
                   <div class="col-md-9 col-sm-12">
-                    <%= render( partial: 'set_movie_screenshots',
-                                locals: { movie: @admin_movie,
+                    <%= render( partial: 'set_series_screenshots',
+                                locals: { serial: @admin_serial,
                                           is_edit_mode: is_edit_mode,
                                           thumbnail_fields: thumbnail_fields } ) %>
                   </div>
@@ -71,7 +71,7 @@
                 <div class="row">
                   <div class="col-md-9 col-sm-12">
                     <%= render( partial: 'set_thumbnail_screenshots',
-                                locals: { movie: @admin_movie,
+                                locals: { movie: @admin_serial,
                                           is_edit_mode: is_edit_mode,
                                           thumbnail_fields: thumbnail_fields } ) %>
                   </div>
@@ -80,24 +80,17 @@
             </div>
 
             <div class="form-group">
-              <%= f.label :video_duration %>
-              <%= f.text_field( :video_duration,
+              <%= f.label :number_of_seasons %>
+              <%= f.text_field( :seasons_number,
                                 class: "form-control",
-                                minlength: 8,
-                                placeholder: t('placeholder.movie.video_duration') ) %>
+                                minlength: 1,
+                                placeholder: t('placeholder.serial.seasons_number'),
+                                value: @admin_serial.seasons.count ) %>
             </div>
 
             <div class="form-group">
-              <%= f.label :video_format %>
-              <%= f.select( :video_format,
-                            supported_video_formats_map,
-                            { include_blank: t(:SelectVideoFormat) },
-                            class: "form-control" ) %>
-            </div>
-
-            <div class="form-group">
-              <%= f.label :released_date %>
-              <%= f.text_field( :released_date,
+              <%= f.label :year %>
+              <%= f.text_field( :year,
                                 class: "form-control date-picker",
                                 placeholder: t('placeholder.movie.released_date'),
                                 value: released_date ) %>
@@ -167,7 +160,7 @@
       };
     }
     else { //No file was input or browser doesn't support client side reading
-      <% unless @admin_movie.movie_thumbnail.thumbnail_screenshot.present? %>
+      <% unless movie_thumbnail.present? %>
         $("#thumbnail_error").html("Please upload thumbnail image").show();
         error = true;
       <% end %>
@@ -195,7 +188,7 @@
       };
     }
     else { //No file was input or browser doesn't support client side reading
-      <% unless @admin_movie.movie_thumbnail.thumbnail_640_screenshot.present? %>
+      <% unless movie_thumbnail.present? %>
         $("#thumbnail_640_error").html("Please upload thumbnail image").show();
         error = true;
       <% end %>
@@ -223,7 +216,7 @@
       };
     }
     else { //No file was input or browser doesn't support client side reading
-      <% unless @admin_movie.movie_thumbnail.thumbnail_640_screenshot.present? %>
+      <% unless movie_thumbnail.present? %>
         $("#thumbnail_800_error").html("Please upload thumbnail image").show();
         error = true;
       <% end %>
