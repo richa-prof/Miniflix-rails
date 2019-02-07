@@ -46,19 +46,21 @@
                       <% end %>
                       <div class="form-group">
                         <%= @serials.each do |serial| %>
-                          <select class="form-control valid" id="series_admin" aria-required="true" aria-invalid="false">
+                          <select class="form-control valid" id="series_admin" aria-required="true" aria-invalid="false" onchange="window.location.href=this.value;">
                               <option value selected>Choose Series</option>
-                              <option><%= serial.title %></option>
+                              <option value="<%= new3_admin_serials_path(id: serial.id)%>"><%= serial.title %></option>
                         <%end%>
                           </select>
                           <div class="errors-container" id="errors">
                               <p>Please, choose the series</p>
                           </div>
                       </div>
-                      <div class="add-series-container">
-                          <i class="fa fa-plus"></i>
-                          <p class="add-series-text">Add New Series</p>
-                      </div>
+                      <%= link_to new2_admin_serials_path, data: { turbolinks: false } do %>
+                        <div class="add-series-container">
+                            <i class="fa fa-plus"></i>
+                            <p class="add-series-text">Add New Series</p>
+                        </div>
+                      <% end %>
                       <input type="button" value="Continue" class="btn btn-primary" id="continue-btn">
                     </form>
                 </div>

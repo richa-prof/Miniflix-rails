@@ -13,17 +13,19 @@ class Admin::SerialsController < ApplicationController
   end
 
   def new2
-    #code
+    @admin_serial = Serial.new
+    render template: 'admin/serials/pages/new2.html.erb'
   end
 
   def new3
-    #code
+    @admin_serial = Serial.find(params[:id])
+    render template: 'admin/serials/pages/new3.html.erb'
   end
 
   def new4
     #code
   end
-  
+
   def show
   end
 

@@ -216,9 +216,9 @@ Rails.application.routes.draw do
 
       resources :serials do
         collection do
-          get 'new2' => 'seriials#new2'
-          get 'new3' => 'seriials#new3'
-          get 'new4' => 'seriials#new4'
+          get 'new2' => 'serials#new2'
+          get 'new3' => 'serials#new3'
+          get 'new4' => 'serials#new4'
         end
       end
     end
