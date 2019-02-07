@@ -45,11 +45,11 @@
                         </div>
                       <% end %>
                       <div class="form-group">
+                        <%= @serials.each do |serial| %>
                           <select class="form-control valid" id="series_admin" aria-required="true" aria-invalid="false">
                               <option value selected>Choose Series</option>
-                              <option value="0">Serial 1</option>
-                              <option value="1">Serial 2</option>
-                              <option value="2">Serial 3</option>
+                              <option><%= serial.title %></option>
+                        <%end%>
                           </select>
                           <div class="errors-container" id="errors">
                               <p>Please, choose the series</p>

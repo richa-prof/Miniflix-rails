@@ -213,8 +213,14 @@ Rails.application.routes.draw do
           get 'check_genre_name/:id' => 'genres#check_genre_name', as: :check_genre_name
         end
       end
-      
-      resources :serials
+
+      resources :serials do
+        collection do
+          get 'new2' => 'seriials#new2'
+          get 'new3' => 'seriials#new3'
+          get 'new4' => 'seriials#new4'
+        end
+      end
     end
 
 

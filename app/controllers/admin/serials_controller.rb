@@ -8,8 +8,22 @@ class Admin::SerialsController < ApplicationController
   end
 
   def new
+    @serials = Serial.all
     @admin_serial = Serial.new
   end
+
+  def new2
+    #code
+  end
+
+  def new3
+    #code
+  end
+
+  def new4
+    #code
+  end
+  
   def show
   end
 
