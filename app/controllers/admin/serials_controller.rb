@@ -87,9 +87,7 @@ class Admin::SerialsController < ApplicationController
     if movie_thumbnail.present?
       movie_thumbnail.update(movie_thumbnail_params)
     else
-      binding.pry
       movie_thumbnail = admin_serial.build_movie_thumbnail(movie_thumbnail_params)
-      binding.pry
       movie_thumbnail.save
     end
   end
