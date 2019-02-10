@@ -1,10 +1,20 @@
 module Admin::SerialsHelper
-  
+
   def formatted_released_date_for(serial)
     released_date = serial.year
 
     return t('label.not_available') unless released_date.present?
 
     released_date.to_s(:full_date_month_and_year_format)
+  end
+
+  def render_thumbnail_image_for(is_edit_mode, thumbnail_type, thumbnail_screenshot)
+    target_image_url = if is_edit_mode && thumbnail_screenshot.present?
+                        CommonHelpers.cloud_front_url(thumbnail_screenshot.path)
+                      else
+                        get_default_thumbnail_url_for(thumbnail_type)
+                      end
+
+    image_tag(target_image_url).html_safe
   end
 end

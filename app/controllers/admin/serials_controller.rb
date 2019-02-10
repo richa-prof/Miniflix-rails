@@ -1,6 +1,6 @@
 class Admin::SerialsController < ApplicationController
   before_action :authenticate_admin_user!
-  before_action :set_admin_serial, only: [:show, :edit, :destroy]
+  before_action :set_admin_serial, only: [:show, :edit,:update, :destroy]
 
 
   def index
@@ -51,7 +51,6 @@ class Admin::SerialsController < ApplicationController
   end
 
   def update
-    @admin_serial = Serial.find(params[:serial][:id])
     SerialService.new(
       author: current_user,
       params: params,
@@ -77,7 +76,7 @@ class Admin::SerialsController < ApplicationController
   end
 
   def serial_params
-    params.require(:serial).permit( :title, :description, :admin_genre_id, :directed_by, :language, :star_cast, :year, :seasons_number, movie_thumbnail_attributes: [:id, :movie_screenshot_1, :movie_screenshot_2, :movie_screenshot_3, :thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot] )
+    params.require(:serial).permit( :title, :year, :description, :admin_genre_id, :directed_by, :language, :star_cast, :seasons_number, movie_thumbnail_attributes: [:id, :movie_screenshot_1, :movie_screenshot_2, :movie_screenshot_3, :thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot] )
   end
 
   def save_movie_thumbnails(movie)
@@ -91,6 +90,10 @@ class Admin::SerialsController < ApplicationController
       movie_thumbnail = movie.build_movie_thumbnail(movie_thumbnail_params)
       movie_thumbnail.save
     end
+  end
+
+  def movie_thumbnail_params
+    params.require(:movie_thumbnail).permit(:movie_screenshot_1, :movie_screenshot_2, :movie_screenshot_3, :thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot)
   end
 
 end
