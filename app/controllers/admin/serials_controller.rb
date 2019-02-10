@@ -8,7 +8,6 @@ class Admin::SerialsController < ApplicationController
   end
 
   def new
-    @serials = Serial.all
     @admin_serial = Serial.new
   end
 
@@ -80,15 +79,17 @@ class Admin::SerialsController < ApplicationController
     params.require(:serial).permit( :title, :year, :description, :admin_genre_id, :directed_by, :language, :star_cast, :seasons_number, movie_thumbnail_attributes: [:id, :movie_screenshot_1, :movie_screenshot_2, :movie_screenshot_3, :thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot] )
   end
 
-  def save_movie_thumbnails(movie)
-    movie_thumbnail = movie.movie_thumbnail
+  def save_movie_thumbnails(admin_serial)
+    movie_thumbnail = admin_serial.movie_thumbnail
 
     return unless params[:movie_thumbnail].present?
 
     if movie_thumbnail.present?
       movie_thumbnail.update(movie_thumbnail_params)
     else
-      movie_thumbnail = movie.build_movie_thumbnail(movie_thumbnail_params)
+      binding.pry
+      movie_thumbnail = admin_serial.build_movie_thumbnail(movie_thumbnail_params)
+      binding.pry
       movie_thumbnail.save
     end
   end
