@@ -45,11 +45,11 @@
                     <% end %>
                   <% end %>
                   <div class="form-group">
-                    <%= @serials.each do |serial| %>
                       <select class="form-control valid" id="series_admin" aria-required="true" aria-invalid="false" onchange="window.location.href=this.value;">
                           <option value selected>Choose Series</option>
-                          <option value="<%= new_admin_movie_path(serial_id: serial.id)%>"><%= serial.title %></option>
-                    <%end%>
+                          <%= @serials.each do |serial| %>
+                            <option value="<%= new_admin_movie_path(serial_id: serial.id)%>"><%= serial.title %></option>
+                          <%end%>
                       </select>
                       <div class="errors-container" id="errors">
                           <p>Please, choose the series</p>

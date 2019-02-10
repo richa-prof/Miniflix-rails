@@ -51,6 +51,7 @@ class Admin::SerialsController < ApplicationController
   end
 
   def update
+    params[:serial][:year] = params[:serial][:year].gsub("/", "-")
     SerialService.new(
       author: current_user,
       params: params,
