@@ -6,9 +6,12 @@
 </figure>
 <h3 class="box-title text-blue">
     <%= t('heading.movie') %>
-    <% if movie.downloadable %>
-      <%= link_to( t('links.download_now'),
-                   movie.film_video,
-                   class: "" ) %>
+    <% if movie %>
+      <% if movie.downloadable %>
+        <%= link_to( t('links.download_now'),
+                     movie.film_video,
+                     class: "" ) %>
+      <% end %>
     <% end %>
+
 </h3>

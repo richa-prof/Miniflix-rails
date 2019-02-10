@@ -17,6 +17,9 @@ class Admin::MoviesController < ApplicationController
 
   # GET /admin/movies/new
   def new
+    if params[:serial]
+      @serail = params[:serial]
+    end
     @admin_movie = Movie.new
     @admin_movie.build_movie_thumbnail
   end
@@ -131,6 +134,6 @@ class Admin::MoviesController < ApplicationController
   end
 
   def movie_default_params
-    params.require(:movie).permit(:name, :title, :description, :admin_genre_id, :film_video, :video_type, :video_size, :video_duration, :video_format, :directed_by, :language, :star_cast, :actors, :downloadable, :festival_laureates, :released_date, :posted_date, :is_featured_film)
+    params.require(:movie).permit(:name, :title, :description, :admin_genre_id, :admin_serial_id, :film_video, :video_type, :video_size, :video_duration, :video_format, :directed_by, :language, :star_cast, :actors, :downloadable, :festival_laureates, :released_date, :posted_date, :is_featured_film)
   end
 end

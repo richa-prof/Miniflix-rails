@@ -20,7 +20,7 @@
             </div>
             <div class="col-lg-2 col-xs-12">
               <%= link_to( t('links.add_new_serial'),
-                           new_admin_serial_path,
+                           choose_mode_admin_serials_path,
                            class: "btn btn-primary pull-right",
                            method: :get ) %>
             </div>
@@ -60,7 +60,7 @@
                             <td data-title="Seasons"><%=admin_serial.seasons.count%></td>
                             <td data-title="Genre"><%= admin_serial.find_genre(admin_serial.admin_genre_id)%></td>
                             <td data-title="Directed by"><%= admin_serial.directed_by%></td>
-                            <td data-title="Released year"><%= admin_serial.year.year%></td>
+                            <td data-title="Released year"><%= admin_serial.year.year  if admin_serial.year%></td>
                             <td data-title="Language"><%= admin_serial.language%></td>
                             <td data-title="Star cast"><%= admin_serial.star_cast%></td>
                             <td data-title="Action" class="actions-td">

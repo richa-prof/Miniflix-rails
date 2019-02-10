@@ -1,8 +1,8 @@
 <%# Change to series %>
-<% thumbnail = @admin_serial.seasons.first.movies.first.movie_thumbnail if @admin_serial.seasons.first.movies.first %>
+<% thumbnail = @admin_serial.movie_thumbnail%>
 
 <label>
-  <%= t('label.movie.upload_movie_thumbnails') %>
+  <%= t('contents.serial.upload_serial_thumbnails') %>
 </label>
 
 <div class="row">

@@ -1,4 +1,4 @@
-<%# First page of series upload %>
+<%# Second page of series upload %>
 <%# <%= javascript_include_tag 'admin/series' %>
 
 <!-- Content Header (Page header) -->
@@ -9,7 +9,7 @@
 </section>
 
 <!-- Main content -->
-<section class="content choose-series-section">
+<section class="content create-series-section">
     <div class="row">
         <div class="col-xs-12">
           <div class="box content-container">
@@ -22,48 +22,8 @@
               </div>
             </div>
             <!-- /.box-header -->
-            <div class="box box-primary">
-                <div class="box-body">
-                    <form>
-                      <%# Change messages to choose series errors %>
-                      <% if @admin_serial.errors.any? %>
-                        <div class="row">
-                            <div class="col-md-12">
-                              <div class="box box-default">
-                                <div class="box-body">
-                                <%# Change messages to choose series errors %>
-                                  <% @admin_serial.errors.full_messages.each do |message| %>
-                                    <div class="callout callout-success">
-                                      <p><%= message %></p>
-                                    </div>
-                                  <% end %>
-                                </div>
-                                <!-- /.box-body -->
-                              </div>
-                              <!-- /.box -->
-                            </div>
-                        </div>
-                      <% end %>
-                      <div class="form-group">
-                        <%= @serials.each do |serial| %>
-                          <select class="form-control valid" id="series_admin" aria-required="true" aria-invalid="false" onchange="window.location.href=this.value;">
-                              <option value selected>Choose Series</option>
-                              <option value="<%= new3_admin_serials_path(id: serial.id)%>"><%= serial.title %></option>
-                        <%end%>
-                          </select>
-                          <div class="errors-container" id="errors">
-                              <p>Please, choose the series</p>
-                          </div>
-                      </div>
-                      <%= link_to new2_admin_serials_path, data: { turbolinks: false } do %>
-                        <div class="add-series-container">
-                            <i class="fa fa-plus"></i>
-                            <p class="add-series-text">Add New Series</p>
-                        </div>
-                      <% end %>
-                      <input type="button" value="Continue" class="btn btn-primary" id="continue-btn">
-                    </form>
-                </div>
+            <div class="box-body" >
+                <%= render( partial: 'form', locals: { is_edit_mode: false } ) %>
             </div>
             <!-- /.box-body -->
           </div>

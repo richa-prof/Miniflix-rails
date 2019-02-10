@@ -216,6 +216,7 @@ Rails.application.routes.draw do
 
       resources :serials do
         collection do
+          get 'choose_mode' => 'serials#choose_mode'
           get 'new2' => 'serials#new2'
           get 'new3' => 'serials#new3'
           get 'new4' => 'serials#new4'

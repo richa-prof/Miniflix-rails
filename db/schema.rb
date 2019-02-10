@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190210102854) do
+ActiveRecord::Schema.define(version: 20190210114437) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "city"
@@ -50,7 +50,9 @@ ActiveRecord::Schema.define(version: 20190210102854) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "thumbnail_800_screenshot"
+    t.bigint "admin_serial_id"
     t.index ["admin_movie_id"], name: "index_admin_movie_thumbnails_on_admin_movie_id"
+    t.index ["admin_serial_id"], name: "index_admin_movie_thumbnails_on_admin_serial_id"
   end
 
   create_table "admin_movies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -264,7 +266,9 @@ ActiveRecord::Schema.define(version: 20190210102854) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "uploader"
+    t.bigint "admin_serial_id"
     t.index ["admin_movie_id"], name: "index_movie_trailers_on_admin_movie_id"
+    t.index ["admin_serial_id"], name: "index_movie_trailers_on_admin_serial_id"
     t.index ["s3_multipart_upload_id"], name: "index_movie_trailers_on_s3_multipart_upload_id"
   end
 
@@ -321,19 +325,6 @@ ActiveRecord::Schema.define(version: 20190210102854) do
     t.string "page_name"
     t.index ["id"], name: "index_seo_meta_on_id"
     t.index ["seo_meta_id", "seo_meta_type"], name: "id_type_index_on_seo_meta"
-  end
-
-  create_table "serial_thumbnails", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "admin_serial_id"
-    t.string "serial_screenshot_1"
-    t.string "serial_screenshot_2"
-    t.string "serial_screenshot_3"
-    t.string "thumbnail_screenshot"
-    t.string "thumbnail_640_screenshot"
-    t.string "thumbnail_800_screenshot"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["admin_serial_id"], name: "index_serial_thumbnails_on_admin_serial_id"
   end
 
   create_table "social_media_links", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -465,6 +456,7 @@ ActiveRecord::Schema.define(version: 20190210102854) do
   add_foreign_key "addresses", "users"
   add_foreign_key "admin_movie_captions", "admin_movies"
   add_foreign_key "admin_movie_thumbnails", "admin_movies"
+  add_foreign_key "admin_movie_thumbnails", "admin_serials"
   add_foreign_key "admin_movies", "admin_genres"
   add_foreign_key "admin_movies", "seasons"
   add_foreign_key "admin_serials", "admin_genres"
@@ -474,10 +466,10 @@ ActiveRecord::Schema.define(version: 20190210102854) do
   add_foreign_key "likes", "blogs"
   add_foreign_key "logged_in_users", "users"
   add_foreign_key "movie_trailers", "admin_movies"
+  add_foreign_key "movie_trailers", "admin_serials"
   add_foreign_key "notifications", "admin_movies"
   add_foreign_key "notifications", "users"
   add_foreign_key "seasons", "admin_serials"
-  add_foreign_key "serial_thumbnails", "admin_serials"
   add_foreign_key "social_media_links", "users"
   add_foreign_key "user_email_notifications", "users"
   add_foreign_key "user_filmlists", "admin_movies"

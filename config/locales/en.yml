@@ -183,7 +183,7 @@ en:
     serial:
       successfully_created: 'Series were successfully created.'
       successfully_updated: 'Series were successfully updated.'
-      successfully_deleted: 'Series were successfully deleted.'  
+      successfully_deleted: 'Series were successfully deleted.'
     movie_caption:
       caption_file:
         successfully_created: 'Caption File successfully saved, Fill other detail for caption file.'
@@ -239,6 +239,10 @@ en:
       title: Enter title
       description: Enter description
       seasons_number: Enter seasons number
+      star_cast: Enter star cast
+      year: Select released date
+      language: Enter language
+      directed_by: Directed by
     meta_keywords_help: Enter meta keywords
   confirm:
     are_you_sure: Are you sure?
@@ -314,6 +318,9 @@ en:
       admin_movie_downloadable: Allow to downloadable this movie by user
       admin_movie_is_featured_film: Allow to set this film as a featured film for home page
       new_movie_added_notification_message: "Miniflix has added new movie : %{movie_name}"
+    serial:
+      upload_serial_thumbnail: Upload Series thumbnail
+      upload_serial_screenshots: Upload Series Screenshots
   content:
     movie:
       posted_on_details: "Posted on %{formatted_date} by admin"
