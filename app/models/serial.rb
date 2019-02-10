@@ -1,6 +1,7 @@
 class Serial < ApplicationRecord
   self.table_name = 'admin_serials'
   has_many :seasons, dependent: :destroy, foreign_key: "admin_serial_id"
+  has_one :serial_thumblail, dependent: :destroy, foreign_key: "admin_serial_id"
   belongs_to :genre, class_name: "Genre", foreign_key: "admin_genre_id"
 
   extend FriendlyId

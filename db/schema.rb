@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190207115355) do
+ActiveRecord::Schema.define(version: 20190210102854) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "city"
@@ -323,6 +323,19 @@ ActiveRecord::Schema.define(version: 20190207115355) do
     t.index ["seo_meta_id", "seo_meta_type"], name: "id_type_index_on_seo_meta"
   end
 
+  create_table "serial_thumbnails", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "admin_serial_id"
+    t.string "serial_screenshot_1"
+    t.string "serial_screenshot_2"
+    t.string "serial_screenshot_3"
+    t.string "thumbnail_screenshot"
+    t.string "thumbnail_640_screenshot"
+    t.string "thumbnail_800_screenshot"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_serial_id"], name: "index_serial_thumbnails_on_admin_serial_id"
+  end
+
   create_table "social_media_links", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "facebook"
     t.string "twitter"
@@ -464,6 +477,7 @@ ActiveRecord::Schema.define(version: 20190207115355) do
   add_foreign_key "notifications", "admin_movies"
   add_foreign_key "notifications", "users"
   add_foreign_key "seasons", "admin_serials"
+  add_foreign_key "serial_thumbnails", "admin_serials"
   add_foreign_key "social_media_links", "users"
   add_foreign_key "user_email_notifications", "users"
   add_foreign_key "user_filmlists", "admin_movies"
