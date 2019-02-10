@@ -17,4 +17,17 @@ module Admin::SerialsHelper
 
     image_tag(target_image_url).html_safe
   end
+
+  def get_default_thumbnail_url_for(thumbnail_type)
+    case thumbnail_type
+    when 'thumbnail_640_screenshot'
+      'admin/upload_img640.jpg'
+    when 'thumbnail_screenshot'
+      'admin/upload_img330.png'
+    when 'thumbnail_800_screenshot'
+      'admin/upload_img800.png'
+    else
+      'admin/upload_img.png'
+    end
+  end
 end
