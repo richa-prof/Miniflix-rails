@@ -15,21 +15,6 @@ class Admin::SerialsController < ApplicationController
     @serials = Serial.all
   end
 
-  def new2
-    @admin_serial = Serial.new
-    @movie_thumbnail = @admin_serial.movie_thumbnail
-    render template: 'admin/serials/pages/new2.html.erb'
-  end
-
-  def new3
-    @admin_serial = Serial.find(params[:id])
-    render template: 'admin/serials/pages/new3.html.erb'
-  end
-
-  def new4
-    #code
-  end
-
   def show
   end
 
@@ -57,7 +42,7 @@ class Admin::SerialsController < ApplicationController
       serial: @admin_serial
     ).check_seasons
     if @admin_serial.update(serial_params)
-      save_movie_thumbnails(@admin_serial)
+      save_serial_thumbnails(@admin_serial)
 
       redirect_to admin_serials_path(@admin_serial), notice: I18n.t('flash.serial.successfully_updated')
     else
@@ -79,16 +64,16 @@ class Admin::SerialsController < ApplicationController
     params.require(:serial).permit( :title, :year, :description, :admin_genre_id, :directed_by, :language, :star_cast, :seasons_number, movie_thumbnail_attributes: [:id, :movie_screenshot_1, :movie_screenshot_2, :movie_screenshot_3, :thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot] )
   end
 
-  def save_movie_thumbnails(admin_serial)
-    movie_thumbnail = admin_serial.movie_thumbnail
+  def save_serial_thumbnails(admin_serial)
+    serial_thumbnail = admin_serial.movie_thumbnail
 
     return unless params[:movie_thumbnail].present?
 
-    if movie_thumbnail.present?
-      movie_thumbnail.update(movie_thumbnail_params)
+    if serial_thumbnail.present?
+      serial_thumbnail.update(movie_thumbnail_params)
     else
-      movie_thumbnail = admin_serial.build_movie_thumbnail(movie_thumbnail_params)
-      movie_thumbnail.save
+      serial_thumbnail = admin_serial.build_movie_thumbnail(movie_thumbnail_params)
+      serial_thumbnail.save
     end
   end
 
