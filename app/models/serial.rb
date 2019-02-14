@@ -18,18 +18,15 @@ class Serial < ApplicationRecord
   end
 
   def seasons_list
-    result = self.seasons.map do |season|
-      numbers = season.as_json(except: [:admin_serial_id, :id])
-      numbers.values
-    end
+    season_numbers = self.seasons.pluck(:season_number)
     h = Hash.new
     arr = []
-    result.flatten.each do |el|
+    season_numbers.each do |el|
       season = self.seasons.find_by(season_number: el)
       h[el] = season.movies.count
     end
     arr << h
-    return arr[0]
+    return arr.first
   end
 
   def serial_screenshot_list
