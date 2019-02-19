@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190210114437) do
+ActiveRecord::Schema.define(version: 20190218165804) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "city"
@@ -118,6 +118,17 @@ ActiveRecord::Schema.define(version: 20190210114437) do
     t.string "stripe_plan_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "admin_serial_thumbnails", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "admin_serial_id"
+    t.string "serial_screenshot_1"
+    t.string "serial_screenshot_2"
+    t.string "serial_screenshot_3"
+    t.string "thumbnail_screenshot"
+    t.string "thumbnail_640_screenshot"
+    t.string "thumbnail_800_screenshot"
+    t.index ["admin_serial_id"], name: "index_admin_serial_thumbnails_on_admin_serial_id"
   end
 
   create_table "admin_serials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -459,6 +470,7 @@ ActiveRecord::Schema.define(version: 20190210114437) do
   add_foreign_key "admin_movie_thumbnails", "admin_serials"
   add_foreign_key "admin_movies", "admin_genres"
   add_foreign_key "admin_movies", "seasons"
+  add_foreign_key "admin_serial_thumbnails", "admin_serials"
   add_foreign_key "admin_serials", "admin_genres"
   add_foreign_key "blogs", "users"
   add_foreign_key "comments", "blogs"

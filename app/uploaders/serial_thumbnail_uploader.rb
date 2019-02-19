@@ -1,17 +1,17 @@
-class MovieThumbnailUploader < CarrierWave::Uploader::Base
+class SerialThumbnailUploader < CarrierWave::Uploader::Base
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
-  storage :fog
   # storage :file
+  storage :fog
 
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
-  def store_dir
-    "uploads/admin/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
-  end
+  # def store_dir
+  #   "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+  # end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
   # def default_url(*args)
@@ -36,26 +36,9 @@ class MovieThumbnailUploader < CarrierWave::Uploader::Base
   version :featured_thumb do
     process resize_to_fit: [867, 470]
   end
-
-  # version :thumb_600 do
-  #   process resize_to_fit: [600, 300]
-  # end
-
-  # to recreate_versions
-  # @arr = []
-  # MovieThumbnail.find_each do |thumbnail|
-  #   begin
-  #     thumbnail.thumbnail_640_screenshot.recreate_versions! if thumbnail.thumbnail_640_screenshot.present?
-  #   rescue Exception => e
-  #     @arr << [thumbnail.id, e.message]
-  #   end
-
-  # end
-  # puts @arr
-
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
-  def extension_white_list
+  def extension_whitelist
     %w(jpg jpeg gif png)
   end
 

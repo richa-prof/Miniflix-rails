@@ -1,7 +1,6 @@
 class MovieThumbnail < ApplicationRecord
   self.table_name = "admin_movie_thumbnails"
   belongs_to :movie, :foreign_key => 'admin_movie_id'
-  belongs_to :serial, :foreign_key => 'admin_serial_id'
 
   mount_uploader :movie_screenshot_1, MovieThumbnailUploader
 	mount_uploader :movie_screenshot_2, MovieThumbnailUploader

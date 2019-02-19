@@ -61,24 +61,24 @@ class Admin::SerialsController < ApplicationController
   end
 
   def serial_params
-    params.require(:serial).permit( :title, :year, :description, :admin_genre_id, :directed_by, :language, :star_cast, :seasons_number, movie_thumbnail_attributes: [:id, :movie_screenshot_1, :movie_screenshot_2, :movie_screenshot_3, :thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot] )
+    params.require(:serial).permit( :title, :year, :description, :admin_genre_id, :directed_by, :language, :star_cast, :seasons_number, serial_thumbnail_attributes: [:id, :serial_screenshot_1, :serial_screenshot_2, :serial_screenshot_3, :thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot] )
   end
 
   def save_serial_thumbnails(admin_serial)
-    serial_thumbnail = admin_serial.movie_thumbnail
+    serial_thumbnail = admin_serial.serial_thumbnail
 
-    return unless params[:movie_thumbnail].present?
+    return unless params[:serial_thumbnail].present?
 
     if serial_thumbnail.present?
-      serial_thumbnail.update(movie_thumbnail_params)
+      serial_thumbnail.update(serial_thumbnail_params)
     else
-      serial_thumbnail = admin_serial.build_movie_thumbnail(movie_thumbnail_params)
+      serial_thumbnail = admin_serial.build_serial_thumbnail(serial_thumbnail_params)
       serial_thumbnail.save
     end
   end
 
-  def movie_thumbnail_params
-    params.require(:movie_thumbnail).permit(:movie_screenshot_1, :movie_screenshot_2, :movie_screenshot_3, :thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot)
+  def serial_thumbnail_params
+    params.require(:serial_thumbnail).permit(:serial_screenshot_1, :serial_screenshot_2, :serial_screenshot_3, :thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot)
   end
 
 end

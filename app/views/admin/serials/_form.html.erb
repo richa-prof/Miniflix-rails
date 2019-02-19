@@ -3,7 +3,7 @@
 <% released_date = @admin_serial.year ? @admin_serial.year.strftime("%m/%d/%Y") : "" %>
 
 <% form_css_class = is_edit_mode ? 'edit_movie_frm' : 'add_movie_details_frm' %>
-<% serial_thumbnail = @admin_serial.movie_thumbnail %>
+<% serial_thumbnail = @admin_serial.serial_thumbnail %>
 <!-- form start -->
 <%= form_for( [:admin, @admin_serial],
               html: { id: "frm_admin_series",
@@ -67,7 +67,7 @@
             </div>
 
             <div class="form-group">
-              <%= fields_for :movie_thumbnail, @movie_thumbnail do |thumbnail_fields| %>
+              <%= fields_for :serial_thumbnail, @serial_thumbnail do |thumbnail_fields| %>
                 <div class="row">
                   <div class="col-md-9 col-sm-12">
                     <%= render( partial: 'set_series_screenshots',
