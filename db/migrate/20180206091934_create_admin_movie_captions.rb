@@ -1,7 +1,7 @@
 class CreateAdminMovieCaptions < ActiveRecord::Migration[5.1]
   def change
     create_table :admin_movie_captions do |t|
-      t.references :admin_movie, foreign_key: true, index: true
+      t.references :admin_movie, foreign_key: true, index: true, type: :integer
       t.string :language
       t.string :caption_file
       t.boolean :status
