@@ -1,6 +1,6 @@
 class MovieTrailer < ApplicationRecord
   belongs_to :movie, :foreign_key => 'admin_movie_id'
-  belongs_to :serial, :foreign_key => 'admin_serial_id'
+  belongs_to :serial, optional: true, foreign_key: :admin_serial_id
 
   # ===== Class methods Start =====
   class << self
