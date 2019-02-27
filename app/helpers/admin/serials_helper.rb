@@ -9,11 +9,12 @@ module Admin::SerialsHelper
   end
 
   def render_thumbnail_image_for(is_edit_mode, thumbnail_type, thumbnail_screenshot)
-    target_image = if is_edit_mode && thumbnail_screenshot.present?
-                        CommonHelpers.cloud_front_url_for_serial(thumbnail_screenshot)
-                      else
-                        get_default_thumbnail_url_for(thumbnail_type)
-                      end
+    target_image =
+      if is_edit_mode && thumbnail_screenshot.present?
+        CommonHelpers.cloud_front_url_for_serial(thumbnail_screenshot)
+      else
+        get_default_thumbnail_url_for_serial(thumbnail_type)
+      end
 
     image_tag(target_image).html_safe
   end
