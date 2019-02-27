@@ -1,6 +1,7 @@
 <%# Change to series %>
 <!-- Content Header (Page header) -->
-<%= render 'shared/jwplayer_config' %>
+
+<%= render partial: 'shared/jwplayer_config', locals: {movie: @admin_serial.movie_trailer}  %>
 
  <div id="err-player"></div>
 
@@ -109,7 +110,7 @@
                                   <h3 class="box-title text-blue">
                                     <%= t('title.movie.released_on') %>
                                   </h3>
-                                  <p class="margin-btm-zero"><%= formatted_released_date_for(@admin_serial) %></p>
+                                  <p class="margin-btm-zero"><%= formatted_released_date_for_serial(@admin_serial) %></p>
                                 </div>
                               </div>
                             </div>
