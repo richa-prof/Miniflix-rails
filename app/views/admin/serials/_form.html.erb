@@ -63,6 +63,7 @@
                                        :id,
                                        :name,
                                        { include_blank: t(:SelectGenre) },
+                                       required: true,
                                        class: "form-control" ) %>
             </div>
 
@@ -89,9 +90,11 @@
 
             <div class="form-group">
               <%= f.label :number_of_seasons %>
-              <%= f.text_field( :seasons_number,
+              <%= f.number_field( :seasons_number,
                                 class: "form-control",
                                 minlength: 1,
+				required: true,
+				style: "width: 200px",
                                 placeholder: t('placeholder.serial.seasons_number') ) %>
             </div>
 
@@ -99,6 +102,7 @@
               <%= f.label :year %>
               <%= f.text_field( 'year',
                                 class: "form-control date-picker",
+				style: "width: 200px"
                                 placeholder: t('placeholder.serial.year') ) %>
             </div>
 
