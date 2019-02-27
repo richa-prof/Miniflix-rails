@@ -58,6 +58,7 @@
                           <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>
                           <li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>
                         </ol>
+                        <% if movie_thumbnail&.movie_screenshot_1 %>
                         <div class="carousel-inner">
                           <% movie_thumbnail.thumb_screenshots_arr.each_with_index do |screenshot, index| %>
                             <div class="item <%= 'active' if index.zero? %>">
@@ -73,6 +74,7 @@
                         <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
                           <span class="fa fa-angle-right"></span>
                         </a>
+                        <% end %>
                       </div>
                     </div>
                   </div>
@@ -207,7 +209,7 @@
     })
   <% end %>
 
-  jwplayer_setup = function() {
+  var jwplayer_setup = function() {
     var jwPlayerConfig = jwPlayerConfigContainer();
     var hlsUrl = jwPlayerConfig.data('hls-file');
     var originalUrl = jwPlayerConfig.data('original-file');
@@ -216,10 +218,7 @@
     var sources = [{
               file: hlsUrl
             }]
-
-    var videoObject = document.querySelector("div[data-embed-url='video-url1']");
-    videoObject.id = "player-1";
-    var newplayerInstance = window.jwplayer(videoObject);
+    var newplayerInstance = window.jwplayer($('#player-1')[0]);
     window.player2 = newplayerInstance;
     newplayerInstance.setup({
       sources: sources,
@@ -233,10 +232,7 @@
       var trailerSources = [{
                 file: trailerFileUrl
               }]
-
-      var trailerVideoObject = document.querySelector("div[data-embed-url='video-url2']");
-      trailerVideoObject.id = "player-2";
-      var newplayerInstance = window.jwplayer(trailerVideoObject);
+      var newplayerInstance = window.jwplayer($('#player-2')[0]);
       window.player2 = newplayerInstance;
       newplayerInstance.setup({
         sources: trailerSources,
@@ -246,7 +242,7 @@
     }
   };
 
-  jwplayer_setup_error = function() {
+  var jwplayer_setup_error = function() {
     jwplayer().on('setupError',function(er){
       $('.full-screen-play').removeClass('full-screen-play');
 
@@ -254,7 +250,7 @@
     });
   };
 
-  bindChangeEventOnBrowserScreens = function() {
+  var bindChangeEventOnBrowserScreens = function() {
     $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function(el){
 
       var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen || document.msFullscreenElement;
@@ -267,9 +263,8 @@
     });
   };
 
-var ready;
 
-ready = function() {
+var ready = function() {
   console.log('>>>>> invoked `ready` function >>>>>');
 
   jwplayer.key = jwPlayerConfigContainer().data('jwplayer-key');

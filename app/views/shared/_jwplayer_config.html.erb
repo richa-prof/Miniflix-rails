@@ -1,2 +1,7 @@
 <%# Url to episode %>
-<div id="jwPlayerConfigContainer" data-hls-file="<%#= @admin_movie.hls_movie_url %>" data-original-file = "<%#= @admin_movie.film_video %>" data-trailer-file = "<%#= @admin_movie.movie_trailer.try(:file_cloudfront_url) %>" data-jwplayer-key="<%= ENV['JW_PLAYER_KEY'] %>" style="display: none;" ></div>
+<div id="jwPlayerConfigContainer" 
+     data-hls-file="<%= @admin_movie.hls_movie_url %>" 
+     data-original-file = "<%= @admin_movie.film_video %>" 
+     data-trailer-file = "<%= @admin_movie.movie_trailer.try(:file_cloudfront_url) %>" 
+     data-jwplayer-key="<%= ENV['JW_PLAYER_KEY'] %>" style="display: none;" >
+</div>
