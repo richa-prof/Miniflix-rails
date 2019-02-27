@@ -1,7 +1,7 @@
 class CreateUserPaymentMethods < ActiveRecord::Migration[5.1]
   def change
     create_table :user_payment_methods do |t|
-      t.references :user, foreign_key: true, index:true
+      t.references :user, foreign_key: true, index:true, type: :integer
       t.string     :first_name
       t.string     :last_name
       t.integer    :zip_code

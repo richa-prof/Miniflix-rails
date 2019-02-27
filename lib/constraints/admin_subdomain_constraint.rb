@@ -10,7 +10,7 @@ module Constraints
       when 'staging'
         request.subdomain.present? && request.subdomain.start_with?('stag-admin')
       when 'development'
-        true
+        request.subdomain.present? && request.subdomain.start_with?('admin')
       end
     end
   end
