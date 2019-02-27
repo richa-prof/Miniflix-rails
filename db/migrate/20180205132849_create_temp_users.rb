@@ -1,4 +1,4 @@
-class CreateTempUsers < ActiveRecord::Migration[5.1]
+class CreateTempUsers < ActiveRecord::Migration[5.0]
   def change
     create_table :temp_users do |t|
       t.string :registration_plan

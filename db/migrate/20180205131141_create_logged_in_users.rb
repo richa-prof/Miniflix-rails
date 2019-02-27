@@ -1,4 +1,4 @@
-class CreateLoggedInUsers < ActiveRecord::Migration[5.1]
+class CreateLoggedInUsers < ActiveRecord::Migration[5.0]
   def change
     create_table :logged_in_users do |t|
       t.references :user, foreign_key: true, index: true, type: :integer

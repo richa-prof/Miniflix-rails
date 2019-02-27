@@ -133,8 +133,6 @@ ActiveRecord::Schema.define(version: 20190218165804) do
 
   create_table "admin_serials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "title", null: false
-    t.date "year"
-    t.bigint "admin_genre_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "directed_by", null: false
@@ -143,7 +141,6 @@ ActiveRecord::Schema.define(version: 20190218165804) do
     t.string "language", null: false
     t.string "slug"
     t.integer "seasons_number"
-    t.index ["admin_genre_id"], name: "index_admin_serials_on_admin_genre_id"
     t.index ["slug"], name: "index_admin_serials_on_slug", unique: true
   end
 
@@ -307,16 +304,16 @@ ActiveRecord::Schema.define(version: 20190218165804) do
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
-  create_table "s3_multipart_uploads", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "s3_multipart_uploads", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "location"
     t.string "upload_id"
     t.string "key"
     t.string "name"
     t.string "uploader"
     t.integer "size"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text "context"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "seasons", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -471,7 +468,6 @@ ActiveRecord::Schema.define(version: 20190218165804) do
   add_foreign_key "admin_movies", "admin_genres"
   add_foreign_key "admin_movies", "seasons"
   add_foreign_key "admin_serial_thumbnails", "admin_serials"
-  add_foreign_key "admin_serials", "admin_genres"
   add_foreign_key "blogs", "users"
   add_foreign_key "comments", "blogs"
   add_foreign_key "contact_user_replies", "contact_us", column: "contact_us_id"

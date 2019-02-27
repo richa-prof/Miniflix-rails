@@ -33,6 +33,7 @@ class Movie < ApplicationRecord
   # ASSOCIATIONS
   belongs_to :genre, class_name: "Genre", foreign_key: "admin_genre_id"
   belongs_to :season, optional: true
+  belongs_to :episode, optional: true
   has_one :movie_thumbnail, dependent: :destroy, foreign_key: "admin_movie_id"
   has_one :movie_trailer, dependent: :destroy, foreign_key: "admin_movie_id"
   has_many :notifications, dependent: :destroy, foreign_key: "admin_movie_id"
