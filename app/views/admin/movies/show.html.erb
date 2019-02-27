@@ -62,7 +62,7 @@
                         <div class="carousel-inner">
                           <% movie_thumbnail.thumb_screenshots_arr.each_with_index do |screenshot, index| %>
                             <div class="item <%= 'active' if index.zero? %>">
-                              <%= image_tag(screenshot.presence || '', class: "movie_thumbnail") if movie_thumbnail.present? %>
+                              <%= image_tag(screenshot.presence || '', class: "movie_thumbnail")  %>
                               <div class="carousel-caption">
                               </div>
                             </div>
