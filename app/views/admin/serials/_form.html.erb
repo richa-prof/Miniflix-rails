@@ -95,10 +95,11 @@
 
             <div class="form-group">
               <%= f.label :number_of_seasons %>
-              <%= f.text_field( :seasons_number,
+              <%= f.number_field( :seasons_number,
                                 class: "form-control",
                                 minlength: 1,
                                 placeholder: t('placeholder.serial.seasons_number'),
+                                style: "width: 200px",
                                 required: true,
                                 maxlength: 3 ) %>
             </div>
@@ -108,6 +109,7 @@
               <%= f.text_field( 'year',
                                 class: "form-control date-picker",
                                 placeholder: t('placeholder.serial.year'),
+                                style: "width: 200px",
                                 required: true ) %>
             </div>
 

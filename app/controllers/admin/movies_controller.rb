@@ -38,6 +38,7 @@ class Admin::MoviesController < ApplicationController
     s3_upload = S3Multipart::Upload.find(upload_id)
     movie_trailer = @movie.create_movie_trailer( s3_multipart_upload_id: upload_id,
                                                  uploader: s3_upload.uploader,
+                                                 admin_serial_id: @movie.season&.serial&.id,
                                                  file: s3_upload.location )
 
     if movie_trailer.valid?

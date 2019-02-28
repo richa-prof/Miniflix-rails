@@ -1,7 +1,7 @@
 class CreateAdminMovies < ActiveRecord::Migration[5.1]
   def change
     create_table :admin_movies do |t|
-      t.references :admin_genre, foreign_key: true
+      t.references :admin_genre, foreign_key: true, type: :integer
       t.integer    :s3_multipart_upload_id, foreign_key: true, index:true
       t.string     :name
       t.string     :title
