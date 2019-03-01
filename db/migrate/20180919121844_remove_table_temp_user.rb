@@ -1,4 +1,4 @@
-class RemoveTableTempUser < ActiveRecord::Migration[5.1]
+class RemoveTableTempUser < ActiveRecord::Migration[5.2]
   def up
     drop_table :temp_users
   end

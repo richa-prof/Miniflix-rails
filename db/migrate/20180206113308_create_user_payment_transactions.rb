@@ -1,7 +1,7 @@
-class CreateUserPaymentTransactions < ActiveRecord::Migration[5.1]
+class CreateUserPaymentTransactions < ActiveRecord::Migration[5.2]
   def change
     create_table :user_payment_transactions do |t|
-      t.references :user_payment_method, foreign_key: true, index: true, type: :integer
+      t.integer :user_payment_method_id, foreign_key: true, index: true
       t.datetime :payment_date
       t.datetime :payment_expire_date
       t.string :transaction_id

@@ -1,7 +1,7 @@
 # THIS TABLE EXISTS IN DATABASE. SO COMMENTING OUT THIS CODE.
 
 # This migration comes from s3_multipart 
-class CreateS3MultipartUploads < ActiveRecord::Migration[5.1]
+class CreateS3MultipartUploads < ActiveRecord::Migration[5.2]
   def change
     create_table :s3_multipart_uploads do |t|
       t.string :location

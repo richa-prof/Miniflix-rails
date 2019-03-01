@@ -1,5 +1,5 @@
-class AddReferencesToAdminMovies < ActiveRecord::Migration[5.1]
+class AddReferencesToAdminMovies < ActiveRecord::Migration[5.2]
   def change
-    add_reference :admin_movies, :season, foreign_key: true
+    add_column :admin_movies_id, :season, foreign_key: true, type: :integer
   end
 end

@@ -1,4 +1,4 @@
-class AddDescriptionToBlogs < ActiveRecord::Migration[5.1]
+class AddDescriptionToBlogs < ActiveRecord::Migration[5.2]
   def change
     add_column :blogs, :description, :text
   end

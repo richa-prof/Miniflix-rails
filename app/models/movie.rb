@@ -33,7 +33,7 @@ class Movie < ApplicationRecord
   # ASSOCIATIONS
   belongs_to :genre, class_name: "Genre", foreign_key: "admin_genre_id"
   belongs_to :season, optional: true
-  belongs_to :episode, optional: true
+
   has_one :movie_thumbnail, dependent: :destroy, foreign_key: "admin_movie_id"
   has_one :movie_trailer, dependent: :destroy, foreign_key: "admin_movie_id"
   has_many :notifications, dependent: :destroy, foreign_key: "admin_movie_id"
@@ -51,7 +51,9 @@ class Movie < ApplicationRecord
 
 
   # SCOPES
+  default_scope  { where(kind: 'movie') }
   scope :featured, -> { where(is_featured_film: true) }
+  scope :episodes, -> { where(kind: 'episode') }
 
   # DELIGATES
   delegate :name, to: :genre, prefix: :genre,  allow_nil: true

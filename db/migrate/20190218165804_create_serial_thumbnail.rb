@@ -1,7 +1,7 @@
-class CreateSerialThumbnail < ActiveRecord::Migration[5.1]
+class CreateSerialThumbnail < ActiveRecord::Migration[5.2]
   def change
     create_table :admin_serial_thumbnails do |t|
-      t.references :admin_serial, foreign_key: true
+      t.integer :admin_serial_id, foreign_key: true
       t.string :serial_screenshot_1
       t.string :serial_screenshot_2
       t.string :serial_screenshot_3
