@@ -1,5 +1,8 @@
-require 'aws-sdk'
+#require 'aws-sdk'
 class Admin::MoviesController < ApplicationController
+
+  include Admin::MovieHandlers
+
   before_action :authenticate_admin_user!
   before_action :set_admin_movie, only: [:show, :edit, :update, :destroy]
 
@@ -22,36 +25,6 @@ class Admin::MoviesController < ApplicationController
     end
     @admin_movie = Movie.new
     @admin_movie.build_movie_thumbnail
-  end
-
-  def upload_movie_trailer
-    @movie = Movie.find_by_s3_multipart_upload_id(params[:id])
-  end
-
-  def save_uploaded_movie_trailer
-    success = false
-    movie_id = params[:movie_id]
-    upload_id = params[:upload_id]
-
-    @movie = Movie.find(params[:movie_id])
-
-    s3_upload = S3Multipart::Upload.find(upload_id)
-    movie_trailer = @movie.create_movie_trailer( s3_multipart_upload_id: upload_id,
-                                                 uploader: s3_upload.uploader,
-                                                 admin_serial_id: @movie.season&.serial&.id,
-                                                 file: s3_upload.location )
-
-    if movie_trailer.valid?
-      success = true
-    end
-
-    render json: { success: success }
-  end
-
-  def add_movie_details
-    movie_trailer = MovieTrailer.find_by_s3_multipart_upload_id(params[:id])
-    @admin_movie = movie_trailer.movie
-    @s3_multipart = S3Multipart::Upload.find(@admin_movie.s3_multipart_upload_id)
   end
 
   # GET /admin/movies/1/edit
@@ -80,61 +53,15 @@ class Admin::MoviesController < ApplicationController
   # DELETE /admin/movies/1
   def destroy
     s3_multipart = S3Multipart::Upload.find(@admin_movie.s3_multipart_upload_id)
-
     if @admin_movie.has_trailer?
       movie_trailer = @admin_movie.movie_trailer
       s3_multipart_obj = S3Multipart::Upload.find(movie_trailer.s3_multipart_upload_id)
     end
-
     version_file = @admin_movie.version_file
     @admin_movie.destroy
     Movie.delete_movie_from_s3(s3_multipart, version_file)
-
     MovieTrailer.delete_file_from_s3(s3_multipart_obj) if s3_multipart_obj
-
     redirect_to admin_movies_url, notice: I18n.t('flash.movie.successfully_deleted')
   end
 
-  private
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_admin_movie
-    @admin_movie = Movie.friendly.find(params[:id])
-  end
-
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def movie_params
-    modified_params = movie_default_params
-    posted_date_param = modified_params.delete(:posted_date)
-    released_date_param = modified_params.delete(:released_date)
-
-    posted_date = Date.strptime(posted_date_param, '%m/%d/%Y').to_date rescue nil
-    released_date = Date.strptime(released_date_param, '%m/%d/%Y').to_date rescue nil
-
-    modified_params[:released_date] = released_date if released_date.present?
-    modified_params[:posted_date] = posted_date if posted_date.present?
-
-    modified_params
-  end
-
-  def movie_thumbnail_params
-    params.require(:movie_thumbnail).permit(:movie_screenshot_1, :movie_screenshot_2, :movie_screenshot_3, :thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot)
-  end
-
-  def save_movie_thumbnails(movie)
-    movie_thumbnail = movie.movie_thumbnail
-
-    return unless params[:movie_thumbnail].present?
-
-    if movie_thumbnail.present?
-      movie_thumbnail.update(movie_thumbnail_params)
-    else
-      movie_thumbnail = movie.build_movie_thumbnail(movie_thumbnail_params)
-      movie_thumbnail.save
-    end
-  end
-
-  def movie_default_params
-    params.require(:movie).permit(:name, :title, :description, :admin_genre_id, :admin_serial_id, :film_video, :video_type, :video_size, :video_duration, :video_format, :directed_by, :language, :star_cast, :actors, :downloadable, :festival_laureates, :released_date, :posted_date, :is_featured_film)
-  end
 end

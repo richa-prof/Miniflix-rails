@@ -23,7 +23,7 @@ class Serial < ApplicationRecord
     arr = []
     season_numbers.each do |el|
       season = self.seasons.find_by(season_number: el)
-      h[el] = season.movies.count
+      h[el] = season.episodes.count
     end
     arr << h
     return arr.first

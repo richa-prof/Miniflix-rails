@@ -33,7 +33,7 @@
     </div>
   <% end %>
 
-  <%= f.hidden_field :kind %>
+  <%= f.hidden_field :kind, value: 'episode' %>
 
   <div class="row">
     <div class="col-md-12">
@@ -73,14 +73,12 @@
                                        class: "form-control" ) %>
             </div>
 
-<!--  tmp off until decide on relations
             <div class="form-group">
-              <%#= f.label :admin_serial_id %>
-              <%#= f.text_field( :admin_serial_id,
+              <%= f.label :admin_serial_id %>
+              <%= f.text_field( :admin_serial_id,
                                        class: "form-control",
-                                       placeholder: @serial&.title ) %>
+                                       placeholder: @serial.title ) %>
             </div>
--->
 
             <div class="form-group">
               <%= fields_for :movie_thumbnail, movie_thumbnail do |thumbnail_fields| %>

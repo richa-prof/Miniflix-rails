@@ -51,7 +51,8 @@ class Movie < ApplicationRecord
 
 
   # SCOPES
-  default_scope  { where(kind: 'movie') }
+  default_scope  { where(kind: self.name.downcase) }
+
   scope :featured, -> { where(is_featured_film: true) }
   scope :episodes, -> { where(kind: 'episode') }
 

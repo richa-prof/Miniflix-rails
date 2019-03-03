@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   # Starts common routing
   get 'send_download_link' => 'mobile_apps#send_download_link'
   resources :movies, only: [:show]
+  resources :episodes, only: [:show]
 
   # Starts routing for API subdomain
   constraints Constraints::ApiSubdomainConstraint do
@@ -206,6 +207,15 @@ Rails.application.routes.draw do
           get 'add_movie_details/:id' => "movies#add_movie_details", as: :add_movie_details
           get 'upload_movie_trailer/:id' => "movies#upload_movie_trailer", as: :upload_movie_trailer
           post 'save_uploaded_movie_trailer' => "movies#save_uploaded_movie_trailer", as: :save_uploaded_movie_trailer
+        end
+        resources :movie_captions, except: [:show]
+      end
+
+      resources :episodes do
+        collection do
+          get 'add_movie_details/:id' => "episodes#add_movie_details", as: :add_movie_details
+          get 'upload_movie_trailer/:id' => "episodes#upload_movie_trailer", as: :upload_movie_trailer
+          post 'save_uploaded_movie_trailer' => "episodes#save_uploaded_movie_trailer", as: :save_uploaded_movie_trailer
         end
         resources :movie_captions, except: [:show]
       end
