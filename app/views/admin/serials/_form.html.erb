@@ -38,14 +38,17 @@
               <%= f.label :series_title %>
               <%= f.text_field( :title,
                                 class: "form-control",
-                                placeholder: t('placeholder.serial.title') ) %>
+                                placeholder: t('placeholder.serial.title'),
+                                required: true,
+                                maxlength: 200 ) %>
             </div>
 
             <div class="form-group">
               <%= f.label :directed_by %>
               <%= f.text_field( :directed_by,
                                 class: "form-control",
-                                placeholder: t('placeholder.serial.directed_by') ) %>
+                                placeholder: t('placeholder.serial.directed_by'),
+                                maxlength: 200 ) %>
             </div>
 
             <div class="form-group">
@@ -53,7 +56,9 @@
               <%= f.text_area( :description,
                                rows: 5,
                                class: "form-control description-textarea",
-                               placeholder: t('placeholder.serial.description') ) %>
+                               placeholder: t('placeholder.serial.description'),
+                               required: true,
+                                maxlength: 1000 ) %>
             </div>
 
             <div class="form-group">
@@ -63,8 +68,8 @@
                                        :id,
                                        :name,
                                        { include_blank: t(:SelectGenre) },
-                                       required: true,
-                                       class: "form-control" ) %>
+                                       class: "form-control",
+                                       required: true ) %>
             </div>
 
             <div class="form-group">
@@ -93,31 +98,36 @@
               <%= f.number_field( :seasons_number,
                                 class: "form-control",
                                 minlength: 1,
-                                required: true,
+                                placeholder: t('placeholder.serial.seasons_number'),
                                 style: "width: 200px",
-                                placeholder: t('placeholder.serial.seasons_number') ) %>
+                                required: true,
+                                maxlength: 3 ) %>
             </div>
 
             <div class="form-group">
               <%= f.label :year %>
               <%= f.text_field( 'year',
                                 class: "form-control date-picker",
+                                placeholder: t('placeholder.serial.year'),
                                 style: "width: 200px",
-                                placeholder: t('placeholder.serial.year') ) %>
+                                required: true ) %>
             </div>
 
             <div class="form-group">
               <%= f.label :language %>
               <%= f.text_field( :language,
                                 class: "form-control",
-                                placeholder: t('placeholder.serial.language') ) %>
+                                placeholder: t('placeholder.serial.language'),
+                                required: true,
+                                maxlength: 200 ) %>
             </div>
 
             <div class="form-group">
               <%= f.label :star_cast %>
               <%= f.text_field( :star_cast,
                                 class: "form-control",
-                                placeholder: t('placeholder.serial.star_cast') ) %>
+                                placeholder: t('placeholder.serial.star_cast'),
+                                maxlength: 200 ) %>
             </div>
 
           </div>
