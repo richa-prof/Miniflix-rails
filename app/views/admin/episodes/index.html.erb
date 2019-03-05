@@ -1,7 +1,8 @@
 <!-- Content Header (Page header) -->
+<% serial = Serial.find_by(id: params[:serial_id]) %>
 <section class="content-header">
   <h1>
-    <%= t('heading.movies') %>
+    <%= t('heading.episodes') %> for Series "<%= serial.title %>"
   </h1>
 </section>
 
@@ -19,8 +20,8 @@
               </h3>
             </div>
             <div class="col-lg-2 col-xs-12">
-              <%= link_to( t('links.new_movie'),
-                           new_admin_movie_path,
+              <%= link_to( t('links.new_episode'),
+                           new_admin_episode_path(serial_id: params[:serial_id]),
                            class: "btn btn-primary pull-right",
                            method: :get ) %>
             </div>
@@ -72,13 +73,13 @@
                               </span>
                             </td>
                             <td data-title="Action">
-                              <%= link_to admin_movie_path(admin_movie), class: "text-green", data: { turbolinks: false } do %>
+                              <%= link_to admin_movie_path(admin_movie, kind: 'episode'), class: "text-green", data: { turbolinks: false } do %>
                                 <i class="fa fa-fw fa-eye"></i>
                               <% end %>
-                              <%= link_to edit_admin_movie_path(admin_movie), data: { turbolinks: false }, class: "text-blue" do %>
+                              <%= link_to edit_admin_movie_path(admin_movie, kind: 'episode'), data: { turbolinks: false }, class: "text-blue" do %>
                                 <i class="fa fa-fw fa-edit"></i>
                               <% end %>
-                              <%= link_to( admin_movie_path(admin_movie),
+                              <%= link_to( admin_movie_path(admin_movie, kind: 'episode'),
                                            class: "text-red",
                                            method: :delete,
                                            data: { confirm: t('confirm.are_you_sure') } ) do %>

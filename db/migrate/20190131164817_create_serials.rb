@@ -1,4 +1,4 @@
-class CreateSerials < ActiveRecord::Migration[5.2]
+class CreateSerials < ActiveRecord::Migration[5.1]
   def change
     create_table :serials do |t|
       t.string :title, null: false

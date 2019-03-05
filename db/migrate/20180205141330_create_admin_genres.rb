@@ -1,4 +1,4 @@
-class CreateAdminGenres < ActiveRecord::Migration[5.2]
+class CreateAdminGenres < ActiveRecord::Migration[5.1]
   def change
     create_table :admin_genres do |t|
       t.string :name

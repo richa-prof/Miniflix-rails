@@ -1,4 +1,4 @@
-class CreateAdminPaypalAccessTokens < ActiveRecord::Migration[5.2]
+class CreateAdminPaypalAccessTokens < ActiveRecord::Migration[5.1]
   def change
     create_table :admin_paypal_access_tokens do |t|
       t.string :access_token

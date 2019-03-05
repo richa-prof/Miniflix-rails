@@ -1,4 +1,4 @@
-class CreateSocialMediaLinks < ActiveRecord::Migration[5.2]
+class CreateSocialMediaLinks < ActiveRecord::Migration[5.1]
   def change
     create_table :social_media_links do |t|
       t.string :facebook

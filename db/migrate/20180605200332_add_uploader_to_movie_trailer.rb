@@ -1,4 +1,4 @@
-class AddUploaderToMovieTrailer < ActiveRecord::Migration[5.2]
+class AddUploaderToMovieTrailer < ActiveRecord::Migration[5.1]
   def change
     change_table :movie_trailers do |t|
       t.string :uploader

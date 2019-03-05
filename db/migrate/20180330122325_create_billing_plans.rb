@@ -1,4 +1,4 @@
-class CreateBillingPlans < ActiveRecord::Migration[5.2]
+class CreateBillingPlans < ActiveRecord::Migration[5.1]
   def change
     create_table :billing_plans do |t|
       t.string  :name

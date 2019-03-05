@@ -1,4 +1,4 @@
-class CreateVisitors < ActiveRecord::Migration[5.2]
+class CreateVisitors < ActiveRecord::Migration[5.1]
   def change
     create_table :visitors do |t|
       t.string :device_id

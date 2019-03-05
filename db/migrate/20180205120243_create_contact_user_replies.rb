@@ -1,4 +1,4 @@
-class CreateContactUserReplies < ActiveRecord::Migration[5.2]
+class CreateContactUserReplies < ActiveRecord::Migration[5.1]
   def change
     create_table :contact_user_replies do |t|
       t.integer :contact_us_id, foreign_key: true, index: true

@@ -1,4 +1,4 @@
-class CreateBackgroundImages < ActiveRecord::Migration[5.2]
+class CreateBackgroundImages < ActiveRecord::Migration[5.1]
   def change
     create_table :background_images do |t|
       t.string :backaground_image

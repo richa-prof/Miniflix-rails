@@ -38,8 +38,8 @@
           $("#error_msg").hide();
           $("#success_msg").show();
           $("#success_msg").empty().append("video uploaded successfully.");
-
-          window.location.href =  "/admin/movies/upload_movie_trailer/"+upload.id;
+          var kind = $('#s3-input-bucket-name-container').data('kind'); // movie or episode
+          window.location.href =  "/admin/" + kind + "s/upload_movie_trailer/" + upload.id + '?kind=' + kind;
         },
 
         onPause: function(key) {

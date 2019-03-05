@@ -1,4 +1,4 @@
-class AddReferencesToMovieTrailers < ActiveRecord::Migration[5.2]
+class AddReferencesToMovieTrailers < ActiveRecord::Migration[5.1]
   def change
     add_reference :movie_trailers, :admin_serial, foreign_key: true
   end

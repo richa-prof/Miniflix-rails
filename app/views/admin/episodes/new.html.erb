@@ -5,6 +5,7 @@
   <h1>
     <%= t('heading.episode') %>
   </h1>
+  <%= render partial: 'breadcrumb' %>
 </section>
 
 <!-- Main content -->
@@ -12,13 +13,7 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="box">
-        <div class="box-header">
-          <div class="row">
-            <div class="col-lg-12 col-xs-12">
-              <h3 class="box-title">Add new episode details</h3>
-            </div>
-          </div>
-        </div>
+        <%#= render partial: 'choose_season', locals: {serial: @serial} %> 
         <div class="box-body" id="upload_video">
           <%= render partial: 'upload_video', locals: {kind: 'episode'} %>
         </div>

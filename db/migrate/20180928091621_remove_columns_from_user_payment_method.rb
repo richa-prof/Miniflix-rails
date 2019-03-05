@@ -1,4 +1,4 @@
-class RemoveColumnsFromUserPaymentMethod < ActiveRecord::Migration[5.2]
+class RemoveColumnsFromUserPaymentMethod < ActiveRecord::Migration[5.1]
   def change
     remove_column :user_payment_methods, :first_name, :string
     remove_column :user_payment_methods, :last_name, :string

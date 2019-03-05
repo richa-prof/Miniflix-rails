@@ -1,4 +1,4 @@
-class CreateAdminMovieThumbnails < ActiveRecord::Migration[5.2]
+class CreateAdminMovieThumbnails < ActiveRecord::Migration[5.1]
   def change
     create_table :admin_movie_thumbnails do |t|
       t.integer :admin_movie_id, foreign_key: true, index: true

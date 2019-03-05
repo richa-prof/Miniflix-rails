@@ -1,4 +1,4 @@
-class AddReferencesToAdminMovieThumbnails < ActiveRecord::Migration[5.2]
+class AddReferencesToAdminMovieThumbnails < ActiveRecord::Migration[5.1]
   def change
     add_reference :admin_movie_thumbnails, :admin_serial, foreign_key: true
   end

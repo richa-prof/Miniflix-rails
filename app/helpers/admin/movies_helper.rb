@@ -37,7 +37,6 @@ module Admin::MoviesHelper
 
   def movie_posted_on_details_for(movie)
     posted_date = movie.posted_date
-
     if posted_date.present?
       t( 'content.movie.posted_on_details', formatted_date: posted_date.to_s(:movie_posted_on_format) )
     else
@@ -45,11 +44,9 @@ module Admin::MoviesHelper
     end
   end
 
-  def formatted_released_date_for(movie)
+  def formatted_released_date_for_movie(movie)
     released_date = movie.released_date
-
     return t('label.not_available') unless released_date.present?
-
     released_date.to_s(:full_date_month_and_year_format)
   end
 end

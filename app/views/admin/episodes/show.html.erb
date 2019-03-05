@@ -7,13 +7,7 @@
   <h1>
     <%= t('heading.episodes') %>
   </h1>
-  <ol class="breadcrumb">
-    <%= link_to admin_episodes_path, method: :get do %>
-      <i class="fa fa-fw fa-file-movie-o"></i> <span><%= t('heading.episode') %></span>
-    <% end %>
-    <li>  </li>
-    <li class="active"><%= t('heading.show') %></li>
-  </ol>
+  <%= render partial: 'breadcrumb' %>
 </section>
 
 <% movie_thumbnail = @admin_movie.movie_thumbnail %>

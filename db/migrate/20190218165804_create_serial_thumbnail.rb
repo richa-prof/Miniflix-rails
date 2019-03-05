@@ -1,4 +1,4 @@
-class CreateSerialThumbnail < ActiveRecord::Migration[5.2]
+class CreateSerialThumbnail < ActiveRecord::Migration[5.1]
   def change
     create_table :admin_serial_thumbnails do |t|
       t.integer :admin_serial_id, foreign_key: true

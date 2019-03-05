@@ -1,7 +1,4 @@
-<%# Change to series %>
 <!-- Content Header (Page header) -->
-
-<%= render partial: 'shared/jwplayer_config', locals: {movie: @admin_serial.movie_trailer}  %>
 
  <div id="err-player"></div>
 
@@ -13,6 +10,7 @@
     <%= link_to admin_serials_path, method: :get do %>
       <i class="fa fa-fw fa-file-movie-o"></i> <span><%= t('heading.serie') %></span>
     <% end %>
+    / <%= @admin_serial.title %>
     <li>  </li>
     <li class="active"><%= t('heading.show') %></li>
   </ol>
@@ -137,7 +135,17 @@
                             <div class="box-header with-border text-center">
                               <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                  <%= render( partial: 'admin/serials/movie_player', locals: { movie: @admin_serial.movie_trailer } ) %>
+                                   <% @admin_serial.seasons.each do |season| %>
+                                      <hr />
+                                      <div>
+                                        <h3>Season <%= season.season_number %></h3>
+                                        <div>
+                                        <% season.episodes.each do |episode| %>
+                                          <%= render( partial: 'admin/serials/movie_player', locals: { movie: episode } ) %>
+                                        <% end %>
+                                        </div>
+                                      </div>
+                                    <% end %>
                                 </div>
                               </div>
                             </div>
@@ -178,3 +186,5 @@
 
 </section>
 <!-- /.content -->
+
+<%= javascript_include_tag 'admin/movie_player_init.js' %>

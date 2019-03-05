@@ -44,19 +44,21 @@ class MoviesUploader < ApplicationController
     puts "on_complete upload ---> #{upload.to_json}"
     puts "on_complete session ---> #{session.to_json}"  
     # film_video = "https://d1jqh0kfebho7s.cloudfront.net/"+upload.key
-
+    puts "-------------------"
     upload_location = upload.location
     file_type = MIME::Types.type_for(upload_location).first.content_type.split("/").last rescue nil
 
-    @admin_movie = Movie.new( s3_multipart_upload_id: upload.id,
+    movie_klass = session[:movie_kind].humanize.constantize
+    puts "saving video as #{session[:movie_kind]}"
+    @admin_movie = movie_klass.new( s3_multipart_upload_id: upload.id,
                               uploader: upload.uploader,
                               film_video: upload_location,
                               name: upload.name,
                               video_size: upload.size,
                               video_format: file_type )
 
+    @admin_movie.season_id = session[:episode_season_id] if session[:movie_kind] == 'episode'
     @admin_movie.build_movie_thumbnail
-
     @admin_movie.save(validate: false)
   end
 end

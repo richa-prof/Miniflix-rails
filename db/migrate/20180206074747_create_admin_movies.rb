@@ -1,4 +1,4 @@
-class CreateAdminMovies < ActiveRecord::Migration[5.2]
+class CreateAdminMovies < ActiveRecord::Migration[5.1]
   def change
     create_table :admin_movies do |t|
       t.integer    :admin_genre_id, foreign_key: true

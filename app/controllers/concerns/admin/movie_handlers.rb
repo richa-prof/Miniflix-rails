@@ -11,18 +11,24 @@ module Admin::MovieHandlers
      @movie_id_param ||= params["#{kind}_id".to_sym]
   end
 
-  def klass
-    kind.humanize.constatize
+  def movie_klass
+    kind&.humanize&.constantize
   end
 
   def upload_movie_trailer
-    kind.constantize.class.find_by_s3_multipart_upload_id(params[:id])
+    @movie = movie_klass.find_by_s3_multipart_upload_id(params[:id])
+    case kind
+    when 'movie'
+    when 'episode'
+      serial = @movie&.season&.serial
+      redirect_to admin_serial_path(serial)
+    end
   end
 
   def save_uploaded_movie_trailer
     success = false
     upload_id = params[:upload_id]
-    @movie = klass.find(movie_id_param)
+    @movie = movie_klass.find(movie_id_param)
     s3_upload = S3Multipart::Upload.find(upload_id)
     movie_trailer = @movie.create_movie_trailer(
       s3_multipart_upload_id: upload_id,
@@ -47,9 +53,10 @@ module Admin::MovieHandlers
 
   # Use callbacks to share common setup or constraints between actions.
   def set_admin_movie
-    @admin_movie = Movie.friendly.find(params[:id])
-    # @admin_movie = kind.constantize.friendly.find(params[:id])
-
+    # @admin_movie = Movie.friendly.find(params[:id])
+    @admin_movie ||= movie_klass.friendly.find_by(id: params[:id]) || movie_klass.find_by_s3_multipart_upload_id(params[:id])
+    session[:movie_kind] = @admin_movie.kind
+    session[:serial_id] = params[:serial_id]
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

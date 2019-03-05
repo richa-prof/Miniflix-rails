@@ -1,10 +1,8 @@
-<%# Change to series %>
 
 <% released_date = @admin_serial.year ? @admin_serial.year.strftime("%m/%d/%Y") : "" %>
-
 <% form_css_class = is_edit_mode ? 'edit_movie_frm' : 'add_movie_details_frm' %>
 <% serial_thumbnail = @admin_serial.serial_thumbnail %>
-<!-- form start -->
+
 <%= form_for( [:admin, @admin_serial],
               html: { id: "frm_admin_series",
                       class: form_css_class,
@@ -129,6 +127,7 @@
                                 placeholder: t('placeholder.serial.star_cast'),
                                 maxlength: 200 ) %>
             </div>
+
 
           </div>
           <!-- /.box-body -->

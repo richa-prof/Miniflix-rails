@@ -1,4 +1,4 @@
-class CreateAdminRecurringPlans < ActiveRecord::Migration[5.2]
+class CreateAdminRecurringPlans < ActiveRecord::Migration[5.1]
   def change
     create_table :admin_recurring_plans do |t|
       t.string   :name

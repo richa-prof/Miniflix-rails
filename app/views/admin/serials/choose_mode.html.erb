@@ -17,7 +17,8 @@
               <div class="row">
                 <div class="col-lg-12 col-xs-12">
                   <h3 class="box-title"><%= t('heading.series') %></h3>
-                  <p class="box-subtitle">Upload</p>
+                  <br /> <br />
+                  <p class="box-subtitle">Upload new episode for this serie</p>
                 </div>
               </div>
             </div>
@@ -58,7 +59,7 @@
                   <%= link_to new_admin_serial_path, data: { turbolinks: false } do %>
                     <div class="add-series-container">
                         <i class="fa fa-plus"></i>
-                        <p class="add-series-text">Add New Series</p>
+                        <p class="add-series-text">Add new Series</p>
                     </div>
                   <% end %>
                   <%= link_to 'Cancel', admin_serials_path, class: "btn btn-primary", id:"continue-btn"%>

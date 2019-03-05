@@ -1,4 +1,4 @@
-class CreateUserEmailNotifications < ActiveRecord::Migration[5.2]
+class CreateUserEmailNotifications < ActiveRecord::Migration[5.1]
   def change
     create_table :user_email_notifications do |t|
       t.integer    :user_id, foreign_key: true, index: true

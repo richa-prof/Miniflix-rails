@@ -1,4 +1,4 @@
-class CreateMailchimpGroups < ActiveRecord::Migration[5.2]
+class CreateMailchimpGroups < ActiveRecord::Migration[5.1]
   def change
     create_table :mailchimp_groups do |t|
       t.string :list_id

@@ -20,6 +20,9 @@
         <!-- /.box-header -->
         <div class="box-body">
           <%= render( partial: 'form', locals: { is_edit_mode: true } ) %>
+          <br />
+          <%= render partial: 'choose_season_add_episode', locals: {serial: @admin_serial} %>
+
         </div>
         <!-- /.box-body -->
       </div>

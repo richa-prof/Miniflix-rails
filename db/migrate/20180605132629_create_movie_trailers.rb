@@ -1,4 +1,4 @@
-class CreateMovieTrailers < ActiveRecord::Migration[5.2]
+class CreateMovieTrailers < ActiveRecord::Migration[5.1]
   def change
     create_table :movie_trailers do |t|
       t.string :file
