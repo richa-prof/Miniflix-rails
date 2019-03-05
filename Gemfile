@@ -5,7 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-ruby '2.5.3'
+ruby '2.5.0'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
 
@@ -89,7 +89,7 @@ gem 'omniauth-twitter'
 #for shorten url and tracking
 gem 'bitly'
 
-# For creating pretty URLâ€™s and work with human-friendly strings as if they were numeric ids for ActiveRecord models.
+# For creating pretty URL’s and work with human-friendly strings as if they were numeric ids for ActiveRecord models.
 gem 'friendly_id', '~> 5.2.3'
 
 #valiation for phone number
