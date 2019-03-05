@@ -29,19 +29,61 @@ class Serial < ApplicationRecord
     return arr.first
   end
 
-  def serial_screenshot_list
-    movie_thumbnail = self.movie_thumbnail
-    movie_thumbnail.screenshot_urls_map if movie_thumbnail
+  def seasons_extended_list
+    season_numbers = self.seasons.pluck(:season_number)
+    h = Hash.new
+    seasons.each do |season|
+      h[season.season_number] = season.episodes.map {|ep| ep.to_json}
+    end
+    h
   end
 
-  def formatted_response(options=nil)
-    case options
+  def screenshot_list
+    out = {}
+    episodes.each do |ep|
+      out.merge!(ep.movie_thumbnail.screenshot_urls_map)
+    end
+    out
+  end
+
+  def episodes
+    Episode.where("season_id in (:list)", list: seasons.pluck(:id))
+  end
+
+  def is_liked_by_user?(user)
+    user.user_filmlists.where("admin_movie_id in (:list)", list: episodes.pluck(:id)).count > 0
+  end
+
+  def compact_response
+    {
+      id: id, 
+      title: title, 
+      year: year&.year, 
+      genre_data: { 
+        id: genre&.id, 
+        name: genre&.name
+      },
+      seasons_data: seasons_list,
+      screenshot: screenshot_list
+    }
+  end
+
+  def formatted_response(user: nil, mode: nil)
+    case mode
     when "short_serial_model"
-      return { id: self.id, title: self.title, year: self.year.year, genre_data: { id: self.genre.id, name: self.genre.name}, seasons_data: self.seasons_list, screenshot:  self.serial_screenshot_list  }
+      compact_response
     else
-      serila_detail =  super(only: [:id, :name, :title, :description, :language, :admin_genre_id]).merge( genre: genre.name, movie_screenshot: movie_screenshot_list)
-      return serila_detail
+      {
+        code: 1, # FIXME
+        status: "Success", # FIXME
+        data: compact_response.merge!(
+          director: directed_by, 
+          description: description, 
+          audio: language,
+          isLiked: is_liked_by_user?(user),
+          stars: star_cast,
+          seasons: seasons_extended_list)
+      }
     end
   end
-
 end
