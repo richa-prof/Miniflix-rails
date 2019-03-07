@@ -1,46 +1,48 @@
 class Api::Vm1::SerialsController < Api::Vm1::ApplicationController
   before_action :authenticate_api, only: []
-  before_action :authenticate_according_to_devise, only: []
+  #before_action :authenticate_according_to_devise, only: [:get_serial_detail, :manage_like, :my_list ]
+
+  def limit
+    params[:limit].to_i.zero? ? Serial::PER_PAGE : params[limit].to_i
+  end
+
+  # /serials/getData
+  def get_data
+    begin
+
+      data = {
+        topSerials: Serial.fetch_top_watched_serials(limit: limit).map {|s| s&.format(mode: 'compact')}.uniq,
+        recentlyWatched:  Serial.fetch_recent_watched_serials(limit: limit).map {|s| s&.format(mode: 'compact')}.uniq,
+        new: Serial.fetch_new_serials(limit: limit).map {|s| s&.format(mode: 'compact')}.uniq,
+        genres: Serial.collect_genres_data
+      }
+      api_response = {code: "0", status: "Success", data: data}
+    rescue Exception => e
+      api_response = {code: "-1", status: "Error", message: e.message}
+    end
+    render json: api_response
+  end
 
   # /serials/getSerial
   def get_serial_detail
     begin
-      serial = Serial.find(params[:id]) 
-      serial_hash = serial.formatted_response('full_serial_model')
-      api_response =  {:code => "0", :status => "Success", data: serial_hash }
+      serial = Serial.find(params[:serial_id]) 
+      valid_user = api_user.try(:check_login) || false
+      #p api_user.inspect  # FIXME - user not found
+      data = serial.format(user: api_user, mode: 'full')
+      api_response =  {:code => "0", :status => "Success", data: data }
     rescue Exception => e
       api_response = {:code => "-1",:status => "Error",:message => e.message}
     end
     render json: api_response
   end
 
-
-  # /serials/getData
-  def get_data
-    begin
-      Serial.find_each do |serial|
-        serial_hash = serial.formatted_response('short_serial_model')
-      end
-
-      data = {
-        topSerials: Serial.all,
-        recentlyWatched:  Serial.re@current_user.user_video_last_stops,
-        new: Serial.new_serials
-        genres: get_genres_data
-      }
-      api_response = { code: "0", status: "Success", data: data}
-    rescue Exception => e
-      api_response = {:code => "-1",:status => "Error",:message => e.message}
-    end
-  end
-
+  # /serials/manageLike
   def manage_like
     begin
-      serial = Serial.find(params[:id]) 
+      serial = Serial.find(params[:serial_id]) 
       valid_user = api_user.try(:check_login) || false
-      serial.season.movies.each do |movie|
-        valid_user.my_list_movies << movie
-      end
+      serial.mark_as_liked_by_user(api_user)
       api_response =  {:code => "0", :status => "Success"}
     rescue Exception => e
       api_response = {:code => "-1",:status => "Error",:message => e.message}
@@ -51,14 +53,17 @@ class Api::Vm1::SerialsController < Api::Vm1::ApplicationController
   # /serials/myList
   def my_list
     begin
+      data = []
       valid_user = api_user.try(:check_login) || false
       fav_serials_ids  = []
-      valid_user.my_list_movies.find_each(start: params[:skip]).limit(50) do |movie|
-         fav_serials_ids << movie.season&.serial&.id
+      raise 'User not found or not logged in' unless valid_user
+      api_user.favorite_episodes.limit(limit).offset(params[:skip].to_i).each do |ep|
+         fav_serials_ids << ep.season&.serial&.id if ep.kind == 'episode'
       end
-      fav_serials = Serial.where("id in :ids", ids: fav_serials_ids.uniq)
+      p fav_serials_ids
+      fav_serials = Serial.where("id in (:ids)", ids: fav_serials_ids.uniq)
       fav_serials.each do |serial|
-        data << serial.formatted_response('short_serial_model')
+        data << serial.format(mode: 'compact')
       end
       api_response =  {:code => "0", :status => "Success", data: data}
     rescue Exception => e
@@ -70,14 +75,14 @@ class Api::Vm1::SerialsController < Api::Vm1::ApplicationController
   # /serials/search
   def search
     begin
+      data = []
       valid_user = api_user.try(:check_login) || false
       fav_serials_ids  = []
-      Movie.all.find_each do |movie|
-         fav_serials_ids << movie.season&.serial&.id
-      end
-      serials = Serial.where("id IN :ids AND name LIKE :search", ids: fav_serials_ids.uniq, search: "%params[:searchString]%")
+      p params[:searchString]
+      serials = Serial.where('title LIKE ?', "%#{params[:searchString]}%").limit(limit).offset(params[:skip].to_i)
+
       serials.each do |serial|
-        data << serial.formatted_response('short_serial_model')
+        data << serial.format(mode: 'compact')
       end
       api_response =  {:code => "0", :status => "Success", data: data}
     rescue Exception => e
@@ -90,14 +95,18 @@ class Api::Vm1::SerialsController < Api::Vm1::ApplicationController
   # /serials/getDataForGenre
   def get_data_for_genre
     begin
-      valid_user = api_user.try(:check_login) || false
-      genre_serials_ids  = []
-      Movie.all.find_each(start: params[:skip]) do |movie|
-         genre_serials_ids << movie.season&.serial&.id
-      end
-      serials = Serial.where("id IN :ids AND genre_id = :genre_id", ids: fav_serials_ids.uniq, genre_id: params[:genre_id])
+      genre = Genre.find(params[:genre_id])
+      data = {
+        genre_data: {
+          id: genre&.id, 
+          name: genre&.name
+        },
+        serials: []
+      }
+      #valid_user = api_user.try(:check_login) || false
+      serials = Serial.where("admin_genre_id = :genre_id", genre_id: params[:genre_id]).limit(limit).offset(params[:skip].to_i)
       serials.each do |serial|
-        data << serial.formatted_response('short_serial_model')
+        data[:serials] << serial.format(mode: 'compact')
       end
       api_response =  {:code => "0", :status => "Success", data: data}
     rescue Exception => e
@@ -110,14 +119,10 @@ class Api::Vm1::SerialsController < Api::Vm1::ApplicationController
   # /serials/getDataForNew
   def get_data_for_new
     begin
-      valid_user = api_user.try(:check_login) || false
-      serials_ids  = []
-      Movie.new_movies.find_each(start: params[:skip]) do |movie|
-         serials_ids << movie.season&.serial&.id
-      end
-      serials = Serial.where("id IN :ids AND genre_id = :genre_id", ids: serials_ids.uniq, genre_id: params[:genre_id])
+      data = []
+      serials = Serial.fetch_new_serials(limit: limit, offset: params[:skip].to_i).uniq
       serials.each do |serial|
-        data << serial.formatted_response('short_serial_model')
+        data << serial.format(mode: 'compact')
       end
       api_response =  {:code => "0", :status => "Success", data: data}
     rescue Exception => e
@@ -131,14 +136,11 @@ class Api::Vm1::SerialsController < Api::Vm1::ApplicationController
   # хоча б один фільм
   def get_data_for_recent
     begin
-      valid_user = api_user.try(:check_login) || false
-      serials_ids  = []
-      Movie.recent.find_each(start: params[:skip]) do |movie|
-         serials_ids << movie.season&.serial&.id
-      end
-      serials = Serial.where("id IN :ids AND genre_id = :genre_id", ids: serials_ids.uniq, genre_id: params[:genre_id])
+      data = []
+      #valid_user = api_user.try(:check_login) || false
+      serials = Serial.fetch_recent_watched_serials(limit: limit, offset: params[:skip].to_i).uniq
       serials.each do |serial|
-        data << serial.formatted_response('short_serial_model')
+        data << serial.format(mode: 'compact')
       end
       api_response =  {:code => "0", :status => "Success", data: data}
     rescue Exception => e
@@ -150,22 +152,17 @@ class Api::Vm1::SerialsController < Api::Vm1::ApplicationController
   # /serials/getEpisodeDetails
   def get_episode_details
     begin
-      valid_user = api_user.try(:check_login) || false
-      serials_ids  = []
-      Movie.recent.find_each(start: params[:skip]) do |movie|
-         serials_ids << movie.season&.serial&.id
-      end
-      serials = Serial.where("id IN :ids AND genre_id = :genre_id", ids: serials_ids.uniq, genre_id: params[:genre_id])
-      serials.each do |serial|
-        data << serial.formatted_response('short_serial_model')
-      end
+      #valid_user = api_user.try(:check_login) || false
+      episode = Episode.find(params[:episode_id])
+      data = {
+        serial: episode.season.serial.format(mode: 'compact'),
+        selected_episode: episode.format(mode: 'full'),
+        next_episodes: episode.next&.map {|ep| ep.format('full')}
+      } 
       api_response =  {:code => "0", :status => "Success", data: data}
     rescue Exception => e
       api_response = {:code => "-1",:status => "Error",:message => e.message}
     end
     render json: api_response
   end
-
-  
-
 end

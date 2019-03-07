@@ -21,6 +21,7 @@ class User < ActiveRecord::Base
   has_many :user_payment_methods, dependent: :destroy
   has_many :user_filmlists,  dependent: :destroy
   has_many :my_list_movies,  through: :user_filmlists, source: "movie"
+  has_many :favorite_episodes,  through: :user_filmlists, source: "episode"
   has_many :user_video_last_stops,  dependent: :destroy
   has_one :user_email_notification, dependent: :destroy
   has_one :logged_in_user, dependent: :destroy
