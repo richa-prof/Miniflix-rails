@@ -21,10 +21,18 @@
 <script>
 
 var handleSeasonSelection = function(el) {
-  $('#season_errors').css('display', el.value.length ? 'none' : 'block');
   var link = $('#new_episode_link a');
-  link.attr('href', link.attr('href') + '&season_id=' + el.value);
-  $('#new_episode_link').show();
+  var lhref = link.attr('href');
+  if (lhref.indexOf('season_id') < 0 ) {
+    link.attr('href', lhref + '&season_id=' + el.value);
+  }
+  if (el.value.length) {
+    $('#season_errors').hide();
+    $('#new_episode_link').show();
+  } else {
+    $('#season_errors').show();
+    $('#new_episode_link').hide();
+  }
   return true;
 };
 

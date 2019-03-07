@@ -21,7 +21,7 @@ module Admin::MovieHandlers
     when 'movie'
     when 'episode'
       serial = @movie&.season&.serial
-      redirect_to admin_serial_path(serial)
+      redirect_to admin_serial_path(serial.id)
     end
   end
 
