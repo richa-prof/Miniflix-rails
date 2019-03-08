@@ -1,5 +1,4 @@
 <!-- Content Header (Page header) -->
-<%= render partial: 'shared/jwplayer_config', locals: {movie: @admin_movie} %>
 
  <div id="err-player"></div>
 
@@ -145,7 +144,6 @@
                             <div class="box-header with-border text-center">
                               <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
-
                                   <%= render( partial: 'movie_and_trailer_players', locals: { movie: @admin_movie } ) %>
                                 </div>
                               </div>
@@ -186,97 +184,3 @@
   <!-- /.row -->
 </section>
 <!-- /.content -->
-
-<script type="text/javascript">
-  isEmptyValue = function(value) {
-    return (undefined === value || null === value || "" === value)
-  }
-
-  jwPlayerConfigContainer = function() {
-    return $('#jwPlayerConfigContainer');
-  };
-
-  caption_data = []
-  <% @admin_movie.movie_captions.active_caption.each do |caption| %>
-    var stringValue = "<%= caption.is_default  %>";
-    var boolValue = stringValue.toLowerCase() == 'true' ? true : false;   //returns true
-
-    caption_data.push({
-      file: "<%= caption.caption_file_cloudfront_url %>",
-      label: "<%= caption.language %>",
-      kind: "captions",
-      default: boolValue
-    })
-  <% end %>
-
-  var jwplayer_setup = function() {
-    var jwPlayerConfig = jwPlayerConfigContainer();
-    var hlsUrl = jwPlayerConfig.data('hls-file');
-    var originalUrl = jwPlayerConfig.data('original-file');
-    var trailerFileUrl = jwPlayerConfig.data('trailer-file');
-
-    var sources = [{
-              file: hlsUrl
-            }]
-    var newplayerInstance = window.jwplayer($('#player-1')[0]);
-    window.player2 = newplayerInstance;
-    newplayerInstance.setup({
-      sources: sources,
-      hlshtml: true,
-      tracks: caption_data,
-      allowscriptaccess: 'always',
-      allownetworking: 'all'
-    });
-
-    if (!isEmptyValue(trailerFileUrl)) {
-      var trailerSources = [{
-                file: trailerFileUrl
-              }]
-      var newplayerInstance = window.jwplayer($('#player-2')[0]);
-      window.player2 = newplayerInstance;
-      newplayerInstance.setup({
-        sources: trailerSources,
-        allowscriptaccess: 'always',
-        allownetworking: 'all'
-      });
-    }
-  };
-
-  var jwplayer_setup_error = function() {
-    jwplayer().on('setupError',function(er){
-      $('.full-screen-play').removeClass('full-screen-play');
-
-      $('#err-player').html('<div class="alert alert-danger alert-dismissible" style="margin-top: 12px;"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+ er.message +'</div>');
-    });
-  };
-
-  var bindChangeEventOnBrowserScreens = function() {
-    $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function(el){
-
-      var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen || document.msFullscreenElement;
-      if (state != true){
-        jwplayer("flim_video").pause(true);
-        $(".player").addClass('hide');
-      } else{
-        jwplayer("flim_video").play(true);
-      }
-    });
-  };
-
-
-var ready = function() {
-  console.log('>>>>> invoked `ready` function >>>>>');
-
-  jwplayer.key = jwPlayerConfigContainer().data('jwplayer-key');
-
-  if (jwPlayerConfigContainer().length) {
-    bindChangeEventOnBrowserScreens();
-    jwplayer_setup();
-    jwplayer_setup_error();
-  }
-};
-
-$(document).ready(ready);
-$(document).on('turbolinks:load', ready);
-
-</script>

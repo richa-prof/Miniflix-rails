@@ -1,22 +1,22 @@
 <h3> Add New Episode</h3>
 
-                  <div class="form-group" style="width: 25%">
-                      <select class="form-control valid" name="season_id" 
-                              aria-required="true" aria-invalid="false"
-                              onclick="return handleSeasonSelection(this);">
+<div class="form-group" style="width: 25%">
+    <select class="form-control valid" name="season_id" 
+            aria-required="true" aria-invalid="false"
+            onclick="return handleSeasonSelection(this);">
 
-                          <option value selected>Choose Season</option>
-                          <%= serial.seasons.each do |season| %>
-                            <option value="<%= season.id %>"><%= season.season_number %></option>
-                          <% end %>
-                      </select>
-                      <div class="errors-container" id="season_errors">
-                          <p>Please, choose the Season</p>
-                      </div>
-                      <div id="new_episode_link" style="margin-top:  15px; display: none">
-                        <%= link_to 'Upload new Episode to this Serie', new_admin_episode_path(serial_id: serial.id), target: '_blank' %>
-                      </div>
-                  </div>
+        <option value selected>Choose Season</option>
+        <%= serial.seasons.each do |season| %>
+          <option value="<%= season.id %>"><%= season.season_number %></option>
+        <% end %>
+    </select>
+    <div class="errors-container" id="season_errors">
+        <p>Please, choose the Season</p>
+    </div>
+    <div id="new_episode_link" style="margin-top:  15px; display: none">
+      <%= link_to 'Upload new Episode to this Serie', new_admin_episode_path(serial_id: serial.id), target: '_blank' %>
+    </div>
+</div>
 
 <script>
 
