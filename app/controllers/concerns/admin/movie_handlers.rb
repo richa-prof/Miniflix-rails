@@ -21,7 +21,12 @@ module Admin::MovieHandlers
     when 'movie'
     when 'episode'
       serial = @movie&.season&.serial
-      redirect_to admin_serial_path(serial.id)
+      if serial
+        flash[:success] = 'Episode has been successfully uploaded'
+      else
+        flash[:error] = 'Something went wrong during Episode upload: Episode not found in DB'
+      end
+      redirect_to serial ? admin_serial_path(serial.id) : admin_serials_path
     end
   end
 

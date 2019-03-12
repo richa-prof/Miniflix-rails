@@ -3,6 +3,7 @@
 <% serial.episodes.each do |episode| %>
 
         <div class="box-body">
+
           <div class= "player">
             <div>
               <strong>Episode for season <%= episode.season.season_number %></strong>
@@ -12,138 +13,22 @@
           <div class="row">
             <div class="col-lg-8 col-md-10 col-sm-12">
               <div class="box box-primary">
+                <br/>
 
-                <div class="box-header with-border">
-                  <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                      <h3 class="box-title text-blue">
-                        <%= episode.name %>
-                      </h3>
-                      <p class="margin-btm-zero">
-                        <%= movie_posted_on_details_for(episode) %>
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <%= render( partial: 'admin/serials/movie_player', locals: { movie: episode } ) %>
+                <div class="pull-right">
+                <%= link_to admin_episode_path(episode.id, kind: 'episode'), 
+                          class: "btn btn-default btn-flat text-red",
+                          title: 'Click to remove episode',
+                          method: :delete, data: { confirm: 'Are you sure?' } do %>
+                              <i class="fa fa-fw fa-trash"></i>
+                <% end %>
+               </div>
 
-<!--                
-                <div class="box-body">
 
-                  <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                      <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                        <ol class="carousel-indicators">
-                          <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                          <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>
-                          <li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>
-                        </ol>
-                        <div class="carousel-inner">
-                          <% episode.movie_thumbnail.thumb_screenshots_arr.each_with_index do |screenshot, index| %>
-                            <div class="item <%= 'active' if index.zero? %>">
-                              <%= image_tag(screenshot.presence || '', class: "movie_thumbnail") if episode.movie_thumbnail.present? %>
-                              <div class="carousel-caption">
-                              </div>
-                            </div>
-                          <% end %>
-                        </div>
-                        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-                          <span class="fa fa-angle-left"></span>
-                        </a>
-                        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-                          <span class="fa fa-angle-right"></span>
-                        </a>
-                      </div>
-
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                      <div class="row">
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 padding-zero">
-                          <div class='box box-primary movie-block-box-primary'>
-                            <div class="box-header with-border text-center movie-block-box-header">
-                              <div class="row">
-                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                  <h3 class="box-title text-blue">
-                                    <%= t('title.movie.genre') %>
-                                  </h3>
-
-                                  <p class="margin-btm-zero"><%= episode.genre.try(:name) %></p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 padding-zero">
-                          <div class="box box-primary movie-block-box-primary">
-                            <div class="box-header with-border text-center movie-block-box-header">
-                              <div class="row">
-                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                  <h3 class="box-title text-blue">
-                                    <%= t('title.movie.directed_by') %>
-                                  </h3>
-                                  <p class="margin-btm-zero"><%= episode.directed_by  %></p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 padding-zero">
-                          <div class="box box-primary movie-block-box-primary">
-                            <div class="box-header with-border text-center movie-block-box-header">
-                              <div class="row">
-                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                  <h3 class="box-title text-blue">
-                                    <%= t('title.movie.released_on') %>
-                                  </h3>
-                                  <p class="margin-btm-zero"><%= formatted_released_date_for_movie(episode) %></p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding-left: 0px;">
-                          <div class="box box-primary movie-block-box-primary">
-                            <div class="box-header with-border text-center movie-block-box-header">
-                              <div class="row">
-                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                  <h3 class="box-title text-blue">
-                                    <%= t('title.movie.stars_cast') %>
-                                  </h3>
-                                  <p class="star_cast"><%= episode.star_cast  %></p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                          <div class="box box-primary movie-description-box">
-                            <div class="box-header with-border">
-                              <div class="row">
-                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                  <h3 class="box-title text-blue">
-                                    <%= t('title.movie.movie_story') %>
-                                  </h3>
-                                  <p class="margin-btm-zero"><%= episode.description %></p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                -->
-
-                </div>
               </div>
             </div>
           </div>
+        </div>
+
 <% end %>

@@ -51,6 +51,7 @@ class Admin::EpisodesController < ApplicationController
 
   # DELETE /admin/episodes/1
   def destroy
+    serial = @admin_movie.season&.serial&.id
     s3_multipart = S3Multipart::Upload.find(@admin_movie.s3_multipart_upload_id)
     if @admin_movie.has_trailer?
       movie_trailer = @admin_movie.movie_trailer
@@ -60,6 +61,7 @@ class Admin::EpisodesController < ApplicationController
     @admin_movie.destroy
     Episode.delete_movie_from_s3(s3_multipart, version_file)
     MovieTrailer.delete_file_from_s3(s3_multipart_obj) if s3_multipart_obj
-    redirect_to admin_movies_url, notice: I18n.t('flash.movie.successfully_deleted')
+    flash[:notice] = I18n.t('flash.movie.successfully_deleted')
+    redirect_to edit_admin_serial_url(serial)
   end
 end

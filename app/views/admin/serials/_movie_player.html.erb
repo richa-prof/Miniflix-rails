@@ -10,7 +10,7 @@
     </div>
   </div>
   <h3 class="box-title text-blue">
-      <%= t('heading.movie') %>
+      <%= movie.name %>
       <% if movie && movie.downloadable %>
           <%= link_to( t('links.download_now'),
                        movie.film_video,

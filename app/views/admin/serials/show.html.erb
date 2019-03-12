@@ -62,7 +62,7 @@
                             <% 3.times do |index| %>
                               <% screenshot = @admin_serial.serial_thumbnail.method("serial_screenshot_#{index+1}".to_sym).call %>
                               <div class="item <%= 'active' if index.zero? %>">
-                                <%= image_tag(screenshot.url, class: "movie_thumbnail")  %>
+                                <%= image_tag(screenshot.url, class: "movie_thumbnail")  if screenshot  %>
                                 <div class="carousel-caption">
                                 </div>
                               </div>
@@ -157,7 +157,6 @@
                                         <h3>Season <%= season.season_number %></h3>
                                         <div>
                                         <% season.episodes.each_with_index do |episode, index| %>
-                                          <span class="debug" rel="<%= index %>:<%= episode.name %>"></span>
                                           <%= render( partial: 'admin/serials/movie_player', locals: { movie: episode, counter: index + 1 } ) %>
                                         <% end %>
                                         </div>
