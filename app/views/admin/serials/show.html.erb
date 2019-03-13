@@ -62,7 +62,7 @@
                             <% 3.times do |index| %>
                               <% screenshot = @admin_serial.serial_thumbnail.method("serial_screenshot_#{index+1}".to_sym).call %>
                               <div class="item <%= 'active' if index.zero? %>">
-                                <%= image_tag(screenshot.url, class: "movie_thumbnail")  if screenshot  %>
+                                <%= image_tag(screenshot&.url&.to_s, class: "movie_thumbnail")  if screenshot&.url  %>
                                 <div class="carousel-caption">
                                 </div>
                               </div>

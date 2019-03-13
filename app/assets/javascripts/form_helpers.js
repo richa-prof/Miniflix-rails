@@ -288,7 +288,7 @@
 
   bindKeypressEventOnSeasonsNumberField = function(e) {
     $("#serial_seasons_number").on("keypress", function(e) {
-      const iKeyCode = e.which ? e.which : e.keyCode;
+      var iKeyCode = e.which ? e.which : e.keyCode;
       if (iKeyCode != 46 && iKeyCode > 31 && (iKeyCode < 48 || iKeyCode > 57))
         return false;
 
