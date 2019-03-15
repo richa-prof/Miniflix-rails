@@ -1,5 +1,5 @@
 class UserVideoLastStop < ApplicationRecord
-  belongs_to :role, polymorphic: true
+  belongs_to :watcher, polymorphic: true
   belongs_to :movie, foreign_key: :admin_movie_id
 
   #constants

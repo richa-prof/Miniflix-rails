@@ -1,0 +1,321 @@
+<% released_date = @admin_movie.released_date ? @admin_movie.released_date.strftime("%m/%d/%Y") : "" %>
+<% posted_date = @admin_movie.posted_date ? @admin_movie.posted_date.strftime("%m/%d/%Y") : "" %>
+<% movie_thumbnail = @admin_movie.movie_thumbnail %>
+
+<% form_css_class = is_edit_mode ? 'edit_movie_frm' : 'add_movie_details_frm' %>
+
+<div class='upload-trailer-block'>
+  <% if (is_edit_mode && !@admin_movie.has_trailer?) %>
+    <%= render( partial: 'upload_trailer', locals: { movie: @admin_movie, is_edit_mode: true } ) %>
+  <% end %>
+</div>
+
+<!-- form start -->
+<%= form_for( [:admin, @admin_movie],
+              html: { id: "frm_admin_movie",
+                      class: form_css_class,
+                      multipart: true } ) do |f| %>
+  <% if @admin_movie.errors.any? %>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-default">
+          <div class="box-body">
+            <% @admin_movie.errors.full_messages.each do |message| %>
+              <div class="callout callout-success">
+                <p><%= message %></p>
+              </div>
+            <% end %>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :kind, value: 'episode' %>
+  <%= f.hidden_field :name, value: "Episode" %>
+
+  <div class="row">
+    <div class="col-md-12">
+      <!-- general form elements -->
+      <div class="box box-primary">
+        <!-- /.box-header -->
+          <div class="box-body">
+            <div class="form-group">
+              <%= f.label :name %>
+              <%= f.text_field( :name,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.name') ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :title %>
+              <%= f.text_field( :title,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.title') ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :description %>
+              <%= f.text_area( :description,
+                               rows: 5,
+                               class: "form-control",
+                               placeholder: t('placeholder.movie.description') ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :admin_genre_id %>
+              <%= f.collection_select( :admin_genre_id,
+                                       Genre.alfa_order,
+                                       :id,
+                                       :name,
+                                       { include_blank: t(:SelectGenre) },
+                                       class: "form-control" ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :admin_serial_id %>
+              <%= f.text_field( :admin_serial_id,
+                                       class: "form-control",
+                                       placeholder: @serial.title ) %>
+            </div>
+
+            <div class="form-group">
+              <%= fields_for :movie_thumbnail, movie_thumbnail do |thumbnail_fields| %>
+                <div class="row">
+                  <div class="col-md-9 col-sm-12">
+                    <%= render( partial: 'set_movie_screenshots',
+                                locals: { movie: @admin_movie,
+                                          is_edit_mode: is_edit_mode,
+                                          thumbnail_fields: thumbnail_fields } ) %>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-9 col-sm-12">
+                    <%= render( partial: 'set_thumbnail_screenshots',
+                                locals: { movie: @admin_movie,
+                                          is_edit_mode: is_edit_mode,
+                                          thumbnail_fields: thumbnail_fields } ) %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :video_type %>
+              <%= f.text_field( :video_type,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.video_type') ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :video_size %>
+              <%= f.text_field( :video_size,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.video_size') ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :video_duration %>
+              <%= f.text_field( :video_duration,
+                                class: "form-control",
+                                minlength: 8,
+                                placeholder: t('placeholder.movie.video_duration') ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :video_format %>
+              <%= f.select( :video_format,
+                            supported_video_formats_map,
+                            { include_blank: t(:SelectVideoFormat) },
+                            class: "form-control" ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :directed_by %>
+              <%= f.text_field( :directed_by,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.directed_by') ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :released_date %>
+              <%= f.text_field( :released_date,
+                                class: "form-control date-picker",
+                                placeholder: t('placeholder.movie.released_date'),
+                                value: released_date ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :language %>
+              <%= f.text_field( :language,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.language') ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :posted_date %>
+              <%= f.text_field( :posted_date,
+                                class: "form-control date-picker",
+                                placeholder: t('placeholder.movie.posted_date'),
+                                value: posted_date ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :star_cast %>
+              <%= f.text_field( :star_cast,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.star_cast') ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :actors %>
+              <%= f.text_field( :actors,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.actors') ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :festival_laureates %>
+              <%= f.text_field( :festival_laureates,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.festival_laureates') ) %>
+            </div>
+
+            <div class="form-group">
+              <label for="movie_downloadable">
+                <%= f.check_box :downloadable, { class: 'minimal' }, true, false %>
+                <%= t('contents.movie.admin_movie_downloadable') %>
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label for="admin_movie_is_featured_film">
+                <%= f.check_box :is_featured_film, { class: 'minimal' }, true, false %>
+                <%= t('contents.movie.admin_movie_is_featured_film') %>
+              </label>
+            </div>
+
+          </div>
+          <!-- /.box-body -->
+
+          <div class="box-footer">
+            <%= f.submit nil, class: "btn btn-primary" %>
+            <%= link_to t('links.cancel'), admin_movies_path, class: "btn btn-default" %>
+          </div>
+      </div>
+      <!-- /.box -->
+    </div>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+
+  window.URL = window.URL || window.webkitURL;
+
+  function validate_thumbnails(form){
+    var fileInput = $("#thumbnail_screenshot");
+    var file = fileInput[0].files && fileInput[0].files[0];
+
+    var fileInput640 = $("#thumbnail_640_screenshot");
+    file640 = fileInput640[0].files && fileInput640[0].files[0];
+
+    var fileInput800 = $("#thumbnail_800_screenshot");
+    file800 = fileInput800[0].files && fileInput800[0].files[0];
+
+    var error = false;
+    if( file ) {
+      var img = new Image();
+      img.src = window.URL.createObjectURL( file );
+
+      img.onload = function() {
+        var width = img.naturalWidth,
+          height = img.naturalHeight;
+
+        window.URL.revokeObjectURL( img.src );
+
+        if( width == 330 && height == 360 ) {
+          // form.submit();
+        }
+        else {
+            //fail
+          $("#thumbnail_error").html("Please upload image with 330x360 size only").show();
+          error = true;
+        }
+      };
+    }
+    else { //No file was input or browser doesn't support client side reading
+      <% unless @admin_movie.movie_thumbnail.thumbnail_screenshot.present? %>
+        $("#thumbnail_error").html("Please upload thumbnail image").show();
+        error = true;
+      <% end %>
+    }
+
+    if( file640 ) {
+      var img640 = new Image();
+      img640.src = window.URL.createObjectURL( file640 );
+
+      img640.onload = function() {
+        var width = img640.naturalWidth,
+          height = img640.naturalHeight;
+
+        window.URL.revokeObjectURL( img640.src );
+
+        if( width == 600 && height == 300 ) {
+          // form.submit();
+        }
+        else {
+            //fail
+          console.log("invalid dimention==>",width,"--height-->",height)
+          $("#thumbnail_640_error").html("Please upload image with 600x300 size only").show();
+          error = true;
+        }
+      };
+    }
+    else { //No file was input or browser doesn't support client side reading
+      <% unless @admin_movie.movie_thumbnail.thumbnail_640_screenshot.present? %>
+        $("#thumbnail_640_error").html("Please upload thumbnail image").show();
+        error = true;
+      <% end %>
+    }
+
+    if( file800 ) {
+      var img800 = new Image();
+      img800.src = window.URL.createObjectURL( file800 );
+
+      img800.onload = function() {
+        var width = img800.naturalWidth,
+          height = img800.naturalHeight;
+
+        window.URL.revokeObjectURL( img800.src );
+
+        if( width == 800 && height == 400 ) {
+          // form.submit();
+        }
+        else {
+            //fail
+          console.log("invalid dimention==>",width,"--height-->",height)
+          $("#thumbnail_800_error").html("Please upload image with 800x400 size only").show();
+          error = true;
+        }
+      };
+    }
+    else { //No file was input or browser doesn't support client side reading
+      <% unless @admin_movie.movie_thumbnail.thumbnail_640_screenshot.present? %>
+        $("#thumbnail_800_error").html("Please upload thumbnail image").show();
+        error = true;
+      <% end %>
+    }
+
+    setTimeout(function() {
+      if (error){
+        console.log("Error in", error)
+        return false;
+      }else{
+        console.log("else", error)
+        form.submit();
+      }
+    },1000)
+  }
+</script>

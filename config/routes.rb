@@ -2,6 +2,19 @@ require 'sidekiq/web'
 require 'constraints/admin_subdomain_constraint'
 require 'constraints/api_subdomain_constraint'
 require 'constraints/blog_subdomain_constraint'
+require 'constraints/provider_subdomain_constraint'
+
+def provider_block
+  devise_for :users, as: :provider, controllers: {
+    sessions: 'provider/sessions',
+  }
+  resources :genres, only: [:index, :show, :edit, :update] do
+    collection do
+      get 'check_genre_name/:id' => 'genres#check_genre_name', as: :check_genre_name
+    end
+  end
+  resources :seo_metas
+end
 
 Rails.application.routes.draw do
   mount S3Multipart::Engine => "/s3_multipart"
@@ -249,16 +262,24 @@ Rails.application.routes.draw do
       devise_for :users, as: :marketing_staff, controllers: {
         sessions: 'marketing_staff/sessions',
       }
-
       resources :genres, only: [:index, :show, :edit, :update] do
         collection do
           get 'check_genre_name/:id' => 'genres#check_genre_name', as: :check_genre_name
         end
       end
-
       resources :seo_metas
     end
+
+    namespace :provider do
+      provider_block
+    end
   end
+
+  # Starts routing for Provider subdomain
+  # constraints Constraints::ProviderSubdomainConstraint do
+  #   get '/' => 'provider/dashboard#index'
+  #   provider_block
+  # end
 
   # Starts routing for Blog Feature
   constraints Constraints::BlogSubdomainConstraint do
@@ -289,3 +310,4 @@ Rails.application.routes.draw do
     end
   end
 end
+
