@@ -1,0 +1,23 @@
+<%= javascript_include_tag 'admin/upload_movies', 'data-turbolinks-track' => true %>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    <%= t('heading.episode') %>
+  </h1>
+  <%= render partial: 'breadcrumb' %>
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <%#= render partial: 'choose_season', locals: {serial: @serial} %> 
+        <div class="box-body" id="upload_video">
+          <%= render partial: 'upload_video', locals: {kind: 'episode'} %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

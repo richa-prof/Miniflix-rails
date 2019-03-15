@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   # Include default devise modules.
   devise :database_authenticatable, :registerable,
           :recoverable, :rememberable, :trackable, :validatable, :omniauthable
+
   include DeviseTokenAuth::Concerns::User
 
   attr_accessor :skip_callbacks, :social_login, :paypal_token, :payment_type
@@ -22,10 +23,16 @@ class User < ActiveRecord::Base
   has_many :user_filmlists,  dependent: :destroy
   has_many :my_list_movies,  through: :user_filmlists, source: "movie"
   has_many :favorite_episodes,  through: :user_filmlists, source: "episode"
-  has_many :user_video_last_stops,  dependent: :destroy
+  #has_many :user_video_last_stops,  dependent: :destroy
   has_one :user_email_notification, dependent: :destroy
   has_one :logged_in_user, dependent: :destroy
-  has_many :user_video_last_stops, as: :role, dependent: :destroy
+  has_many :user_video_last_stops, as: :watched, dependent: :destroy
+  #has_many :recent_videos, class_name: 'UserVideoLastStop', dependent: :destroy
+
+  has_one  :video_statistic, dependent: :destroy
+
+  alias_attribute :recently_watched, :user_video_last_stops
+
   has_many :notifications, dependent: :destroy
   has_many :blogs, dependent: :destroy
   has_one :address, dependent: :destroy
@@ -75,26 +82,45 @@ class User < ActiveRecord::Base
   validates_presence_of :sign_up_from, unless: -> { skip_sign_up_from_validation }
 
   # ENUM STARTS
-  enum registration_plan: { Educational: 'Educational',
-                            Monthly:'Monthly',
-                            Annually: 'Annually',
-                            Freemium: 'Freemium' }
-  enum sign_up_from: { by_admin: 'by_admin',
-                       Web: 'web',
-                       Android: 'android',
-                       iOS: 'ios' }
-  enum provider: {  email: 'email',
-                    facebook: 'facebook',
-                    twitter: 'twitter' }
-  enum role: { admin: 'Admin',
-               staff: 'Staff',
-               user: 'User',
-               marketing_staff: 'marketing_staff' }
-  enum subscription_plan_status: { incomplete: 'Incomplete',
-                                   trial: 'Trial',
-                                   activate: 'Activate',
-                                   cancelled: 'Cancelled',
-                                   expired: 'Expired' }
+  enum registration_plan: {
+    Educational: 'Educational',
+    Monthly:'Monthly',
+    Annually: 'Annually',
+    Freemium: 'Freemium'
+  }
+
+  enum sign_up_from: {
+    by_admin: 'by_admin',
+    Web: 'web',
+    Android: 'android',
+    iOS: 'ios'
+  }
+
+  enum provider: {
+    email: 'email',
+    facebook: 'facebook',
+    twitter: 'twitter'
+  }
+
+  enum role: { 
+    admin: 'Admin',
+    staff: 'Staff',
+    user: 'User',
+    marketing_staff: 'marketing_staff' 
+  }
+
+  enum subscription_plan_status: {
+    incomplete: 'Incomplete',
+    trial: 'Trial',
+    activate: 'Activate',
+    cancelled: 'Cancelled',
+    expired: 'Expired'
+  }
+
+  enum category: {
+    general: 'general',
+    provider: 'content_provider'
+  }
   # ENUM ENDS
 
   # SCOPE STARTS

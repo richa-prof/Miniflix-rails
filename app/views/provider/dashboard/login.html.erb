@@ -1,15 +1,11 @@
 <div class="login-box">
-  <div class="btn-fixed-top">
-  <%= link_to 'Sign In as Marketing Staff', new_marketing_staff_user_session_path, class: "btn btn-primary pull-right" %> <br/><br/>
-  <%= link_to 'Sign In as Content Provider', new_provider_user_session_path, class: "btn btn-primary pull-right" %>
-  </div>
   <div class="login-logo">
     <a href=""><b>Miniflix Admin</b></a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
-    <%= form_for(resource, as: resource_name, url: admin_user_session_path) do |f| %>  
+    <%= form_for(@user, :url => admin_sign_in_path) do |f| %>    
       <% if !flash[:error].blank? %>
         <div class="row">
           <div class="col-md-12">
@@ -22,11 +18,11 @@
       <% end %>
       <div class="form-group has-feedback">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-        <%= f.email_field :email, class: "form-control", placeholder: t('placeholder.user.email'), required: true %>
+        <%= text_field_tag :email, "",class: "form-control",placeholder: "Email" %>
       </div>
       <div class="form-group has-feedback">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-        <%= f.password_field :password, class: "form-control", placeholder: t('placeholder.user.password'), required: true %>
+        <%= password_field_tag :password, "",class: "form-control",placeholder: "Password" %>
       </div>
       <div class="row">
         <div class="col-xs-8">
@@ -38,9 +34,7 @@
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">
-            <%= t('links.sign_in') %>
-          </button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
         </div>
         <!-- /.col -->
       </div>
@@ -50,7 +44,7 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function () {       
-      $("#new_admin_user").validate({
+      $("#new_user").validate({
         rules: {
           "email": {required: true,email: true},
           "password": {required: true}

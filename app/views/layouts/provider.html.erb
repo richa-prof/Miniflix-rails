@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      <%= t('title.miniflix_admin') %>
+    </title>
+
+    <meta charset='utf-8'>
+    <meta content='IE=Edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no' id='viewport' name='viewport'>
+    <%= favicon_link_tag %>
+
+    <%= stylesheet_link_tag    'admin.css', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'admin.js', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'admin/movie_player_init.js', 'data-turbolinks-track' => true %>
+
+    <script data-turbolinks-track="<%= true %>" src="https://d1jqh0kfebho7s.cloudfront.net/upgraded_jwplayer/jwplayer.js" type="text/javascript"></script>
+
+    <%= csrf_meta_tags %>
+  </head>
+
+  <body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+      <%= render 'layouts/admin_header' %>
+      <%= render 'layouts/admin_main_sidebar' %>
+      <div class="content-wrapper">
+        <%= yield %>
+      </div>
+      <div class="control-sidebar-bg"></div>
+    </div>
+  </body>
+</html>
