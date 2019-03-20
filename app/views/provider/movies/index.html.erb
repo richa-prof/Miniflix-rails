@@ -54,18 +54,18 @@
                       </thead>
 
                       <tbody>
-                        <% @admin_movies.each do |admin_movie| %>
+                        <% @provider_movies.each do |admin_movie| %>
                           <tr>
-                            <td data-title="Id"><%= admin_movie.id %></td>
-                            <td data-title="Name"><%= admin_movie.name %></td>
-                            <td data-title="Video type"><%= admin_movie.video_type %></td>
-                            <td data-title="Video size"><%= admin_movie.video_size %></td>
-                            <td data-title="Video format"><%= admin_movie.video_format %></td>
-                            <td data-title="Directed by"><%= admin_movie.directed_by %></td>
-                            <td data-title="Released date"><%= admin_movie.released_date %></td>
-                            <td data-title="Language"><%= admin_movie.language %></td>
-                            <td data-title="Posted date"><%= admin_movie.posted_date %></td>
-                            <td data-title="Star cast"><%= admin_movie.star_cast %></td>
+                            <td data-title="Id"><%= movie.id %></td>
+                            <td data-title="Name"><%= movie.name %></td>
+                            <td data-title="Video type"><%= movie.video_type %></td>
+                            <td data-title="Video size"><%= movie.video_size %></td>
+                            <td data-title="Video format"><%= movie.video_format %></td>
+                            <td data-title="Directed by"><%= movie.directed_by %></td>
+                            <td data-title="Released date"><%= movie.released_date %></td>
+                            <td data-title="Language"><%= movie.language %></td>
+                            <td data-title="Posted date"><%= movie.posted_date %></td>
+                            <td data-title="Star cast"><%= movie.star_cast %></td>
                             <td data-title="Featured film">
                               <span class="<%= featured_film_content_css_class(admin_movie) %> ">
                                 <%= featured_film_value_for(admin_movie) %>

@@ -15,17 +15,29 @@
   margin: 10px auto;
   width: 60%;
 }
-.login-box-body .field {
-  padding: 10px;
+
+.login-box-body {
+  .field {
+    padding: 10px;
+  }
+  .field input {
+    width: 100%;
+  }
+  #error_explanation {
+    color: red;
+    h2 {
+      font-size: 14px;
+      font-weight: 700;
+    }
+    li {
+      font-size: 12px;
+    }
+  }
+  .actions {
+    padding: 10px;
+  }
 }
 
-.login-box-body .field input {
-  width: 100%;
-}
-
-.login-box-body .actions {
-  padding: 10px;
-}
 .p10 {
   padding: 10px;
 }
@@ -40,12 +52,23 @@
   margin-bottom: 20px;
 }
 
+.pl20 {
+  padding-left: 20px;
+}
+
 .btn-black {
   background: black;
   color: white;
-  font-weight: 700;
+  font-weight: 700 !important;
   width: 100%;
 }
+
+.btn-black:hover {
+  background: #444444;
+  color: white !important;
+}
+
 .auth-links {
   padding: 10px;
 }
+

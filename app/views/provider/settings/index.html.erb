@@ -1,0 +1,40 @@
+<section class="content p20">
+
+<h3><strong> Settings</strong></h3>
+
+<div class="settings-menu">
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" id="profile-tab" rel="#profile_tab">Profile</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="password-tab" rel="#password_tab">Password</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="collection-tab" rel="#collection_tab">Collection</a>
+  </li>
+</ul>
+</div>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane active" id="profile_tab" role="tabpanel" aria-labelledby="profile-tab">
+Profile tab content
+  </div>
+  <div class="tab-pane" id="password_tab" role="tabpanel" aria-labelledby="password-tab">
+    Password tab content
+  </div>
+  <div class="tab-pane" id="collection_tab" role="tabpanel" aria-labelledby="collection-tab">...</div>
+</div>
+</section>
+
+<script>
+
+$('.settings-menu .nav-item a.nav-link').on('click', function(ev) {
+  var el = $(ev.target);
+  var tab = $(el.attr('rel'));
+  tab.show().siblings().hide();
+  tab.addClass('active')
+  tab.siblings().removeClass('active');  
+  el.addClass('active')
+  el.siblings().removeClass('active');
+})
+</script>

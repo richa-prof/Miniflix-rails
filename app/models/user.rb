@@ -26,10 +26,10 @@ class User < ActiveRecord::Base
   #has_many :user_video_last_stops,  dependent: :destroy
   has_one :user_email_notification, dependent: :destroy
   has_one :logged_in_user, dependent: :destroy
-  has_many :user_video_last_stops, as: :watched, dependent: :destroy
+  has_many :user_video_last_stops, as: :watcher,  dependent: :destroy
   #has_many :recent_videos, class_name: 'UserVideoLastStop', dependent: :destroy
 
-  has_one  :video_statistic, dependent: :destroy
+  #has_one  :video_statistic, dependent: :destroy
 
   alias_attribute :recently_watched, :user_video_last_stops
 
@@ -151,7 +151,11 @@ class User < ActiveRecord::Base
   end
 
   def skip_registration_plan_validation
-    social_login || staff? || marketing_staff? || is_social_login?
+    social_login || staff? || marketing_staff? || is_social_login? || !content_provider?
+  end
+
+  def content_provider?
+    category == 'content_provider'
   end
 
   def is_social_login?
@@ -159,7 +163,7 @@ class User < ActiveRecord::Base
   end
 
   def skip_sign_up_from_validation
-    staff? || marketing_staff?
+    staff? || marketing_staff? || !content_provider?
   end
 
   def is_payment_verified?
