@@ -1,0 +1,36 @@
+<%# Second page of series upload %>
+<%# <%= javascript_include_tag 'admin/series' %>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    <%= t('heading.admin_series') %>
+  </h1>
+</section>
+
+<!-- Main content -->
+<section class="content create-series-section">
+    <div class="row">
+        <div class="col-xs-12">
+          <div class="box content-container">
+            <div class="box-header">
+              <div class="row">
+                <div class="col-lg-12 col-xs-12">
+                  <h3 class="box-title"><%= t('heading.series') %></h3>
+                  <!-- <p class="box-subtitle">Upload</p> -->
+                </div>
+              </div>
+            </div>
+           <br/><br/>
+            <!-- /.box-header -->
+            <div class="box-body" >
+                <%= render( partial: 'form', locals: { is_edit_mode: false } ) %>
+            </div>
+            <!-- /.box-body -->
+          </div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+  </div>
+</section>
+<!-- /.content -->

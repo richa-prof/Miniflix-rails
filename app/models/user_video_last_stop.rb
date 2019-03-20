@@ -1,5 +1,5 @@
 class UserVideoLastStop < ApplicationRecord
-  belongs_to :watcher, polymorphic: true
+  belongs_to :watcher, polymorphic: true, foreign_key: :watcher_id, foreign_type: :watcher_type
   belongs_to :movie, foreign_key: :admin_movie_id
 
   #constants

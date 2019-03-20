@@ -1,0 +1,44 @@
+.bg-white {
+  background: white;
+}
+
+.main-header .navbar-provider {
+  margin-left: 0;
+  border-bottom: 2px solid lightgray; 
+  border-top: 2px solid lightgray;
+}
+
+.stat-box {
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.stat-box:hover {
+  font-color: gray;
+}
+
+.provider-sidebar .sidebar-menu {
+  a {
+    text-decoration: none;
+    color: black;
+    font-weight: 700;
+  }
+  a:hover { text-decoration: underline;}
+  a:active { font-color: lightgray; }
+}
+
+.settings-menu {
+  li.nav-item:hover {
+    background: white !important;
+    cursor: pointer;
+    a {
+      text-decoration: underline;
+    }
+  }
+  li.nav-item:active {
+    font-style: underscore;
+  }
+  .nav > li > a {
+     padding: 10px 45px !important;
+  }
+}

@@ -2,85 +2,70 @@
 <%= javascript_include_tag 'admin/flot/jquery.flot.resize.min.js', 'data-turbolinks-track' => true %>
 <%= javascript_include_tag 'admin/flot/jquery.flot.pie.min.js', 'data-turbolinks-track' => true %>
 <%= javascript_include_tag 'admin/flot/jquery.flot.categories.min.js', 'data-turbolinks-track' => true %>
-<!-- Content Header (Page header) -->
-<section class="content-header">
-  <h1>
-    Dashboard
-  </h1>
-  <ol class="breadcrumb">
-    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-    <li class="active">Dashboard</li>
-  </ol>
-</section>
 
 
 <!-- Main content -->
 <section class="content">
   <!-- Small boxes (Stat box) -->
+
+  <div class="p20">
+    <h3>Dashboard</h3>
+    <div class="row">
+      <div class="col-lg-3 col-xs-6">
+        Reports for <input type="date" value="2018-01-01" id="stats_date" min="2018-01-01" max="2018-12-31" />
+      </div>
+      <div class="col-lg-3 col-xs-6"></div>
+    </div>
+  </div>
+
   <div class="row">
     <div class="col-lg-3 col-xs-6">
       <!-- small box -->
-      <div class="small-box bg-aqua">
+      <div class="small-box bg-white stat-box">
         <div class="inner">
-          <h3><%= get_total_movie_count %></h3>
-          <p>New Movies</p>
+          <h4>New Movies</h4>
+          <p><%#= get_total_movie_count %>999</p>
         </div>
         <div class="icon">
           <i class="ion ion-film-marker"></i>
         </div>
-        <%= link_to admin_movies_path, class: "small-box-footer" do %>
+<!--         <%#= link_to admin_movies_path, class: "small-box-footer" do %>
           More info <i class="fa fa-arrow-circle-right"></i>
-        <% end %>
+        <#% end %> -->
       </div>
     </div>
     <!-- ./col -->
     <div class="col-lg-3 col-xs-6">
       <!-- small box -->
-      <div class="small-box bg-green">
+      <div class="small-box bg-white stat-box">
         <div class="inner">
-          <h3><%= get_formatted_total_amount(@total_income_of_current_month) %></h3>
-          <p>Total Income of <%=  Date.today.strftime('%b, %Y') %> </p>
+          <h4>Total Income of <%=  Date.today.strftime('%b, %Y') %></h4>
+          <p><%#= get_formatted_total_amount(@total_income_of_current_month) %>888 </p>
         </div>
         <div class="icon">
           <!-- <i class="ion ion-cash"></i> -->
           <i class="ion ion-social-usd"></i>
         </div>
-        <%= link_to admin_premium_users_path, class: "small-box-footer" do %>
+<!--         <%#= link_to admin_premium_users_path, class: "small-box-footer" do %>
           More info <i class="fa fa-arrow-circle-right"></i>
-        <% end %>
+        <%# end %> -->
       </div>
     </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-yellow">
-        <div class="inner">
-          <h3><%= get_total_user_count %></h3>
-          <p>User Registrations</p>
-        </div>
-        <div class="icon">
-          <i class="ion ion-person-add"></i>
-        </div>
-        <%= link_to admin_users_path, class: "small-box-footer" do %>
-          More info <i class="fa fa-arrow-circle-right"></i>
-        <% end %>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-red">
-        <div class="inner">
-          <h3><%= get_visitor_count %></h3>
 
-          <p>Unique Visitors</p>
+    <!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-white stat-box">
+        <div class="inner">
+          <h4>Unique Visitors</h4>
+          <p><%#= get_visitor_count %>777 </p>
         </div>
         <div class="icon">
           <i class="ion ion-pie-graph"></i>
         </div>
-        <%= link_to admin_visitors_path, method: "GET", class: "small-box-footer" do %>
+<!--         <%#= link_to admin_visitors_path, method: "GET", class: "small-box-footer" do %>
           More info <i class="fa fa-arrow-circle-right"></i>
-        <% end %>
+        <%# end %> -->
       </div>
     </div>
     <!-- ./col -->
@@ -89,37 +74,8 @@
 
 
 	<div class="row">
-    <div class="col-md-6">
-      <!-- Line chart -->
-      <div class="box box-primary">
-        <div class="box-header with-border">
-          <i class="fa fa-bar-chart-o"></i>
-          <h3 class="box-title" id="chat_title">Revenue Chart</h3>
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-          </div>
-        </div>
-        <div class="box-body">
-        	<div class="col-lg-4 col-md-12">
-	          <label>Change Month</label>
-	          <select name="unique_month_wise" id="unique_month_wise" class="form-control">
-	            <% @unique_month_wise.each do |u_m| %>
-	              <option value="<%= u_m.strftime('%m-%Y') %>"><%= u_m.strftime('%B, %Y') %></option>
-	            <% end %>
-	          </select>
-	          <br/>
-	        </div>
-          <div class="col-lg-8 col-md-12">
-          	<div id="graph2" style="height: 300px;"></div>
-          </div>
-        </div>
-        <!-- /.box-body-->
-      </div>
-      <!-- /.box -->
-    </div>
-    <!-- /.col -->
 
-    <div class="col-md-6">
+    <div class="col-md-6" style="display: block">
       <!-- Donut chart -->
       <div class="box box-primary">
         <div class="box-header with-border">
@@ -139,27 +95,46 @@
     <!-- /.col -->
 	</div>
 	<!-- /.row -->
+
+  <div class="col-md-6" style="display: none">
+  <!-- Line chart -->
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <i class="fa fa-bar-chart-o"></i>
+      <h3 class="box-title" id="chat_title">Revenue Chart</h3>
+      <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+      </div>
+    </div>
+    <div class="box-body">
+      <div class="col-lg-4 col-md-12">
+        <label>Change Month</label>
+        <select name="unique_month_wise" id="unique_month_wise" class="form-control">
+          <% @unique_month_wise.each do |u_m| %>
+            <option value="<%= u_m.strftime('%m-%Y') %>"><%= u_m.strftime('%B, %Y') %></option>
+          <% end %>
+        </select>
+        <br/>
+      </div>
+      <div class="col-lg-8 col-md-12">
+        <div id="graph2" style="height: 300px;"></div>
+      </div>
+    </div>
+    <!-- /.box-body-->
+  </div>
+  <!-- /.box -->
+</div>
+<!-- /.col -->
+
 </section>
 <!-- /.content -->
-<script type="text/javascript"> var m_months = []; </script>
-<% @monthly_movies_cnt.each do |main| %>
-	<script type="text/javascript">
-		var m_month = [];
-		m_month.push("<%= main.created_at.strftime('%B') %>");
-		m_month.push("<%= main.movies_cnt %>");
-		m_months.push(m_month);
-	</script>
-<% end %>
-<script type="text/javascript">
-	$('select#unique_month_wise').on('change', function (e) {
-    var textSelected = $('select#unique_month_wise option:selected').text();
-    var valueSelected = this.value;
-    $("#chat_title").empty().append("Revenue Chart for "+textSelected);
-    ajaxLoadData(valueSelected);
-  });
+
+
+<script>
 
   // Pie chart JS code
   $(function () {
+    return; // tmp off
     $("select#unique_month_wise option:last").attr("selected","selected");
     var valueSelected = $('select#unique_month_wise option:selected').val();
     var textSelected = $('select#unique_month_wise option:selected').text();

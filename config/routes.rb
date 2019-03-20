@@ -8,12 +8,10 @@ def provider_block
   devise_for :users, as: :provider, controllers: {
     sessions: 'provider/sessions',
   }
-  resources :genres, only: [:index, :show, :edit, :update] do
-    collection do
-      get 'check_genre_name/:id' => 'genres#check_genre_name', as: :check_genre_name
-    end
-  end
-  resources :seo_metas
+  get 'dashboard' => 'dashboard#index'
+  resources :movies
+  resources :serials
+  resources :settings
 end
 
 Rails.application.routes.draw do
