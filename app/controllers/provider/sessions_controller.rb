@@ -1,6 +1,8 @@
 class Provider::SessionsController < Devise::SessionsController
   layout 'provider_login'
 
+  prepend_before_action :require_no_authentication, only: :cancel
+
   def new
     super do
       render :file => 'provider/sessions/new' and return
@@ -8,7 +10,7 @@ class Provider::SessionsController < Devise::SessionsController
   end
 
   def create
-    user = User.provider.find_by_email(params[:admin_user][:email])
+    user = User.provider.find_by_email(params[:provider_user][:email])
     if user
       super
     else

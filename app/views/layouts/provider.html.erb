@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>
-      <%= t('title.miniflix_admin') %>
+      <%= t('title.miniflix_content_provider') %>
     </title>
 
     <meta charset='utf-8'>
@@ -19,7 +19,7 @@
     <%= csrf_meta_tags %>
   </head>
 
-  <body class="hold-transition sidebar-mini">
+  <body class="hold-transition sidebar-mini" data-page="<%= body_page_name %>">
     <div class="wrapper">
       <%= render 'layouts/provider_main_sidebar' %>
       <div class="content-wrapper" style="background: white">

@@ -5,8 +5,30 @@ class Provider::DashboardController < ApplicationController
 
   def index
     @unique_month_wise = User.select("created_at").map{ |item| item.created_at.beginning_of_month }.uniq
-    @monthly_movies_cnt = Movie.group("created_day").select("count(*)as movies_cnt,DATE_FORMAT(admin_movies.created_at,'%m') as created_day,admin_movies.created_at")
+    # FIXME!
+    @monthly_movies_cnt = Movie.group("created_day").select("count(*) as movies_cnt,DATE_FORMAT(admin_movies.created_at,'%m') as created_day,admin_movies.created_at")
     @total_income_of_current_month = UserPaymentTransaction.total_income_of_current_month
+
+    @m_months = []
+    @monthly_movies_cnt.each do |main| 
+      m_month = [];
+      m_month << main.created_at.strftime('%B')
+      m_month << main.movies_cnt
+      @m_months << m_month;
+    end
+    Rails.logger.debug @m_months
+    Rails.logger.debug "current_user: #{current_user}"
+  end
+
+  def get_monthly_revenue
+    selected_month_date = params[:id].split('-')
+    colors = ['#98FB98', '#FA8072', '#00AAEE']
+    response = []
+    User.sign_up_froms.keys.each_with_index do |key, index|
+      count = eval("User.#{key}.paid_users.find_by_month_and_year(selected_month_date).count")
+      response << {label: "#{key} Users- #{count}", data: count, color: colors[index] }
+    end
+    render :json => response
   end
 
 end

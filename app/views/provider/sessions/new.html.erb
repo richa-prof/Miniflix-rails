@@ -6,7 +6,7 @@
       <strong style="font-size: 18px">Miniflix Content Provider</strong>
     </div>
     <h4 class="login-box-msg">Sign in to start your session</h4>
-    <%= form_for(resource, as: resource_name, url: admin_user_session_path) do |f| %>
+    <%= form_for(resource, as: resource_name, url: provider_user_session_path) do |f| %>
       <%= f.hidden_field :category, value: 'content_provider' %>
       <% if !flash[:error].blank? %>
         <div class="row">
@@ -48,21 +48,3 @@
   </div>
   <!-- /.login-box-body -->
 </div>
-<script type="text/javascript">
-  $(document).ready(function () {       
-      $("#new_provider_user").validate({
-        rules: {
-          "email": {required: true,email: true},
-          "password": {required: true}
-        },
-        messages: {
-          "email":{
-            required: "Please enter an email address or username.",
-          },
-          "password": {
-            required: "Please enter a password."
-          }
-        }
-      });
-  });
-</script>

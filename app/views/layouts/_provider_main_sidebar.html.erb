@@ -1,24 +1,24 @@
-<div class="main-sidebar provider-sidebar" style="padding-top: 0; border-right: 2px solid lightgray;">
-        <div class="p20"><%= image_tag('logo.png') %></div>
-    <section class="sidebar" >
-      <ul class="sidebar-menu pl20">
-          <li class="<%= 'active' if params[:controller] == 'provider/dashboard' %>">
-            <%= link_to provider_dashboard_path, method: "GET" do %>
-              <%= image_tag('gray_square.jpg') %> &nbsp;&nbsp;<span>Dashboard</span>
-            <% end %>
-          </li>
+<div class="main-sidebar provider-sidebar pl20" style="padding-top: 0;">
+  <div class="mt20 ml10"><%= image_tag('logo.png') %></div>
+  <section class="sidebar mt20" >
+    <ul class="sidebar-menu mt20">
+      <li class="<%= 'active' if params[:controller] == 'provider/dashboard' %>">
+        <%= link_to provider_dashboard_path, method: "GET" do %>
+          <i class="fa fa-dashboard"></i> &nbsp;&nbsp;<span>Dashboard</span>
+        <% end %>
+      </li>
 
-          <li class="<%= 'active' if controller_path == 'provider/movies' %>">
-            <%= link_to provider_movies_path, method: :get do %>
-              <%= image_tag('gray_square.jpg') %> &nbsp;&nbsp;<span><%= t('heading.movies') %></span>
-            <% end %>
-          </li>
+      <li class="<%= 'active' if controller_path == 'provider/movies' %>">
+        <%= link_to provider_movies_path, method: :get do %>
+          <i class="fa fa-fw fa-file-movie-o"></i>  &nbsp;&nbsp;<span><%= t('heading.movies') %></span>
+        <% end %>
+      </li>
 
-          <li class="<%= 'active' if controller_path == 'provider/series' %>">
-            <%= link_to provider_serials_path, method: :get do %>
-              <%= image_tag('gray_square.jpg') %> &nbsp;&nbsp;<span>Series</span>
-            <% end %>
-          </li>
-      </ul>
-    </section>
+      <li class="<%= 'active' if controller_path == 'provider/series' %>">
+        <%= link_to provider_serials_path, method: :get do %>
+          <i class="fa fa-fw fa-file-movie-o"></i> &nbsp;&nbsp;<span>Series</span>
+        <% end %>
+      </li>
+    </ul>
+  </section>
 </div>

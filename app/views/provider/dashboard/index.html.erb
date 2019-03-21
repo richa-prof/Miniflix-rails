@@ -4,13 +4,10 @@
 <%= javascript_include_tag 'admin/flot/jquery.flot.categories.min.js', 'data-turbolinks-track' => true %>
 
 
-<!-- Main content -->
-<section class="content">
-  <!-- Small boxes (Stat box) -->
-
-  <div class="p20">
+<div class="content-for-provider pl40">
+  <div class="mt20">
     <h3>Dashboard</h3>
-    <div class="row">
+    <div class="row mt20">
       <div class="col-lg-3 col-xs-6">
         Reports for <input type="date" value="2018-01-01" id="stats_date" min="2018-01-01" max="2018-12-31" />
       </div>
@@ -18,13 +15,13 @@
     </div>
   </div>
 
-  <div class="row">
+  <div id="stat_boxes" class="row mt20">
     <div class="col-lg-3 col-xs-6">
       <!-- small box -->
       <div class="small-box bg-white stat-box">
         <div class="inner">
           <h4>New Movies</h4>
-          <p><%#= get_total_movie_count %>999</p>
+          <p><%= @monthly_movies_cnt.length %></p>
         </div>
         <div class="icon">
           <i class="ion ion-film-marker"></i>
@@ -34,13 +31,12 @@
         <#% end %> -->
       </div>
     </div>
-    <!-- ./col -->
     <div class="col-lg-3 col-xs-6">
       <!-- small box -->
       <div class="small-box bg-white stat-box">
         <div class="inner">
           <h4>Total Income of <%=  Date.today.strftime('%b, %Y') %></h4>
-          <p><%#= get_formatted_total_amount(@total_income_of_current_month) %>888 </p>
+          <p><%= get_formatted_total_amount(@total_income_of_current_month) %></p>
         </div>
         <div class="icon">
           <!-- <i class="ion ion-cash"></i> -->
@@ -52,13 +48,12 @@
       </div>
     </div>
 
-    <!-- ./col -->
     <div class="col-lg-3 col-xs-6">
       <!-- small box -->
       <div class="small-box bg-white stat-box">
         <div class="inner">
           <h4>Unique Visitors</h4>
-          <p><%#= get_visitor_count %>777 </p>
+          <p><%=  @unique_month_wise.count %></p>
         </div>
         <div class="icon">
           <i class="ion ion-pie-graph"></i>
@@ -68,10 +63,7 @@
         <%# end %> -->
       </div>
     </div>
-    <!-- ./col -->
   </div>
-  <!-- /.row -->
-
 
 	<div class="row">
 
@@ -80,7 +72,7 @@
       <div class="box box-primary">
         <div class="box-header with-border">
           <i class="fa fa-bar-chart-o"></i>
-          <h3 class="box-title">Posted Movies</h3>
+          <h3 class="box-title">New Movies</h3>
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
           </div>
@@ -88,20 +80,17 @@
         <div class="box-body">
           <div id="bar-chart" style="height: 300px;"></div>
         </div>
-        <!-- /.box-body-->
       </div>
-      <!-- /.box -->
     </div>
-    <!-- /.col -->
 	</div>
-	<!-- /.row -->
+
 
   <div class="col-md-6" style="display: none">
   <!-- Line chart -->
-  <div class="box box-primary">
+    <div class="box box-primary">
     <div class="box-header with-border">
       <i class="fa fa-bar-chart-o"></i>
-      <h3 class="box-title" id="chat_title">Revenue Chart</h3>
+      <h3 class="box-title" id="chat_title">Unique Visitors</h3>
       <div class="box-tools pull-right">
         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
       </div>
@@ -120,98 +109,14 @@
         <div id="graph2" style="height: 300px;"></div>
       </div>
     </div>
-    <!-- /.box-body-->
+    </div>
   </div>
-  <!-- /.box -->
 </div>
-<!-- /.col -->
 
-</section>
-<!-- /.content -->
+<script type="text/javascript"> 
 
+  var m_months = JSON.parse("<%= escape_javascript @m_months.to_json.html_safe %>");
 
-<script>
-
-  // Pie chart JS code
-  $(function () {
-    return; // tmp off
-    $("select#unique_month_wise option:last").attr("selected","selected");
-    var valueSelected = $('select#unique_month_wise option:selected').val();
-    var textSelected = $('select#unique_month_wise option:selected').text();
-    $("#chat_title").empty().append("Revenue Chart for "+textSelected);
-    ajaxLoadData(valueSelected);
-  });
-
-	function ajaxLoadData (valueSelected) {
-		$.ajax({
-      type: "GET",
-      url: "/admin/get_monthly_revenue/"+valueSelected,
-      async: false,
-      cache: false,
-      timeout: 30000,
-      success:function(response)
-      {
-        drawPieChart(response);
-      },
-      error:function (xhr, ajaxOptions, thrownError)
-      {
-        //On error, we alert user
-        alert(thrownError);
-      }
-    });
-	}
-
-  function drawPieChart(data)
-  {
-    // GRAPH 3
-    $.plot($("#graph2"), data,
-    {
-      series: {
-        pie: {
-          show: true,
-          radius: 1,
-          label: {
-            show: true,
-            radius: 3/4,
-            formatter: function(label, series){
-              return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">  '+Math.round(series.percent)+'%</div>';
-            },
-            background: { opacity: 0.5 }
-          }
-        }
-      }
-    });
-  }
-
-	/*
-   * BAR CHART
-   * ---------
-  */
-  var bar_data = {
-    data: m_months,
-    color: "#3c8dbc"
-  };
-  $.plot("#bar-chart", [bar_data], {
-    grid: {
-      borderWidth: 1,
-      borderColor: "#f3f3f3",
-      tickColor: "#f3f3f3"
-    },
-    series: {
-      bars: {
-        show: true,
-        barWidth: 0.5,
-        align: "center"
-      }
-    },
-    xaxis: {
-      mode: "categories",
-      tickLength: 0
-    },
-    yaxis: {
-      tickDecimals: 0
-    }
-  });
-  /* END BAR CHART */
+  console.log('m_months:', m_months);
 
 </script>
