@@ -9,9 +9,13 @@ def provider_block
     sessions: 'provider/sessions',
   }
   get 'dashboard' => 'dashboard#index'
+  get 'get_monthly_revenue/:id' => 'dashboard#get_monthly_revenue', as: :get_monthly_revenue
+
   resources :movies
   resources :serials
   resources :settings
+
+
 end
 
 Rails.application.routes.draw do

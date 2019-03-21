@@ -140,6 +140,7 @@ en:
     serie: Serie
   title:
     miniflix_admin: Miniflix Admin
+    miniflix_content_provider: Miniflix Content Provider
     movie:
       released_on: Released [On]
       movie_story: "Movie Story :"

@@ -2,31 +2,23 @@
   <!-- Header Navbar: style can be found in header.less -->
   <nav class="navbar bg-white navbar-provider">
     <!-- Sidebar toggle button-->
-<!--     <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-      <span class="sr-only">Toggle navigation</span>
-    </a> -->
-
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
-
         <!-- User Account: style can be found in dropdown.less -->
         <li class="dropdown user user-menu" style="font-color: black;">
           <a href="#" class="dropdown-toggle " data-toggle="dropdown">
-            <%= image_tag(current_user.profile_image_url, alt: "User Image", class: "user-image") %>
-            <span class="hidden-xs"><%= current_user.name %></span>
+            <%= image_tag(current_user&.profile_image_url, alt: "User Image", class: "user-image")  if current_user %>
+            <span class="hidden-xs"><%= current_user&.name %></span>
           </a>
-
           <ul class="dropdown-menu" style="width: 150px;">
             <li>
-                <a href="/provider/settings" class="btn btn-default btn-flat">Settings</a>
+               <a href="/provider/settings" class="btn btn-default btn-flat">Settings</a>
             </li>
             <li>
-                <%= link_to "Sign out", destroy_provider_user_session_path, method: :delete, class: "btn btn-default btn-flat" %>
+              <%= link_to "Sign out", destroy_provider_user_session_path, 'data-method': :delete, class: "btn btn-default btn-flat" %>
             </li>
           </ul>
-
         </li>
-
       </ul>
     </div>
   </nav>
