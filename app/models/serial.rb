@@ -7,6 +7,7 @@ class Serial < ApplicationRecord
   accepts_nested_attributes_for :serial_thumbnail
 
   PER_PAGE = 15
+  ENTRY_TYPE = 1
 
   extend FriendlyId
   friendly_id :title, use: :slugged
@@ -75,7 +76,8 @@ class Serial < ApplicationRecord
         name: genre&.name.to_s
       },
       seasons_data: seasons_list,
-      screenshot: screenshot_list
+      screenshot: screenshot_list,
+      type: ENTRY_TYPE
     }
   end
 
@@ -96,34 +98,41 @@ class Serial < ApplicationRecord
   end
 
   def self.fetch_new_serials(limit: PER_PAGE, offset: 0)
-    new_episodes = Episode.where("id not in (:list)", list: UserVideoLastStop.pluck(:id).uniq).order(:updated_at).limit(limit).offset(offset)
+    new_episodes = Episode.new_entries #where("id not in (:list)", list: UserVideoLastStop.pluck(:id).uniq).order(:updated_at).limit(limit).offset(offset)
     p "new_episodes: #{new_episodes.inspect}"
     new_episodes.map {|ep| ep.season&.serial}.compact
   end
 
   def self.fetch_recent_watched_serials(limit: PER_PAGE, offset: 0)
-    recent_episodes = Episode.where("id in (:list)", list: UserVideoLastStop.order(:updated_at).pluck(:id).uniq).order(:updated_at).limit(limit).offset(offset)
+    recent_episodes = Episode.recently_watched #where("id in (:list)", list: UserVideoLastStop.order(:updated_at).pluck(:id).uniq).order(:updated_at).limit(limit).offset(offset)
     #p "recent_episodes: #{recent_episodes.inspect}"    
     recent_episodes.map {|ep| ep.season&.serial}.compact
   end
 
   def self.fetch_top_watched_serials(limit: PER_PAGE, offset: 0)
-    q = "INNER JOIN (SELECT admin_movie_id, COUNT(*) AS cnt FROM user_video_last_stops GROUP BY admin_movie_id ORDER BY cnt DESC LIMIT 100) AS top_watched ON admin_movies.id = top_watched.admin_movie_id"
-    top_watched_episodes = Episode.joins(q).limit(limit).offset(offset)
+    #q = "INNER JOIN (SELECT admin_movie_id, COUNT(*) AS cnt FROM user_video_last_stops GROUP BY admin_movie_id ORDER BY cnt DESC LIMIT 100) AS top_watched ON admin_movies.id = top_watched.admin_movie_id"
+    top_watched_episodes = Episode.top_watched  #joins(q).limit(limit).offset(offset)
     #p "top_watched_episodes: #{top_watched_episodes.count}"
     top_watched_episodes.map {|ep| ep.season&.serial}.compact
   end
 
-  def self.collect_genres_data
+  def self.collect_genres_data(mode: nil)
     out = []
     Genre.all.each do |genre|
-      out << {
+      genre_serials =  genre.serials.map {|s| s.format(mode: 'compact')}.compact.uniq
+      genre_movies = genre.movies.map {|s| s.format(mode: 'compact')}.compact.uniq if mode == 'with_movies'
+      entry = {
         genre_data: {
           id: genre&.id, 
           name: genre&.name.to_s
-        },
-        serials: genre.serials.map {|s| s.format(mode: 'compact')}.compact.uniq
+        }
       }
+      if mode != 'with_movies'
+        entry[:serials] = genre_serials
+      else
+        entry[:data] = genre_serials + genre_movies
+      end
+      out << entry
     end
     out
   end

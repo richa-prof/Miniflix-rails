@@ -136,6 +136,11 @@ Rails.application.routes.draw do
       post 'movies/get_watched_movie_count_visitor' => 'movies#get_watched_movie_count_visitor'
       get  'movies/latest_movies' => 'movies#latest_movies'
 
+      post 'browse/getData' => 'browse#get_data'
+      post 'browse/getDataForGenre' => 'browse#get_data_for_genre'
+      post 'browse/getDataForNew' => 'browse#get_data_for_new'
+      post 'browse/getDataForRecent' => 'browse#get_data_for_recent'
+
       post 'sessions/sign_in', :defaults => { :format => 'json' }
       post 'sessions/sign_up'
       post 'sessions/sign_out'

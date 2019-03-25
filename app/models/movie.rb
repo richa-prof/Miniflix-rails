@@ -3,6 +3,7 @@ class Movie < ApplicationRecord
 
   # CONSTANT STARTS
   PER_PAGE = 6
+  ENTRY_TYPE = 2
 
   SHARE_ON = ['facebook', 'twitter']
 
@@ -116,6 +117,20 @@ class Movie < ApplicationRecord
 
       movies_arr.first(target_count)
     end
+
+    def new_entries(limit: PER_PAGE, offset: 0)
+      where("id not in (:list)", list: UserVideoLastStop.pluck(:id).uniq).order(:updated_at).limit(limit).offset(offset)
+    end
+
+    def recently_watched(limit: PER_PAGE, offset: 0)
+      where("id in (:list)", list: UserVideoLastStop.order(:updated_at).pluck(:id).uniq).order(:updated_at).limit(limit).offset(offset)
+    end
+
+    def top_watched(limit: PER_PAGE, offset: 0)
+      q = "INNER JOIN (SELECT admin_movie_id, COUNT(*) AS cnt FROM user_video_last_stops GROUP BY admin_movie_id ORDER BY cnt DESC LIMIT 100) AS top_watched ON admin_movies.id = top_watched.admin_movie_id"
+      joins(q).limit(limit).offset(offset)
+    end
+
   end
   # ===== Class methods End =====
 
@@ -283,6 +298,48 @@ class Movie < ApplicationRecord
   def new_movie_added_notification_message
     I18n.t( 'contents.movie.new_movie_added_notification_message', movie_name: self.name )
   end
+
+  def compact_response
+    {
+      id: id, 
+      title: title.to_s, 
+      description: description.to_s,
+      date_of_release: created_at&.utc&.iso8601,
+      video_duration: video_duration.to_s,
+      last_stopped: UserVideoLastStop.where("admin_movie_id = ?", id).count,  # FIXME!
+      type: ENTRY_TYPE
+    }
+  end
+
+  def film_video_map
+    h = {
+      hls: film_video,
+      video_720: "",
+      video_480: "",
+      video_320: ""
+    }
+    movie_versions.each do |mv|
+      h["video_#{mv.resolution}".to_sym] = mv.film_video.to_s
+    end
+    h
+  end
+
+  def screenshot_list
+    movie_thumbnail.screenshot_urls_map
+  end
+
+  def format(mode: nil)
+    case mode
+    when "compact"
+      compact_response
+    else
+      compact_response.merge!(
+       film_video: film_video_map,
+       screenshot: screenshot_list
+      )
+    end
+  end
+
 
   private
 
