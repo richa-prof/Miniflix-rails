@@ -299,14 +299,27 @@ class Movie < ApplicationRecord
     I18n.t( 'contents.movie.new_movie_added_notification_message', movie_name: self.name )
   end
 
+  def screenshot_list
+    out = {
+      original: "",
+      thumb330: "",
+      thumb640: "",
+      thumb800: ""
+    }
+    out.merge!(movie_thumbnail.screenshot_urls_map)
+  end
+
+
   def compact_response
     {
       id: id, 
       title: title.to_s, 
-      description: description.to_s,
-      date_of_release: created_at&.utc&.iso8601,
-      video_duration: video_duration.to_s,
-      last_stopped: UserVideoLastStop.where("admin_movie_id = ?", id).count,  # FIXME!
+      year: created_at.year.to_s, 
+      genre_data: { 
+        id: genre&.id, 
+        name: genre&.name.to_s
+      },
+      screenshot: screenshot_list,
       type: ENTRY_TYPE
     }
   end
@@ -324,9 +337,6 @@ class Movie < ApplicationRecord
     h
   end
 
-  def screenshot_list
-    movie_thumbnail.screenshot_urls_map
-  end
 
   def format(mode: nil)
     case mode
