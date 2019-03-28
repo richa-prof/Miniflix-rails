@@ -16,38 +16,38 @@ MiniflixVideoPlayer.prototype.configContainer = function() {
     return self.parentContainer.find('.jwPlayerConfigContainer');
   };
 
-MiniflixVideoPlayer.prototype.jwPlayerSetup = function() {
-  //console.log('>>>>> invoked `jsPlayerSetup` function >>>>>');
+MiniflixVideoPlayer.prototype.jwPlayerInit = function(container, type) {
   var self = this;
+  var videoObject =  container.find("div[data-embed-url='video-url']")[0];
+  var videoPlayerInstance = window.jwplayer(videoObject);
   self.hlsUrl = self.config.data('hls-file');
   self.originalUrl = self.config.data('original-file');
   self.trailerFileUrl = self.config.data('trailer-file');
-  var sources = [{
-            file: self.hlsUrl
-          }]
-  //console.log('self: ', self.config.context);
-  var videoObject =  self.parentContainer.find("div[data-embed-url='video-url']")[0];
-  //console.log('videoObject', videoObject)
-  var newplayerInstance = window.jwplayer(videoObject);
-  window['player' + self.number] = newplayerInstance;
-  newplayerInstance.setup({
-    file: self.originalUrl
-  });
+  window['player' + self.number] = videoPlayerInstance;
+  var opts = {};
+  if (type != 'trailer') {
+    opts ={
+      file: self.originalUrl,
+      sources: [{ file: self.hlsUrl }]
+    };
+  } else {
+    opts = {
+      sources: [{ file: self.trailerFileUrl }],
+      allowscriptaccess: 'always',
+      allownetworking: 'all'
+    };
+  }
+  videoPlayerInstance.setup(opts);
+}
+MiniflixVideoPlayer.prototype.jwPlayerSetup = function() {
+  //console.log('>>>>> invoked `jsPlayerSetup` function >>>>>');
+  var self = this;
+  self.jwPlayerInit(self.parentContainer, 'movie');
   // handle trailers
   if (!self.isEmptyValue(self.trailerFileUrl)) {
     console.log('setup trailer player ');
-    var trailerSources = [{
-              file:self.trailerFileUrl
-            }]
-    var trailerVideoObject = self.parentContainer.find("div[data-embed-url='video-url2']")[0];
-    //trailerVideoObject.id = "player-2";
-    var trailerPlayerInstance = window.jwplayer(trailerVideoObject);
-    window['player' + self.number] = trailerPlayerInstance;
-    trailerPlayerInstance.setup({
-      sources: trailerSources,
-      allowscriptaccess: 'always',
-      allownetworking: 'all'
-    });
+    //console.log('parent container:', self.parentContainer);
+    self.jwPlayerInit(self.parentContainer, 'trailer');
   }
 };
 
@@ -74,8 +74,8 @@ MiniflixVideoPlayer.prototype.init = function(index, el) {
   var self = this;
   self.number = index + 1;
   if (window['player' + self.number]) {return false;}
-  //console.log('>>>>>> initializing player ' + self.number + ' >>>>>>>>>');
-  // console.log('init element', el);
+  console.log('>>>>>> initializing player ' + self.number + ' >>>>>>>>>');
+  console.log('init element', el);
   self.captionData = [];
   self.parentContainer = $(el);
 

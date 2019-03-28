@@ -20,7 +20,9 @@
 
 
 <% if movie.has_trailer? %>
-  <%= render partial: 'shared/jwplayer_config', locals: {movie: movie.movie_trailer} %>
+  <div class="trailer-config-wrapper">
+    <%= render partial: 'shared/jwplayer_config', locals: {movie: movie.movie_trailer} %>
+  </div>
   <div id="trailer_player_<%= movie.movie_trailer.id %>"
        class="js-video-layer"
        data-embed-type="jwplayer"

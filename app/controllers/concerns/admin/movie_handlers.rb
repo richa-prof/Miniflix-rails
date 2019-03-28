@@ -4,7 +4,7 @@ module Admin::MovieHandlers
 
   # !important to pass with request !!
   def kind
-     params[:kind]
+     params[:kind] || 'movie'
   end
 
   def movie_id_param
@@ -59,7 +59,6 @@ module Admin::MovieHandlers
 
   # Use callbacks to share common setup or constraints between actions.
   def set_admin_movie
-    # @admin_movie = Movie.friendly.find(params[:id])
     @admin_movie ||= movie_klass.friendly.find_by(id: params[:id]) || movie_klass.find_by_s3_multipart_upload_id(params[:id])
     session[:movie_kind] = @admin_movie.kind
     session[:serial_id] = params[:serial_id]
