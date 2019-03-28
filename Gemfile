@@ -36,7 +36,11 @@ gem 'jquery_mask_rails'
 gem 'lightbox-bootstrap-rails', '~> 5.1', '>= 5.1.0.1'
 
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
+#gem 'uglifier', '>= 1.3.0'
+
+gem 'uglifier', github: 'skudryk/uglifier'
+
+
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 

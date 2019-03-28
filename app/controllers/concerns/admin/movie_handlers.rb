@@ -24,7 +24,8 @@ module Admin::MovieHandlers
       if serial
         flash[:success] = 'Episode has been successfully uploaded'
       else
-        flash[:error] = 'Something went wrong during Episode upload: Episode not found in DB'
+        Rails.logger.debug @movie.inspect
+        flash[:error] = 'Something went wrong during Episode upload: Serie not specified for Episode'
       end
       redirect_to serial ? admin_serial_path(serial.id) : admin_serials_path
     end
