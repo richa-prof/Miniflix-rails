@@ -20,24 +20,34 @@ class User < ActiveRecord::Base
 
   # ASSOCIATION STARTS
   has_many :user_payment_methods, dependent: :destroy
+  has_many :my_transactions, through: :user_payment_methods, source: "user_payment_transactions"
+
   has_many :user_filmlists,  dependent: :destroy
   has_many :my_list_movies,  through: :user_filmlists, source: "movie"
   has_many :favorite_episodes,  through: :user_filmlists, source: "episode"
-  #has_many :user_video_last_stops,  dependent: :destroy
+
+
   has_one :user_email_notification, dependent: :destroy
   has_one :logged_in_user, dependent: :destroy
+  
   has_many :user_video_last_stops, as: :watcher,  dependent: :destroy
-  #has_many :recent_videos, class_name: 'UserVideoLastStop', dependent: :destroy
+  alias_method :recent_videos, :user_video_last_stops
+
+  has_many :liked_things, dependent: :destroy
+  has_many :liked_serials,  through: :liked_things, source: :thing, source_type: 'Serial'
+  has_many :liked_movies,   through: :liked_things, source: :thing, source_type: 'Movie'
+  has_many :liked_episodes, through: :liked_things, source: :thing, source_type: 'Episode'
+  has_many :liked_seasons,  through: :liked_things, source: :thing, source_type: 'Season'
 
   #has_one  :video_statistic, dependent: :destroy
 
-  alias_attribute :recently_watched, :user_video_last_stops
+  alias_method :recently_watched, :user_video_last_stops
 
   has_many :notifications, dependent: :destroy
   has_many :blogs, dependent: :destroy
   has_one :address, dependent: :destroy
   has_one :social_media_link, dependent: :destroy
-  has_many :my_transactions, through: :user_payment_methods, source: "user_payment_transactions"
+
   # ASSOCIATION ENDS
 
   accepts_nested_attributes_for :address, :social_media_link
@@ -130,6 +140,9 @@ class User < ActiveRecord::Base
   scope :premium_users, -> { without_admin.without_educational_plan }
   scope :paid_users, -> {where(registration_plan: ['Monthly','Annually'])}
   scope :find_by_month_and_year, ->(month_year){where('extract(month from created_at) = ? and extract(year from created_at) = ? ', month_year.first, month_year.last)}
+
+
+
   # SCOPE ENDS
 
   # ===== Class methods Start =====

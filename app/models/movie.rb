@@ -38,8 +38,13 @@ class Movie < ApplicationRecord
   has_one :movie_thumbnail, dependent: :destroy, foreign_key: "admin_movie_id"
   has_one :movie_trailer, dependent: :destroy, foreign_key: "admin_movie_id"
   has_many :notifications, dependent: :destroy, foreign_key: "admin_movie_id"
+  
   has_many :user_filmlists, dependent: :destroy, foreign_key: "admin_movie_id"
+  alias_method :favorite_for_users, :user_filmlists
+
   has_many :user_video_last_stops, dependent: :destroy, foreign_key: "admin_movie_id"
+  alias_method  :watched_by_users, :user_video_last_stops
+
   has_many :movie_captions, dependent: :destroy, foreign_key: "admin_movie_id"
   has_many :movie_versions, dependent: :destroy
 
@@ -256,20 +261,16 @@ class Movie < ApplicationRecord
       return super(only: [:id, :name, :title, :description, :language, :video_duration, :admin_genre_id]).merge(film_video: fetch_movie_urls, genre_name: genre_name, movie_screenshot: movie_screenshot_list)
     else
       movie_detail =  super(only: [:id, :name, :title, :description, :language, :video_duration, :admin_genre_id]).merge(film_video: fetch_movie_urls, genre_name: genre_name, movie_screenshot: movie_screenshot_list)
-      movie_detail.merge!(last_stopped: fetch_last_stop(options)) if options.present?
       return movie_detail
     end
   end
 
   def fetch_movie_urls
     movie_urls = {}
-
     movie_urls[:hls] = ENV['VERSION_FILE_CLOUD_FRONT_URL'] + version_file if version_file.present?
-
     self.movie_versions.each do |version|
       movie_urls["video_"+version.resolution.to_s]  = CommonHelpers.cloud_front_url(version.film_video)
     end
-
     movie_urls
   end
 

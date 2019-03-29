@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190314105037) do
+ActiveRecord::Schema.define(version: 20190328211656) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "city"
@@ -241,6 +241,16 @@ ActiveRecord::Schema.define(version: 20190314105037) do
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", length: { slug: 140 }
     t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
+  end
+
+  create_table "liked_info", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "user_id"
+    t.integer "thing_id"
+    t.string "thing_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["thing_type", "thing_id"], name: "index_liked_info_on_thing_type_and_thing_id"
+    t.index ["user_id"], name: "index_liked_info_on_user_id"
   end
 
   create_table "likes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

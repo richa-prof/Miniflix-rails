@@ -1,9 +1,19 @@
 class Serial < ApplicationRecord
+
   self.table_name = 'admin_serials'
+
   has_many :seasons, dependent: :destroy, foreign_key: "admin_serial_id"
+  
+  has_many :liked_things
+#  has_many :user_likes, through: :liked_things, source: :user, source_type: 'thing_type'  #foreign_key: 'thing_id', foreign_type: 'thing_type',  dependent: :destroy
+# should be:
+# SELECT `users`.* FROM `users` INNER JOIN `liked_info` ON `users`.`id` = `liked_info`.`user_id` WHERE `liked_info`.`thing_id` = 28 AND `like_info.thing_type` = 'Serial'
+
+
   has_one :serial_thumbnail, dependent: :destroy, foreign_key: "admin_serial_id"
   has_one :movie_trailer, dependent: :destroy, foreign_key: "admin_serial_id"
   belongs_to :genre, class_name: "Genre", foreign_key: "admin_genre_id"
+
   accepts_nested_attributes_for :serial_thumbnail
 
   PER_PAGE = 15
@@ -13,6 +23,11 @@ class Serial < ApplicationRecord
   friendly_id :title, use: :slugged
 
   scope :alfa_order, -> { order(:name) }
+  
+  def user_likes
+    q = "INNER JOIN liked_info ON users.id = liked_info.user_id WHERE liked_info.thing_id = #{id} AND liked_info.thing_type = 'Serial'"
+    User.joins(q)
+  end
 
   def find_genre(id)
     genre = Genre.find(id)
@@ -58,12 +73,11 @@ class Serial < ApplicationRecord
   end
 
   def mark_as_liked_by_user(user)
-    fav_episode = user.user_filmlists.new(admin_movie_id: seasons&.first&.episodes&.first&.id)  # FIXME!
-    fav_episode.save(validate: false)
+    user.liked_serials << self
   end
 
   def is_liked_by_user?(user)
-    user.user_filmlists.where("admin_movie_id in (:list)", list: episodes.pluck(:id)).count > 0
+    user_likes.include? user
   end
 
   def compact_response
