@@ -1,6 +1,12 @@
 <div class="main-header">
   <!-- Header Navbar: style can be found in header.less -->
   <nav class="navbar bg-white navbar-provider">
+    <div class="sys-message pull-left">
+    <%- flash.each do |name, msg| -%>
+      <%= content_tag :div, msg, :id => "flash_#{name}", class: name if msg.is_a?(String) %>
+    <%- end -%>
+    </div>
+
     <!-- Sidebar toggle button-->
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
@@ -23,3 +29,4 @@
     </div>
   </nav>
 </div>
+

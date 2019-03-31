@@ -1,0 +1,22 @@
+.navbar-provider {
+  
+  .sys-message {
+    padding-left: 10%;
+    padding-top: 10px;
+  }
+
+  .success, .notice {
+    color: green;
+  }
+  .error, .danger {
+    color: orangered;
+  }
+  
+}
+
+.main-header {
+  border-bottom: 2px solid lightgray;
+    .navbar-provider {
+    margin-left: 0;
+  }
+}

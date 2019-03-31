@@ -1,0 +1,12 @@
+//remove old validation messages
+$(".sys-message").removeClass('error notice').html(''); 
+<% if @user.errors.empty? %>
+  $('.sys-message').addClass('notice').html("<%= flash[:success] %>");
+  $(".errors").html('');
+<% else %>
+   $('.sys-message').addClass('error').html("<%= flash[:error] %>");
+  //display new validation messages
+  <% @user.errors.full_messages.each do |message| %>
+    $(".errors ul").append("<li class='notice'><%= escape_javascript(message) %></li>");
+  <% end %>
+<% end %>

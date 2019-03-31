@@ -215,6 +215,7 @@ class Movie < ApplicationRecord
   end
 
   def trancode_videos_for_mobile(s3_upload_obj, admin_movie, version_file_name)
+    Rails.logger.debug ">>>>> transcode_videos_for_mobile  <<<<"
     pipeline_id = ENV['S3_TRANSCODE_PIPELINE_Mobile']
     input_key = s3_upload_obj.key
     input = { key: input_key }
@@ -232,7 +233,9 @@ class Movie < ApplicationRecord
         key: file_name,
         preset_id: version_value
       }
-      admin_movie.movie_versions.create(film_video: "#{output_key_prefix}/#{file_name}", resolution: file_resolution )
+      Rails.logger.debug ">>> creating movie version for resolution #{file_resolution} <<<"
+      mv = admin_movie.movie_versions.create(film_video: "#{output_key_prefix}/#{file_name}", resolution: file_resolution )
+      #Rails.logger.debug mv.errors.full_messages
     end
     job = TRANSCODER.create_job(
       pipeline_id: pipeline_id,

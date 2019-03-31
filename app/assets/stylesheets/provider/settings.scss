@@ -1,0 +1,74 @@
+.settings-tab {
+  padding: 20px;
+  .help-block {
+    padding-left: 20px;
+    color: orangered;
+    font-size: 80%;
+  }
+}
+
+.settings-menu {
+  ul.nav-pills {
+    border-bottom: 2px solid lightgray;
+  }
+  li.nav-item:hover {
+    background: white !important;
+    cursor: pointer;
+  }
+  li.nav-item {
+    border: none;
+    a {
+      border: none;
+      color: black !important;
+      background: white !important;
+      font-weight: 700;
+      font-size: 120%;
+      padding: 10px 45px !important;
+    }
+    a:focus, a:hover, a:active {
+      color: black !important;
+      background: white !important; 
+    }
+  }
+  li.nav-item:active, li.nav-item.active {
+    border: none !important;
+    outline: none !important;
+    border-bottom: 3px solid black !important;
+    color: olive;
+  }
+}
+.tab-pane {
+  padding: 10px;
+}
+.user-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}
+
+#avatar_change_link {
+  width: 85%; margin: 10px auto;
+  a {
+    text-decoration: none;
+    margin-top: 10px;
+    cursor: pointer;
+    font-weight: 700;
+  }
+}
+
+.avatar-wrapper {
+  width: 120px;
+  margin: 0 auto;
+}
+
+.tab-content {
+  .field {
+    padding: 10px;
+    width: 100%;
+    input {
+      width: 100%;
+      padding-left: 10px;
+      height: 40px;
+    }
+  }
+}

@@ -29,18 +29,22 @@
       <div class="row">
         <!-- /.col -->
         <div class="col-xs-12">
+          <div style="height: 20px">
           <button type="submit" class="btn btn-flat btn-black pull-right">
             <%= t('links.sign_in') %>
           </button>
-          <div class="checkbox icheck">
-            <label>
+        </div>
+          <!-- <div class="checkbox icheck">
+            <label> -->
               <!-- <input type="checkbox"> Remember Me -->
-            </label>
-          </div>
+            <!-- </label>
+          </div> -->
           <br/>
-          <%= link_to t('links.register'), new_provider_user_registration_path %><br />
-          <%= link_to 'Sign In as Marketing Staff', new_marketing_staff_user_session_path %> <br/>
-          <%= link_to 'Sign In as Admin', new_admin_user_session_path %>
+          <div class="mt20">
+            <%= link_to t('links.register'), new_provider_user_registration_path %><br />
+            <%= link_to 'Sign In as Marketing Staff', new_marketing_staff_user_session_path %> <br/>
+            <%= link_to 'Sign In as Admin', new_admin_user_session_path %>
+          </div>
         </div>
         <!-- /.col -->
       </div>

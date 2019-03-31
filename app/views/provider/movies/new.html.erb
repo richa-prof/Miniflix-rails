@@ -1,34 +1,112 @@
-<%= javascript_include_tag 'admin/upload_movies', 'data-turbolinks-track' => true %>
+<section class="content settings-tab">
 
-<!-- Content Header (Page header) -->
-<section class="content-header">
-  <h1>
-    <%= t('heading.admin_movie') %>
-  </h1>
-</section>
+  <div class="pl20 mt10">
+    <h2 class="provider-title"><strong> Movies</strong></h2>
+    <h4 class="">Upload</h4>
+  </div>
 
-<!-- Main content -->
-<section class="content">
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="box">
-        <div class="box-header">
+
+  <div class="row mt10 p20">
+    <div class="col-lg-4 col-xs-12">
+   
+      <%= form_with model: @movie, scope: 'provider', url: provider_movies_path, method: :post, local: true, multipart: true do |f| %>
+
+        <% if @movie.errors.any? %>
           <div class="row">
-            <div class="col-lg-12 col-xs-12">
-              <h3 class="box-title">Add new movie details</h3>
+            <div class="col-md-12">
+              <% @movie.errors.full_messages.each do |message| %>
+                <div class="callout callout-success">
+                  <p><%= message %></p>
+                </div>
+              <% end %>
             </div>
           </div>
+        <% end %>
+
+        <%= f.hidden_field :kind, value: 'movie' %>
+
+        <div class="row">
+          <div class="col-md-12">
+            <!-- general form elements -->
+
+                  <div class="form-group">
+                    <%= f.label :name %>
+                    <%= f.text_field( :name,
+                                      class: "form-control",
+                                      placeholder: t('placeholder.movie.name') ) %>
+                  </div>
+
+                  <div class="form-group">
+                    <%= f.label :title %>
+                    <%= f.text_field( :title,
+                                      class: "form-control",
+                                      placeholder: t('placeholder.movie.title') ) %>
+                  </div>
+
+                  <div class="form-group">
+                    <%= f.label :description %>
+                    <%= f.text_area( :description,
+                                     rows: 5,
+                                     class: "form-control",
+                                     placeholder: t('placeholder.movie.description') ) %>
+                  </div>
+
+                  <div class="form-group">
+                    <%= f.label :admin_genre_id %>
+                    <%= f.collection_select( :admin_genre_id,
+                                             Genre.alfa_order,
+                                             :id,
+                                             :name,
+                                             { include_blank: t(:SelectGenre) },
+                                             class: "form-control" ) %>
+                  </div>
+                  <div class="form-group">
+                    <%= f.label :directed_by %>
+                    <%= f.text_field( :directed_by,
+                                      class: "form-control",
+                                      placeholder: t('placeholder.movie.directed_by') ) %>
+                  </div>
+
+
+                  <div class="form-group">
+                    <%= f.label :star_cast %>
+                    <%= f.text_field( :star_cast,
+                                      class: "form-control",
+                                      placeholder: t('placeholder.movie.star_cast') ) %>
+                  </div>
+
+                  <div class="form-group">
+                    <%= f.label :actors %>
+                    <%= f.text_field( :actors,
+                                      class: "form-control",
+                                      placeholder: t('placeholder.movie.actors') ) %>
+                  </div>
+
+
+                </div>
+                <!-- /.box-body -->
+
+                <div class="box-footer">
+                  <%= f.submit nil, class: "btn btn-primary" %>
+                </div>
+
         </div>
-        <!-- /.box-header -->
-        <div class="box-body" id="upload_video">
-          <%= render 'upload_video' %>
+      <% end %>
+
+
+      <section>
+        <div class="field">
+          <%#= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: ' Enter your name', required: true %>
         </div>
-        <!-- /.box-body -->
-      </div>
-      <!-- /.box -->
+
+        <div class="field">
+          <%#= f.submit "Save",  data: { "disable-with": "Saving..." }, class: 'btn btn-flat btn-black btn-block' %>
+        </div>
+      </section>
+
+      <span class="errors help-block"><ul></ul></span>
+        
     </div>
-    <!-- /.col -->
   </div>
-  <!-- /.row -->
+
 </section>
-<!-- /.content -->

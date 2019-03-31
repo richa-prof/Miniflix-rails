@@ -10,7 +10,8 @@ class Provider::MoviesController < ApplicationController
 
   # GET /provider/movies
   def index
-    @provider_movies = current_user.my_list_movies
+    @provider_movies = Movie.all.limit(10)  #current_user.my_list_movies
+    #redirect_to action: :new
   end
 
   # GET /provider/movies/1
@@ -21,11 +22,11 @@ class Provider::MoviesController < ApplicationController
   # GET /provider/movies/new
   def new
     if params[:serial]
-      @serail = params[:serial]
+      @serial = params[:serial]
     end
     session[:movie_kind] = 'movie'
-    @provider_movie = Movie.new
-    @provider_movie.build_movie_thumbnail
+    @movie = Movie.new
+    @movie.build_movie_thumbnail
   end
 
   # GET /provider/movies/1/edit

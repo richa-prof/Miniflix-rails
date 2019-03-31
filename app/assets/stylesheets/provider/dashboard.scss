@@ -6,10 +6,6 @@
   background: white;
 }
 
-.main-header .navbar-provider {
-  margin-left: 0;
-}
-
 .stat-box {
   border: 1px solid black;
   padding: 10px;
@@ -38,63 +34,7 @@
   }
 }
 
-.settings-menu {
-  li.nav-item:hover {
-    background: white !important;
-    cursor: pointer;
-  }
-  li.nav-item {
-    border: 0;
-    a {
-      color: black;
-      font-weight: 700;
-      font-size: 120%;
-    }
-  }
-  li.nav-item.active {
-    border: 0;
-    border-bottom: 2px solid black !important;
-    color: olive;
-  }
-  .nav > li > a {
-     padding: 10px 45px !important;
-  }
-}
-.tab-pane {
-  padding: 10px;
-}
-.user-image {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-}
 
-#avatar_change_link {
-  width: 85%; margin: 10px auto;
-  a {
-    text-decoration: none;
-    margin-top: 10px;
-    cursor: pointer;
-    font-weight: 700;
-  }
-}
-
-.avatar-wrapper {
-  width: 120px;
-  margin: 0 auto;
-}
-
-.tab-content {
-  .field {
-    padding: 10px;
-    width: 100%;
-    input {
-      width: 100%;
-      padding-left: 10px;
-      height: 40px;
-    }
-  }
-}
 
 #stat_boxes .small-box .inner:hover {
   color: black;

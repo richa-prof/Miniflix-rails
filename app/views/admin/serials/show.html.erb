@@ -20,7 +20,8 @@
 <% not_available = t('label.not_available') %>
 
 <!-- Main content -->
-<section class="content">
+<section class="content" <%= 'data-no-transition-cache' if session[:reset_turbolinks_cache] %> >
+  <% session.delete :reset_turbolinks_cache %>
   <div class="row">
     <div class="col-xs-12">
       <div class="box">

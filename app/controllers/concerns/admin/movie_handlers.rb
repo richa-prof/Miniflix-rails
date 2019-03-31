@@ -27,6 +27,7 @@ module Admin::MovieHandlers
         Rails.logger.debug @movie.inspect
         flash[:error] = 'Something went wrong during Episode upload: Serie not specified for Episode'
       end
+      session[:reset_turbolinks_cache] = true
       redirect_to serial ? admin_serial_path(serial.id) : admin_serials_path
     end
   end
@@ -59,7 +60,9 @@ module Admin::MovieHandlers
 
   # Use callbacks to share common setup or constraints between actions.
   def set_admin_movie
-    @admin_movie ||= movie_klass.friendly.find_by(id: params[:id]) || movie_klass.find_by_s3_multipart_upload_id(params[:id])
+    @admin_movie ||= movie_klass.friendly.find_by(id: params[:id]) ||
+      movie_klass.find_by_s3_multipart_upload_id(params[:id]) ||
+      movie_klass.find_by(name: params[:id].to_s.upcase.gsub('-','.'))
     session[:movie_kind] = @admin_movie.kind
     session[:serial_id] = params[:serial_id]
   end

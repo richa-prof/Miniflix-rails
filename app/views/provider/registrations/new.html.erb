@@ -12,42 +12,43 @@
       <%= f.hidden_field :category, value: 'content_provider' %>
 
     <div>
-    <section rel="stage1">
-      <div class="field">
-        <%= f.label :name %><br />
-        <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: ' Enter your name' %>
-      </div>
+      <section rel="stage1">
+        <div class="field">
+          <%= f.label :name %><br />
+          <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: ' Enter your name' %>
+        </div>
 
-      <div class="field">
-        <%= f.label :email %><br />
-        <%= f.email_field :email, autocomplete: "email", placeholder: ' Enter e-mail' %>
-      </div>
+        <div class="field">
+          <%= f.label :email %><br />
+          <%= f.email_field :email, autocomplete: "email", placeholder: ' Enter e-mail' %>
+        </div>
 
-      <div class="field">
-        <%= f.label :phone_number %><br />
-        <%= f.text_field :phone_number, autocomplete: "phone", placeholder: ' Specify phone number' %>
-      </div>
-    </section>
+        <div class="field">
+          <%= f.label :phone_number %><br />
+          <%= f.text_field :phone_number, autocomplete: "phone", placeholder: ' Specify phone number' %>
+        </div>
+      </section>
 
-    <section rel="stage2" style="display: none">
-      <div class="field">
-        <%= f.label :password %>
-        <% if @minimum_password_length %>
-        <em>(<%= @minimum_password_length %> characters minimum)</em>
-        <% end %><br />
-        <%= f.password_field :password, autocomplete: "off", placeholder: ' Specify password' %>
-      </div>
+      <section rel="stage2" style="display: none">
+        <div class="field">
+          <%= f.label :password %>
+          <% if @minimum_password_length %>
+          <em>(<%= @minimum_password_length %> characters minimum)</em>
+          <% end %><br />
+          <%= f.password_field :password, autocomplete: "off", placeholder: ' Specify password' %>
+        </div>
 
-      <div class="field">
-        <%= f.label :password_confirmation %><br />
-        <%= f.password_field :password_confirmation, autocomplete: "off", placeholder: ' Confirm password' %>
-      </div>
-    </section>
+        <div class="field">
+          <%= f.label :password_confirmation %><br />
+          <%= f.password_field :password_confirmation, autocomplete: "off", placeholder: ' Confirm password' %>
+        </div>
+      </section>
     </div>
    
     <div>
       <div class="actions" rel="stage1">
-        <input type="button" class="btn btn-flat btn-black btn-block" value="Next" onclick="switchSection('stage2');" />
+        <input type="button" class="btn btn-flat btn-black btn-block js-switch-section" 
+               value="Next" data-section="stage2" />
         <br />
         <div class="auth-links">
           <%= render "devise/shared/links" %>
@@ -55,7 +56,9 @@
       </div>
 
       <div class="actions" rel="stage2" style="display: none">
-        <input type="button" class="btn btn-flat btn-black btn-block" value="Prev" onclick="switchSection('stage1');" /> &nbsp;
+        <input type="button" class="btn btn-flat btn-black btn-block js-switch-section"
+               value="Prev" data-section="stage1" />
+        &nbsp;
         <%= f.submit "Confirm", class: 'btn btn-flat btn-black btn-block' %>
       </div>
     </div>

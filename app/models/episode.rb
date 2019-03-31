@@ -27,6 +27,7 @@ class Episode < Movie
   end
 
   def film_video_map
+=begin
     h = {
       hls: film_video,
       video_720: "",
@@ -37,6 +38,8 @@ class Episode < Movie
       h["video_#{mv.resolution}".to_sym] = mv.film_video.to_s
     end
     h
+=end
+    fetch_movie_urls
   end
 
   def screenshot_list

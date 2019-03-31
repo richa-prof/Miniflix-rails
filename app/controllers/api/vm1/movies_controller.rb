@@ -56,7 +56,7 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
           @response = { code: "0", status: "Success", message: "Not found", movies: []}
         end
       else
-        @movies=Movie.where(admin_genre_id: params[:genre_id])
+        @movies = Movie.where(admin_genre_id: params[:genre_id])
         if @movies.present?
           @response = { code: "0",status: "Success", message: "Successfully  movie found", movies: @movies.as_json(api_user)}
         else
@@ -76,7 +76,6 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
     else
       begin
         movie = Movie.find params[:movie_id]
-        p "adding movie to favorites"
         api_user.user_filmlists.create!(admin_movie_id: params[:movie_id])
         mdata = movie.as_json.merge!(last_stopped: movie.fetch_last_stop(api_user))
         api_response = { code: "0",status: "Success",message: "Movie added successfully to my list", movie: mdata}
@@ -84,7 +83,6 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
         api_response = {:code => "-1",:status => "Error",:message => e.message, movie: []}
       end
     end
-    p "api_response: #{api_response}"
     render json: api_response
   end
 

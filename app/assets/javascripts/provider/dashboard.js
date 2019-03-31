@@ -2,6 +2,10 @@
   // Pie chart JS code
 $(document).on('ready turbolinks:load', function() {
 
+  if (window.location.pathname != '/provider/dashboard') {
+    return;
+  }
+  
   drawLineChart(m_months);
 
   $('select#unique_month_wise').on('change', function (e) {

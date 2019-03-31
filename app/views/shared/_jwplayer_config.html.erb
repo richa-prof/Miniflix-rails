@@ -1,5 +1,5 @@
 <div class="jwPlayerConfigContainer" 
-     <% if movie.class.name == 'Movie' %>
+     <% if ['Movie', 'Episode'].include? movie.class.name %>
        data-hls-file="<%= movie&.hls_movie_url %>" 
        data-original-file = "<%= movie&.film_video %>" 
        data-trailer-file = "<%= movie&.movie_trailer.try(:file_cloudfront_url) %>" 
