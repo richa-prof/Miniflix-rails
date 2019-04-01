@@ -5,7 +5,7 @@ class Provider::SerialsController < ApplicationController
   layout 'provider'
 
   def index
-    @provider_serials = current_user.my_list_movies.where(kind: 'episode').map {|e| e.season.serial}
+    @provider_serials = Serial.all.limit(10) #current_user.my_list_movies.where(kind: 'episode').map {|e| e.season.serial}
   end
 
   def new

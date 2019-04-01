@@ -84,14 +84,13 @@
                                 </a>
 
                                 <div class="dropdown-menu" style="overflow: show; min-height: 100px; padding: 10px; left: -50px; min-width: 120px;" aria-labelledby="dropdownMenuLink">
-                                  <%= link_to provider_movie_path(movie.id, kind: 'movie'), class: "text-green", data: { turbolinks: false } do %>
+                                  <%= link_to provider_movie_path(movie.id, kind: 'movie'),  data: { turbolinks: false } do %>
                                     View on Miniflix
                                   <% end %><br/>
-                                  <%= link_to edit_provider_movie_path(movie.id, kind: 'movie'), data: { turbolinks: false }, class: "text-blue" do %>
+                                  <%= link_to edit_provider_movie_path(movie.id, kind: 'movie'), data: { turbolinks: false } do %>
                                      Edit
                                   <% end %><br/>
                                   <%= link_to( provider_movie_path(movie.id, kind: 'movie'),
-                                           class: "text-red",
                                            method: :delete,
                                            data: { confirm: t('confirm.are_you_sure') } ) do %>
                                     Delete

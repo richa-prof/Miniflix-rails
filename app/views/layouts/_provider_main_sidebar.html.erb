@@ -1,4 +1,4 @@
-<div class="main-sidebar provider-sidebar pl20" style="padding-top: 0;">
+<div class="main-sidebar provider-sidebar pl20" style="padding-top: 0; height: 100%;">
   <div class="mt20 ml10"><%= image_tag('logo.png') %></div>
   <section class="sidebar mt20" >
     <ul class="sidebar-menu mt20">
@@ -17,6 +17,12 @@
       <li class="<%= 'active' if controller_path == 'provider/series' %>">
         <%= link_to provider_serials_path, method: :get do %>
           <i class="fa fa-fw fa-file-movie-o"></i> &nbsp;&nbsp;<span>Series</span>
+        <% end %>
+      </li>
+
+      <li class="<%= 'active' if controller_path == 'provider/analytics' %>">
+        <%= link_to provider_analytics_path, method: :get do %>
+          <i class="fa fa-fw fa-chart-pie"></i> &nbsp;&nbsp;<span>Analytics</span>
         <% end %>
       </li>
     </ul>

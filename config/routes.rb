@@ -8,8 +8,10 @@ def provider_block
   devise_for :users, as: :provider, controllers: {
     sessions: 'provider/sessions',
   }
+
   get 'dashboard' => 'dashboard#index'
   get 'get_monthly_revenue/:id' => 'dashboard#get_monthly_revenue', as: :get_monthly_revenue
+  get 'analytics' => 'analytics#index'
 
   resources :movies
   resources :serials

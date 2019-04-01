@@ -1,14 +1,14 @@
 <div class="jwPlayerConfigContainer" 
-     <% if ['Movie', 'Episode'].include? movie.class.name %>
-       data-hls-file="<%= movie&.hls_movie_url %>" 
-       data-original-file = "<%= movie&.film_video %>" 
-       data-trailer-file = "<%= movie&.movie_trailer.try(:file_cloudfront_url) %>" 
-       data-title="<%= movie&.title%>"
-     <% else %>
-       data-original-file = "<%= movie&.file %>" 
-       data-trailer-file = "<%= movie&.file_cloudfront_url %>" 
-       data-title="Trailer for <%= movie.movie.title %>"
-     <% end %>
+  <% if ['Movie', 'Episode'].include? movie.class.name %>
+     data-hls-file="<%= movie&.hls_movie_url %>" 
+     data-original-file = "<%= movie&.film_video %>" 
+     data-trailer-file = "<%= movie&.movie_trailer.try(:file_cloudfront_url) %>" 
+     data-title="<%= movie&.title%>"
+  <% else %>
+     data-original-file = "<%= movie&.file %>" 
+     data-trailer-file = "<%= movie&.file_cloudfront_url %>" 
+     data-title="Trailer for <%= movie.movie.title %>"
+  <% end %>
      data-jwplayer-key="<%= ENV['JW_PLAYER_KEY'] %>"
      style="display: none;" >
 </div>
