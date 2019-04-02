@@ -13,8 +13,18 @@ def provider_block
   get 'get_monthly_revenue/:id' => 'dashboard#get_monthly_revenue', as: :get_monthly_revenue
   get 'analytics' => 'analytics#index'
 
-  resources :movies
-  resources :serials
+  get 'dashboard' => 'dashboard#index'
+
+  resources :movies do
+    collection do
+      get :search
+    end
+  end
+  resources :serials do
+    collection do
+      get :search
+    end
+  end
   resources :settings
 
 

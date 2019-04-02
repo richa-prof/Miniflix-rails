@@ -10,7 +10,31 @@ class Provider::MoviesController < ApplicationController
 
   # GET /provider/movies
   def index
-    @provider_movies = Movie.all.limit(10)  #current_user.my_list_movies
+    # direction switching happens in BE
+    direction = params[:order] || 'desc'
+    @dir = {
+      year: 'desc',
+      genre: 'desc',
+      rate_price: 'desc'
+    }
+    @dir[params[:sort_by].to_sym] = direction if params[:sort_by]
+    Rails.logger.debug @dir
+    sort_col =
+      case params[:sort_by]
+      when 'year' then 'admin_movies.released_date'
+      when 'genre' then 'admin_genres.name'
+      when 'rate_price' then ''
+      else 
+        'admin_movies.created_at'
+      end
+    sort_order = "#{sort_col} #{direction}"
+    @provider_movies =
+      if params[:search]
+        Movie.where("admin_movies.name like :search", search: "%#{params[:search]}%").joins(:genre).order(sort_order)
+      else
+        Movie.joins(:genre).order(sort_order).limit(15)  #current_user.my_list_movies
+      end
+      flash[:success] = "Found #{@provider_movies.count} movies"
     #redirect_to action: :new
   end
 
@@ -64,6 +88,14 @@ class Provider::MoviesController < ApplicationController
     Movie.delete_movie_from_s3(s3_multipart, version_file)
     MovieTrailer.delete_file_from_s3(s3_multipart_obj) if s3_multipart_obj
     redirect_to provider_movies_url, notice: I18n.t('flash.movie.successfully_deleted')
+  end
+
+  private
+
+  def set_provider_movie
+    @provider_movie ||= Movie.friendly.find_by(id: params[:id]) ||
+      movie_klass.find_by_s3_multipart_upload_id(params[:id]) ||
+      movie_klass.find_by(name: params[:id].to_s.upcase.gsub('-','.'))
   end
 
 end

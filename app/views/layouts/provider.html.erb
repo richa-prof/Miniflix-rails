@@ -8,21 +8,23 @@
     <meta charset='utf-8'>
     <meta content='IE=Edge,chrome=1' http-equiv='X-UA-Compatible'>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no' id='viewport' name='viewport'>
+    <!-- <meta name="turbolinks-cache-control" content="no-cache">--> <!-- not work! -->
+
     <%= favicon_link_tag %>
-    <%= stylesheet_link_tag    'admin.css', media: 'all', 'data-turbolinks-track' => true %>
-    <%= stylesheet_link_tag    'provider.css', media: 'all', 'data-turbolinks-track' => true %>
-    <%= javascript_include_tag 'provider.js', 'data-turbolinks-track' => true %>
-    <%= javascript_include_tag 'admin/movie_player_init.js', 'data-turbolinks-track' => true %>
+    <%= stylesheet_link_tag    'admin.css', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'provider.css', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'provider.js', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'admin/movie_player_init.js', 'data-turbolinks-track': 'reload' %>
 
     <script data-turbolinks-track="<%= true %>" src="https://d1jqh0kfebho7s.cloudfront.net/upgraded_jwplayer/jwplayer.js" type="text/javascript"></script>
 
     <%= csrf_meta_tags %>
   </head>
 
-  <body class="hold-transition sidebar-mini" data-page="<%= body_page_name %>">
+  <body class="hold-transition" data-page="<%= body_page_name %>">
     <div class="wrapper">
       <%= render 'layouts/provider_main_sidebar' %>
-      <div class="content-wrapper" style="background: white">
+      <div class="content-wrapper" style="background: white; min-height: 100%;">
         <%= render 'layouts/provider_header' %>
         <%= yield %>
       </div>

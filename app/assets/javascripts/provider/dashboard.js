@@ -99,3 +99,11 @@ $(document).on('ready turbolinks:load', function() {
   });
 }
   /* END BAR CHART */
+
+$.deparam = function(str) {
+  var out = {};
+  if (str) {
+    str.split('&').forEach(function(gp) { var a = gp.split('='); out[a[0]] = a[1] });
+  }
+  return out;
+}

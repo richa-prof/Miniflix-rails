@@ -1,15 +1,16 @@
-<section class="content settings-tab">
-
-  <div class="pl20 mt10">
-    <h2 class="provider-title"><strong> Movies</strong></h2>
-    <h4 class="">Upload</h4>
-  </div>
-
+<section class="content-for-provider p20">
 
   <div class="row mt10 p20">
+    <div class="col-lg-4 col-xs-12"></div>
+
     <div class="col-lg-4 col-xs-12">
    
-      <%= form_with model: @movie, scope: 'provider', url: provider_movies_path, method: :post, local: true, multipart: true do |f| %>
+      <div class="p20 mt10">
+        <h2 class="provider-title"><strong> Add Movie</strong></h2>
+        <strong>Details</strong>
+      </div>
+
+      <%= form_with model: @movie, scope: 'provider', url: provider_movies_path, method: :post, class: 'pt20', local: true, multipart: true do |f| %>
 
         <% if @movie.errors.any? %>
           <div class="row">
@@ -26,69 +27,69 @@
         <%= f.hidden_field :kind, value: 'movie' %>
 
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-12" style="margin: 20px 0">
             <!-- general form elements -->
 
-                  <div class="form-group">
-                    <%= f.label :name %>
-                    <%= f.text_field( :name,
-                                      class: "form-control",
-                                      placeholder: t('placeholder.movie.name') ) %>
-                  </div>
+            <div class="form-group">
+              <%= f.label :name %>
+              <%= f.text_field( :name,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.name') ) %>
+            </div>
 
-                  <div class="form-group">
-                    <%= f.label :title %>
-                    <%= f.text_field( :title,
-                                      class: "form-control",
-                                      placeholder: t('placeholder.movie.title') ) %>
-                  </div>
+            <div class="form-group">
+              <%= f.label :title %>
+              <%= f.text_field( :title,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.title') ) %>
+            </div>
 
-                  <div class="form-group">
-                    <%= f.label :description %>
-                    <%= f.text_area( :description,
-                                     rows: 5,
-                                     class: "form-control",
-                                     placeholder: t('placeholder.movie.description') ) %>
-                  </div>
+            <div class="form-group">
+              <%= f.label :description %>
+              <%= f.text_area( :description,
+                               rows: 5,
+                               class: "form-control",
+                               placeholder: t('placeholder.movie.description') ) %>
+            </div>
 
-                  <div class="form-group">
-                    <%= f.label :admin_genre_id %>
-                    <%= f.collection_select( :admin_genre_id,
-                                             Genre.alfa_order,
-                                             :id,
-                                             :name,
-                                             { include_blank: t(:SelectGenre) },
-                                             class: "form-control" ) %>
-                  </div>
-                  <div class="form-group">
-                    <%= f.label :directed_by %>
-                    <%= f.text_field( :directed_by,
-                                      class: "form-control",
-                                      placeholder: t('placeholder.movie.directed_by') ) %>
-                  </div>
-
-
-                  <div class="form-group">
-                    <%= f.label :star_cast %>
-                    <%= f.text_field( :star_cast,
-                                      class: "form-control",
-                                      placeholder: t('placeholder.movie.star_cast') ) %>
-                  </div>
-
-                  <div class="form-group">
-                    <%= f.label :actors %>
-                    <%= f.text_field( :actors,
-                                      class: "form-control",
-                                      placeholder: t('placeholder.movie.actors') ) %>
-                  </div>
+            <div class="form-group">
+              <%= f.label :admin_genre_id %>
+              <%= f.collection_select( :admin_genre_id,
+                                       Genre.alfa_order,
+                                       :id,
+                                       :name,
+                                       { include_blank: t(:SelectGenre) },
+                                       class: "form-control" ) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :directed_by %>
+              <%= f.text_field( :directed_by,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.directed_by') ) %>
+            </div>
 
 
-                </div>
-                <!-- /.box-body -->
+            <div class="form-group">
+              <%= f.label :star_cast %>
+              <%= f.text_field( :star_cast,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.star_cast') ) %>
+            </div>
 
-                <div class="box-footer">
-                  <%= f.submit nil, class: "btn btn-primary" %>
-                </div>
+            <div class="form-group">
+              <%= f.label :actors %>
+              <%= f.text_field( :actors,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.actors') ) %>
+            </div>
+
+
+          </div>
+
+
+          <div class="box-footer pt20">
+            <%= f.button 'Continue', class: "btn btn-flat btn-black", type: 'submit' %>
+          </div>
 
         </div>
       <% end %>
@@ -107,6 +108,7 @@
       <span class="errors help-block"><ul></ul></span>
         
     </div>
+    <div class="col-lg-4 col-xs-12"></div>
   </div>
 
 </section>

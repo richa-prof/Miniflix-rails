@@ -4,19 +4,19 @@
 
 <section class="content-header">
   <h1>
-    <%= t('heading.movies') %>
+    <%= t('Movie') %>
   </h1>
   <ol class="breadcrumb">
-    <%= link_to admin_movies_path, method: :get do %>
-      <i class="fa fa-fw fa-file-movie-o"></i> <span><%= t('heading.movie') %></span>
+    <%= link_to provider_movies_path, method: :get do %>
+      <i class="fa fa-fw fa-file-movie-o"></i> <span><%= t('heading.movies') %></span>
     <% end %>
     <li>  </li>
     <li class="active"><%= t('heading.show') %></li>
   </ol>
 </section>
 
-<% movie_thumbnail = @admin_movie.movie_thumbnail %>
-<% movie_genre = @admin_movie.genre %>
+<% movie_thumbnail = @provider_movie.movie_thumbnail %>
+<% movie_genre = @provider_movie.genre %>
 <% not_available = t('label.not_available') %>
 
 <!-- Main content -->
@@ -24,9 +24,8 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="box">
-        <%= render( partial: 'shared/flash_notification', locals: { notice: notice } ) %>
         <!-- /.box-header -->
-        <div class="box-body">
+        <div class="">
           <div class= "player hide">
             <div id="flim_video">
             </div>
@@ -35,15 +34,15 @@
           <div class="row">
             <div class="col-lg-2 col-md-1 col-sm-12"></div>
             <div class="col-lg-8 col-md-10 col-sm-12">
-              <div class="box box-primary">
-                <div class="box-header with-border">
+              <div class="">
+                <div class="">
                   <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                       <h2 class="box-title text-blue">
-                        <%= @admin_movie.name || not_available %>
+                        <%= @provider_movie.name || not_available %>
                       </h2>
                       <p class="margin-btm-zero">
-                        <%= movie_posted_on_details_for(@admin_movie) %>
+                        <%= movie_posted_on_details_for(@provider_movie) %>
                       </p>
                     </div>
                   </div>
@@ -103,7 +102,7 @@
                                   <h3 class="box-title text-blue">
                                     <%= t('title.movie.directed_by') %>
                                   </h3>
-                                  <p class="margin-btm-zero"><%= @admin_movie.directed_by || not_available %></p>
+                                  <p class="margin-btm-zero"><%= @provider_movie.directed_by || not_available %></p>
                                 </div>
                               </div>
                             </div>
@@ -117,7 +116,7 @@
                                   <h3 class="box-title text-blue">
                                     <%= t('title.movie.released_on') %>
                                   </h3>
-                                  <p class="margin-btm-zero"><%= formatted_released_date_for_movie(@admin_movie) %></p>
+                                  <p class="margin-btm-zero"><%= formatted_released_date_for_movie(@provider_movie) %></p>
                                 </div>
                               </div>
                             </div>
@@ -131,7 +130,7 @@
                                   <h3 class="box-title text-blue">
                                     <%= t('title.movie.stars_cast') %>
                                   </h3>
-                                  <p class="star_cast"><%= @admin_movie.star_cast || not_available  %></p>
+                                  <p class="star_cast"><%= @provider_movie.star_cast || not_available  %></p>
                                 </div>
                               </div>
                             </div>
@@ -144,7 +143,7 @@
                             <div class="box-header with-border text-center">
                               <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
-                                  <%= render( partial: 'movie_and_trailer_players', locals: { movie: @admin_movie } ) %>
+                                  <%= render( partial: 'movie_and_trailer_players', locals: { movie: @provider_movie } ) %>
                                 </div>
                               </div>
                             </div>
@@ -160,7 +159,7 @@
                                   <h3 class="box-title text-blue">
                                     <%= t('title.movie.movie_story') %>
                                   </h3>
-                                  <p class="margin-btm-zero"><%= @admin_movie.description %></p>
+                                  <p class="margin-btm-zero"><%= @provider_movie.description %></p>
                                 </div>
                               </div>
                             </div>
