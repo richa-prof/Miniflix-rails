@@ -1,0 +1,116 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    <%= t('table.serials.series') %>
+  </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <%= render( partial: 'shared/flash_notification', locals: { notice: notice } ) %>
+          <div class="row">
+            <div class="col-lg-10 col-xs-12">
+              <h3 class="box-title admin-box-title">
+                <%= t('heading.listing_series_details') %>
+              </h3>
+            </div>
+            <div class="col-lg-2 col-xs-12">
+              <%= link_to( t('links.add_new_serial'),
+                           new_admin_serial_path,
+                           class: "btn btn-primary pull-right",
+                           method: :get ) %>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body admin-box-body">
+          <div class="row">
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="box box-primary">
+                <!-- /.box-header -->
+                <div class="box-body">
+                  <section id="no-more-tables">
+                    <div class="table-overflow">
+                      <table id="tbl_admin_series" class="table table-bordered table-hover series-table">
+                        <thead>
+                          <tr>
+                            <th><%= t('table.serials.id') %></th>
+                            <th><%= t('table.serials.title') %></th>
+                            <th><%= t('table.serials.description') %></th>
+                            <th><%= t('table.serials.seasons') %></th>
+                            <th><%= t('table.serials.genre') %></th>
+                            <th><%= t('table.serials.directed_by') %></th>
+                            <th><%= t('table.serials.year') %></th>
+                            <th><%= t('table.serials.language') %></th>
+                            <th><%= t('table.serials.star_cast') %></th>
+                            <th><%= t('table.serials.action') %></th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          <% @provider_serials.each do |admin_serial| %>
+                            <tr>
+                              <td data-title="Id"><%= admin_serial.id %></td>
+                              <td data-title="Name"><%= admin_serial.title%></td>
+                              <td data-title="Description"><%= admin_serial.description%></td>
+                              <td data-title="Seasons"><%=admin_serial.seasons.count%></td>
+                              <td data-title="Genre"><%= admin_serial.find_genre(admin_serial.admin_genre_id)%></td>
+                              <td data-title="Directed by"><%= admin_serial.directed_by%></td>
+                              <td data-title="Released year"><%= admin_serial.year.year if admin_serial.year%></td>
+                              <td data-title="Language"><%= admin_serial.language%></td>
+                              <td data-title="Star cast"><%= admin_serial.star_cast%></td>
+                              <td data-title="Action" class="actions-td">
+                              <!-- Links to appropriate pages  -->
+                                  <%= link_to admin_serial_path(admin_serial), class: "text-green", data: { turbolinks: false } do %>
+                                    <i class="fa fa-fw fa-eye"></i>
+                                  <% end %>
+                                  <%= link_to edit_admin_serial_path(admin_serial), class: "text-green", data: { turbolinks: false } do %>
+                                    <i class="fa fa-fw fa-edit text-blue"></i>
+                                  <% end %>
+                                  <%= link_to admin_serial_path(admin_serial), method: :delete, class: "text-green", data: { confirm: t('confirm.are_you_sure') } do %>
+                                    <i class="fa fa-fw fa-trash text-red"></i>
+                                  <% end %>
+                                  <a href=""><i class="fa fa-file-text-o"></i></a>
+                              </td>
+                            </tr>
+                          <% end %>
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</section>
+<!-- /.content -->
+
+<script>
+  $(document).ready(function() {
+    $('#tbl_admin_series').dataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "aoColumnDefs": [
+        { 'bSortable': false, 'aTargets': [ 9 ] },
+        { "bSearchable": false,"bVisible": false, "aTargets": [ 0 ] }
+      ],
+      "aaSorting": [[0, 'desc']]
+    });
+  });
+</script>
