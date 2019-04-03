@@ -94,8 +94,8 @@ class Provider::MoviesController < ApplicationController
 
   def set_provider_movie
     @provider_movie ||= Movie.friendly.find_by(id: params[:id]) ||
-      movie_klass.find_by_s3_multipart_upload_id(params[:id]) ||
-      movie_klass.find_by(name: params[:id].to_s.upcase.gsub('-','.'))
+      Movie.find_by_s3_multipart_upload_id(params[:id]) ||
+      Movie.find_by(name: params[:id].to_s.upcase.gsub('-','.'))
   end
 
 end

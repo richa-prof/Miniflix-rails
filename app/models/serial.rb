@@ -9,6 +9,10 @@ class Serial < ApplicationRecord
 # should be:
 # SELECT `users`.* FROM `users` INNER JOIN `liked_info` ON `users`.`id` = `liked_info`.`user_id` WHERE `liked_info`.`thing_id` = 28 AND `like_info.thing_type` = 'Serial'
 
+  # associations for content provider
+  has_many :own_films, as: :film
+  has_many :owners, through: :own_films, source: :user
+  has_one :rate, as: :entity
 
   has_one :serial_thumbnail, dependent: :destroy, foreign_key: "admin_serial_id"
   has_one :movie_trailer, dependent: :destroy, foreign_key: "admin_serial_id"
@@ -27,6 +31,10 @@ class Serial < ApplicationRecord
   def user_likes
     q = "INNER JOIN liked_info ON users.id = liked_info.user_id WHERE liked_info.thing_id = #{id} AND liked_info.thing_type = 'Serial'"
     User.joins(q)
+  end
+
+  def owner
+    owners&.first
   end
 
   def find_genre(id)

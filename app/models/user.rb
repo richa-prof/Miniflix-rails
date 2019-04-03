@@ -39,6 +39,12 @@ class User < ActiveRecord::Base
   has_many :liked_episodes, through: :liked_things, source: :thing, source_type: 'Episode'
   has_many :liked_seasons,  through: :liked_things, source: :thing, source_type: 'Season'
 
+  # associations for content provider
+  has_one :rate, as: :entity
+  has_many :own_films
+  has_many :own_serials, through: :own_films, source: :film, source_type: 'Serial'
+  has_many :own_movies,  through: :own_films, source: :film , source_type: 'Movie'
+
   #has_one  :video_statistic, dependent: :destroy
 
   alias_method :recently_watched, :user_video_last_stops

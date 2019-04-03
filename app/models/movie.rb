@@ -48,6 +48,11 @@ class Movie < ApplicationRecord
   has_many :movie_captions, dependent: :destroy, foreign_key: "admin_movie_id"
   has_many :movie_versions, dependent: :destroy
 
+  # associations for content provider
+  has_many :own_films, as: :film
+  has_many :owners, through: :own_films, source: :user
+  has_one :rate, as: :entity
+
   accepts_nested_attributes_for :movie_thumbnail
 
   # CALLBACKS

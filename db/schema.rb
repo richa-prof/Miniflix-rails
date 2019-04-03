@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190328211656) do
+ActiveRecord::Schema.define(version: 20190403014023) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "city"
@@ -314,6 +314,27 @@ ActiveRecord::Schema.define(version: 20190328211656) do
     t.boolean "is_read", default: false
     t.index ["admin_movie_id"], name: "index_notifications_on_admin_movie_id"
     t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
+  create_table "own_films", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "user_id"
+    t.integer "film_id"
+    t.string "film_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["film_type", "film_id"], name: "index_own_films_on_film_type_and_film_id"
+    t.index ["user_id"], name: "index_own_films_on_user_id"
+  end
+
+  create_table "rates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "entity_id"
+    t.string "entity_type"
+    t.string "notes"
+    t.float "price", limit: 24
+    t.integer "discount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["entity_type", "entity_id"], name: "index_rates_on_entity_type_and_entity_id"
   end
 
   create_table "s3_multipart_uploads", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|

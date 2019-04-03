@@ -5,7 +5,30 @@ class Provider::SerialsController < ApplicationController
   layout 'provider'
 
   def index
-    @provider_serials = Serial.all.limit(10) #current_user.my_list_movies.where(kind: 'episode').map {|e| e.season.serial}
+    # direction switching happens in BE
+    direction = params[:order] || 'desc'
+    @dir = {
+      year: 'desc',
+      genre: 'desc',
+      rate_price: 'desc'
+    }
+    @dir[params[:sort_by].to_sym] = direction if params[:sort_by]
+    sort_col =
+      case params[:sort_by]
+      when 'year' then 'admin_serials.updated_at'
+      when 'genre' then 'admin_genres.name'
+      when 'rate_price' then ''
+      else 
+        'admin_serials.created_at'
+      end
+    sort_order = "#{sort_col} #{direction}"
+    @provider_serials =
+      if params[:search]
+        Serial.where("admin_serials.name like :search", search: "%#{params[:search]}%").joins(:genre).order(sort_order)
+      else
+        Serial.joins(:genre).order(sort_order).limit(15)  #current_user.my_list_movies
+      end
+      flash[:success] = "Found #{@provider_serials.count} series"
   end
 
   def new
@@ -80,6 +103,13 @@ class Provider::SerialsController < ApplicationController
 
   def serial_thumbnail_params
     params.require(:serial_thumbnail).permit(:serial_screenshot_1, :serial_screenshot_2, :serial_screenshot_3, :thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot)
+  end
+
+  private
+
+  def set_provider_serial
+    @provider_serial ||= Serial.friendly.find_by(id: params[:id]) ||
+      Serial.find_by(name: params[:id].to_s.upcase.gsub('-','.'))
   end
 
 end

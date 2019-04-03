@@ -1,7 +1,6 @@
 <% released_date = @provider_movie.released_date ? @provider_movie.released_date.strftime("%m/%d/%Y") : "" %>
 <% posted_date = @provider_movie.posted_date ? @provider_movie.posted_date.strftime("%m/%d/%Y") : "" %>
 <% movie_thumbnail = @provider_movie.movie_thumbnail %>
-
 <% form_css_class = is_edit_mode ? 'edit_movie_frm' : 'add_movie_details_frm' %>
 
 <div class="row">
@@ -42,7 +41,6 @@
     <div class="col-md-12">
       <!-- general form elements -->
       <div class="">
-        <!-- /.box-header -->
           <div class="">
             <div class="form-group">
               <%= f.label :name %>
