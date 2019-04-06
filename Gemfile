@@ -102,6 +102,9 @@ gem 'friendly_id', '~> 5.2.3'
 #valiation for phone number
 gem 'phony_rails'
 
+# wizard for controller
+gem 'wicked'
+
 #sidekiq
 gem 'sidekiq', '5.1.3'
 

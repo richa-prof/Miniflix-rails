@@ -53,14 +53,15 @@ class Admin::MoviesController < ApplicationController
 
   # DELETE /admin/movies/1
   def destroy
-    s3_multipart = S3Multipart::Upload.find(@admin_movie.s3_multipart_upload_id)
-    if @admin_movie.has_trailer?
+    s3_multipart = S3Multipart::Upload.find_by(id: @admin_movie.s3_multipart_upload_id)
+    Rails.logger.error "Movie #{@admin_movie.inspect} don't have s3_multipart_upload_id!"
+    if @admin_movie.has_trailer? && s3_multipart
       movie_trailer = @admin_movie.movie_trailer
       s3_multipart_obj = S3Multipart::Upload.find(movie_trailer.s3_multipart_upload_id)
     end
     version_file = @admin_movie.version_file
     @admin_movie.destroy
-    Movie.delete_movie_from_s3(s3_multipart, version_file)
+    Movie.delete_movie_from_s3(s3_multipart, version_file) if s3_multipart
     MovieTrailer.delete_file_from_s3(s3_multipart_obj) if s3_multipart_obj
     redirect_to admin_movies_url, notice: I18n.t('flash.movie.successfully_deleted')
   end

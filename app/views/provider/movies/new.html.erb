@@ -10,7 +10,7 @@
         <strong>Details</strong>
       </div>
 
-      <%= form_with model: @movie, scope: 'provider', url: provider_movies_path, method: :post, class: 'pt20', local: true, multipart: true do |f| %>
+      <%= form_with model: @movie, scope: 'movie', url: provider_movies_path, method: :post, class: 'pt20', local: true, multipart: true do |f| %>
 
         <% if @movie.errors.any? %>
           <div class="row">

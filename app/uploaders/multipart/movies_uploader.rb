@@ -30,8 +30,8 @@ class MoviesUploader < ApplicationController
 
   on_begin do |upload, session|
     # Code to be evaluated when upload begins.
-    puts "on_begin upload ---> #{upload.to_json}"
-    puts "on_begin session ---> #{session.to_json}"
+    puts "on_begin movie up, upload ---> #{upload.to_json}"
+    puts "on_begin movie up, session ---> #{session.to_json}"
   end
 
   # See above comment. Called when the upload has successfully completed
@@ -41,8 +41,8 @@ class MoviesUploader < ApplicationController
 
   on_complete do |upload, session|
     # Code to be evaluated when upload completes   
-    puts "on_complete upload ---> #{upload.to_json}"
-    puts "on_complete session ---> #{session.to_json}"  
+    puts "on_complete movie up, upload ---> #{upload.to_json}"
+    puts "on_complete movie up, session ---> #{session.to_json}"  
     # film_video = "https://d1jqh0kfebho7s.cloudfront.net/"+upload.key
     puts "-------------------"
     upload_location = upload.location

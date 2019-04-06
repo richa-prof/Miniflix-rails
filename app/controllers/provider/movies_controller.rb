@@ -2,9 +2,12 @@
 class Provider::MoviesController < ApplicationController
 
   include Admin::MovieHandlers
+  include Wicked::Wizard
 
   #before_action :authenticate_provider_user!
   before_action :set_provider_movie, only: [:show, :edit, :update, :destroy]
+
+  steps :add_details, :add_video, :add_screenshots, :add_thumbnails, :finalize
 
   layout 'provider'
 
@@ -40,7 +43,18 @@ class Provider::MoviesController < ApplicationController
 
   # GET /provider/movies/1
   def show
-    @movie_film_url = @provider_movie.film_video
+    case step
+    when :add_details
+    when :add_video
+    when :add_screenshots
+    when :add_thumbnails
+    when :finalize
+    else
+      @movie_film_url = @provider_movie.film_video  
+      render :show
+      return
+    end
+    render_wizard + "?slug=#{@provider.slug}"
   end
 
   # GET /provider/movies/new
@@ -53,10 +67,20 @@ class Provider::MoviesController < ApplicationController
     @movie.build_movie_thumbnail
   end
 
+  def create
+    @provider_movie = Movie.create!(movie_params)
+    @provider_movie.save(validate: false)
+    #redirect_to edit_provider_movie_path(@provider_movie), notice: I18n.t('flash.movie.successfully_created')
+    redirect_to wizard_path(:add_video, slug: @provider_movie.slug), notice: I18n.t('flash.movie.successfully_created')
+  end
+
+  def after_create
+  
+  end
+
   # GET /provider/movies/1/edit
   def edit
-    @s3_multipart = S3Multipart::Upload.find(@provider_movie.s3_multipart_upload_id)
-
+    @s3_multipart = S3Multipart::Upload.find(@provider_movie.s3_multipart_upload_id) if @provider_movie&.s3_multipart_upload_id  # FIXME!
     @movie_thumbnail = @provider_movie.movie_thumbnail || @provider_movie.build_movie_thumbnail
   end
 
@@ -95,7 +119,19 @@ class Provider::MoviesController < ApplicationController
   def set_provider_movie
     @provider_movie ||= Movie.friendly.find_by(id: params[:id]) ||
       Movie.find_by_s3_multipart_upload_id(params[:id]) ||
-      Movie.find_by(name: params[:id].to_s.upcase.gsub('-','.'))
+      Movie.find_by(slug: params[:slug] || params[:id])
   end
+
+  def movie_params
+    params.require(:movie).permit(
+      :title, :name, :film_video, :video_type, :video_size, :video_format, :video_duration,
+      :released_date, :description, :admin_genre_id, :directed_by, :language, :star_cast, 
+      :kind, :slug, :bitly_url, :version_file, :downloadable, :actors,
+      movie_thumbnail_attributes: [
+        :id, :movie_screenshot_1, :movie_screenshot_2, :movie_screenshot_3, :thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot
+      ]
+    )
+  end
+
 
 end

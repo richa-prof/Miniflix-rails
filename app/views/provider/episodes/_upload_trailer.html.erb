@@ -2,8 +2,12 @@
 
 <div id="s3-input-bucket-name-container" style="display: none;" data-s3-input-bucket="<%= ENV['S3_INPUT_BUCKET'] %>"></div>
 
-<div id="movie-id-container" style="display: none;" data-movie-id="<%= movie.id %>" 
-     data-success-path="<%= save_uploaded_movie_trailer_admin_movies_path %>" data-is-edit-mode="<%= is_edit_mode %>">
+<div id="movie-id-container" 
+     style="display: none;"
+     class="js-movie-paths"
+     data-movie-id="<%= movie.id %>" 
+     data-trailer-upload-success-path="<%= save_uploaded_movie_trailer_admin_movies_path %>"
+     data-is-edit-mode="<%= is_edit_mode %>" >
 </div>
 
 <div class="row">

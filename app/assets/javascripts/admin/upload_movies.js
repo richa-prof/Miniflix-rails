@@ -21,6 +21,8 @@ MiniflixVideoUploader.prototype.s3InputBucketName = function() {
 MiniflixVideoUploader.prototype.bindOnMovieSubmit = function() {
   var self = this;
   console.log('>>>>> invoked bindOnMovieSubmit >>>>>');
+  var ajaxTargetUrl = $('.js-movie-paths').data('video-upload-success-path');
+  console.log('ajaxTargetUrl:', ajaxTargetUrl);
 
   self.videoSubmitButton().off('click').on('click', function() { // The button class passed into multipart_uploader_form (see "Getting Started")
     console.log('>>>>> Fired click event on `video-submit-button` >>>>>');
@@ -36,13 +38,15 @@ MiniflixVideoUploader.prototype.bindOnMovieSubmit = function() {
 
       onComplete: function(upload) {
         var up_file = JSON.stringify(upload);
-        console.log("upload --> "+up_file);
-        console.log("File %d successfully uploaded", upload.key);
+        console.log("video upload --> " + up_file);
+        console.log("Video file %d successfully uploaded", upload.key);
         $("#error_msg").hide();
         $("#success_msg").show();
         $("#success_msg").empty().append("video uploaded successfully.");
         var kind = $('#s3-input-bucket-name-container').data('kind'); // movie or episode
-        window.location.href =  "/admin/" + kind + "s/upload_movie_trailer/" + upload.id + '?kind=' + kind;
+        var urlPrefix = ajaxTargetUrl || "/admin/" + kind + "s/upload_movie_trailer/";
+        //window.location.href =
+        Turbolinks.visit(urlPrefix + upload.id + '?kind=' + kind);
       },
 
       onPause: function(key) {
@@ -95,14 +99,14 @@ MiniflixVideoUploader.prototype.bindOnMovieTrailerSubmit = function() {
 
       onComplete: function(upload) {
         var up_file = JSON.stringify(upload);
-        console.log("upload --> " + up_file);
-        console.log("File %d successfully uploaded", upload.key);
+        console.log("trailer upload --> " + up_file);
+        console.log("Trailer file %d successfully uploaded", upload.key);
         $("#error_msg").hide();
         $("#success_msg").show();
         $("#success_msg").empty().append("video uploaded successfully.");
 
         var is_edit_page = $('#movie-id-container').data('is-edit-mode');
-        var ajaxTargetUrl = $('#movie-id-container').data('success-path');
+        var ajaxTargetUrl = $('.js-movie-paths').data('trailer-upload-success-path');
 
         $.ajax({
           type: 'POST',
@@ -116,7 +120,9 @@ MiniflixVideoUploader.prototype.bindOnMovieTrailerSubmit = function() {
             if (is_edit_page || is_edit_page == 'true') {
               $('.movie-trailer-submit-btn').attr("disabled", "disabled");
             } else {
-              window.location.href =  "/admin/movies/add_movie_details/"+upload.id;
+              console.log('tp1');
+              var redirectUrl = $('#movie-id-container').data('redirect-path') || "/admin/movies/add_movie_details/" + upload.id;
+              Turbolinks.visit(redirectUrl);
             }
           },
           error:function (xhr, ajaxOptions, thrownError) {

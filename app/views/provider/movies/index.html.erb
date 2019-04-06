@@ -84,7 +84,7 @@
                             <td data-title="Year"><%= movie.released_date&.year %></td>
                             <td data-title="Audio"><%= movie.language %></td>
                             <td data-title="Producer"><%= movie.directed_by %></td>
-                            <td>0.00</td>
+                            <td><%= movie.rate&.price %></td>
                             <td>
                               <div class="dropdown show">
                                 <a class="btn btn-secondary dropdown-toggle" 

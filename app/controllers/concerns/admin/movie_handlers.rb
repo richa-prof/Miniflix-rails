@@ -62,7 +62,7 @@ module Admin::MovieHandlers
   def set_admin_movie
     @admin_movie ||= movie_klass.friendly.find_by(id: params[:id]) ||
       movie_klass.find_by_s3_multipart_upload_id(params[:id]) ||
-      movie_klass.find_by(name: params[:id].to_s.upcase.gsub('-','.'))
+      movie_klass.find_by(slug: params[:id]) || movie_klass.find_by(id: params[:id])
     session[:movie_kind] = @admin_movie.kind
     session[:serial_id] = params[:serial_id]
   end

@@ -163,6 +163,8 @@ class Movie < ApplicationRecord
 
   def write_file
     movie = self
+    # FIXME
+    return unless s3_multipart_upload_id
     s3_upload = S3Multipart::Upload.find(movie.s3_multipart_upload_id)
     folder_environment_name =  "streaming_#{Rails.env}"
     output_key_prefix = "#{folder_environment_name}/#{movie.id.to_s}/"
@@ -283,8 +285,7 @@ class Movie < ApplicationRecord
   end
 
   def movie_screenshot_list
-    movie_thumbnail = self.movie_thumbnail
-    movie_thumbnail.screenshot_urls_map
+    movie_thumbnail ? movie_thumbnail.screenshot_urls_map : {}
   end
 
   def fetch_last_stop(user)
@@ -315,7 +316,11 @@ class Movie < ApplicationRecord
       thumb640: "",
       thumb800: ""
     }
-    out.merge!(movie_thumbnail.screenshot_urls_map)
+    if movie_thumbnail
+      out.merge!(movie_thumbnail.screenshot_urls_map)
+    else
+      out
+    end
   end
 
 

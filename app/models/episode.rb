@@ -27,7 +27,6 @@ class Episode < Movie
   end
 
   def film_video_map
-=begin
     h = {
       hls: film_video,
       video_720: "",
@@ -37,9 +36,7 @@ class Episode < Movie
     movie_versions.each do |mv|
       h["video_#{mv.resolution}".to_sym] = mv.film_video.to_s
     end
-    h
-=end
-    fetch_movie_urls
+    h.merge!(fetch_movie_urls)
   end
 
   def screenshot_list
