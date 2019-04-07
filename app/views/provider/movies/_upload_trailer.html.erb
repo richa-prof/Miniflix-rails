@@ -39,29 +39,34 @@
           </div>
         </div>
 
-        <div class="dropbox-advanced-upload">
-          <div class="file-upload">
-            <%= multipart_uploader_form( 
-              input_name: 'trailer_video_file',
-              uploader: 'MovieTrailerUploader',
-              button_class: 'movie-trailer-submit-btn hidden',
-              button_text: t('label.upload_movie_trailer'),
-              types: ["video/*"],
-              html: %Q{} ) %>
-            <div class="dropbox-controls">Drag file here or <a onclick="$('#trailer_video_file').click();">browse</a></div>
-          </div>
-          <div class="file-info" style="display: none;">
-            <div class="file-read-progress pull-left">
-              <svg class="progress-ring" width="120" height="120">
-                <circle class="progress-ring-circle" stroke="gray" stroke-width="4" fill="transparent" r="52" cx="60" cy="60"/>
-              </svg>
+        <div style="margin: 20px 0">
+          <div class="dropbox-advanced-upload">
+            <div class="file-upload">
+              <%= multipart_uploader_form( 
+                input_name: 'trailer_video_file',
+                uploader: 'MovieTrailerUploader',
+                button_class: 'movie-trailer-submit-btn hidden',
+                button_text: t('label.upload_movie_trailer'),
+                types: ["video/*"],
+                html: %Q{} ) %>
+              <div class="dropbox-controls">Drag file here or <a onclick="$('#trailer_video_file').click();">browse</a></div>
             </div>
-            <div class="about-file pl10 pull-left" ></div>
-            <div class="rm-file-control">x</div>
+          </div>
+          <div class="file-info" style="padding: 5px; display: none;">
+              <div class="file-read-progress pull-left">
+                <div class="ldBar label-center ml10" style="width: 50px; height: 50px;" 
+                     data-stroke="black" 
+                     data-pattern-size="50"
+                     data-stroke-width="3"
+                     data-value="5%"
+                     data-preset="circle">
+                </div>
+              </div>
+              <div class="about-file pl20 pull-left" ></div>
+              <div class="rm-file-control pull-right"><a title="Remove file"><h4>x</h4></a></div>
+            </div>
           </div>
         </div>
-
-
 
   </div>
 </div>
