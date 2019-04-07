@@ -426,6 +426,7 @@ class User < ActiveRecord::Base
   end
 
   def profile_image_url
+    return image_url if image_url
     path = image.try(:staff_medium).try(:path)
 
     if path.present?

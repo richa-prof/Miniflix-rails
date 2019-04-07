@@ -3,17 +3,16 @@
 //= require jquery.validate
 //= require jquery.validate.additional-methods
 //= require bootstrap-sprockets
-//= require admin/jquery.dataTables
+//= require bootstrap-fileinput.min
+
 //= require turbolinks
-//= require admin/app.min
 //= require bootstrap-datepicker
+
 //= require_tree ./provider
 
 //= require form_helpers
-//= require admin/upload_movies
-//= require admin/custom
 
 //= require underscore
 //= require s3_multipart_modified
 //= require jquery.mask
-//= require admin/bootstrap-fileupload
+

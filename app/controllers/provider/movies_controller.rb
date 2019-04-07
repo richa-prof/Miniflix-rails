@@ -43,9 +43,12 @@ class Provider::MoviesController < ApplicationController
 
   # GET /provider/movies/1
   def show
+    p @provider_movie.inspect
+    
     case step
     when :add_details
     when :add_video
+      # " /provider/movies/upload_movie_trailer/" 
     when :add_screenshots
     when :add_thumbnails
     when :finalize
@@ -54,7 +57,7 @@ class Provider::MoviesController < ApplicationController
       render :show
       return
     end
-    render_wizard + "?slug=#{@provider.slug}"
+    render_wizard + "?slug=#{@provider_movie.slug}"
   end
 
   # GET /provider/movies/new
@@ -65,6 +68,8 @@ class Provider::MoviesController < ApplicationController
     session[:movie_kind] = 'movie'
     @movie = Movie.new
     @movie.build_movie_thumbnail
+    @rate = @movie.build_rate
+    #render wizard_path(:add_details)
   end
 
   def create

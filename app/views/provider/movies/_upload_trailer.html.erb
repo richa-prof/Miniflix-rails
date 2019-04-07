@@ -10,11 +10,10 @@
      data-is-edit-mode="<%= is_edit_mode %>">
 </div>
 
-<div class="row">
+<div id="trailed_upload_wrapper" class="row">
   <div class="col-md-12">
-    <div class="box box-primary trailer-upload-box">
-      <div class="box-body">
-        <div class="row">
+
+        <div class="row mt20">
           <div class="col-md-12">
             <div class="alert alert-danger" id="error_msg" style="display: none;">
             </div>
@@ -23,11 +22,12 @@
           </div>
         </div>
 
-        <div class="form-group">
+        <div class="">
           <label>
-            <%= t('label.upload_movie_trailer') %>
+            <%= t('label.trailer') %>
           </label>
         </div>
+
         <div class="row" style="display: none;" id="progress-bar">
           <div class="col-sm-11 col-xs-10">
             <!-- Progress bars -->
@@ -38,13 +38,30 @@
           <div class="col-sm-1 col-xs-2 p-l-0" id="v_u_percent">
           </div>
         </div>
-          <%= multipart_uploader_form( input_name: 'trailer_video_file',
-                                       uploader: 'MovieTrailerUploader',
-                                       button_class: 'movie-trailer-submit-btn btn btn-primary m-t-15',
-                                       button_text: t('label.upload_movie_trailer'),
-                                       types: ["video/*"],
-                                       html: %Q{} ) %>
-      </div>
-    </div>
+
+        <div class="dropbox-advanced-upload">
+          <div class="file-upload">
+            <%= multipart_uploader_form( 
+              input_name: 'trailer_video_file',
+              uploader: 'MovieTrailerUploader',
+              button_class: 'movie-trailer-submit-btn hidden',
+              button_text: t('label.upload_movie_trailer'),
+              types: ["video/*"],
+              html: %Q{} ) %>
+            <div class="dropbox-controls">Drag file here or <a onclick="$('#trailer_video_file').click();">browse</a></div>
+          </div>
+          <div class="file-info" style="display: none;">
+            <div class="file-read-progress pull-left">
+              <svg class="progress-ring" width="120" height="120">
+                <circle class="progress-ring-circle" stroke="gray" stroke-width="4" fill="transparent" r="52" cx="60" cy="60"/>
+              </svg>
+            </div>
+            <div class="about-file pl10 pull-left" ></div>
+            <div class="rm-file-control">x</div>
+          </div>
+        </div>
+
+
+
   </div>
 </div>

@@ -13,7 +13,11 @@
         <!-- User Account: style can be found in dropdown.less -->
         <li class="dropdown user user-menu" style="font-color: black;">
           <a href="#" class="dropdown-toggle " data-toggle="dropdown">
-            <%= image_tag(current_user&.profile_image_url, alt: "User Image", class: "user-image")  if current_user %>
+            <% if current_user&.profile_image_url %>
+              <%= image_tag(current_user&.profile_image_url, alt: "User Image", class: "js-avatar user-image") %>
+            <% else %>
+              <%= image_tag('admin/user2-160x160.jpg', alt: "User Image", class: "js-avatar user-image") %>
+            <% end %>
             <span class="hidden-xs"><%= current_user&.name %></span>
           </a>
           <ul class="dropdown-menu" style="width: 150px;">

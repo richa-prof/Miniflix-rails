@@ -8,7 +8,7 @@ $(document).on('ready turbolinks:load', function() {
     if (input.files && input.files[0]) {
       var reader = new FileReader();
       reader.onload = function (e) {
-        $('.user-image').attr('src', e.target.result);
+        $('.js-avatar').attr('src', e.target.result);
       }
       reader.readAsDataURL(input.files[0]);
     }

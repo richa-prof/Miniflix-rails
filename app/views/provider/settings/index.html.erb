@@ -20,10 +20,10 @@
   <div class="tab-pane active" id="profile_tab" role="tabpanel" aria-labelledby="profile-tab">
  
     <div class="tab-content-wrapper" style="width: 25%;">
-      <div class="avatar-wrapper" style="width: 120px">
-        <div><%= image_tag(current_user.profile_image_url, alt: "User Image", class: "user-image") %></div>
-        <div id="avatar_change_link"><a onclick="$('#avatar_field').click();">Change photo</a></div>
+      <div class="avatar-wrapper-2">
+        <div><%= image_tag(current_user.profile_image_url, alt: "User Image", class: "js-avatar user-image-2") %></div>
       </div>
+      <div id="avatar_change_link"><a onclick="$('#avatar_field').click();">Change photo</a></div>
 
       <%= form_with model: current_user, scope: 'provider', url: provider_settings_path + '/' + current_user.id.to_s, method: :put do |f| %>
         <%#= devise_error_messages! %>

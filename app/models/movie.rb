@@ -54,7 +54,8 @@ class Movie < ApplicationRecord
   has_one :rate, as: :entity
 
   accepts_nested_attributes_for :movie_thumbnail
-
+  accepts_nested_attributes_for :rate
+  
   # CALLBACKS
   before_save :create_bitly_url, if: -> { slug_changed? }
   after_create :write_file
