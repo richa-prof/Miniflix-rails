@@ -5,24 +5,46 @@
       return false;
     }
 
+    window.mfxObjects = window.mfxObjects || {};
+
     // class 
     function MiniflixFileSelect(selector) {
       var self = this;
+      self.bid = btoa(selector);
       self.uploadZone = $(selector);
-      if (window.MiniflixFileSelectInitPassed) {
-         console.log('skipping init of MiniflixFileSelect');
+      if (window.mfxObjects['MiniflixFileSelect_' + self.bid]) {
+         console.log('skipping init of MiniflixFileSelect for selector ' + selector);
          return false; // avoid init errors with Turbolinks
       }
       self.init();
+      console.log('--- MiniflixFileSelect init passed, with selector: ' + selector + ' ----');
     }
 
     MiniflixFileSelect.prototype.init = function() {
       var self = this;
       self.uploadZone.on('dragover', self.handleDragOver);
       self.uploadZone.on('drop', (ev) => self.handleFileDrop(ev));
-      self.uploadZone.find('input[type="file"]').on('change', (ev) => self.handleFileSelect(ev));
-      window.MiniflixFileSelectInitPassed = true;
-      console.log('--- MiniflixFileSelect init passed ----');
+      self.fileInputElement = self.uploadZone.find('input[type="file"]');
+      self.fileInputElement.on('change', (ev) => self.handleFileSelect(ev));
+      window.mfxObjects['MiniflixFileSelect_' + self.bid] = true;
+    }
+
+    MiniflixFileSelect.prototype.formatBytes = function(bytes) {
+      if(bytes < 1024) return bytes + " bytes";
+      else if(bytes < 1048576) return(bytes / 1024).toFixed(3) + " KB";
+      else if(bytes < 1073741824) return(bytes / 1048576).toFixed(3) + " MB";
+      else return(bytes / 1073741824).toFixed(3) + " GB";
+    };
+
+    MiniflixFileSelect.prototype.checkFileType = function(files) {
+      var self = this;
+      return self.files[0].type.indexOf('video/') > -1;
+    }
+
+    MiniflixFileSelect.prototype.setProgress = function(percent) {
+      var self = this;
+      self.loadBar = self.uploadZone.parent().find('.ldBar')[0].ldBar;
+      self.loadBar.set(percent); 
     }
 
     MiniflixFileSelect.prototype.handleFileSelect = function(evt) {
@@ -30,7 +52,8 @@
       var ev = evt || window.event;
       ev.stopPropagation();
       ev.preventDefault();
-      self.handleFiles(ev.target.files); // name size type
+      self.files = ev.target.files;
+      self.handleFiles(); // name size type
     }
 
     MiniflixFileSelect.prototype.handleFileDrop = function(evt) {
@@ -38,26 +61,31 @@
       var dataTransfer = evt.originalEvent.dataTransfer;
       evt.stopPropagation();
       evt.preventDefault();
-      self.handleFiles(dataTransfer.files);
+      self.files = dataTransfer.files;
+      self.handleFiles();
       return false;
     }
 
-    MiniflixFileSelect.prototype.setProgress = function(percent) {
+    MiniflixFileSelect.prototype.handleFiles = function() {
       var self = this;
-      var bar = self.uploadZone.parent().find('.ldBar')[0].ldBar;
-      bar.set(percent);      
-    }
-
-    MiniflixFileSelect.prototype.handleFiles = function(files) {
-      var self = this;
+      console.log('files:', self.files);
+      console.log('bid:', self.bid);
+      if (!self.checkFileType()) {
+        alert('Wrong file type! Please select video!');
+        return false;
+      }
+      // if (!self.fileInputElement[0].files.length) {
+      //   console.log('trying to attach file to form');
+      //   self.fileInputElement[0].append('file',files[0]);
+      // }
       var out = [];
-      for (var i = 0, f; f = files[i]; i++) {
-        out.push('<p><strong>', escape(f.name), '</strong></p>','<p>' + f.size + ' bytes</p');
+      for (var i = 0, f; f = self.files[i]; i++) {
+        out.push('<p><strong>', escape(f.name), '</strong></p>','<p>' + self.formatBytes(f.size) + '</p');
       }
       self.uploadZone.parent().find('.about-file').html(out.join(''));
       self.uploadZone.parent().find('.file-info').show();
       self.uploadZone.hide();
-      self.setProgress(95);
+      self.setProgress(100);
       return false;
 
     }
@@ -68,50 +96,57 @@
     evt.originalEvent.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
   }
 
-   new MiniflixFileSelect('#trailed_upload_wrapper .dropbox-advanced-upload');
-  //new MiniflixFileSelect('#film_upload_wrapper .dropbox-advanced-upload');
+  var mfxTrailerSelector = new MiniflixFileSelect('#trailer_upload_wrapper .dropbox-advanced-upload');
+  var mfxMovieSelector = new MiniflixFileSelect('#video_upload_wrapper .dropbox-advanced-upload');
 
 
+  $('#upload_videos').on('click', function() {
+
+  })
 
 
   // class for handling video upload to AWS S3
-  function MiniflixVideoUploader() {
+  function MiniflixVideoUploader(selector, files) {
     var self = this;
-    if (window.MiniflixVideoUploaderInitPassed) {
+    self.files = files;
+    self.wrapper = $(selector);
+    self.bid = btoa(selector);
+    if (window.mfxObjects['MiniflixVideoUploader_' + self.bid]) {
       console.log('skipping init of MiniflixVideoUploader');
       return false; 
     }
     self.init();
-    window.MiniflixVideoUploaderInitPassed = true;
+    window.mfxObjects['MiniflixVideoUploader_' + self.bid]= true;
   }
 
 
   MiniflixVideoUploader.prototype.videoSubmitButton = function() {
-    return $('.video-submit-button');
+    return self.wrapper.find('.video-submit-button');
   };
 
   MiniflixVideoUploader.prototype.movieTrailerSubmitButton = function() {
-    return $('.movie-trailer-submit-btn');
+    return self.wrapper.find('.movie-trailer-submit-btn');
   };
 
   MiniflixVideoUploader.prototype.s3InputBucketName = function() {
-    console.log('>>>>> s3InputBucketName() called >>>>>');
-    return $('#s3-input-bucket-name-container').data('s3-input-bucket');
+    // console.log('>>>>> s3InputBucketName() called >>>>>');
+    return self.wrapper.find('#s3-input-bucket-name-container').data('s3-input-bucket');
   };
 
   MiniflixVideoUploader.prototype.bindOnMovieSubmit = function() {
     var self = this;
     console.log('>>>>> invoked bindOnMovieSubmit >>>>>');
-    var ajaxTargetUrl = $('.js-movie-paths').data('video-upload-success-path');
+    var ajaxTargetUrl = self.wrapper.find('.js-movie-paths').data('video-upload-success-path');
     console.log('ajaxTargetUrl:', ajaxTargetUrl);
 
-    self.videoSubmitButton().off('click').on('click', function() { // The button class passed into multipart_uploader_form (see "Getting Started")
+    self.videoSubmitButton().off('click').on('click', (ev) => function(ev) { // The button class passed into multipart_uploader_form (see "Getting Started")
+      var self = this;
       console.log('>>>>> Fired click event on `video-submit-button` >>>>>');
 
       new window.S3MP({
         bucket: self.s3InputBucketName(),
         fileInputElement: "#video_file",
-        fileList: $("#video_file").get(0).files, // An array of files to be uploaded (see "Getting Started")
+        fileList: self.files, // An array of files to be uploaded (see "Getting Started")
 
         onStart: function(upload) {
           console.log("File %d has started uploading", upload.key)
@@ -121,10 +156,10 @@
           var up_file = JSON.stringify(upload);
           console.log("video upload --> " + up_file);
           console.log("Video file %d successfully uploaded", upload.key);
-          $("#error_msg").hide();
-          $("#success_msg").show();
-          $("#success_msg").empty().append("video uploaded successfully.");
-          var kind = $('#s3-input-bucket-name-container').data('kind'); // movie or episode
+          self.wrapper.find("#error_msg").hide();
+          self.wrapper.find("#success_msg").show();
+          self.wrapper.find("#success_msg").empty().append("video uploaded successfully.");
+          var kind = self.wrapper.find('#s3-input-bucket-name-container').data('kind'); // movie or episode
           var urlPrefix = ajaxTargetUrl || "/admin/" + kind + "s/upload_movie_trailer/";
           //window.location.href =
           Turbolinks.visit(urlPrefix + upload.id + '?kind=' + kind);
@@ -142,20 +177,20 @@
           console.log("<<<<<< onError callback invoked :: error --> ", err);
           var er = JSON.stringify(err);
           console.log("There was an error" + er);
-          $("#success_msg").hide();
-          $("#progress-bar").hide();
-          $("#error_msg").show();
-          $("#error_msg").empty().append('Error : '+err.message);
+          self.wrapper.find("#success_msg").hide();
+          self.wrapper.find("#progress-bar").hide();
+          self.wrapper.find("#error_msg").show();
+          self.wrapper.find("#error_msg").empty().append('Error : '+err.message);
         },
 
         onProgress: function(num, size, done, percent, speed) {
           var v_percent = parseFloat(percent).toFixed(2);
-          $("#error_msg").hide();
-          $("#success_msg").hide();
-          $("#progress-bar").show();
-          $("#v_u_progress_bar").css({'width': v_percent+'%'});
-          $("#v_u_percent").empty().append(v_percent+'%');
-          $("#on_progress").empty().append("File is "+v_percent+" percent and  done--> "+done);
+          self.wrapper.find("#error_msg").hide();
+          self.wrapper.find("#success_msg").hide();
+          // $("#progress-bar").show();
+          // $("#v_u_progress_bar").css({'width': v_percent+'%'});
+          // $("#v_u_percent").empty().append(v_percent+'%');
+          // $("#on_progress").empty().append("File is "+v_percent+" percent and  done--> "+done);
           console.log("File %d is %f percent done (%f of %f total) and uploading at %s", num, v_percent, done, size, speed);
         }
       });
@@ -250,8 +285,8 @@
   MiniflixVideoUploader.prototype.init = function() {
     var self = this;
     console.log('>>>>> MiniflixVideoUploader -> init !!!  >>>>>');
-    $("#video_file").addClass('form-control');
-    $("#trailer_video_file").addClass('form-control');
+    self.wrapper.find("#video_file").addClass('form-control');
+    self.wrapper.find("#trailer_video_file").addClass('form-control');
     if (self.videoSubmitButton().length) {
       self.bindOnMovieSubmit();
     }
@@ -260,7 +295,7 @@
     }
   };
 
-  new MiniflixVideoUploader();
+  //new MiniflixVideoUploader(files);
 
 });
 

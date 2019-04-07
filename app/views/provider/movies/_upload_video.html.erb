@@ -1,21 +1,57 @@
-        <div class="form-group">
-          <label>Movie</label>
-        </div>
+<% is_edit_mode = local_assigns.has_key?(:is_edit_mode) ? is_edit_mode : false %>
 
-        <div class="row" style="display: none;" id="progress-bar">
-          <div class="col-sm-11 col-xs-10">
-            <!-- Progress bars -->
-            <div class="progress">
-              <div class="progress-bar progress-bar-green" id="v_u_progress_bar"></div>
+<div id="s3-input-bucket-name-container" style="display: none;" data-s3-input-bucket="<%= ENV['S3_INPUT_BUCKET'] %>"></div>
+
+<div id="movie-id-container"
+     class="js-movie-paths"
+     style="display: none;" 
+     data-movie-id="<%= movie.id %>"
+     data-trailer-upload-success-path="<%= save_uploaded_movie_trailer_admin_movies_path %>"
+     data-is-edit-mode="<%= is_edit_mode %>">
+</div>
+
+<div id="video_upload_wrapper" class="row">
+  <div class="col-md-12">
+
+        <div class="row mt20">
+          <div class="col-md-12">
+            <div class="alert alert-danger" id="error_msg" style="display: none;">
+            </div>
+            <div class="alert alert-success" id="success_msg" style="display: none;">
             </div>
           </div>
-          <div class="col-sm-1 col-xs-2 p-l-0" id="v_u_percent">
+        </div>
+
+        <div class="">
+          <label>
+            <%= t('label.movie') %>
+          </label>
+        </div>
+
+        <div style="margin: 20px 0">
+          <div class="dropbox-advanced-upload">
+            <div class="file-upload">
+
+            <%= multipart_uploader_form(
+                 input_name: 'video_file',
+                 uploader: 'MoviesUploader',
+                 button_class: 'video-submit-button m-t-15 hidden',
+                 button_text: 'Upload Movie',
+                 types: ["video/*"],
+                 html: %Q{} ) 
+            %>
+            <div class="dropbox-controls">Drag file here or <a onclick="$('#video_file').click();">browse</a></div>
+            </div>
+          </div>
+          <div class="file-info" style="padding: 5px; display: none;">
+              <div class="file-read-progress pull-left">
+                <%= render partial: 'progress_bar_ring' %>
+              </div>
+              <div class="about-file pl20 pull-left" ></div>
+              <div class="rm-file-control pull-right"><a title="Remove file"><i class="fa fa-close"></i></a></div>
+            </div>
           </div>
         </div>
 
-          <%= multipart_uploader_form( input_name: 'video_file',
-                                       uploader: 'MoviesUploader',
-                                       button_class: 'video-submit-button btn btn-primary m-t-15 hidden',
-                                       button_text: 'Upload Movie',
-                                       types: ["video/*"],
-                                       html: %Q{} ) %>
+  </div>
+</div>

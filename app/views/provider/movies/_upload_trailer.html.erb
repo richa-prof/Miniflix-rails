@@ -10,7 +10,7 @@
      data-is-edit-mode="<%= is_edit_mode %>">
 </div>
 
-<div id="trailed_upload_wrapper" class="row">
+<div id="trailer_upload_wrapper" class="row">
   <div class="col-md-12">
 
         <div class="row mt20">
@@ -28,17 +28,6 @@
           </label>
         </div>
 
-        <div class="row" style="display: none;" id="progress-bar">
-          <div class="col-sm-11 col-xs-10">
-            <!-- Progress bars -->
-            <div class="progress">
-              <div class="progress-bar progress-bar-green" id="v_u_progress_bar"></div>
-            </div>
-          </div>
-          <div class="col-sm-1 col-xs-2 p-l-0" id="v_u_percent">
-          </div>
-        </div>
-
         <div style="margin: 20px 0">
           <div class="dropbox-advanced-upload">
             <div class="file-upload">
@@ -54,16 +43,10 @@
           </div>
           <div class="file-info" style="padding: 5px; display: none;">
               <div class="file-read-progress pull-left">
-                <div class="ldBar label-center ml10" style="width: 50px; height: 50px;" 
-                     data-stroke="black" 
-                     data-pattern-size="50"
-                     data-stroke-width="3"
-                     data-value="5%"
-                     data-preset="circle">
-                </div>
+                <%= render partial: 'progress_bar_ring' %>
               </div>
               <div class="about-file pl20 pull-left" ></div>
-              <div class="rm-file-control pull-right"><a title="Remove file"><h4>x</h4></a></div>
+              <div class="rm-file-control pull-right"><a title="Remove file"><i class="fa fa-close"></i></a></div>
             </div>
           </div>
         </div>
