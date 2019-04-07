@@ -1,0 +1,87 @@
+.dropbox-advanced-upload {
+  background-color: white;
+  outline: 1px dashed lightgray;
+  height: 100px;
+  position: relative;
+
+  .dropbox-dragndrop {
+    display: inline;
+  }
+
+  input[type="file"] {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    z-index: -1;
+  }
+
+  .dropbox-controls {
+    padding-top: 40 px;
+    margin: 20px auto;
+    width: 40%;
+
+    a {
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
+  .file-info {
+    height: 100%;
+    width: 100%;
+  }
+
+  /* upload progress ring */
+
+  .progress-ring {
+    
+  }
+
+  .progress-ring-circle {
+    transition: 0.35s stroke-dashoffset;
+    // axis compensation
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+  }
+}
+
+.file-info {
+  
+  height: 100px;
+
+  .about-file {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 67%;
+  }
+
+  .ldBar-label:after {
+    content: "%";
+    left: 5px;
+    margin-left: 3px;
+    font-weight: 700;
+    font-size: 90%;
+  }
+
+  .ldBar-label {
+    font-size: 90%;
+    font-weight: 700;
+  }
+
+  .ldBar {
+    width: 30%;
+    height: 30%;
+    margin: auto;
+  }
+
+  .rm-file-control {
+     a {
+       cursor: pointer;
+       text-decoration: none;
+       font-family: 'courier new';
+       font-weight: 900;
+     }
+  }
+
+}

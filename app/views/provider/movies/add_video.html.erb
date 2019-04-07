@@ -1,0 +1,65 @@
+<% movie = @provider_movie %>
+
+<div class="row">
+<div class="col-lg-4 col-xs-12"></div>
+<div class="col-lg-4 col-xs-12 p20">
+
+<div id="movie-id-container"
+     class="js-movie-paths"
+     style="display: none;" 
+     data-stage="add_movie"
+     data-movie-id="<%= movie.id %>" 
+     data-video-upload-success-path="<%= wizard_path(:preview_video, slug: @provider_movie.slug) %>"    
+     data-is-edit-mode="true"
+     data-redirect-path="<%= next_wizard_path %>">
+</div>
+
+<div class="js-movie-paths-for-trailer"
+     style="display: none;" 
+     data-trailer-upload-success-path="<%= save_uploaded_movie_trailer_admin_movies_path %>" > <!--- FIXME -->
+</div>
+
+<div id="s3-input-bucket-name-container" style="display: none;" 
+     data-s3-input-bucket="<%= ENV['S3_INPUT_BUCKET'] %>"
+     data-kind="movie">      
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="alert alert-danger" id="error_msg" style="display: none;">
+            </div>
+            <div class="alert alert-success" id="success_msg" style="display: none;">
+            </div>
+          </div>
+        </div>
+
+        <h2 class="provider-title"><strong><--- Add Movie</strong></h2>
+
+        <div class="pt20">
+          <div class="pull-left"><strong>Upload</strong></div><div class="pull-right">2/2 steps</div>
+        </div>
+
+        <div class="provider-video-upload-wrapper">
+
+          <%= form_with model: movie, scope: 'movie', url: provider_movies_path, method: :post, class: 'pt40', local: true, multipart: true do |f| %>
+
+            <%= render( partial: 'upload_trailer', locals: { movie: movie } ) %>
+            <%= render( partial: 'upload_video', locals: { movie: movie } ) %>
+          
+          <% end %>
+        </div>
+
+
+  </div>
+</div>
+
+</div>
+<div class="col-lg-4 col-xs-12"></div>
+</div>
+
+
+
+
