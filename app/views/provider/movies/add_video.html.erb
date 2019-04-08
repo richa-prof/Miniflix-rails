@@ -1,8 +1,10 @@
 <% movie = @provider_movie %>
 
-<div class="row">
+<div class="row js-provider-video-upload-wrapper">
 <div class="col-lg-4 col-xs-12"></div>
 <div class="col-lg-4 col-xs-12 p20">
+
+<div id="s3-input-bucket-name-container" style="display: none;" data-s3-input-bucket="<%= ENV['S3_INPUT_BUCKET'] %>"></div>
 
 <div id="movie-id-container"
      class="js-movie-paths"
@@ -42,7 +44,7 @@
           <div class="pull-left"><strong>Upload</strong></div><div class="pull-right">2/2 steps</div>
         </div>
 
-        <div class="provider-video-upload-wrapper">
+        <div>
 
           <%= form_with model: movie, scope: 'movie', url: provider_movies_path, method: :post, class: 'pt40', local: true, multipart: true do |f| %>
             <%= render( partial: 'upload_trailer', locals: { movie: movie } ) %>

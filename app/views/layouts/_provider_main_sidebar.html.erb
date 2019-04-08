@@ -1,28 +1,28 @@
 <div class="main-sidebar provider-sidebar pl20" style="padding-top: 0; height: 100%;">
-  <div class="mt20 ml10"><%= image_tag('logo.png') %></div>
+  <div class="mt20 ml10"><%= image_tag('provider/logo_sidebar.svg', alt: 'Miniflix sidebar logo icon')  %></div>
   <section class="sidebar" style="margin-top: 80px;" >
     <ul class="sidebar-menu mt20">
       <li class="<%= 'active' if params[:controller] == 'provider/dashboard' %>">
         <%= link_to provider_dashboard_path, method: "GET" do %>
-          <i class="fa fa-dashboard"></i> &nbsp;&nbsp;<span>Dashboard</span>
+          <%= image_tag('provider/dashboard.svg', alt: 'dashboard icon', class: "icon")  %> &nbsp;&nbsp;<span>Dashboard</span>
         <% end %>
       </li>
 
       <li class="<%= 'active' if controller_path == 'provider/movies' %>">
         <%= link_to provider_movies_path, method: :get do %>
-          <i class="fa fa-fw fa-film"></i>  &nbsp;&nbsp;<span><%= t('heading.movies') %></span>
+          <%= image_tag('provider/movie.svg', alt: 'movie icon', class: "icon")  %>&nbsp;&nbsp;<span><%= t('heading.movies') %></span>
         <% end %>
       </li>
 
       <li class="<%= 'active' if controller_path == 'provider/series' %>">
         <%= link_to provider_serials_path, method: :get do %>
-          <i class="fa fa-file-video-o"></i> &nbsp;&nbsp;<span>Series</span>
+          <%= image_tag('provider/serials.svg', alt: 'series icon', class: "icon")  %>&nbsp;&nbsp;<span>Series</span>
         <% end %>
       </li>
 
       <li class="<%= 'active' if controller_path == 'provider/analytics' %>">
         <%= link_to provider_analytics_path, method: :get do %>
-          <i class="fa fa-fw fa-line-chart"></i> &nbsp;&nbsp;<span>Analytics</span>
+          <%= image_tag('provider/analytics.svg', alt: 'analytics icon', class: "icon")  %> &nbsp;&nbsp;<span>Analytics</span>
         <% end %>
       </li>
     </ul>

@@ -1,15 +1,5 @@
 <% is_edit_mode = local_assigns.has_key?(:is_edit_mode) ? is_edit_mode : false %>
 
-<div id="s3-input-bucket-name-container" style="display: none;" data-s3-input-bucket="<%= ENV['S3_INPUT_BUCKET'] %>"></div>
-
-<div id="movie-id-container"
-     class="js-movie-paths"
-     style="display: none;" 
-     data-movie-id="<%= movie.id %>"
-     data-trailer-upload-success-path="<%= save_uploaded_movie_trailer_admin_movies_path %>"
-     data-is-edit-mode="<%= is_edit_mode %>">
-</div>
-
 <div id="trailer_upload_wrapper" class="row">
   <div class="col-md-12">
 
@@ -42,11 +32,14 @@
             </div>
           </div>
           <div class="file-info" style="padding: 5px; display: none;">
-              <div class="file-read-progress pull-left">
+              <div class="file-read-progress pull-left hidden">
                 <%= render partial: 'progress_bar_ring' %>
               </div>
+              <div class="video-icon pull-left" style="width: 25px">
+                <%= image_tag('provider/videofile.svg', alt: 'videofile icon', class: "icon")  %>
+              </div>
               <div class="about-file pl20 pull-left" ></div>
-              <div class="rm-file-control pull-right"><a title="Remove file"><i class="fa fa-close"></i></a></div>
+              <div class="rm-file-control pull-right"><a title="Remove file"><%= image_tag('provider/delete.svg', alt: 'delete icon', class: "icon")  %></a></div>
             </div>
           </div>
         </div>

@@ -90,13 +90,16 @@
                                 <a class="btn btn-secondary dropdown-toggle" 
                                    href="#" role="button" id="dropdownMenuLink"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                      <i class="fa fa-ellipsis-v"></i>
+                                      <%= image_tag('provider/menu.svg', alt: 'popup menu icon', class: "icon")  %>
                                 </a>
 
                                 <div class="dropdown-menu movie-actions" 
                                      style="overflow: show; min-height: 100px; padding: 10px; left: -50px; min-width: 120px;" aria-labelledby="dropdownMenuLink">
                                   <%= link_to provider_movie_path(movie.id, kind: 'movie') do %>
                                     View on Miniflix
+                                  <% end %><br/>
+                                  <%= link_to provider_movie_path(movie.id, kind: 'movie') do %>
+                                     View
                                   <% end %><br/>
                                   <%= link_to edit_provider_movie_path(movie.id), data: { turbolinks: false } do %>
                                      Edit
