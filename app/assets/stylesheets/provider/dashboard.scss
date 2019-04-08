@@ -41,6 +41,12 @@
         font-weight: 400;
       }
     }
+    .icon {
+      width: 25px;
+    }
+    span {
+      padding-left: 15px;
+    }
     a:hover { color: #444444;}
     a.active { font-color: #444444; }
   }
