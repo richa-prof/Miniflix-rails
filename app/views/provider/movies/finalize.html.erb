@@ -1,0 +1,18 @@
+<section class="content-for-provider p20">
+
+  <div class="row mt10 p20">
+    <div class="col-lg-4 col-xs-12"></div>
+
+    <div class="col-lg-4 col-xs-12">
+   
+      <div class="p20 mt10">
+         <%= render partial: 'title_and_prev_link' %>
+        
+        <div class="pt20">
+          <div class="pull-left"><strong>Preview</strong></div><div class="pull-right">5/5 steps</div>
+            <%= render( partial: 'movie_and_trailer_players', locals: {movie: @provider_movie } ) %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

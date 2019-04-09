@@ -1,5 +1,7 @@
 // Reference: http://developmentmode.wordpress.com/2011/05/09/defining-custom-functions-on-jquery/
-(function($) {
+
+var initValidators = function() {
+
   fileFields = function() {
     return $(".uploadfile-field .form-control");
   };
@@ -16,12 +18,24 @@
     });
   };
 
+  window.previewImageForInput = function(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        var wrapper = $(input).parent().find('img');
+        wrapper.attr('src', ev.target.result);
+      }
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
   bindChangeEventOnMovieThumbnailFileFields = function() {
     $(".movie-thumbnail-file-field")
       .off("change")
       .on("change", function(event) {
         var fileFieldId = $(this).attr("id");
         validFile(fileFieldId);
+        previewImageForInput(this);
       });
   };
 
@@ -295,11 +309,7 @@
       return true;
     });
   };
-})(jQuery);
 
-var ready;
-
-ready = function() {
   enableDatePicker();
   enableICheckToCheckboxes();
   enableMaskToVideoDurationField();
@@ -334,7 +344,9 @@ ready = function() {
   if (adminMovieEditForm().length) {
     applyValidationToAdminMovieEditForm();
   }
+
 };
 
-$(document).ready(ready);
-$(document).on("turbolinks:load", ready);
+
+// $(document).ready(ready);
+$(document).on("ready turbolinks:load", initValidators);

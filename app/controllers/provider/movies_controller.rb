@@ -43,7 +43,7 @@ class Provider::MoviesController < ApplicationController
 
   # GET /provider/movies/1
   def show
-    p @provider_movie.inspect
+    # p @provider_movie.inspect
     
     case step
     when :add_details
@@ -91,18 +91,28 @@ class Provider::MoviesController < ApplicationController
 
   # PATCH/PUT /provider/movies/1
   def update
-    if movie_params[:is_featured_film]
-      previous_featured_film = Movie.find_by_is_featured_film(true)
-    end
-
+    previous_featured_film = Movie.find_by_is_featured_film(true) if movie_params[:is_featured_film]
     if @provider_movie.update(movie_params)
       previous_featured_film.try(:set_is_featured_film_false)
-      save_movie_thumbnails(@provider_movie)
-
-      redirect_to provider_movie_path(@provider_movie), notice: I18n.t('flash.movie.successfully_updated')
+      #redirect_to provider_movie_path(@provider_movie), notice: I18n.t('flash.movie.successfully_updated')
+      flash[:success] = I18n.t('flash.movie.successfully_updated')
+      #redirect_to next_wizard_path(slug: @provider_movie.slug), notice: I18n.t('flash.movie.successfully_updated')
     else
-      render :edit
+      Rails.logger.error @provider_movie.errors.full_messages
+      redirect_to :back
     end
+    case step
+    when :add_screenshots 
+      begin
+        save_movie_thumbnails(@provider_movie)
+      end
+    when :add_thumbnails then save_movie_thumbnails(@provider_movie)
+    when :finalize
+    else
+      Rails.logger.error "--- Uknown step: #{step} ----"
+    end
+    #jump_to(next_step.to_sym, slug: @provider_movie.slug)
+    redirect_to wizard_path(next_step, slug: @provider_movie.slug)
   end
 
   # DELETE /provider/movies/1
