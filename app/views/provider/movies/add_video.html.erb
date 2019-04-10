@@ -32,10 +32,10 @@
         <%= render partial: 'title_and_prev_link' %>
 
         <div class="pt20">
-          <div class="pull-left"><strong>Upload</strong></div><div class="pull-right">2/5 steps</div>
+          <div class="pull-left"><h4>Upload</h4></div><div class="pull-right">2/5 steps</div>
         </div>
 
-        <div>
+        <div class="mt40">
           <%= form_with model: movie, scope: 'movie', url: provider_movies_path, method: :post, class: 'pt40', local: true, multipart: true do |f| %>
             <%= render( partial: 'upload_trailer', locals: { movie: movie } ) %>
             <%= render( partial: 'upload_video',   locals: { movie: movie } ) %>

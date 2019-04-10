@@ -82,7 +82,10 @@
   padding-top: 20px;
 }
 .pl40 {
-  padding: 40px;
+  padding-left: 40px;
+}
+.pl100 {
+  padding-left: 100px;
 }
 .m10 {
   margin: 10px;
@@ -101,6 +104,9 @@
 }
 .mt20 {
   margin-top: 20px;
+}
+.mt40 {
+  margin-top: 40px;
 }
 .mr20 {
   margin-right: 20px;
@@ -123,4 +129,12 @@
 
 a.previous-stage, a.previous-stage:hover {
   text-decoration: none;
+}
+
+.form-group {
+  color: gray;
+  label {
+    font-size: 90%;
+    color: black;
+  }
 }

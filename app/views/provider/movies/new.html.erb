@@ -6,17 +6,21 @@
     <div class="col-lg-4 col-xs-12">
    
       <div class="p20 mt10">
-        <h2 class="provider-title"><strong> Add Movie</strong></h2>
-        <div class="pt20">
-          <div class="pull-left"><strong>Details</strong></div><div class="pull-right">1/5 steps</div>
+        <h3 class="provider-title" style="width: 150px; margin: 0 auto;">
+          <strong><%= action_name == 'new' ? 'Add' : 'Edit' %> Movie</strong>
+        </h3>
+        <div class="mt20" style="height: 20px;">
+          <div class="pull-left"><h4>Details</h4></div><div class="pull-right">1/5 steps</div>
         </div>
 
-      <%= form_with model: @movie, scope: 'movie', url: provider_movies_path, method: :post, class: 'pt20', local: true, multipart: true do |f| %>
+      <% f_method, url = action_name == 'new' ? [:post, provider_movies_path] : [:put, provider_movies_path + "/add_details?slug=#{@provider_movie.slug}"] %>
 
-        <% if @movie.errors.any? %>
+      <%= form_with model: @provider_movie, scope: 'movie', url: url, method: f_method, class: 'mt40', local: true, multipart: true do |f| %>
+
+        <% if @provider_movie.errors.any? %>
           <div class="row">
             <div class="col-md-12">
-              <% @movie.errors.full_messages.each do |message| %>
+              <% @provider_movie.errors.full_messages.each do |message| %>
                 <div class="callout callout-success">
                   <p><%= message %></p>
                 </div>

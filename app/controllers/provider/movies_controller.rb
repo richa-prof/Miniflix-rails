@@ -7,7 +7,8 @@ class Provider::MoviesController < ApplicationController
   #before_action :authenticate_provider_user!
   before_action :set_provider_movie, only: [:show, :edit, :update, :destroy]
 
-  steps :add_details, :add_video, :add_screenshots, :add_thumbnails, :finalize
+  skip_before_action :setup_wizard, only: [:edit, :destroy]
+  steps :add_details, :add_video, :add_screenshots, :add_thumbnails, :finalize #, only: [:show, :update]
 
   layout 'provider'
 
@@ -44,7 +45,7 @@ class Provider::MoviesController < ApplicationController
   # GET /provider/movies/1
   def show
     # p @provider_movie.inspect
-    
+    @s3_multipart = S3Multipart::Upload.find(@provider_movie.s3_multipart_upload_id) if @provider_movie&.s3_multipart_upload_id 
     case step
     when :add_details
     when :add_video
@@ -66,9 +67,9 @@ class Provider::MoviesController < ApplicationController
       @serial = params[:serial]
     end
     session[:movie_kind] = 'movie'
-    @movie = Movie.new
-    @movie.build_movie_thumbnail
-    @rate = @movie.build_rate
+    @provider_movie = Movie.new
+    @provider_movie.build_movie_thumbnail
+    @rate = @provider_movie.build_rate
     #render wizard_path(:add_details)
   end
 
@@ -79,14 +80,15 @@ class Provider::MoviesController < ApplicationController
     redirect_to wizard_path(:add_video, slug: @provider_movie.slug), notice: I18n.t('flash.movie.successfully_created')
   end
 
-  def after_create
-  
-  end
-
   # GET /provider/movies/1/edit
   def edit
-    @s3_multipart = S3Multipart::Upload.find(@provider_movie.s3_multipart_upload_id) if @provider_movie&.s3_multipart_upload_id  # FIXME!
-    @movie_thumbnail = @provider_movie.movie_thumbnail || @provider_movie.build_movie_thumbnail
+    # case step
+    # when :finalize
+    # else
+      @s3_multipart = S3Multipart::Upload.find(@provider_movie.s3_multipart_upload_id) if @provider_movie&.s3_multipart_upload_id  # FIXME!
+      @movie_thumbnail = @provider_movie.movie_thumbnail || @provider_movie.build_movie_thumbnail
+   #end
+   render :new
   end
 
   # PATCH/PUT /provider/movies/1
@@ -94,7 +96,6 @@ class Provider::MoviesController < ApplicationController
     previous_featured_film = Movie.find_by_is_featured_film(true) if movie_params[:is_featured_film]
     if @provider_movie.update(movie_params)
       previous_featured_film.try(:set_is_featured_film_false)
-      #redirect_to provider_movie_path(@provider_movie), notice: I18n.t('flash.movie.successfully_updated')
       flash[:success] = I18n.t('flash.movie.successfully_updated')
       #redirect_to next_wizard_path(slug: @provider_movie.slug), notice: I18n.t('flash.movie.successfully_updated')
     else
