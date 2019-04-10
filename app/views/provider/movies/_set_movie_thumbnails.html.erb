@@ -1,10 +1,11 @@
-<label>
-  <%= t('label.movie.add_movie_thumbnails') %>
-</label>
+<div class="pt20">
+  <div class="pull-left"><h4><%= t('label.movie.add_movie_thumbnails') %></h4></div>
+  <div class="pull-right" style="padding-top: 10px;">4/5 steps</div>
+</div>
 
-<div class="row">
+<div class="row mt40">
   <% [:thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot].each do |thumb| %>
-    <div class="mt20">
+    <div class="mt10">
       <div class="fileupload fileupload-new" data-provides="fileupload" style="width: 200px; margin: 0 auto;">
 
         <%= link_to("javascript:void(0);", class: 'movie-thumbnail-file-field-wrapper') do %>

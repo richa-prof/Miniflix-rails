@@ -33,8 +33,8 @@
           </div>
         </div>
 
-        <div class="file-info" style="padding: 5px; display: none;">
-          <%= render partial: 'file_info' %>
+        <div class="file-info" style="padding: 5px; <% unless movie&.movie_trailer %> display: none; <% else %> margin-top: 10px; <% end %>">
+          <%= render partial: 'file_info', locals: {movie: movie, category: 'trailer'} %>
         </div>
 
       </div>

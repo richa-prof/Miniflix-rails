@@ -7,9 +7,13 @@
    
       <div class="p20 mt10">
          <%= render partial: 'title_and_prev_link' %>
+
         
-        <div class="pt20">
-          <div class="pull-left"><strong>Preview</strong></div><div class="pull-right">5/5 steps</div>
+        <div class="mt20" style="height: 20px">
+          <div class="pull-left"><strong>Preview</strong></div>
+          <div class="pull-right">5/5 steps</div>
+        </div>
+        <div class="mt40">
             <%= render( partial: 'movie_and_trailer_players', locals: {movie: @provider_movie } ) %>
         </div>
       </div>

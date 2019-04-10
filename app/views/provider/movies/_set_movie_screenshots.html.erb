@@ -1,12 +1,9 @@
-<div class="row">
-  <div style="width: 150px; margin: 0 auto;">
-    <label for="admin_movie_thumbnails" >
-      <%= t('label.movie.add_screenshots') %>
-    </label>
-  </div>
+<div class="pt20">
+  <div class="pull-left"><h4><%= t('label.movie.add_movie_screenshots') %></h4></div>
+  <div class="pull-right" style="padding-top: 10px;">3/5 steps</div>
 </div>
 
-<div class="row mt20">
+<div class="row mt40">
 
   <% 3.times do |n| %>
     <% ms = "movie_screenshot_#{n+1}".to_sym %>

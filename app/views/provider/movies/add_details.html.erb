@@ -8,7 +8,8 @@
       <div class="p20 mt10">
         <h2 class="provider-title"><strong><--- Add Movie</strong></h2>
         <div class="pt20">
-          <div class="pull-left"><strong>Details</strong></div><div class="pull-right">1/2 steps</div>
+          <div class="pull-left"><strong>Details</strong></div>
+          <div class="pull-right" style="padding-top: 10px;">1/2 steps</div>
         </div>
 
       <%= form_with model: @movie, scope: 'movie', url: provider_movies_path, method: :post, class: 'pt40', local: true, multipart: true do |f| %>

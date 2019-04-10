@@ -3,16 +3,9 @@
  <div id="err-player"></div>
 
 <section class="content-header">
-  <h1>
+  <h3>
     <%= t('Movie') %>
-  </h1>
-  <ol class="breadcrumb">
-    <%= link_to provider_movies_path, method: :get do %>
-      <i class="fa fa-fw fa-file-movie-o"></i> <span><%= t('heading.movies') %></span>
-    <% end %>
-    <li>  </li>
-    <li class="active"><%= t('heading.show') %></li>
-  </ol>
+  </h3>
 </section>
 
 <% movie_thumbnail = @provider_movie.movie_thumbnail %>

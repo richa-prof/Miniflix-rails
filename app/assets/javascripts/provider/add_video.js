@@ -87,7 +87,7 @@ $(document).on('ready turbolinks:load', function() {
     }
     var out = [];
     for (var i = 0, f; f = self.files[i]; i++) {
-      out.push('<div><strong>', escape(f.name), '</strong></div>','<div>' + self.formatBytes(f.size) + '</div');
+      out.push('<div><strong>', escape(f.name), '</strong></div>','<div>' + self.formatBytes(f.size) + '</div>');
       window.files.push(f)      
     }
     self.uploadZone.parent().find('.about-file').html(out.join(''));

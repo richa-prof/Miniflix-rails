@@ -4,17 +4,19 @@ class Provider::MoviesController < ApplicationController
   include Admin::MovieHandlers
   include Wicked::Wizard
 
+  PER_PAGE = 15
+
   #before_action :authenticate_provider_user!
   before_action :set_provider_movie, only: [:show, :edit, :update, :destroy]
 
   skip_before_action :setup_wizard, only: [:edit, :destroy]
-  steps :add_details, :add_video, :add_screenshots, :add_thumbnails, :finalize #, only: [:show, :update]
+  steps :add_details, :add_video, :add_screenshots, :add_thumbnails, :finalize, :preview #, only: [:show, :update]
 
   layout 'provider'
 
   # GET /provider/movies
   def index
-    # direction switching happens in BE
+    # direction switching happens in FE
     direction = params[:order] || 'desc'
     @dir = {
       year: 'desc',
@@ -22,7 +24,6 @@ class Provider::MoviesController < ApplicationController
       rate_price: 'desc'
     }
     @dir[params[:sort_by].to_sym] = direction if params[:sort_by]
-    Rails.logger.debug @dir
     sort_col =
       case params[:sort_by]
       when 'year' then 'admin_movies.released_date'
@@ -36,16 +37,18 @@ class Provider::MoviesController < ApplicationController
       if params[:search]
         Movie.where("admin_movies.name like :search", search: "%#{params[:search]}%").joins(:genre).order(sort_order)
       else
-        Movie.joins(:genre).order(sort_order).limit(15)  #current_user.my_list_movies
+        Movie.joins(:genre).order(sort_order)  #current_user.my_list_movies
       end
-      flash[:success] = "Found #{@provider_movies.count} movies"
-    #redirect_to action: :new
+    count = @provider_movies.count
+    @provider_movies = @provider_movies.limit(PER_PAGE)
+    flash[:success] = "Found #{@provider_movies.count} movies"
   end
 
   # GET /provider/movies/1
   def show
     # p @provider_movie.inspect
     @s3_multipart = S3Multipart::Upload.find(@provider_movie.s3_multipart_upload_id) if @provider_movie&.s3_multipart_upload_id 
+    @movie_thumbnail = @provider_movie.movie_thumbnail || @provider_movie.build_movie_thumbnail
     case step
     when :add_details
     when :add_video
@@ -69,13 +72,18 @@ class Provider::MoviesController < ApplicationController
     session[:movie_kind] = 'movie'
     @provider_movie = Movie.new
     @provider_movie.build_movie_thumbnail
+    #@provider_movie.build_rate
     @rate = @provider_movie.build_rate
     #render wizard_path(:add_details)
   end
 
   def create
-    @provider_movie = Movie.create!(movie_params)
+    @provider_movie = Movie.create(movie_params)
+    @provider_movie.slug = slug
+    @provider_movie.title ||= @provider_movie.name
+    slug = movie_params[:name].gsub(/[\W]/,'-').downcase # FIXME!  why it was not autocreated ????
     @provider_movie.save(validate: false)
+    Rails.logger.debug @provider_movie.inspect
     #redirect_to edit_provider_movie_path(@provider_movie), notice: I18n.t('flash.movie.successfully_created')
     redirect_to wizard_path(:add_video, slug: @provider_movie.slug), notice: I18n.t('flash.movie.successfully_created')
   end
@@ -93,6 +101,8 @@ class Provider::MoviesController < ApplicationController
 
   # PATCH/PUT /provider/movies/1
   def update
+    @s3_multipart = S3Multipart::Upload.find(@provider_movie.s3_multipart_upload_id) if @provider_movie&.s3_multipart_upload_id  # FIXME!
+    @movie_thumbnail = @provider_movie.movie_thumbnail || @provider_movie.build_movie_thumbnail
     previous_featured_film = Movie.find_by_is_featured_film(true) if movie_params[:is_featured_film]
     if @provider_movie.update(movie_params)
       previous_featured_film.try(:set_is_featured_film_false)
@@ -145,6 +155,9 @@ class Provider::MoviesController < ApplicationController
       :kind, :slug, :bitly_url, :version_file, :downloadable, :actors,
       movie_thumbnail_attributes: [
         :id, :movie_screenshot_1, :movie_screenshot_2, :movie_screenshot_3, :thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot
+      ],
+      rate_attributes: [
+        :price, :notes, :discount
       ]
     )
   end

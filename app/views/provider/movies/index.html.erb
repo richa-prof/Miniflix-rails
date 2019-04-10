@@ -98,7 +98,7 @@
                                   <%= link_to provider_movie_path(movie.id, kind: 'movie') do %>
                                     View on Miniflix
                                   <% end %><br/>
-                                  <%= link_to provider_movie_path(movie.id, kind: 'movie') do %>
+                                  <%= link_to wizard_path(:preview, slug: movie.slug) do %>
                                      View
                                   <% end %><br/>
                                   <%= link_to edit_provider_movie_path(movie.id), data: { turbolinks: false } do %>
