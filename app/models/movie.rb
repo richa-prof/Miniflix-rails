@@ -35,7 +35,7 @@ class Movie < ApplicationRecord
   belongs_to :genre, class_name: "Genre", foreign_key: "admin_genre_id"
   belongs_to :season, optional: true
 
-  has_one :movie_thumbnail, dependent: :destroy, foreign_key: "admin_movie_id"
+  has_one :movie_thumbnail, dependent: :destroy, foreign_key: "admin_movie_id", inverse_of: :movie
   has_one :movie_trailer, dependent: :destroy, foreign_key: "admin_movie_id"
   has_many :notifications, dependent: :destroy, foreign_key: "admin_movie_id"
   
@@ -51,10 +51,10 @@ class Movie < ApplicationRecord
   # associations for content provider
   has_many :own_films, as: :film
   has_many :owners, through: :own_films, source: :user
-  has_one :rate, as: :entity
+  has_one :rate, as: :entity, inverse_of: :entity # inverse_of important here! to save assocation object
 
   accepts_nested_attributes_for :movie_thumbnail
-  accepts_nested_attributes_for :rate
+  accepts_nested_attributes_for :rate, allow_destroy: true
   
   # CALLBACKS
   before_save :create_bitly_url, if: -> { slug_changed? }
@@ -70,6 +70,8 @@ class Movie < ApplicationRecord
 
   # DELIGATES
   delegate :name, to: :genre, prefix: :genre,  allow_nil: true
+
+  validates_presence_of :title
 
   self.per_page = PER_PAGE
 

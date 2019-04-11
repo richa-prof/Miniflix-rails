@@ -1,6 +1,15 @@
+<% hide_next_link = (step == :finalize || session[:flow] == 'create' || !@provider_movie.persisted?) %>
+<% hide_prev_link ||= false %>
+
 <h3 class="provider-title"> 
   <strong>
-    <a class="previous-stage" href="<%= previous_wizard_path(slug: @provider_movie.slug) %>" title="Go to previous step"><i class="fa fa-long-arrow-left"></i></a>
-    <span class="pl100">Add Movie</span>
+    <% unless hide_prev_link %>
+      <a class="previous-stage" href="<%= previous_wizard_path(slug: @provider_movie.slug) %>" title="Go to previous step"><i class="fa fa-long-arrow-left"></i></a>
+    <% end %>
+    <span class="pl100"><%= action_name == 'show' ? 'Add' : 'Edit' %> Movie</span>
+    <% unless hide_next_link %>
+      <% url = (request.url.include?('/edit?slug=')) ? "#{provider_movies_path}/add_video?slug=#{@provider_movie.slug}" : next_wizard_path(slug: @provider_movie.slug) %>
+      <a class="next-stage pl100" href="<%= url %>" title="Jump to next step"><i class="fa fa-long-arrow-right"></i></a>
+    <% end %>
   </strong>
 </h3>

@@ -1,21 +1,20 @@
 <section class="content-for-provider p20">
 
-  <div class="row mt10 p20">
+  <div class="row mt10">
     <div class="col-lg-4 col-xs-12"></div>
 
     <div class="col-lg-4 col-xs-12">
    
+      <%= render partial: 'title_and_prev_link', locals: {hide_prev_link: true} %>
+
       <div class="p20 mt10">
-        <h3 class="provider-title" style="width: 150px; margin: 0 auto;">
-          <strong><%= action_name == 'new' ? 'Add' : 'Edit' %> Movie</strong>
-        </h3>
         <div class="mt20" style="height: 20px;">
           <div class="pull-left"><h4>Details</h4></div><div class="pull-right">1/5 steps</div>
         </div>
 
       <% f_method, url = action_name == 'new' ? [:post, provider_movies_path] : [:put, provider_movies_path + "/add_details?slug=#{@provider_movie.slug}"] %>
 
-      <%= form_with model: @provider_movie, scope: 'movie', url: url, method: f_method, class: 'mt40', local: true, multipart: true do |f| %>
+      <%= form_with model: @provider_movie, scope: 'movie', url: url, method: f_method, class: 'mt40' do |f| %>
 
         <% if @provider_movie.errors.any? %>
           <div class="row">

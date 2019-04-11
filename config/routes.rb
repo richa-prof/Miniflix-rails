@@ -18,7 +18,6 @@ def provider_block
   resources :movies do
     collection do
       get :search
-      get 'add_movie_details/:id' => "movies#add_movie_details", as: :add_movie_details
       get 'upload_movie_trailer/:id' => "movies#upload_movie_trailer", as: :upload_movie_trailer
       post 'save_uploaded_movie_trailer' => "movies#save_uploaded_movie_trailer", as: :save_uploaded_movie_trailer
     end

@@ -1,8 +1,12 @@
 .navbar-provider {
   
   .sys-message {
-    padding-left: 10%;
     padding-top: 10px;
+    width: 85%;
+    div {
+      text-align: center;
+      padding-left: 16%;
+    }
   }
 
   .success, .notice {
