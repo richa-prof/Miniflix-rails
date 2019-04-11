@@ -1,0 +1,12 @@
+//remove old validation messages
+$(".sys-message").removeClass('error notice').html(''); 
+<% if @success %>
+  Turbolinks.visit("<%= wizard_path(:add_video, slug: @provider_movie.slug) %>")
+<% else %>
+   $('.sys-message').addClass('error').html("<div><%= flash[:error] %></div>");
+    $('.errors ul').empty()
+  //display new validation messages
+  <% @provider_movie.errors.full_messages.each do |message| %>
+    $(".errors ul").append("<li class='error'><%= escape_javascript(message) %></li>");
+  <% end %>
+<% end %>
