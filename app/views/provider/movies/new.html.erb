@@ -12,7 +12,7 @@
           <div class="pull-left"><h4>Details</h4></div><div class="pull-right">1/5 steps</div>
         </div>
 
-      <% f_method, url = action_name == 'new' ? [:post, provider_movies_path] : [:put, provider_movies_path + "/add_details?slug=#{@provider_movie.slug}"] %>
+      <% f_method, url = !@provider_movie.persisted? ? [:post, provider_movies_path] : [:put, provider_movies_path + "/add_details?slug=#{@provider_movie.slug}"] %>
 
       <%= form_with model: @provider_movie, scope: 'movie', url: url, method: f_method, class: 'mt40' do |f| %>
 

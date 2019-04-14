@@ -149,7 +149,7 @@ class Movie < ApplicationRecord
 
   # ===== Instance methods Start =====
   def hls_movie_url
-    ENV['VERSION_FILE_CLOUD_FRONT_URL'] + version_file if version_file.present?
+    version_file.present? ? ENV['VERSION_FILE_CLOUD_FRONT_URL'] + version_file : nil
   end
 
   def active_movie_captions

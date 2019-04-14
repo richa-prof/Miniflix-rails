@@ -167,8 +167,12 @@ $(document).on('ready turbolinks:load', function() {
 
   MiniflixVideosUploader.prototype.s3InputBucketName = function() {
     var self = this;
-    // console.log('>>>>> s3InputBucketName() called >>>>>');
     return self.wrapper.find('#s3-input-bucket-name-container').data('s3-input-bucket');
+  };
+
+  MiniflixVideosUploader.prototype.kind = function() {
+    var self = this;
+    return self.wrapper.find('#s3-input-bucket-name-container').data('kind');
   };
 
   MiniflixVideosUploader.prototype.submit = function() {

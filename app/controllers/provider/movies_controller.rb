@@ -134,6 +134,7 @@ class Provider::MoviesController < ApplicationController
     @movie_thumbnail = @provider_movie&.movie_thumbnail || @provider_movie.build_movie_thumbnail
     previous_featured_film = Movie.find_by_is_featured_film(true) if movie_params[:is_featured_film]
     #jump_to(next_step.to_sym, slug: @provider_movie.slug)
+    Rails.logger.debug "errors: #{@provider_movie.errors}"
     if @success
       flash[:success] = I18n.t('flash.movie.successfully_updated') 
     else
@@ -167,7 +168,7 @@ class Provider::MoviesController < ApplicationController
     @provider_movie.destroy
     Movie.delete_movie_from_s3(s3_multipart, version_file) if s3_multipart
     MovieTrailer.delete_file_from_s3(s3_multipart_obj) if s3_multipart_obj
-    redirect_to provider_movies_url, notice: I18n.t('flash.movie.successfully_deleted')
+    redirect_to provider_movies_url, success: I18n.t('flash.movie.successfully_deleted')
   end
 
   private
