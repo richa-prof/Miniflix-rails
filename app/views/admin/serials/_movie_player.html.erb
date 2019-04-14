@@ -1,12 +1,12 @@
-
-<div id="miniflix_player_<%= movie.id %>" class="js-video-layer">
-  <%= render partial: 'shared/jwplayer_config', locals: {movie: movie} %>
-  <div id="player_<%= movie.id %>"
+<div>
+  <div id="movie_player_<%= movie.id %>"
+          class="js-video-layer"
           data-embed-type="jwplayer" 
           data-embed-url="video-url"
           data-embed-loaded="false">
+    <%= render partial: 'shared/jwplayer_config', locals: {movie: movie} %>
     <div itemscope="" itemtype="http://schema.org/VideoObject">
-      <div data-embed-url="video-url" class="jw-player"></div>
+      <div id="movie_embed_cnt" data-embed-url="video-url" class="jw-player"></div>
     </div>
   </div>
   <h3 class="box-title text-blue">
@@ -18,3 +18,5 @@
       <% end %>
   </h3>
 </div>
+
+

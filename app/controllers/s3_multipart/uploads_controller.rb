@@ -9,7 +9,8 @@ module S3Multipart
       rescue FileTypeError, FileSizeError => e
         response = {error: e.message}
       rescue => e
-        logger.error "EXC: #{e.message}"
+        Rails.logger.error "EXC: #{e.message}"
+        Rails.logger.error e.backtrace.join("\n\t")
         response = { error: t("s3_multipart.errors.create") }
       ensure
         render :json => response

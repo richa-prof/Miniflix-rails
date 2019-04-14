@@ -46,7 +46,7 @@ $(document).on('turbolinks:load', function(ev) {
 
   MiniflixVideoPlayer.prototype.jwPlayerInit = function() { //container, type) {
     var self = this;
-    var videoObject =  self.wrapper.find("#" + self.category + "_ember_cnt")[0];  //div[data-embed-url='video-url']"); // [0]
+    var videoObject =  self.wrapper.find("#" + self.category + "_embed_cnt")[0];  //div[data-embed-url='video-url']"); // [0]
     console.log('videoObject:', videoObject);
     console.log('jwPlayerInit called for ', self.category);
     var videoPlayerInstance = window.jwplayer(videoObject);

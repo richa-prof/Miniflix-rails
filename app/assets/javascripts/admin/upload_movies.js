@@ -1,9 +1,24 @@
+
+
 // class 
 function MiniflixVideoUploader() {
   var self = this;
   self.init();
 }
 
+
+MiniflixVideoUploader.prototype.init = function() {
+  var self = this;
+  console.log('>>>>> MiniflixVideoUploader -> init  >>>>>');
+  $("#video_file").addClass('form-control');
+  $("#trailer_video_file").addClass('form-control');
+  if (self.videoSubmitButton().length) {
+    self.bindOnMovieSubmit();
+  }
+  if (self.movieTrailerSubmitButton().length) {
+    self.bindOnMovieTrailerSubmit();
+  }
+};
 
 MiniflixVideoUploader.prototype.videoSubmitButton = function() {
   return $('.video-submit-button');
@@ -166,22 +181,10 @@ MiniflixVideoUploader.prototype.bindOnMovieTrailerSubmit = function() {
 
 
 
-MiniflixVideoUploader.prototype.init = function() {
-  var self = this;
-  console.log('>>>>> MiniflixVideoUploader -> init  >>>>>');
-  $("#video_file").addClass('form-control');
-  $("#trailer_video_file").addClass('form-control');
-  if (self.videoSubmitButton().length) {
-    self.bindOnMovieSubmit();
-  }
-  if (self.movieTrailerSubmitButton().length) {
-    self.bindOnMovieTrailerSubmit();
-  }
-};
 
 
 
-$(document).on(' ready turbolinks:load', function() {
+$(document).on('turbolinks:load', function() {
   console.log('>>>>> creating MiniflixVideoUploader >>>>>');
   new MiniflixVideoUploader();
 });
