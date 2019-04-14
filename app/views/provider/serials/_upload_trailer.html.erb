@@ -1,0 +1,34 @@
+<% is_edit_mode = local_assigns.has_key?(:is_edit_mode) ? is_edit_mode : false %>
+
+<div id="trailer_upload_wrapper" class="row">
+  <div class="col-md-12">
+
+      <div class="">
+        <label>
+          <%= t('label.trailer') %>
+        </label>
+      </div>
+
+      <div style="margin: 20px 0">
+
+        <div class="dropbox-advanced-upload">
+          <div class="file-upload">
+            <%= multipart_uploader_form( 
+              input_name: 'trailer_video_file',
+              uploader: 'MovieTrailerUploader',
+              button_class: 'movie-trailer-submit-btn hidden',
+              button_text: t('label.upload_movie_trailer'),
+              types: ["video/*"],
+              html: %Q{} ) %>
+            <div class="dropbox-controls">Drag file here or <a onclick="$('#trailer_video_file').click();">browse</a></div>
+          </div>
+        </div>
+
+        <div class="file-info" style="padding: 5px; <% unless movie&.movie_trailer %> display: none; <% else %> margin-top: 10px; <% end %>">
+          <%= render partial: 'file_info', locals: {movie: movie, category: 'trailer'} %>
+        </div>
+
+      </div>
+
+  </div>
+</div>

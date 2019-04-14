@@ -1,0 +1,13 @@
+  <div class="file-read-progress pull-left" style="display: none">
+    <%= render partial: 'progress_bar_ring' %>
+  </div>
+  <div class="video-icon pull-left" style="width: 25px">
+    <%= image_tag('provider/videofile.svg', alt: 'videofile icon', class: "icon")  %>
+  </div>
+  <div class="about-file pl20 pull-left" >
+      <div><strong><%= movie.movie_trailer&.file&.split('%2F')&.second %></strong></div>
+  </div>
+  <div class="rm-file-control pull-right">
+    <a title="Remove file"><%= image_tag('provider/delete.svg', alt: 'delete icon', class: "icon")  %></a>
+  </div>
+

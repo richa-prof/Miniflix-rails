@@ -28,7 +28,7 @@ def provider_block
     collection do
       get 'add_movie_details/:id' => "episodes#add_movie_details", as: :add_movie_details
       get 'upload_movie_trailer/:id' => "episodes#upload_movie_trailer", as: :upload_movie_trailer
-      post 'save_uploaded_movie_trailer' => "episodes#save_uploaded_movie_trailer", as: :save_uploaded_movie_trailer
+      post 'save_uploaded_episode_trailer' => "episodes#save_uploaded_movie_trailer", as: :save_uploaded_episode_trailer
     end
     resources :movie_captions, except: [:show]
   end
@@ -36,6 +36,7 @@ def provider_block
   resources :serials do
     collection do
       get :search
+      post 'save_uploaded_serial_trailer' => "serials#save_uploaded_serial_trailer", as: :save_uploaded_serial_trailer
     end
   end
   resources :settings
