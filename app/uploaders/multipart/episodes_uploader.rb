@@ -1,4 +1,4 @@
-class EpisodesUploader < MoviesUploader
+class EpisodesUploader < ::MoviesUploader
 
   extend S3Multipart::Uploader::Core
 
