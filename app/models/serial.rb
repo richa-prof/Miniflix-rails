@@ -19,6 +19,7 @@ class Serial < ApplicationRecord
   belongs_to :genre, class_name: "Genre", foreign_key: "admin_genre_id"
 
   accepts_nested_attributes_for :serial_thumbnail
+  accepts_nested_attributes_for :rate, allow_destroy: true
 
   PER_PAGE = 15
   ENTRY_TYPE = 1

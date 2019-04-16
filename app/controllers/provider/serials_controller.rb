@@ -5,6 +5,8 @@ class Provider::SerialsController < ApplicationController
   include Wicked::Wizard
 
   layout 'provider'
+  
+  skip_before_action :setup_wizard, only: [:edit, :destroy]
   steps :add_details, :add_trailer, :add_episode, :add_screenshots, :add_thumbnails, :finalize, :preview
 
   def index
@@ -38,6 +40,16 @@ class Provider::SerialsController < ApplicationController
     @serial = Serial.new
     session[:flow] = 'create'
     redirect_to wizard_path(:add_details)
+  end
+
+  # GET /provider/movies/1/edit
+  def edit
+    session[:flow] = 'edit'
+    # @s3_multipart = S3Multipart::Upload.find(@provider_movie.s3_multipart_upload_id) if @provider_movie&.s3_multipart_upload_id  # FIXME!
+    #@movie_thumbnail = @provider_movie.movie_thumbnail || @provider_movie.build_movie_thumbnail
+    @serial.build_serial_thumbnail unless @serial.serial_thumbnail
+    @rate = @serial.rate || @serial.build_rate
+    render :new
   end
 
   def choose_mode

@@ -99,7 +99,7 @@
                                   <%= link_to provider_serial_path(serial.id) do %>
                                     View on Miniflix
                                   <% end %><br/>
-                                  <%= link_to edit_provider_serial_path(serial.id), data: { turbolinks: false } do %>
+                                   <%= link_to edit_provider_serial_path(serial.id, slug: serial.slug), data: { turbolinks: false } do %>
                                      Edit
                                   <% end %><br/>
                                   <%= link_to( provider_serial_path(serial.id),

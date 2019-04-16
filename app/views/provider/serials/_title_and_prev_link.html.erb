@@ -8,7 +8,7 @@
     <% end %>
     <span class="pl100"><%= action_name == 'show' ? 'Add' : 'Edit' %> Series</span>
     <% unless hide_next_link %>
-      <% url = (request.url.include?('/edit?slug=')) ? "#{serials_path}/add_trailer?slug=#{@serial.slug}" : next_wizard_path(slug: @serial.slug) %>
+      <% url = (request.url.include?('/edit?')) ? wizard_path(:add_trailer,slug: @serial.slug) : next_wizard_path(slug: @serial.slug) %>
       <a class="next-stage pl100" href="<%= url %>" title="Jump to next step"><i class="fa fa-long-arrow-right"></i></a>
     <% end %>
   </strong>

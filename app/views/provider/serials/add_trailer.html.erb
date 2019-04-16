@@ -40,7 +40,9 @@
         <div class="mt40">
           <%= form_with model: movie, scope: 'movie', url: provider_movies_path, method: :post, class: 'pt40', local: true, multipart: true do |f| %>
             <%= render( partial: 'upload_trailer', locals: { movie: @serial } ) %>
-            <a id="upload_videos" data-disable-with="Saving..." style="width: 95%; margin: 20px 12px;" class="btn btn-flat btn-black">Continue</a>
+            <div class="form-footer">
+              <a id="upload_videos" data-disable-with="Saving..." style="width: 95%; margin: 20px 12px;" class="btn btn-flat btn-black">Continue</a>
+            </div>
           <% end %>
         </div>
       </div>

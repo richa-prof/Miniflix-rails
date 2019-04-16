@@ -6,7 +6,11 @@
 
 .content-for-provider {
   background-image: asset-url("provider/greasy_snow.jpg") !important;
+  /* position: fixed; 
+  width: 100%;
+  height: 100% !important; */
   div, input[type="text"], select, textarea {
+    /* height: 100% !important; */
     background-image: asset-url("provider/greasy_snow.jpg") !important;
   }
 }
@@ -31,6 +35,9 @@
 
 .provider-sidebar {
   background: black;
+  position: fixed;
+  left: 0;
+  top: 0;
   .sidebar-menu {
     a {
       text-decoration: none;
@@ -141,4 +148,13 @@ a.previous-stage, a.previous-stage:hover {
 
 li.error {
   color: red;
+}
+
+.row .no-float {
+  display: table-cell;
+  float: none;
+}
+
+form .form-footer {
+  margin-bottom: 100%;
 }
