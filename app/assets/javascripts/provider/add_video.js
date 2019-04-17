@@ -1,4 +1,4 @@
-$(document).on('ready turbolinks:load', function() {
+$(document).on('turbolinks:load', function() {
 
   // alt. way - analize body[data-page]
   let invokePageList = ['/provider/serials/add_episode', '/provider/movies/add_video', '/provider/serials/add_trailer']

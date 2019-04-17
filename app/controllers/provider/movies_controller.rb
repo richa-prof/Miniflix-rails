@@ -60,7 +60,7 @@ class Provider::MoviesController < ApplicationController
       render :new
       return
     when :add_video
-      # " /provider/movies/upload_movie_trailer/" 
+      session[:current_video_id] = @provider_movie.id
     when :add_screenshots
     when :add_thumbnails
     when :finalize
@@ -85,16 +85,16 @@ class Provider::MoviesController < ApplicationController
     @provider_movie.title ||= @provider_movie.name
     @provider_movie.save  #(validate: false)
     Rails.logger.debug @provider_movie.errors.messages
+    @success = @provider_movie.valid?
     respond_to do |format|
       format.html {
-        if @provider_movie.valid?
+        if @success
           redirect_to wizard_path(:add_video, slug: @provider_movie.slug), success: I18n.t('flash.movie.successfully_created')
         else 
           redirect_back(fallback_location: provider_movies_path)
         end
       }
       format.js {
-        @success = @provider_movie.valid?
         if @success
           flash[:success] = I18n.t('flash.movie.successfully_created') 
         else

@@ -30,8 +30,8 @@ class MoviesUploader < ApplicationController
 
   on_begin do |upload, session|
     # Code to be evaluated when upload begins.
-    puts "on_begin movie up, upload ---> #{upload.to_json}"
-    puts "on_begin movie up, session ---> #{session.to_json}"
+    puts "on_begin , upload ---> #{upload.to_json}"
+    puts "on_begin , session ---> #{session.to_json}"
   end
 
   # See above comment. Called when the upload has successfully completed
@@ -51,13 +51,14 @@ class MoviesUploader < ApplicationController
 
     puts "saving video as Movie object"
 
-    @admin_movie = Movie.new( s3_multipart_upload_id: upload.id,
-                              uploader: upload.uploader,
-                              film_video: upload_location,
-                              name: upload.name,
-                              video_size: upload.size,
-                              video_format: file_type )
-
+    @admin_movie =  Movie.find_by(id: session[:current_video_id]) || Movie.new
+    @admin_movie.update(
+      s3_multipart_upload_id: upload.id,
+      uploader: upload.uploader,
+      film_video: upload_location,
+      video_size: upload.size,
+      video_format: file_type
+    )  #name: upload.name,
     @admin_movie.build_movie_thumbnail
     @admin_movie.save(validate: false)
   end
