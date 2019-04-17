@@ -29,11 +29,6 @@ class Serial < ApplicationRecord
 
   scope :alfa_order, -> { order(:name) }
   
-  def user_likes
-    q = "INNER JOIN liked_info ON users.id = liked_info.user_id WHERE liked_info.thing_id = #{id} AND liked_info.thing_type = 'Serial'"
-    User.joins(q)
-  end
-
   def owner
     owners&.first
   end
@@ -81,6 +76,12 @@ class Serial < ApplicationRecord
     Episode.where("season_id in (:list)", list: seasons.pluck(:id))
   end
 
+  # all users who liked this serial
+  def user_likes
+    q = "INNER JOIN liked_info ON users.id = liked_info.user_id WHERE liked_info.thing_id = #{id} AND liked_info.thing_type = 'Serial'"
+    User.joins(q)
+  end
+
   def mark_as_liked_by_user(user)
     user.liked_serials << self
   end
@@ -100,7 +101,8 @@ class Serial < ApplicationRecord
       },
       seasons_data: seasons_list,
       screenshot: screenshot_list,
-      type: ENTRY_TYPE
+      type: ENTRY_TYPE,
+      trailer: movie_trailer&.file || ''
     }
   end
 

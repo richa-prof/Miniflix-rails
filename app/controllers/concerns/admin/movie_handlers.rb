@@ -11,12 +11,12 @@ module Admin::MovieHandlers
      @movie_id_param ||= params["#{kind}_id".to_sym]
   end
 
-  def movie_klass
+  def video_klass
     kind&.humanize&.constantize
   end
 
   def upload_movie_trailer
-    @movie = movie_klass.find_by_s3_multipart_upload_id(params[:id])
+    @movie = video_klass.find_by_s3_multipart_upload_id(params[:id])
     case kind
     when 'movie'
     when 'episode'
@@ -35,20 +35,22 @@ module Admin::MovieHandlers
   def save_uploaded_movie_trailer
     success = false
     upload_id = params[:upload_id]
-    @movie = movie_klass.find(movie_id_param)
+    @movie = video_klass.find(movie_id_param)
     s3_upload = S3Multipart::Upload.find(upload_id)
-    movie_trailer = @movie.create_movie_trailer(
+    trailer = @movie.create_movie_trailer(
       s3_multipart_upload_id: upload_id,
       uploader: s3_upload.uploader,
       admin_serial_id: @movie.season&.serial&.id,
       file: s3_upload.location
     )
-    if movie_trailer.valid?
+    if trailer.valid?
       success = true
     end
     render json: { success: success }
   end
 
+  alias  :save_uploaded_serial_trailer, :save_uploaded_movie_trailer
+  
   def add_movie_details
     movie_trailer = MovieTrailer.find_by_s3_multipart_upload_id(params[:id])
     @admin_movie = movie_trailer.movie
@@ -60,9 +62,9 @@ module Admin::MovieHandlers
 
   # Use callbacks to share common setup or constraints between actions.
   def set_admin_movie
-    @admin_movie ||= movie_klass.friendly.find_by(id: params[:id]) ||
-      movie_klass.find_by_s3_multipart_upload_id(params[:id]) ||
-      movie_klass.find_by(slug: params[:id]) || movie_klass.find_by(id: params[:id])
+    @admin_movie ||= video_klass.friendly.find_by(id: params[:id]) ||
+      video_klass.find_by_s3_multipart_upload_id(params[:id]) ||
+      video_klass.find_by(slug: params[:id]) || video_klass.find_by(id: params[:id])
     session[:movie_kind] = @admin_movie.kind
     session[:serial_id] = params[:serial_id]
   end

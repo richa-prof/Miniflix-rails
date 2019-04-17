@@ -1,7 +1,8 @@
 $(document).on('ready turbolinks:load', function() {
 
   // alt. way - analize body[data-page]
-  if (['/provider/serials/add_episode', '/provider/movies/add_video'].indexOf(window.location.pathname) < 0) {
+  let invokePageList = ['/provider/serials/add_episode', '/provider/movies/add_video', '/provider/serials/add_trailer']
+  if (invokePageList.indexOf(window.location.pathname) < 0) {
     return false;
   }
 
@@ -11,6 +12,7 @@ $(document).on('ready turbolinks:load', function() {
 
   window.videoCategories = window.videoCategories || ['trailer', 'video'];  // [video1, video2, video3, video4, ..] for episodes
 
+ // console.log()
   // class 
   function MiniflixFileSelect(selector) {
     var self = this;
@@ -104,10 +106,10 @@ $(document).on('ready turbolinks:load', function() {
     evt.originalEvent.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
   }
 
+// create object
   for(i=0; i < window.videoCategories.length; i++) {
     new MiniflixFileSelect('#' + window.videoCategories[i] + '_upload_wrapper .dropbox-advanced-upload'); 
   }
-
 
   $('#upload_videos').on('click', function(evt) {
       if (window.lockTimer) {
@@ -214,7 +216,7 @@ $(document).on('ready turbolinks:load', function() {
           self.setProgress(100);
           self.wrapper.find("#error_msg").hide();
           $('.sys-message').html('<div id="flash_success" class="success"></div>')
-          var kind = self.wrapper.find('#s3-input-bucket-name-container').data('kind'); // movie or episode
+          var kind = self.kind(); // movie or episode
           if (self.category == 'trailer') {
             console.log("trailer upload --> " + up_file);
             //console.log("Trailer file %d successfully uploaded", upload.key);

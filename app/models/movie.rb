@@ -330,21 +330,22 @@ class Movie < ApplicationRecord
   def compact_response
     {
       id: id, 
-      title: title.to_s, 
+      title: name.to_s, 
       year: created_at.year.to_s, 
       genre_data: { 
         id: genre&.id, 
         name: genre&.name.to_s
       },
       screenshot: screenshot_list,
-      type: ENTRY_TYPE
+      type: ENTRY_TYPE,
+      trailer: movie_trailer&.file || ''
     }
   end
 
   def film_video_map
     h = {
-      hls: film_video,
-      video_720: "",
+      hls: film_video
+,      video_720: "",
       video_480: "",
       video_320: ""
     }
@@ -359,7 +360,7 @@ class Movie < ApplicationRecord
     case mode
     when "compact"
       compact_response
-    else
+    else # 'browse'
       compact_response.merge!(
        film_video: film_video_map,
        screenshot: screenshot_list

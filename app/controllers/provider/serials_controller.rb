@@ -2,6 +2,7 @@ class Provider::SerialsController < ApplicationController
   #before_action :authenticate_provider_user!
   before_action :set_provider_serial, only: [:show, :edit, :update, :destroy]
 
+  include Admin::MovieHandlers
   include Wicked::Wizard
 
   layout 'provider'
