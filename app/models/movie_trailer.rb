@@ -1,5 +1,7 @@
 class MovieTrailer < ApplicationRecord
-  belongs_to :movie, :foreign_key => 'admin_movie_id'
+
+  # todo - convert to polymorphic association
+  belongs_to :movie, optional: true, :foreign_key => 'admin_movie_id'
   belongs_to :serial, optional: true, foreign_key: :admin_serial_id
 
   # ===== Class methods Start =====

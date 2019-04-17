@@ -35,22 +35,29 @@ module Admin::MovieHandlers
   def save_uploaded_movie_trailer
     success = false
     upload_id = params[:upload_id]
-    @movie = video_klass.find(movie_id_param)
+    video = video_klass.find(movie_id_param)
     s3_upload = S3Multipart::Upload.find(upload_id)
-    trailer = @movie.create_movie_trailer(
+    args = {
       s3_multipart_upload_id: upload_id,
       uploader: s3_upload.uploader,
-      admin_serial_id: @movie.season&.serial&.id,
       file: s3_upload.location
-    )
+    }
+    if video_klass == Episode
+      args[:admin_serial_id] = video.season&.serial&.id
+    elsif video_klass == Serial
+      args[:admin_serial_id] = video.id
+    else
+      args[:admin_movie_id] = video.id
+    end
+    trailer = video.create_movie_trailer(args)
     if trailer.valid?
       success = true
     end
     render json: { success: success }
   end
 
-  alias  :save_uploaded_serial_trailer, :save_uploaded_movie_trailer
-  
+  alias_method  :save_uploaded_serial_trailer, :save_uploaded_movie_trailer
+
   def add_movie_details
     movie_trailer = MovieTrailer.find_by_s3_multipart_upload_id(params[:id])
     @admin_movie = movie_trailer.movie

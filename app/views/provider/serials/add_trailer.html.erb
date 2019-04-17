@@ -6,12 +6,10 @@
   <div class="col-lg-4 col-xs-12"></div>
   <div class="col-lg-4 col-xs-12 p20">
 
-    <div id="s3-input-bucket-name-container" style="display: none;" data-s3-input-bucket="<%= ENV['S3_INPUT_BUCKET'] %>"></div>
-
     <div id="movie-id-container"
          class="js-movie-paths"
          style="display: none;" 
-         data-stage="add_movie"
+         data-stage="add_trailer"
          data-movie-id="<%= @serial.id %>" 
          data-video-upload-success-path=""
          data-trailer-upload-success-path="<%= save_uploaded_serial_trailer_provider_serials_path %>" 
@@ -24,7 +22,7 @@
 
     <div id="s3-input-bucket-name-container" style="display: none;" 
          data-s3-input-bucket="<%= ENV['S3_INPUT_BUCKET'] %>"
-         data-kind="episode">
+         data-kind="serial">
     </div>
 
     <div class="row">
@@ -32,7 +30,7 @@
 
         <%= render partial: 'title_and_prev_link' %>
 
-        <div class="pt20">
+        <div class="mt20" style="height: 25px">
           <div class="pull-left"><h4>Upload Trailer</h4></div>
           <div class="pull-right" style="padding-top: 10px;">2/5 steps</div>
         </div>
@@ -41,7 +39,7 @@
           <%= form_with model: movie, scope: 'movie', url: provider_movies_path, method: :post, class: 'pt40', local: true, multipart: true do |f| %>
             <%= render( partial: 'upload_trailer', locals: { movie: @serial } ) %>
             <div class="form-footer">
-              <a id="upload_videos" data-disable-with="Saving..." style="width: 95%; margin: 20px 12px;" class="btn btn-flat btn-black">Continue</a>
+              <input type="button" id="upload_videos" data-disable-with="Saving..." style="width: 95%; margin: 20px 12px;" class="btn btn-flat btn-black" value="Continue" />
             </div>
           <% end %>
         </div>

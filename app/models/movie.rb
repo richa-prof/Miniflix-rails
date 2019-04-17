@@ -42,6 +42,7 @@ class Movie < ApplicationRecord
   has_many :user_filmlists, dependent: :destroy, foreign_key: "admin_movie_id"
   alias_method :favorite_for_users, :user_filmlists
 
+  # point in timeline where user stopped watching movie
   has_many :user_video_last_stops, dependent: :destroy, foreign_key: "admin_movie_id"
   alias_method  :watched_by_users, :user_video_last_stops
 
@@ -338,16 +339,31 @@ class Movie < ApplicationRecord
       },
       screenshot: screenshot_list,
       type: ENTRY_TYPE,
-      trailer: movie_trailer&.file || ''
+      trailer: movie_trailer&.file
+    }
+  end
+
+  def short_response
+    {
+      id: id,
+      name: name.to_s, 
+      title: name, 
+      description: description,
+      language: language,
+      video_duration: video_duration,
+      genre_name: genre&.name.to_s,
+      last_stopped: user_video_last_stops.last.as_json(only: [:total_time, :last_stopped, :watched_percent]),
+      film_video: film_video_map,
+      movie_screenshot: screenshot_list
     }
   end
 
   def film_video_map
     h = {
-      hls: film_video
-,      video_720: "",
-      video_480: "",
-      video_320: ""
+      hls: film_video || '',
+      video_720: '',
+      video_480: '',
+      video_320: ''
     }
     movie_versions.each do |mv|
       h["video_#{mv.resolution}".to_sym] = mv.film_video.to_s
@@ -360,6 +376,8 @@ class Movie < ApplicationRecord
     case mode
     when "compact"
       compact_response
+    when 'short'
+      short_response
     else # 'browse'
       compact_response.merge!(
        film_video: film_video_map,

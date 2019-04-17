@@ -12,7 +12,6 @@ $(document).on('ready turbolinks:load', function() {
 
   window.videoCategories = window.videoCategories || ['trailer', 'video'];  // [video1, video2, video3, video4, ..] for episodes
 
- // console.log()
   // class 
   function MiniflixFileSelect(selector) {
     var self = this;
@@ -53,7 +52,8 @@ $(document).on('ready turbolinks:load', function() {
     var ev = evt || window.event;
     ev.stopPropagation();
     ev.preventDefault();
-    choice = confirm("Are you sure you want to delete file named '" + self.files[0].name + "' ?");
+    var fileName = self.files ? self.files[0].name : $(ev.target).parent().parent().prev().find('.file-name').html();
+    choice = confirm("Are you sure you want to delete file named '" + fileName + "' ?");
     if(choice) {
       self.uploadZone.find('input')[0].value = '';
       self.uploadZone.parent().find('.file-info').hide();
@@ -188,12 +188,12 @@ $(document).on('ready turbolinks:load', function() {
 
   MiniflixVideosUploader.prototype.s3InputBucketName = function() {
     var self = this;
-    return self.wrapper.find('#s3-input-bucket-name-container').data('s3-input-bucket');
+    return $('#s3-input-bucket-name-container').data('s3-input-bucket');
   };
 
   MiniflixVideosUploader.prototype.kind = function() {
     var self = this;
-    return self.wrapper.find('#s3-input-bucket-name-container').data('kind');
+    return $('#s3-input-bucket-name-container').data('kind');
   };
 
   MiniflixVideosUploader.prototype.submit = function() {
@@ -216,16 +216,19 @@ $(document).on('ready turbolinks:load', function() {
           self.setProgress(100);
           self.wrapper.find("#error_msg").hide();
           $('.sys-message').html('<div id="flash_success" class="success"></div>')
-          var kind = self.kind(); // movie or episode
+          var kind = self.kind(); // movie or episode or serial
           if (self.category == 'trailer') {
             console.log("trailer upload --> " + up_file);
             //console.log("Trailer file %d successfully uploaded", upload.key);
             $(".sys-message .success").append("Trailer for movie has been uploaded successfully.");
             var is_edit_page = $('#movie-id-container').data('is-edit-mode');
             var postProcessUrl = $('.js-movie-paths').data('trailer-upload-success-path');
+            var data = { upload_id: upload.id, kind: kind };
+            data[kind + '_id'] = $('#movie-id-container').data('movie-id');
+            console.log('posting data:', data);
             $.ajax({
               type: 'POST',
-              data: { upload_id: upload.id, movie_id: $('#movie-id-container').data('movie-id'), kind: kind },
+              data: data,
               url: postProcessUrl,
               success: function(response) {
                 if (is_edit_page || is_edit_page == 'true') {

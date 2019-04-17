@@ -5,7 +5,7 @@
     <%= image_tag('provider/videofile.svg', alt: 'videofile icon', class: "icon")  %>
   </div>
   <div class="about-file pl20 pull-left" >
-      <div><strong><%= movie.movie_trailer&.file&.split('%2F')&.second %></strong></div>
+      <div><strong class="file-name"><%= movie.movie_trailer&.file&.split('%2F')&.second %></strong></div>
   </div>
   <div class="rm-file-control pull-right">
     <a title="Remove file"><%= image_tag('provider/delete.svg', alt: 'delete icon', class: "icon")  %></a>
