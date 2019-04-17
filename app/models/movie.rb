@@ -399,7 +399,7 @@ class Movie < ApplicationRecord
   end
 
   def send_notification
-    if title_was.nil? && title.present?
+    if title_was.nil? && title.present?  # saved_change_to_attribute?(:title)
       Notification.send_movie_added_push_notification(self)
     end
   end

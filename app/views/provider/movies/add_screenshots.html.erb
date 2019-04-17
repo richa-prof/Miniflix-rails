@@ -1,6 +1,5 @@
 <% movie = @provider_movie %>
 <% thumbnail = movie.movie_thumbnail %>
-<% is_edit_mode = local_assigns.has_key?(:is_edit_mode) ? is_edit_mode : false %>
 
 <section class="content-for-provider p20">
 
@@ -12,7 +11,7 @@
   <%= render partial: 'title_and_prev_link' %>
   
   <%#= form_with model: movie, scope: 'movie', url: provider_movie_path(movie, slug: movie.slug), method: :put, class: 'pt40', multipart: true do |f| %>
-  <%= form_for movie, scope: :movie, url: wizard_path(:add_screenshots, slug: movie.slug), method: :put, class: 'pt40', multipart: true do |f| %>
+  <%= form_for movie, scope: :movie, url: wizard_path(:add_screenshots, slug: movie.slug), method: :put, local: true, class: 'pt40', html: {multipart: true} do |f| %>
 
     <%= f.hidden_field :kind, value: movie.kind %>
 
@@ -21,7 +20,7 @@
           <div class="col-md-9 col-sm-12">
 
           <%= fields_for :movie_thumbnail, movie.movie_thumbnail, scope: :movie do |tf| %>
-            <%= render( partial: 'set_movie_screenshots', locals: {thumbnail_fields: tf, thumbnail: thumbnail, is_edit_mode: is_edit_mode } ) %>
+            <%= render( partial: 'set_movie_screenshots', locals: {thumbnail_fields: tf, thumbnail: thumbnail } ) %>
           <% end %>
 
             <div class="form-footer mt20">

@@ -117,23 +117,20 @@ class Provider::MoviesController < ApplicationController
 
   # PATCH/PUT /provider/movies/1
   def update
+    @success = true
     case step
     when :add_details
       session[:movie_kind] = 'movie'
-    when :add_screenshots 
-      begin
-        save_movie_thumbnails(@provider_movie)
-      end
-    when :add_thumbnails then save_movie_thumbnails(@provider_movie)
+      @success = @provider_movie.update(movie_params)
+    when :add_screenshots then @success= save_movie_thumbnails(@provider_movie)
+    when :add_thumbnails then @success = save_movie_thumbnails(@provider_movie)
     when :finalize
     else
       Rails.logger.error "--- Uknown step: #{step} ----"
     end
-    @success = @provider_movie.update(movie_params)
     @s3_multipart = S3Multipart::Upload.find(@provider_movie.s3_multipart_upload_id) if @provider_movie&.s3_multipart_upload_id  # FIXME!
-    @movie_thumbnail = @provider_movie&.movie_thumbnail || @provider_movie.build_movie_thumbnail
+    #@movie_thumbnail = @provider_movie&.movie_thumbnail || @provider_movie.build_movie_thumbnail
     previous_featured_film = Movie.find_by_is_featured_film(true) if movie_params[:is_featured_film]
-    #jump_to(next_step.to_sym, slug: @provider_movie.slug)
     Rails.logger.debug "errors: #{@provider_movie.errors}"
     if @success
       flash[:success] = I18n.t('flash.movie.successfully_updated') 

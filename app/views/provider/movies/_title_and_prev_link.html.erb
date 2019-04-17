@@ -1,4 +1,4 @@
-<% hide_next_link = (step == :finalize || session[:flow] == 'create' || !@provider_movie.persisted?) %>
+<% hide_next_link = !@provider_movie.persisted? %>
 <% hide_prev_link ||= false %>
 
 <h3 class="provider-title"> 

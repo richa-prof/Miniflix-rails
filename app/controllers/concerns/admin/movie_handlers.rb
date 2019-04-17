@@ -94,9 +94,11 @@ module Admin::MovieHandlers
 
   def save_movie_thumbnails(movie)
     movie_thumbnail = movie.movie_thumbnail
-    return unless params[:movie_thumbnail].present?
+    return false unless params[:movie_thumbnail].present?
     if movie_thumbnail.present?
       movie_thumbnail.update(movie_thumbnail_params)
+      Rails.logger.debug movie_thumbnail_params
+      Rails.logger.debug movie_thumbnail.errors.full_messages
     else
       movie_thumbnail = movie.build_movie_thumbnail(movie_thumbnail_params)
       movie_thumbnail.save
