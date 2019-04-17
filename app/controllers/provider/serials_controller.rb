@@ -8,7 +8,7 @@ class Provider::SerialsController < ApplicationController
   layout 'provider'
   
   skip_before_action :setup_wizard, only: [:edit, :destroy]
-  steps :add_details, :add_trailer, :add_episode, :add_screenshots, :add_thumbnails, :finalize, :preview
+  steps :add_details, :add_trailer, :add_episode, :preview
 
   def index
     # direction switching happens in BE
@@ -71,9 +71,10 @@ class Provider::SerialsController < ApplicationController
     when :add_trailer
     when :add_episode
       # " /provider/movies/upload_movie_trailer/" 
-    when :add_screenshots
-    when :add_thumbnails
-    when :finalize
+    when :preview
+      @admin_serial = @serial
+      render :show
+      return
     else
       @movie_film_url = @episode.film_video  
       render :show
@@ -88,7 +89,7 @@ class Provider::SerialsController < ApplicationController
     when :add_details
       session[:movie_kind] = 'episode'
     when :add_trailer
-    when :finalize
+    when :preview
     else
       Rails.logger.error "--- Uknown step: #{step} ----"
     end

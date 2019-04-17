@@ -6,7 +6,7 @@
     <% unless hide_prev_link %>
       <a class="previous-stage" href="<%= previous_wizard_path(slug: @serial.slug) %>" title="Go to previous step"><i class="fa fa-long-arrow-left"></i></a>
     <% end %>
-    <span class="pl100"><%= action_name == 'show' ? 'Add' : 'Edit' %> Series</span>
+    <span class="pl100"><%= action_name == 'show' ? 'Add' : 'Edit' %> <%= step == 'add_episode' ? 'Episode' : 'Series' %></span> <!-- FIXME -->
     <% unless hide_next_link %>
       <% url = (request.url.include?('/edit?')) ? wizard_path(:add_trailer,slug: @serial.slug) : next_wizard_path(slug: @serial.slug) %>
       <a class="next-stage pl100" href="<%= url %>" title="Jump to next step"><i class="fa fa-long-arrow-right"></i></a>

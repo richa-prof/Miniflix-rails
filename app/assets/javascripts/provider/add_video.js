@@ -8,7 +8,7 @@ $(document).on('ready turbolinks:load', function() {
 
   window.mfxObjects = window.mfxObjects || {};
   window.files = window.files || [];
-  window.lockTimer = 0;
+  window.lockTimer = null;
 
   window.videoCategories = window.videoCategories || ['trailer', 'video'];  // [video1, video2, video3, video4, ..] for episodes
 
@@ -106,7 +106,7 @@ $(document).on('ready turbolinks:load', function() {
     evt.originalEvent.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
   }
 
-// create object
+// ---------------- create object  -----------------
   for(i=0; i < window.videoCategories.length; i++) {
     new MiniflixFileSelect('#' + window.videoCategories[i] + '_upload_wrapper .dropbox-advanced-upload'); 
   }
@@ -152,6 +152,22 @@ $(document).on('ready turbolinks:load', function() {
       return false;
   })
 
+
+
+  $('#add_new_episode').on('click', function(evt) {
+      if (window.lockTimer) {
+        return false;
+      }
+      console.log('tp1', window.lockTimer);
+      window.lockTimer = 1;
+      var evt = evt || window.event;
+      evt.stopPropagation();
+      evt.preventDefault();
+       
+      $('#episodes_wrapper').append($('.js-episode-template').html());
+      window.lockTimer = null;
+      return false;
+  });
 
   // class for handling videos upload to AWS S3
   function MiniflixVideosUploader(selector, category) {
@@ -234,10 +250,9 @@ $(document).on('ready turbolinks:load', function() {
                 if (is_edit_page || is_edit_page == 'true') {
                   //$('.movie-trailer-submit-btn').attr("disabled", "disabled");
                 } 
-                  //var redirectUrl = $('#movie-id-container').data('redirect-path') || "/admin/movies/add_movie_details/" + upload.id;
-                  //Turbolinks.visit(redirectUrl);
-                  console.log('resolve ok');
-                  resolve('ok');
+                var redirectUrl = $('#movie-id-container').data('redirect-path') || "/admin/movies/add_movie_details/" + upload.id;
+                console.log('resolve ', redirectUrl);
+                resolve(redirectUrl);
               },
               error:function (xhr, ajaxOptions, thrownError) {
                 console.error('error',thrownError);

@@ -16,7 +16,7 @@
          data-next-stage-path="<%= wizard_path(:add_episode, slug: @serial.slug) %>"
          data-prev-stage-path="<%= wizard_path(:add_details, slug: @serial.slug) %>"
          data-is-edit-mode="true"
-         data-redirect-path="<%= next_wizard_path %>">
+         data-redirect-path="<%= next_wizard_path(slug: @serial.slug) %>">
     </div>
 
 
