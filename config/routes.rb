@@ -36,6 +36,7 @@ def provider_block
   resources :serials do
     collection do
       get :search
+      post 'select_season' => "serials#select_season", as: :select_season
       post 'save_uploaded_serial_trailer' => "serials#save_uploaded_serial_trailer", as: :save_uploaded_serial_trailer
     end
   end

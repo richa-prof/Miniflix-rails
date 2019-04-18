@@ -57,9 +57,17 @@ class Provider::SerialsController < ApplicationController
     @serials = Serial.all
   end
 
+  def select_season
+    session[:kind] = 'episode'
+    session[:current_season_id] = params[:season_id]
+    render json: {result: 'success'}
+  end
+
+
   def show
     #@s3_multipart = S3Multipart::Upload.find(@episode.s3_multipart_upload_id) if @episode&.s3_multipart_upload_id 
     #@movie_thumbnail = @episode&.movie_thumbnail || @episode&.build_movie_thumbnail
+
     case step
     when :add_details
       session[:movie_kind] = 'episode'
@@ -70,7 +78,8 @@ class Provider::SerialsController < ApplicationController
       return
     when :add_trailer
     when :add_episode
-      session[:current_serial_id] = @serial.id
+      session[:kind] = 'episode'
+      session[:current_season_id] = @serial.seasons&.first&.id
     when :add_screenshots
     when :add_thumbnails
       # " /provider/movies/upload_movie_trailer/" 
@@ -148,24 +157,30 @@ class Provider::SerialsController < ApplicationController
   end
 
   def update
-    params[:serial][:year] = params[:serial][:year].gsub("/", "-")
-    @success = @serial.update(serial_params)
-    create_serial_service if @success
+    @success = true
     case step
     when :add_details
       session[:movie_kind] = 'episode'
-    when :add_screenshots 
+      params[:serial][:year] = params[:serial][:year].gsub("/", "-") if params.dig(:serial, :year)
+      @success = @serial.update(serial_params)
+      create_serial_service if @success
+    when :add_screenshots
       begin
-         save_serial_thumbnails(@serial) if @success
+        save_serial_thumbnails(@serial)
+        flash[:success] ||= I18n.t('flash.serial.screenshots_added') 
       end
-    when :add_thumbnails 
+    when :add_thumbnails
+      begin
+        save_serial_thumbnails(@serial)
+        flash[:success] ||= I18n.t('flash.serial.thumbnails_added') 
+      end
     when :preview
     else
       Rails.logger.error "--- Uknown step: #{step} ----"
     end
     Rails.logger.debug "errors: #{@serial.errors}"
     if @success
-      flash[:success] = I18n.t('flash.serial.successfully_updated') 
+      flash[:success] ||= I18n.t('flash.serial.successfully_updated') 
     else
       flash[:error] = 'At least one error prevents Serial from being updated'
     end

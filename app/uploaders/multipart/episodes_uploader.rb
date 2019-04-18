@@ -51,25 +51,39 @@ class EpisodesUploader < ::MoviesUploader
     upload_location = upload.location
     file_type = MIME::Types.type_for(upload_location).first.content_type.split("/").last rescue nil
 
-    puts "saving video as Episode"
+    #puts "saving video as Episode"
 
-    @serial =  Serial.find_by(id: session[:current_serial_id]) || Serial.new
+    # @serial =  Serial.find_by(id: session[:current_serial_id]) || Serial.new
 
-    Rails.logger.debug session[:current_serial_id]
-    Rails.logger.debug @serial
+    # Rails.logger.debug session[:current_serial_id]
+    # Rails.logger.debug @serial
 
-    episode  = Serial.episodes&.order('updated_at desc')&.first 
-    episode.update(
-      s3_multipart_upload_id: upload.id,
-      uploader: upload.uploader,
-      film_video: upload_location,
-      video_size: upload.size,
-      video_format: file_type
-    )  #name: upload.name,
+    # episode  = Serial.episodes&.order('updated_at desc')&.first 
+    # episode.update(
+    #   s3_multipart_upload_id: upload.id,
+    #   uploader: upload.uploader,
+    #   film_video: upload_location,
+    #   video_size: upload.size,
+    #   video_format: file_type
+    # )  #name: upload.name,
 
 
-    episode.season_id = session[:episode_season_id]
-    episode.build_movie_thumbnail
-    episode.save(validate: false)
+    # episode.season_id = session[:episode_season_id]
+    # episode.build_movie_thumbnail
+    # episode.save(validate: false)
+
+
+    #movie_klass = session[:kind].humanize.constantize
+    puts "saving video as #{session[:kind]}"
+    @admin_movie = Episode.new( s3_multipart_upload_id: upload.id,
+                              uploader: upload.uploader,
+                              film_video: upload_location,
+                              name: upload.name,                              
+                              video_size: upload.size,
+                              video_format: file_type )
+    @admin_movie.season_id = session[:current_season_id] #if session[:movie_kind] == 'episode'
+    @admin_movie.build_movie_thumbnail
+    @admin_movie.save(validate: false)
+
   end
 end

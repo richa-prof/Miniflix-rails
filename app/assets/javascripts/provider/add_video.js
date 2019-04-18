@@ -66,12 +66,13 @@ $(document).on('turbolinks:load', function() {
   }
 
   MiniflixFileSelect.prototype.clickFileSelect = function(evt) {
+     var self = this;
      let ev = evt || window.event;
      let el = $(ev.target);
-     let inp = el.parent().parent().find('#video_file');
-     console.log('video input to click on', inp);
-     inp.click();
-     //self.fileInputElement.click();
+     //let inp = el.parent().parent().find('#video_file');
+     //console.log('video input to click on', inp);
+     //inp.click();
+     self.fileInputElement.click();
      return false;
   }
 
@@ -191,6 +192,23 @@ $(document).on('turbolinks:load', function() {
       return false;
   });
 
+  $('#season_id').on('change', function(ev) {
+    var evt = evt || window.event;
+    var sid = evt.target.value;
+    var setSeasonURL = $('.js-movie-paths').data('select-season-url');
+     $.ajax({
+      type: 'POST',
+      data: {season_id: sid},
+      url: setSeasonURL,
+      success: function(response) {
+        console.log('set season id response ', response);
+      },
+      error:function (xhr, ajaxOptions, thrownError) {
+        console.error('error',thrownError);
+      }
+    });
+  })
+
   // class for handling videos upload to AWS S3
   function MiniflixVideosUploader(selector, category) {
     var self = this;
@@ -272,7 +290,7 @@ $(document).on('turbolinks:load', function() {
                 if (is_edit_page || is_edit_page == 'true') {
                   //$('.movie-trailer-submit-btn').attr("disabled", "disabled");
                 } 
-                var redirectUrl = $('#movie-id-container').data('redirect-path') || "/admin/movies/add_movie_details/" + upload.id;
+                var redirectUrl = $('#movie-id-container').data('redirect-path') ;
                 console.log('resolve ', redirectUrl);
                 resolve(redirectUrl);
               },

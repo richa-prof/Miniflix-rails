@@ -14,9 +14,10 @@
          data-season-id="<%= @serial.seasons.first.id %>"
          data-video-upload-success-path=""
          data-trailer-upload-success-path="" 
-         data-next-stage-path="<%= wizard_path(:add_trailer, slug: @serial.slug) %>"
-         data-prev-stage-path="<%= wizard_path(:finalize, slug: @serial.slug) %>"
+         data-next-stage-path="<%= next_wizard_path(slug: @serial.slug) %>"
+         data-prev-stage-path="<%= previous_wizard_path(slug: @serial.slug) %>"
          data-is-edit-mode="true"
+         data-select-season-url="<%= select_season_provider_serials_path %>"
          data-redirect-path="<%= next_wizard_path(slug: @serial.slug) %>">
     </div>
 
