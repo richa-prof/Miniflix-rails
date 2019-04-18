@@ -79,7 +79,7 @@ class Provider::SerialsController < ApplicationController
       render :show
       return
     else
-      @movie_film_url = @episode.film_video  
+      @movie_film_url = @episode.film_video  # FIXME do we need this?
       render :show
       return
     end
@@ -162,7 +162,7 @@ class Provider::SerialsController < ApplicationController
          save_serial_thumbnails(@serial) if @success
       end
     when :add_thumbnails 
-    when :finalize
+    when :preview
     else
       Rails.logger.error "--- Uknown step: #{step} ----"
     end

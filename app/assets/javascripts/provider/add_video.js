@@ -165,8 +165,7 @@ $(document).on('turbolinks:load', function() {
       evt.preventDefault();
       var counter = window.files ? window.files + 1 : 1
       $('#episodes_wrapper').append($('.js-episode-template').html());
-
-      new MiniflixFileSelect('#episode' + counter + '_upload_wrapper .dropbox-advanced-upload'); 
+      new MiniflixFileSelect('#episode_upload_wrapper .dropbox-advanced-upload'); 
       window.lockTimer = null;
       return false;
   });

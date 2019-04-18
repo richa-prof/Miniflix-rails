@@ -15,7 +15,7 @@
                types: ["video/*"],
                html: %Q{} ) 
           %>
-         <div class="dropbox-controls">Drag file here or <a onclick="$('#video_file').click();">browse</a></div>
+         <div class="dropbox-controls">Drag file here or <a onclick="$(this).parent().find('#video_file').click();">browse</a></div>
         </div>
       </div>
 

@@ -41,15 +41,15 @@
         </div>
 
 
-        <div class="mt40 episodes">
+        <div class="mt40 episodes mb20 clearfix">
 
           <% @serial.episodes.each_with_index do |episode, idx| %>
             <div class="added-episode">
               <div class="episode-name pl20 pull-left" >
-                 <div><strong class="file-name"><%= (idx + 1).to_s %>.<%= episode.name %></strong></div>
+                 <div><strong class="file-name"><%= (idx + 1).to_s %>. <%= episode.name %></strong></div>
               </div>
               <div class="view-file-control pull-right">
-                <a title="Expand"><%= image_tag('provider/play.svg', alt: 'expand icon', class: "icon")  %></a>
+                <a title="Expand"><%#= image_tag('provider/plays.svg', alt: 'expand icon', class: "icon")  %><i class="fa fa-angle-right"></i></a>
               </div>
             </div>
           </div>
@@ -60,18 +60,20 @@
         <div class="mt40">
           <% new_episode = Episode.new %>
           <%= form_with model: new_episode, scope: 'movie', url: provider_movies_path, method: :post, class: 'pt40', local: true, multipart: true do |f| %>
-            <div id="episodes_wrapper">
-          </div>
-            <a href="#" id="add_new_episode"  data-disable-with="Adding ..." style="margin: 20px 12px;" class="js-add-episode"> + Add New Episode</a>
+            <div id="episodes_wrapper"></div>
+
+            <div>
+              <a href="#" id="add_new_episode"  data-disable-with="Adding ..." style="margin: 20px 12px;" class="js-add-episode"> + Add New Episode</a>
+            </div>
 
             <div class="form-footer mt40">
               <input type="button" id="upload_videos" data-disable-with="Saving..." style="width: 95%; margin: 20px 12px;" class="btn btn-flat btn-black" value="Continue" />
             </div>
           <% end %>
             
-            <div class="js-episode-template" style="display: none;">
-              <%= render( partial: 'upload_video', locals: { movie: new_episode } ) %>
-            </div>
+          <div class="js-episode-template" style="display: none;">
+            <%= render( partial: 'upload_video', locals: { movie: new_episode } ) %>
+          </div>
         </div>
       </div>
     </div>
@@ -87,7 +89,7 @@
   <% if @serial.episodes.empty? %>
     window.videoCategories = ['episode']; 
   <% else %>
-    window.videoCategories = ["<%= @serial.episodes.map {|e| 'episode'} %>"];
+    window.videoCategories = <%= @serial.episodes.map {|e| ('episode') }.to_json.html_safe %>;
   <% end %>
 </script>
 

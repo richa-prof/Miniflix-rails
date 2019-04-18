@@ -97,15 +97,18 @@
                                 <div class="dropdown-menu movie-actions" 
                                      style="overflow: show; min-height: 100px; padding: 10px; left: -50px; min-width: 120px;" aria-labelledby="dropdownMenuLink">
                                   <%= link_to provider_serial_path(serial.id) do %>
-                                    View on Miniflix
+                                     View on Miniflix
                                   <% end %><br/>
+                                  <%= link_to wizard_path(:preview, slug: serial.slug) do %>
+                                     Preview
+                                  <% end %><br/>                                  
                                    <%= link_to edit_provider_serial_path(serial.id, slug: serial.slug), data: { turbolinks: false } do %>
                                      Edit
                                   <% end %><br/>
                                   <%= link_to( provider_serial_path(serial.id),
                                            method: :delete,
                                            data: { confirm: t('confirm.are_you_sure') } ) do %>
-                                    Delete
+                                     Delete
                                     <% end %><br/>
                                 </div>
                               </div>
