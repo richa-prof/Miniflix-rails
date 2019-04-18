@@ -227,7 +227,7 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
   end
 
   def latest_movies
-    movies = Movie.order(created_at: :desc).limit(params[:limit])..map {|s| s&.format(mode: 'short')}.uniq
+    movies = Movie.order(created_at: :desc).limit(params[:limit]).map {|s| s&.format(mode: 'short')}.uniq
     response =  { code: "0",status: "Success" , movies: movies} #.as_json(api_user)}
     render json: response
   end

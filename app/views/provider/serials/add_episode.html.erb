@@ -27,7 +27,7 @@
     </div>
 
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-12 js-videos">
 
         <%= render partial: 'title_and_prev_link' %>
 
@@ -44,9 +44,13 @@
         <div class="mt40 episodes mb20 clearfix">
 
           <% @serial.episodes.each_with_index do |episode, idx| %>
-            <div class="added-episode">
+            <div class="js-added-episode js-video">
               <div class="episode-name pl20 pull-left" >
-                 <div><strong class="file-name"><%= (idx + 1).to_s %>. <%= episode.name %></strong></div>
+                <div>
+                  <span class="js-file-name" data-file-attached="true">
+                    <strong><%= (idx + 1).to_s %>. <%= episode.name %></strong>
+                  </span>
+                </div>
               </div>
               <div class="view-file-control pull-right">
                 <a class="episode-control" title="Expand" 
@@ -78,11 +82,13 @@
             </div>
           <% end %>
             
-          <div class="js-episode-template" style="display: none;">
-            <%= render( partial: 'upload_video', locals: { movie: new_episode } ) %>
-          </div>
         </div>
       </div>
+
+      <div class="js-episode-template" style="display: none;">
+        <%= render( partial: 'upload_video', locals: { movie: new_episode } ) %>
+      </div>
+
     </div>
   </div>
 

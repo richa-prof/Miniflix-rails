@@ -32,6 +32,7 @@ $(document).on('turbolinks:load', function() {
     self.uploadZone.parent().find('.rm-file-control').on('click', (ev) => self.handleFileRemove(ev));
     self.fileInputElement = self.uploadZone.find('input[type="file"]');
     self.fileInputElement.on('change', (ev) => self.handleFileSelect(ev));
+    self.uploadZone.find('.dropbox-controls a').on('click', (ev) => self.clickFileSelect(ev));
     window.mfxObjects['MiniflixFileSelect_' + self.bid] = true;
   }
 
@@ -53,14 +54,25 @@ $(document).on('turbolinks:load', function() {
     var ev = evt || window.event;
     ev.stopPropagation();
     ev.preventDefault();
-    var fileName = self.files ? self.files[0].name : $(ev.target).parent().parent().prev().find('.file-name').html();
+    var fileName = self.files ? self.files[0].name : $(ev.target).parent().parent().prev().find('.js-file-name').html();
     choice = confirm("Are you sure you want to delete file named '" + fileName + "' ?");
     if(choice) {
       self.uploadZone.find('input')[0].value = '';
       self.uploadZone.parent().find('.file-info').hide();
+      self.uploadZone.parent().find('.js-file-name').data('file-attached', false);
       self.uploadZone.show();
     }
     return false;
+  }
+
+  MiniflixFileSelect.prototype.clickFileSelect = function(evt) {
+     let ev = evt || window.event;
+     let el = $(ev.target);
+     let inp = el.parent().parent().find('#video_file');
+     console.log('video input to click on', inp);
+     inp.click();
+     //self.fileInputElement.click();
+     return false;
   }
 
   MiniflixFileSelect.prototype.handleFileSelect = function(evt) {
@@ -92,7 +104,7 @@ $(document).on('turbolinks:load', function() {
     }
     var out = [];
     for (var i = 0, f; f = self.files[i]; i++) {
-      out.push('<div><strong>', escape(f.name), '</strong></div>','<div>' + self.formatBytes(f.size) + '</div>');
+      out.push('<div><span class="js-file-name" data-file-attached="true"><strong>', escape(f.name), '</strong></span></div>','<div>' + self.formatBytes(f.size) + '</div>');
       window.files.push(f)      
     }
     self.uploadZone.parent().find('.about-file').html(out.join(''));
@@ -157,15 +169,24 @@ $(document).on('turbolinks:load', function() {
 
   $('#add_new_episode').on('click', function(evt) {
       if (window.lockTimer) {
-        return false;
+        return false; 
       }
       window.lockTimer = 1;
       var evt = evt || window.event;
       evt.stopPropagation();
       evt.preventDefault();
-      var counter = window.files ? window.files + 1 : 1
-      $('#episodes_wrapper').append($('.js-episode-template').html());
-      new MiniflixFileSelect('#episode_upload_wrapper .dropbox-advanced-upload'); 
+      let lastFile = $('.js-videos .js-file-name:last');
+      console.log(lastFile);
+      let lastFileAttached = lastFile.data('file-attached') == true;
+      // do not allow addition of few empty boxes for file upload
+      if (lastFileAttached || !lastFile.length) {
+        let counter = window.files ? window.files + 1 : 1
+        $('#episodes_wrapper').append($('.js-episode-template').html());
+        new MiniflixFileSelect('#episode_upload_wrapper:last .dropbox-advanced-upload'); 
+        // $('#episodes_wrapper').find('a.js-video-browse:last').on('click', (ev) => self.clickFileSelect(ev));
+      } else {
+        console.warn('skipping adding box for uploading video - use previous one!');
+      }
       window.lockTimer = null;
       return false;
   });
@@ -269,6 +290,8 @@ $(document).on('turbolinks:load', function() {
             resolve(nextPageURL);
           }
           //Turbolinks.visit(urlPrefix + upload.id + '?kind=' + kind);
+          // http://admin.lvh.me:3001/admin/episodes/new?serial_id=37&season_id=31233737
+          // <div class="js-movie-paths" style="display: none;" data-video-upload-success-path="/admin/movies/upload_movie_trailer/"></div>
         },
 
         onPause: function(key) {

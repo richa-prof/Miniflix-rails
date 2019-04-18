@@ -54,7 +54,11 @@ class EpisodesUploader < ::MoviesUploader
     puts "saving video as Episode"
 
     @serial =  Serial.find_by(id: session[:current_serial_id]) || Serial.new
-    episode  = Serial.episodes&.order('updated_at desc')&.first
+
+    Rails.logger.debug session[:current_serial_id]
+    Rails.logger.debug @serial
+
+    episode  = Serial.episodes&.order('updated_at desc')&.first 
     episode.update(
       s3_multipart_upload_id: upload.id,
       uploader: upload.uploader,

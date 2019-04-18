@@ -5,11 +5,14 @@
     <%= image_tag('provider/videofile.svg', alt: 'videofile icon', class: "icon")  %>
   </div>
   <div class="about-file pl20 pull-left" >
-    <% if movie&.film_video && category == 'video' %>
-      <div><strong><%= movie.film_video.split('%2F')[1] %></strong></div><div><%= movie.video_size %></div>
-    <% elsif movie&.movie_trailer && category == 'trailer' %>
-      <div><strong><%= movie.movie_trailer.file.split('%2F')[1] %></strong></div>
-    <% end %>
+      <div>
+      <% if movie&.film_video && category == 'video' %>
+          <span class="js-file-name"><strong> <%= movie.film_video.split('%2F')[1] %> </span></strong>
+          <span><%= movie.video_size %></span>
+      <% elsif movie&.movie_trailer && category == 'trailer' %>
+          <span class="js-file-name"><strong> <%= movie.movie_trailer.file.split('%2F')[1] %> </span></strong>
+      <% end %>
+     </div>
   </div>
   <div class="rm-file-control pull-right">
     <a title="Remove file"><%= image_tag('provider/delete.svg', alt: 'delete icon', class: "icon")  %></a>

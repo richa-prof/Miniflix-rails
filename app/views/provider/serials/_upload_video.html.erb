@@ -1,11 +1,11 @@
 <% is_edit_mode = local_assigns.has_key?(:is_edit_mode) ? is_edit_mode : false %>
 
-<div id="episode_upload_wrapper" class="row"> <!-- FIXME  add number to sequence -->
+<div id="episode_upload_wrapper" class="row js-video"> <!-- FIXME  add number to sequence -->
   <div class="col-md-12">
 
     <div style="margin: 20px 0">
 
-      <div class="dropbox-advanced-upload">
+      <div class="dropbox-advanced-upload"> <!-- do not change structure! -->
         <div class="file-upload">
           <%= multipart_uploader_form(
                input_name: 'video_file',
@@ -15,7 +15,9 @@
                types: ["video/*"],
                html: %Q{} ) 
           %>
-         <div class="dropbox-controls">Drag file here or <a onclick="$(this).parent().find('#video_file').click();">browse</a></div>
+         <div class="dropbox-controls">Drag file here or 
+           <a class="js-video-browse" href="">browse</a>
+         </div>
         </div>
       </div>
 
