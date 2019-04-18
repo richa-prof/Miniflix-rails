@@ -75,9 +75,6 @@ class Provider::SerialsController < ApplicationController
     when :add_thumbnails
       # " /provider/movies/upload_movie_trailer/" 
     when :preview
-      @admin_serial = @serial
-      render :show
-      return
     else
       @movie_film_url = @episode.film_video  # FIXME do we need this?
       render :show

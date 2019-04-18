@@ -1,6 +1,6 @@
 <% movie = @serial %>
 
-<section class="content-for-provider">
+<section class="content">
 <div class="row js-provider-video-upload-wrapper">
 
   <div class="col-lg-4 col-xs-12"></div>
@@ -49,7 +49,14 @@
                  <div><strong class="file-name"><%= (idx + 1).to_s %>. <%= episode.name %></strong></div>
               </div>
               <div class="view-file-control pull-right">
-                <a title="Expand"><%#= image_tag('provider/plays.svg', alt: 'expand icon', class: "icon")  %><i class="fa fa-angle-right"></i></a>
+                <a class="episode-control" title="Expand" 
+                   onclick="$(this).parent().parent().find('.js-episode-player').toggle(); $(this).find('i').toggleClass('fa-angle-down');">
+                   <%#= image_tag('provider/plays.svg', alt: 'expand icon', class: "icon")  %><i class="fa fa-angle-right"></i>
+                </a>
+              </div>
+              <div class="clearfix"></div>
+              <div class="js-episode-player mt20 mb20 text-center" style="display: none; overflow: visible; margin-left: auto;">
+                <%= render( partial: 'video_player', locals: { movie: episode, counter: idx } ) %>
               </div>
             </div>
           </div>
