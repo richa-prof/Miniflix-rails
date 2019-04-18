@@ -1,0 +1,38 @@
+<% movie = @serial %>
+<% thumbnail = serial.movie_thumbnail %>
+
+<section class="content-for-provider p20">
+
+<div class="row js-add-sshots-wrapper">
+
+  <div class="col-lg-4 col-xs-12"></div>
+  <div class="col-lg-4 col-xs-12 p20">
+
+  <%= render partial: 'title_and_prev_link' %>
+  
+  <%= form_for serial, scope: :serial, url: wizard_path(:add_thumbnails, slug: serial.slug), method: :put, local: true, class: 'pt40', html: {multipart: true} do |f| %>
+
+    <div class="form-group">
+        <div class="row">
+          <div class="col-md-9 col-sm-12">
+
+          <%= fields_for :movie_thumbnail, serial.movie_thumbnail, scope: :serial do |tf| %>
+            <%= render( partial: 'set_serial_thumbnails', locals: {thumbnail_fields: tf, thumbnail: thumbnail } ) %>
+          <% end %>
+
+            <div class="form-footer pt20">
+              <%= f.button 'Continue', class: "btn btn-flat btn-black", type: 'submit' %>
+            </div>
+
+          </div>
+        </div>
+    </div>
+
+  <% end %>
+
+  </div>
+
+  <div class="col-lg-4 col-xs-12"></div>
+
+</div>
+</section>
