@@ -12,7 +12,7 @@
 
         <%= link_to("#", class: 'movie-thumbnail-file-field-wrapper') do %>
           <div class="fileupload-new thumbnail">
-            <%= render_thumbnail_image_for( is_edit_mode, thumb.to_s, thumbnail.try(thumb) ) %>
+            <%= render_thumbnail_image_for_episode( is_edit_mode, thumb.to_s, thumbnail.try(thumb) ) %>
           </div>
         <% end %>
 
