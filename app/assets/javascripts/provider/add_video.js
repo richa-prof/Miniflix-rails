@@ -1,6 +1,7 @@
 $(document).on('turbolinks:load', function() {
 
-  // alt. way - analize body[data-page]
+
+   // alt. way - analize body[data-page]
   let invokePageList = ['/provider/serials/add_episode', '/provider/movies/add_video', '/provider/serials/add_trailer']
   if (invokePageList.indexOf(window.location.pathname) < 0) {
     return false;
@@ -158,13 +159,14 @@ $(document).on('turbolinks:load', function() {
       if (window.lockTimer) {
         return false;
       }
-      console.log('tp1', window.lockTimer);
       window.lockTimer = 1;
       var evt = evt || window.event;
       evt.stopPropagation();
       evt.preventDefault();
-       
+      var counter = window.files ? window.files + 1 : 1
       $('#episodes_wrapper').append($('.js-episode-template').html());
+
+      new MiniflixFileSelect('#episode' + counter + '_upload_wrapper .dropbox-advanced-upload'); 
       window.lockTimer = null;
       return false;
   });

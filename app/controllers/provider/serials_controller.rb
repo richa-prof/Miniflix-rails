@@ -8,7 +8,7 @@ class Provider::SerialsController < ApplicationController
   layout 'provider'
   
   skip_before_action :setup_wizard, only: [:edit, :destroy]
-  steps :add_details, :add_trailer, :add_episode, :preview
+  steps :add_details, :add_trailer, :add_episode, :add_screenshots, :add_thumbnails, :preview
 
   def index
     # direction switching happens in BE
@@ -70,6 +70,9 @@ class Provider::SerialsController < ApplicationController
       return
     when :add_trailer
     when :add_episode
+      session[:current_serial_id] = @serial.id
+    when :add_screenshots
+    when :add_thumbnails
       # " /provider/movies/upload_movie_trailer/" 
     when :preview
       @admin_serial = @serial
@@ -85,17 +88,18 @@ class Provider::SerialsController < ApplicationController
 
   # PATCH/PUT /provider/serial/1
   def update
+    @success = true
     case step
     when :add_details
       session[:movie_kind] = 'episode'
+      @success = @serial.update(serial_params)
     when :add_trailer
+    when :add_screenshots then @success= save_movie_thumbnails(@serial)
+    when :add_thumbnails then @success = save_movie_thumbnails(@serial)
     when :preview
     else
       Rails.logger.error "--- Uknown step: #{step} ----"
     end
-    @success = @serial.update(serial_params)
-    #@s3_multipart = S3Multipart::Upload.find(@serial.s3_multipart_upload_id) if @serial&.s3_multipart_upload_id  # FIXME!
-    #@movie_thumbnail = @serial&.movie_thumbnail || @serial.build_movie_thumbnail
     Rails.logger.debug "errors: #{@serial.errors}"
     if @success
       flash[:success] = I18n.t('flash.serial.successfully_updated') 
@@ -104,7 +108,7 @@ class Provider::SerialsController < ApplicationController
     end
     respond_to do |format|
       format.html {
-        if @serial.valid?
+        if @success
           previous_featured_film.try(:set_is_featured_film_false)
           redirect_to wizard_path(next_step, slug: @serial.slug)
           #redirect_to next_wizard_path(slug: @serial.slug), notice: I18n.t('flash.movie.successfully_updated')

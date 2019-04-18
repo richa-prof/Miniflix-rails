@@ -61,7 +61,6 @@
           <% new_episode = Episode.new %>
           <%= form_with model: new_episode, scope: 'movie', url: provider_movies_path, method: :post, class: 'pt40', local: true, multipart: true do |f| %>
             <div id="episodes_wrapper">
-            <%= render( partial: 'upload_video', locals: { movie: new_episode } ) %>
           </div>
             <a href="#" id="add_new_episode"  data-disable-with="Adding ..." style="margin: 20px 12px;" class="js-add-episode"> + Add New Episode</a>
 

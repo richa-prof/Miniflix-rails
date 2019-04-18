@@ -9,8 +9,7 @@
   <div class="col-lg-4 col-xs-12 p20">
 
   <%= render partial: 'title_and_prev_link' %>
-  
-  <%#= form_with model: movie, scope: 'movie', url: provider_movie_path(movie, slug: movie.slug), method: :put, class: 'pt40', multipart: true do |f| %>
+
   <%= form_for movie, scope: :movie, url: wizard_path(:add_screenshots, slug: movie.slug), method: :put, local: true, class: 'pt40', html: {multipart: true} do |f| %>
 
     <%= f.hidden_field :kind, value: movie.kind %>

@@ -1,4 +1,4 @@
-<% hide_next_link = (step == :finalize || session[:flow] == 'create' || !@serial.persisted?) %>
+<% hide_next_link =  !@serial.persisted? %>
 <% hide_prev_link ||= false %>
 
 <h3 class="provider-title"> 
