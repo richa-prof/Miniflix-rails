@@ -1,4 +1,13 @@
 
+$(document).on('ready turbolinks:load', function() {
+
+  var targetPages = ['/admin/movies/new', '/admin/movies/upload_movie_trailer', '/admin/episodes/new'];
+
+  var basePath = window.location.pathname.split('/').slice(0,4).join('/');
+  if (targetPages.indexOf(basePath) < 0) {
+    console.warn('skip upload_movies js code init for page', window.location.pathname);
+    return;
+  }
 
 // class 
 function MiniflixVideoUploader() {
@@ -179,12 +188,7 @@ MiniflixVideoUploader.prototype.bindOnMovieTrailerSubmit = function() {
   });
 };
 
-
-
-
-
-
-$(document).on('turbolinks:load', function() {
   console.log('>>>>> creating MiniflixVideoUploader >>>>>');
   new MiniflixVideoUploader();
+
 });

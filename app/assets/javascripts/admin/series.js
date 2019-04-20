@@ -1,4 +1,4 @@
-$(document).on('turbolinks:load', function() {
+$(document).on('ready turbolinks:load', function() {
 
   $('select#season_id').on('change', function(ev) {
     var el = ev.target || window.event.target;

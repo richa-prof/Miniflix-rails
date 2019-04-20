@@ -1,5 +1,5 @@
 
-$(document).on('turbolinks:load', function(ev) {
+$(document).on('ready turbolinks:load', function(ev) {
   
   console.warn('event:', ev.type);
   window.mfxObjects = window.mfxObjects || {};
@@ -7,10 +7,10 @@ $(document).on('turbolinks:load', function(ev) {
   // class 
   function MiniflixVideoPlayer(idx, el) {
     var self = this;
-    console.log(idx, el.id);
     self.bid = btoa(el.id);
     self.category = el.id.split('_')[0];
     if (window.mfxObjects['MiniflixVideoPlayer_' + self.bid]) {
+      console.log('skipping MiniflixVideoPlayer init - already have an instance');
       return false; // avoid init errors with Turbolinks
     }
     self.init(idx, el);
@@ -62,8 +62,10 @@ $(document).on('turbolinks:load', function(ev) {
       };
     } else {
       opts = {
-        file: self.trailerFileUrl,
-        sources: [{ file: self.trailerFileUrl }],
+#        file: self.trailerFileUrl,
+#        sources: [{ file: self.trailerFileUrl }],
+        file: self.originalFileUrl,
+        sources: [{ file: self.originalFileUrl }],
         allowscriptaccess: 'always',
         allownetworking: 'all'
       };

@@ -3,7 +3,6 @@
 //= require jquery.validate
 //= require jquery.validate.additional-methods
 //= require bootstrap-sprockets
-//= require bootstrap-fileinput.min
 
 //= require turbolinks
 //= require bootstrap-datepicker

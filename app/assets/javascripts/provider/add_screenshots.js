@@ -1,15 +1,17 @@
 $(document).on('ready turbolinks:load', function() {
 
   // alt. way - analize body[data-page]
-  if (['/provider/serials/add_screenshots', '/provider/movies/add_screenshots'].indexOf(window.location.pathname) < 0) {
-    return false;
+  var targetPages = ['/provider/serials/add_screenshots', '/provider/movies/add_screenshots', '/provider/serials/add_thumbnails', '/provider/movies/add_thumbnails']
+
+  var basePath = window.location.pathname.split('/').slice(0,4).join('/');
+  if (targetPages.indexOf(basePath) < 0) {
+    console.log('skip js code init for page', window.location.pathname);
+    return;
   }
 
   window.mfxObjects = window.mfxObjects || {};
   window.lockTimer = 0;
 
-
-  console.log('tp1')
 
   window.URL = window.URL || window.webkitURL;
 
@@ -114,5 +116,5 @@ $(document).on('ready turbolinks:load', function() {
     }, 1000)
   }
 
-
+  console.log('initialize code related to adding screenshots/thumbnails');
 });

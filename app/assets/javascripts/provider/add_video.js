@@ -1,10 +1,11 @@
-$(document).on('turbolinks:load', function() {
-
+$(document).on('ready turbolinks:load', function() {
 
    // alt. way - analize body[data-page]
-  let invokePageList = ['/provider/serials/add_episode', '/provider/movies/add_video', '/provider/serials/add_trailer']
-  if (invokePageList.indexOf(window.location.pathname) < 0) {
-    return false;
+  var targetPages = ['/provider/serials/add_episode', '/provider/movies/add_video', '/provider/serials/add_trailer']
+  var basePath = window.location.pathname.split('/').slice(0,4).join('/');
+  if (targetPages.indexOf(basePath) < 0) {
+    console.log('skip js code init for page', window.location.pathname);
+    return;
   }
 
   window.mfxObjects = window.mfxObjects || {};
@@ -67,9 +68,9 @@ $(document).on('turbolinks:load', function() {
 
   MiniflixFileSelect.prototype.clickFileSelect = function(evt) {
      var self = this;
-     let ev = evt || window.event;
-     let el = $(ev.target);
-     //let inp = el.parent().parent().find('#video_file');
+     var ev = evt || window.event;
+     var el = $(ev.target);
+     //var inp = el.parent().parent().find('#video_file');
      //console.log('video input to click on', inp);
      //inp.click();
      self.fileInputElement.click();
@@ -143,11 +144,11 @@ $(document).on('turbolinks:load', function() {
           console.log('returning url from submitVideos', url);
           return url;
         }
-        let category = window.videoCategories.shift();
+        var category = window.videoCategories.shift();
         console.log('creating uploader for ',category);
-        let uploader = new MiniflixVideosUploader('.js-provider-video-upload-wrapper', category); //  trailer
+        var uploader = new MiniflixVideosUploader('.js-provider-video-upload-wrapper', category); //  trailer
         uploader.submit().then((url) => {
-          let finalURL = submitVideos(url);
+          var finalURL = submitVideos(url);
           console.log('continue with', finalURL);
           // the last video uploader should return redirect url via promise
           if (finalURL && finalURL.length > 5) {
@@ -162,7 +163,7 @@ $(document).on('turbolinks:load', function() {
         });
       };
 
-      let url = submitVideos('go');
+      var url = submitVideos('go');
       return false;
   })
 
@@ -176,12 +177,12 @@ $(document).on('turbolinks:load', function() {
       var evt = evt || window.event;
       evt.stopPropagation();
       evt.preventDefault();
-      let lastFile = $('.js-videos .js-file-name:last');
+      var lastFile = $('.js-videos .js-file-name:last');
       console.log(lastFile);
-      let lastFileAttached = lastFile.data('file-attached') == true;
+      var lastFileAttached = lastFile.data('file-attached') == true;
       // do not allow addition of few empty boxes for file upload
       if (lastFileAttached || !lastFile.length) {
-        let counter = window.files ? window.files + 1 : 1
+        var counter = window.files ? window.files + 1 : 1
         $('#episodes_wrapper').append($('.js-episode-template').html());
         new MiniflixFileSelect('#episode_upload_wrapper:last .dropbox-advanced-upload'); 
         // $('#episodes_wrapper').find('a.js-video-browse:last').on('click', (ev) => self.clickFileSelect(ev));
@@ -303,7 +304,7 @@ $(document).on('turbolinks:load', function() {
             console.log("video upload --> " + up_file);
             console.log("Video file %d successfully uploaded", upload.key);
             $(".sys-message .success").append("Video has been uploaded successfully.");
-            let nextPageURL = $('.js-movie-paths').data('next-stage-path');
+            var nextPageURL = $('.js-movie-paths').data('next-stage-path');
             console.log('resolve ', nextPageURL);
             resolve(nextPageURL);
           }
@@ -323,7 +324,7 @@ $(document).on('turbolinks:load', function() {
 
         onError: function(err) {
           console.error("<<<<<< onError callback invoked :: error --> ", err);
-          let er = JSON.stringify(err);
+          var er = JSON.stringify(err);
           console.error("There was an error" + er);
           self.wrapper.find("#success_msg").hide();
           self.wrapper.find("#progress-bar").hide();
@@ -333,15 +334,10 @@ $(document).on('turbolinks:load', function() {
         },
 
         onProgress: function(num, size, done, percent, speed) {
-          let v_percent = parseFloat(percent).toFixed(0);
+          var v_percent = parseFloat(percent).toFixed(0);
           self.wrapper.find("#error_msg").hide();
           self.wrapper.find("#success_msg").hide();
           self.setProgress(parseInt(v_percent));
-          // $("#progress-bar").show();
-          // $("#v_u_progress_bar").css({'width': v_percent+'%'});
-          // $("#v_u_percent").empty().append(v_percent+'%');
-          // $("#on_progress").empty().append("File is "+v_percent+" percent and  done--> "+done);
-          //console.log("File %s is %d percent done (%f of %f total) and uploading at %s bytes/s", window.files[num], v_percent, done, size, speed);
         }
       });
 
@@ -351,5 +347,5 @@ $(document).on('turbolinks:load', function() {
 });
 
 $(document).on('turbolinks:before-cache', function () {
-    console.warn('--- turbolinks:befor-cache fired ---');
+    console.log('--- turbolinks:befor-cache fired ---');
 });

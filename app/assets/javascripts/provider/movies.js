@@ -1,4 +1,12 @@
-$(document).on('ready turbolinks:load', function() {
+$(document).on('ready', function() {
+
+  var targetPages = ['/provider/movies', '/provider/serials'];
+  var basePath = window.location.pathname.split('/').slice(0,4).join('/');
+
+  if (targetPages.indexOf(basePath) < 0) {
+    console.log('skip js code init for page', window.location.pathname);
+    return;
+  }
 
   window.lockTimer = 0;
 
@@ -58,4 +66,5 @@ $(document).on('ready turbolinks:load', function() {
     }, 400);
   });
 
+  console.log('initialize code for movies/serials listing page');
 });

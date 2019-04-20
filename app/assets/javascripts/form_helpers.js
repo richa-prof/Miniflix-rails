@@ -18,6 +18,8 @@ var initValidators = function() {
     });
   };
 
+//  only for provider UI !!
+/*
   window.previewImageForInput = function(input) {
     if (input.files && input.files[0]) {
       var reader = new FileReader();
@@ -28,6 +30,7 @@ var initValidators = function() {
       reader.readAsDataURL(input.files[0]);
     }
   }
+*/
 
   bindChangeEventOnMovieThumbnailFileFields = function() {
     $(".movie-thumbnail-file-field")
@@ -35,7 +38,7 @@ var initValidators = function() {
       .on("change", function(event) {
         var fileFieldId = $(this).attr("id");
         validFile(fileFieldId);
-        previewImageForInput(this);
+        //previewImageForInput(this); // FIXME: only for provider
       });
   };
 

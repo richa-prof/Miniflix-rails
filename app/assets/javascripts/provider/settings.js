@@ -1,6 +1,10 @@
 $(document).on('ready turbolinks:load', function() {
 
-  if (window.location.pathname != '/provider/settings') {
+  var targetPages = ['/provider/settings'];
+
+  var basePath = window.location.pathname.split('/').slice(0,4).join('/');
+  if (targetPages.indexOf(basePath) < 0) {
+    console.log('skip js code init for page', window.location.pathname);
     return;
   }
 
@@ -36,6 +40,8 @@ $(document).on('ready turbolinks:load', function() {
   if (tabName.length) {
     $('.settings-menu .nav-item a.nav-link[href="' + tabName + '"]').trigger('click');    
   }
+
+   console.log('init code for settings page');
 
 });
 

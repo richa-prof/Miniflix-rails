@@ -97,6 +97,9 @@ $(document).on('ready turbolinks:load', function() {
       tickDecimals: 0
     }
   });
+
+ console.log('init code for dashboard page');
+
 }
   /* END BAR CHART */
 
