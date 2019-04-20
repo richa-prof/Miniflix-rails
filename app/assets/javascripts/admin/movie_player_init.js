@@ -62,15 +62,15 @@ $(document).on('ready turbolinks:load', function(ev) {
       };
     } else {
       opts = {
-#        file: self.trailerFileUrl,
-#        sources: [{ file: self.trailerFileUrl }],
+//      file: self.trailerFileUrl,
+//      sources: [{ file: self.trailerFileUrl }],
         file: self.originalFileUrl,
         sources: [{ file: self.originalFileUrl }],
         allowscriptaccess: 'always',
         allownetworking: 'all'
       };
     }
-    console.log('options for ', self.category, opts)
+    console.log('jwPlayer options for ', self.category, opts)
     videoPlayerInstance.setup(opts);
   }
 
@@ -78,7 +78,6 @@ $(document).on('ready turbolinks:load', function(ev) {
   MiniflixVideoPlayer.prototype.jwPlayerSetupError = function() {
     jwplayer().on('setupError',function(er){
       $('.full-screen-play').removeClass('full-screen-play');
-      //$('#err-player').html('<div class="alert alert-danger alert-dismissible" style="margin-top: 12px;"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+ er.message +'</div>');
     });
   };
 
@@ -96,8 +95,8 @@ $(document).on('ready turbolinks:load', function(ev) {
   };
 
 
-  console.warn('----- setting up video players with jwPlayer ------');
   $('.js-video-layer').each(function(idx, el) {
+    console.warn('----- setting up video player with jwPlayer ------');
     new MiniflixVideoPlayer(idx, el);
   });
 
