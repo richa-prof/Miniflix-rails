@@ -83,11 +83,19 @@ class Serial < ApplicationRecord
   end
 
   def mark_as_liked_by_user(user)
-    user.liked_serials << self
+    if user.liked_serials.find_by(id: id)
+      p 'tp1'
+      user.liked_serials.delete(id)
+    else
+      p 'tp2'
+      user.liked_serials << self
+    end
   end
 
   def is_liked_by_user?(user)
-    user_likes.include? user
+    return false unless user
+    user.liked_serials.find_by(id: id).present?
+    #user_likes.include? user
   end
 
   def compact_response
@@ -102,7 +110,7 @@ class Serial < ApplicationRecord
       seasons_data: seasons_list,
       screenshot: screenshot_list,
       type: ENTRY_TYPE,
-      trailer: movie_trailer&.file || ''
+      trailer: movie_trailer&.file
     }
   end
 
@@ -115,7 +123,7 @@ class Serial < ApplicationRecord
         director: directed_by.to_s, 
         description: description.to_s, 
         audio: language.to_s,
-        isLiked: true,  # is_liked_by_user?(user),
+        isLiked: is_liked_by_user?(user),
         stars: star_cast.to_s,
         seasons: seasons_extended_list
       )

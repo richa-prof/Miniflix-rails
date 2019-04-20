@@ -52,20 +52,7 @@ class Api::Vm1::SerialsController < Api::Vm1::ApplicationController
   # /serials/myList
   def my_list
     begin
-      data = []
-      #valid_user = api_user.try(:check_login) || false
-      fav_serials_ids  = []
-      #p "my_list, api_user: #{api_user.inspect}"
-      #raise 'User not found or not logged in' unless valid_user
-      data = api_user.liked_serials.map {|s| s&.format(mode: 'compact')}
-      # api_user.favorite_episodes.limit(limit).offset(params[:skip].to_i).each do |ep|
-      #    fav_serials_ids << ep.season&.serial&.id if ep.kind == 'episode'
-      # end
-      # p fav_serials_ids
-      # fav_serials = Serial.where("id in (:ids)", ids: fav_serials_ids.uniq)
-      # fav_serials.each do |serial|
-      #   data << serial.format(mode: 'compact')
-      # end
+      data = api_user.liked_serials.limit(limit).offset(params[:skip].to_i).uniq.map {|s| s&.format(mode: 'compact')}
       api_response =  {:code => "0", :status => "Success", data: data}
     rescue Exception => e
       api_response = {:code => "-1",:status => "Error",:message => e.message}
@@ -153,12 +140,11 @@ class Api::Vm1::SerialsController < Api::Vm1::ApplicationController
   # /serials/getEpisodeDetails
   def get_episode_details
     begin
-      #valid_user = api_user.try(:check_login) || false
       episode = Episode.find(params[:episode_id])
       data = {
         serial: episode.season.serial.format(mode: 'compact'),
         selected_episode: episode.format(mode: 'full'),
-        next_episodes: episode.next&.map {|ep| ep.format('full')}
+        next_episodes: episode.next&.map {|ep| ep.format(mode: 'full')}
       } 
       api_response =  {:code => "0", :status => "Success", data: data}
     rescue Exception => e

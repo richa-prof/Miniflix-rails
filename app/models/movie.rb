@@ -68,6 +68,7 @@ class Movie < ApplicationRecord
 
   scope :featured, -> { where(is_featured_film: true) }
   scope :episodes, -> { where(kind: 'episode') }
+  scope :my_movies, -> (user) { joins(:user_filmlists).where('user_filmlists.user_id = ?', user.id) }
 
   # DELIGATES
   delegate :name, to: :genre, prefix: :genre,  allow_nil: true
@@ -265,10 +266,17 @@ class Movie < ApplicationRecord
     (self.user_filmlists.find_by_user_id user_id).present?
   end
 
-  def as_json(options=nil)
-    case options
+  def as_json(mode = nil)
+    case mode
     when "full_movie_detail"
-      return super(except: [:created_at, :updated_at, :version_file, :uploader, :s3_multipart_upload_id]).merge(movie_screenshot: movie_screenshot_list, captions: self.movie_captions.map(&:as_json), film_video: fetch_movie_urls, genre_name: genre_name)
+      return super(except: [
+        :created_at, :updated_at, :version_file, :uploader, :s3_multipart_upload_id
+      ]).merge(
+        movie_screenshot: screenshot_list,
+        captions: self.movie_captions.map(&:as_json),
+        film_video: film_video_map,
+        genre_name: genre_name
+      )
     when "genre_wise_list"
       return super(only: [:id, :name, :admin_genre_id]).merge(movie_screenshot: movie_screenshot_list)
     when 'genres_with_latest_movie'
@@ -279,6 +287,7 @@ class Movie < ApplicationRecord
     end
   end
 
+  # invalid ? use film_video_map instead
   def fetch_movie_urls
     movie_urls = {}
     movie_urls[:hls] = ENV['VERSION_FILE_CLOUD_FRONT_URL'] + version_file if version_file.present?
@@ -288,6 +297,7 @@ class Movie < ApplicationRecord
     movie_urls
   end
 
+  # invalid? use screenshot_list instead
   def movie_screenshot_list
     movie_thumbnail ? movie_thumbnail.screenshot_urls_map : {}
   end
@@ -365,12 +375,12 @@ class Movie < ApplicationRecord
       video_480: '',
       video_320: ''
     }
+    upload_host = film_video.split('/').slice(0,3).join('/') if film_video
     movie_versions.each do |mv|
-      h["video_#{mv.resolution}".to_sym] = mv.film_video.to_s
+      h["video_#{mv.resolution}".to_sym] = film_video ? "#{upload_host}/#{mv.film_video}" : ''
     end
     h
   end
-
 
   def format(mode: nil)
     case mode
@@ -378,6 +388,13 @@ class Movie < ApplicationRecord
       compact_response
     when 'short'
       short_response
+    when 'full'
+      short_response.merge!(
+        admin_genre_id: admin_genre_id,
+        captions: movie_captions.map(&:as_json),
+        trailer: movie_trailer&.file
+      )
+      # super(except: [:created_at, :updated_at, :version_file, :uploader, :s3_multipart_upload_id]).merge(movie_screenshot: movie_screenshot_list, captions: self., film_video: fetch_movie_urls, genre_name: genre_name)
     else # 'browse'
       compact_response.merge!(
        film_video: film_video_map,

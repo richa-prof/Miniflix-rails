@@ -102,7 +102,7 @@ class Api::Vm1::GenresController < Api::Vm1::ApplicationController
       @genre = Genre.find(params[:id])
       if @genre
         @movies = @genre.movies.order(created_at: :desc).offset(params[:offset]).limit(params[:limit]).map {|s| s&.format(mode: 'short')}.uniq
-        @genre = {id: @genre.id,name: @genre.name,color: @genre.color.to_s, movies: @movies)}
+        @genre = {id: @genre.id,name: @genre.name,color: @genre.color.to_s, movies: @movies}
         @response = { code: "0",status: "Success",message: "Successfully genere with movie found",genre: @genre}
       else
         @response = { code: "1",status: "Error",message: "No any genres found"}

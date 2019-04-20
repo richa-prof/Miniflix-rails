@@ -14,7 +14,12 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
     begin
       movie = Movie.find(params[:id])
       valid_payment = api_user.try(:check_login) || false
-      movie_hash = movie.as_json("full_movie_detail").merge(is_valid_payment: valid_payment, is_active: movie.movie_view_by_user?(api_user.try(:id)), last_stopped: last_stopped)
+      movie_hash = movie.as_json("full_movie_detail").merge(
+        is_valid_payment: valid_payment, 
+        is_active: movie.movie_view_by_user?(api_user.try(:id)),
+        last_stopped: last_stopped,
+        trailer: movie.movie_trailer&.file
+      )
       api_response = { code: "0",status: "Success",message: "Successfully  movie details found", movie: movie_hash }
     rescue Exception => e
       api_response = {:code => "-1",:status => "Error",:message => e.message, movie: []}
@@ -27,7 +32,7 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
       if params[:movie_name]
         @movies = Movie.where("lower(name) LIKE (?) ","%#{params[:movie_name].downcase}%").offset(params[:offset]).limit(params[:limit])
         if @movies.present?
-          @response = { code: "0",status: "Success",message: "Successfully  movie found", movies: @movies.as_json}
+          @response = { code: "0",status: "Success",message: "Successfully  movie found", movies: @movies.map {|m| m.format(mode: 'short') }} #.as_json}
         else
           @response = { code: "0",status: "Success",message: "Not found",  movies: [] }
         end
@@ -93,9 +98,20 @@ class Api::Vm1::MoviesController < Api::Vm1::ApplicationController
 
   def my_list_movies
     begin
-      my_movies = Movie.joins(:user_filmlists).where('user_filmlists.user_id = ?', api_user.id).order('user_filmlists.created_at DESC').offset(params[:offset]).limit(params[:limit])
+      my_movies = Movie.my_movies(api_user).order('user_filmlists.created_at DESC').offset(params[:offset]).limit(params[:limit])
       if my_movies.present?
-        api_response = { code: "0",status: "Success",message: "Successfully get all movies for my list", my_movies: my_movies.as_json(api_user)}
+        valid_payment = api_user.try(:check_login) || false
+        user_video_last_stop = api_user.user_video_last_stops.find_by(admin_movie_id: params[:id]) if api_user
+        last_stopped = (user_video_last_stop.present? ? user_video_last_stop.last_stopped : 0)
+        out = my_movies.map do |movie|
+          movie.as_json("full_movie_detail").merge(
+            is_valid_payment: valid_payment, 
+            is_active: movie.movie_view_by_user?(api_user&.id),
+            last_stopped: last_stopped,
+            trailer: movie.movie_trailer&.file
+          )
+        end
+        api_response = { code: "0",status: "Success",message: "Successfully get all movies for my list", my_movies: out}
       else
         api_response = { code: "0",status: "Success",message: "No any my list movie found",   my_movies: []}
       end

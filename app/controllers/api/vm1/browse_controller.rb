@@ -55,7 +55,7 @@ class Api::Vm1::BrowseController < Api::Vm1::ApplicationController
   def get_data_for_new
     begin
       serials = Serial.fetch_new_serials(limit: limit, offset: params[:skip].to_i).uniq.map{|s| s.format(mode: 'compact')}
-      movies = Movie.new_entries.map{|m| m.format(mode: 'compact')}
+      movies = Movie.new_entries.offset(params[:skip].to_i).map{|m| m.format(mode: 'compact')}
       api_response =  {:code => "0", :status => "Success", data: serials + movies}
     rescue Exception => e
       api_response = {:code => "-1",:status => "Error",:message => e.message}
@@ -70,7 +70,7 @@ class Api::Vm1::BrowseController < Api::Vm1::ApplicationController
     begin
       data = []
       serials = Serial.fetch_recent_watched_serials(limit: limit, offset: params[:skip].to_i).uniq.map{|s| s.format(mode: 'compact')}
-      movies = Movie.recently_watched.map{|m| m.format(mode: 'compact')}
+      movies = Movie.recently_watched.offset(params[:skip].to_i).map{|m| m.format(mode: 'compact')}
       api_response =  {:code => "0", :status => "Success", data: serials + movies}
     rescue Exception => e
       api_response = {:code => "-1",:status => "Error",:message => e.message}
