@@ -10,7 +10,7 @@ $(document).on('ready turbolinks:load', function(ev) {
   var bp2 = window.location.pathname.split('/');
   bp2.splice(3,1);
   basePath2 = bp2.join('/');
-  console.log(basePath1, basePath2);
+  // console.log(basePath1, basePath2);
 
   if (targetPages.indexOf(basePath1) < 0 && targetPages.indexOf(basePath2) < 0) {
     console.warn('skip add_screenshot js code init for page', window.location.pathname);

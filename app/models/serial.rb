@@ -89,10 +89,8 @@ class Serial < ApplicationRecord
 
   def mark_as_liked_by_user(user)
     if user.liked_serials.find_by(id: id)
-      p 'tp1'
       user.liked_serials.delete(id)
     else
-      p 'tp2'
       user.liked_serials << self
     end
   end
@@ -138,22 +136,12 @@ class Serial < ApplicationRecord
   def self.fetch_new_serials(limit: PER_PAGE, offset: 0)
     new_episodes = Episode.new_entries
     Rails.logger.debug "new_episodes: #{new_episodes.inspect}"
-    out = new_episodes.map {|ep| ep.season&.serial}.compact.uniq
-    Rails.logger.debug "new serials: #{out}"
-    out
-  end
-
-  def self.fetch_new_serials(limit: PER_PAGE, offset: 0)
-    new_episodes = Episode.new_entries
-    Rails.logger.debug "new_episodes: #{new_episodes.inspect}"
-    out = new_episodes.map {|ep| ep.season&.serial}.compact.uniq
-    Rails.logger.debug "new serials: #{out}"
-    out
+    sids = new_episodes.map {|ep| ep.season&.admin_serial_id}.compact.uniq
+    Serial.where("id in (:ids)", ids: sids).order('updated_at desc').limit(limit).offset(offset)
   end
 
   def self.fetch_recent_watched_serials(limit: PER_PAGE, offset: 0)
     recent_episodes = Episode.recently_watched
-    #p "recent_episodes: #{recent_episodes.inspect}"    
     recent_episodes.map {|ep| ep.season&.serial}.compact
   end
 
@@ -161,8 +149,7 @@ class Serial < ApplicationRecord
     #q = "INNER JOIN (SELECT admin_movie_id, COUNT(*) AS cnt FROM user_video_last_stops GROUP BY admin_movie_id ORDER BY cnt DESC LIMIT 100) AS top_watched ON admin_movies.id = top_watched.admin_movie_id"
     #joins(q).limit(limit).offset(offset)
     top_watched_episodes = Episode.top_watched  
-    #p "top_watched_episodes: #{top_watched_episodes.count}"
-    top_watched_episodes.map {|ep| ep.season&.serial}.compact
+    top_watched_episodes.map {|ep| ep.season&.serial}.compact.uniq
   end
 
   def self.collect_genres_data(mode: nil)
