@@ -38,6 +38,8 @@ var initValidators = function() {
       .on("change", function(event) {
         var fileFieldId = $(this).attr("id");
         validFile(fileFieldId);
+        console.log('on movie-thumbnail-file-field change');
+        return false;
         //previewImageForInput(this); // FIXME: only for provider
       });
   };
@@ -48,6 +50,7 @@ var initValidators = function() {
       .on("click", function(event) {
         var targetObj = $(this).siblings(".movie-thumbnail-file-field");
         targetObj.click();
+        return false;
       });
   };
 

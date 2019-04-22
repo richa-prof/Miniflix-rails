@@ -15,3 +15,4 @@
 //= require s3_multipart_modified
 //= require jquery.mask
 
+//= require shared/add_screenshots

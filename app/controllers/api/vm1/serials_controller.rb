@@ -8,7 +8,7 @@ class Api::Vm1::SerialsController < Api::Vm1::ApplicationController
 
   # /serials/getData
   def get_data
-    begin
+    #begin
       data = {
         topSerials: Serial.fetch_top_watched_serials(limit: limit).map {|s| s&.format(mode: 'compact')}.uniq,
         recentlyWatched:  Serial.fetch_recent_watched_serials(limit: limit).map {|s| s&.format(mode: 'compact')}.uniq,
@@ -16,9 +16,9 @@ class Api::Vm1::SerialsController < Api::Vm1::ApplicationController
         genres: Serial.collect_genres_data
       }
       api_response = {code: "0", status: "Success", data: data}
-    rescue Exception => e
-      api_response = {code: "-1", status: "Error", message: e.message}
-    end
+    #rescue Exception => e
+    #  api_response = {code: "-1", status: "Error", message: e.message}
+    #end
     render json: api_response
   end
 

@@ -1,4 +1,4 @@
-$(document).on('ready', function() {
+$(document).on('ready turbolinks:load', function() {
 
   var targetPages = ['/provider/movies', '/provider/serials'];
   var basePath = window.location.pathname.split('/').slice(0,4).join('/');

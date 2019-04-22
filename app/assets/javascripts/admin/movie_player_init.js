@@ -1,7 +1,6 @@
 
 $(document).on('ready turbolinks:load', function(ev) {
   
-  console.warn('event:', ev.type);
   window.mfxObjects = window.mfxObjects || {};
 
   // class 
@@ -96,7 +95,7 @@ $(document).on('ready turbolinks:load', function(ev) {
 
 
   $('.js-video-layer').each(function(idx, el) {
-    console.warn('----- setting up video player with jwPlayer ------');
+    console.warn('----- setting up video player with jwPlayer on event ', ev.type);
     new MiniflixVideoPlayer(idx, el);
   });
 

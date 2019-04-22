@@ -129,12 +129,15 @@ class Movie < ApplicationRecord
                    .order("total_watches DESC")
 
       return movies_arr unless target_count.present?
-
       movies_arr.first(target_count)
     end
 
+    def new_entries_for_user(user: nil, limit: nil, offset: 0)
+      where("id not in (:list)", list: UserVideoLastStop.pluck(:id).uniq).order("updated_at desc").limit(limit).offset(offset)
+    end
+
     def new_entries(limit: PER_PAGE, offset: 0)
-      where("id not in (:list)", list: UserVideoLastStop.pluck(:id).uniq).order(:updated_at).limit(limit).offset(offset)
+      order("updated_at desc").limit(limit).offset(offset)
     end
 
     def recently_watched(limit: PER_PAGE, offset: 0)
@@ -171,7 +174,8 @@ class Movie < ApplicationRecord
     # FIXME
     return unless s3_multipart_upload_id
     s3_upload = S3Multipart::Upload.find(movie.s3_multipart_upload_id)
-    folder_environment_name =  "streaming_#{Rails.env}"
+    #folder_environment_name =  "streaming_#{Rails.env}"
+    folder_environment_name =  "streaming_development"
     output_key_prefix = "#{folder_environment_name}/#{movie.id.to_s}/"
     new_file_name = fetch_movie_file_name(s3_upload.name)
 

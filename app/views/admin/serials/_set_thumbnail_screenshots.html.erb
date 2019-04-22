@@ -13,6 +13,7 @@
           <div class="fileupload-new thumbnail">
             <%= render_thumbnail_image_for_episode( is_edit_mode, thumb.to_s, thumbnail.try(thumb) ) %>
           </div>
+          <div class="fileupload-preview fileupload-exists thumbnail"></div>
         <% end %>
 
         <%= thumbnail_fields.file_field(

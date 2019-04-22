@@ -66,9 +66,14 @@ class Serial < ApplicationRecord
       thumb640: "",
       thumb800: ""
     }
-    episodes.each do |ep|
-      out.merge!(ep.movie_thumbnail.screenshot_urls_map)
+    if serial_thumbnail
+      out.merge! serial_thumbnail.screenshot_urls_map
+    else
+      Rails.logger.error "SerialThumbnail not exist for Serial #{id} !!"
     end
+    # episodes.each do |ep|
+    #   out.merge!(ep.movie_thumbnail.screenshot_urls_map)
+    # end
     out
   end
 
@@ -131,20 +136,31 @@ class Serial < ApplicationRecord
   end
 
   def self.fetch_new_serials(limit: PER_PAGE, offset: 0)
-    new_episodes = Episode.new_entries #where("id not in (:list)", list: UserVideoLastStop.pluck(:id).uniq).order(:updated_at).limit(limit).offset(offset)
-    p "new_episodes: #{new_episodes.inspect}"
-    new_episodes.map {|ep| ep.season&.serial}.compact
+    new_episodes = Episode.new_entries
+    Rails.logger.debug "new_episodes: #{new_episodes.inspect}"
+    out = new_episodes.map {|ep| ep.season&.serial}.compact.uniq
+    Rails.logger.debug "new serials: #{out}"
+    out
+  end
+
+  def self.fetch_new_serials(limit: PER_PAGE, offset: 0)
+    new_episodes = Episode.new_entries
+    Rails.logger.debug "new_episodes: #{new_episodes.inspect}"
+    out = new_episodes.map {|ep| ep.season&.serial}.compact.uniq
+    Rails.logger.debug "new serials: #{out}"
+    out
   end
 
   def self.fetch_recent_watched_serials(limit: PER_PAGE, offset: 0)
-    recent_episodes = Episode.recently_watched #where("id in (:list)", list: UserVideoLastStop.order(:updated_at).pluck(:id).uniq).order(:updated_at).limit(limit).offset(offset)
+    recent_episodes = Episode.recently_watched
     #p "recent_episodes: #{recent_episodes.inspect}"    
     recent_episodes.map {|ep| ep.season&.serial}.compact
   end
 
   def self.fetch_top_watched_serials(limit: PER_PAGE, offset: 0)
     #q = "INNER JOIN (SELECT admin_movie_id, COUNT(*) AS cnt FROM user_video_last_stops GROUP BY admin_movie_id ORDER BY cnt DESC LIMIT 100) AS top_watched ON admin_movies.id = top_watched.admin_movie_id"
-    top_watched_episodes = Episode.top_watched  #joins(q).limit(limit).offset(offset)
+    #joins(q).limit(limit).offset(offset)
+    top_watched_episodes = Episode.top_watched  
     #p "top_watched_episodes: #{top_watched_episodes.count}"
     top_watched_episodes.map {|ep| ep.season&.serial}.compact
   end

@@ -26,7 +26,7 @@ class Admin::EpisodesController < ApplicationController
     @admin_movie.season_id = params[:season_id]
     @admin_movie.build_movie_thumbnail
     session[:movie_kind] = 'episode'
-    session[:episode_season_id] = params[:season_id]
+    session[:current_season_id] = params[:season_id]
   end
 
   # GET /admin/episodes/1/edit

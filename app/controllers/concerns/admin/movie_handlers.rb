@@ -60,7 +60,7 @@ module Admin::MovieHandlers
 
   def add_movie_details
     movie_trailer = MovieTrailer.find_by_s3_multipart_upload_id(params[:id])
-    @admin_movie = movie_trailer.movie
+    @admin_movie = movie_trailer&.movie
     @s3_multipart = S3Multipart::Upload.find(@admin_movie.s3_multipart_upload_id)
   end
 
