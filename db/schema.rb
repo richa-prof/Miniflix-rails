@@ -50,7 +50,9 @@ ActiveRecord::Schema.define(version: 20190403014023) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "thumbnail_800_screenshot"
+    t.bigint "admin_serial_id"
     t.index ["admin_movie_id"], name: "index_admin_movie_thumbnails_on_admin_movie_id"
+    t.index ["admin_serial_id"], name: "index_admin_movie_thumbnails_on_admin_serial_id"
   end
 
   create_table "admin_movies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -121,13 +123,14 @@ ActiveRecord::Schema.define(version: 20190403014023) do
   end
 
   create_table "admin_serial_thumbnails", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer "admin_serial_id"
+    t.bigint "admin_serial_id"
     t.string "serial_screenshot_1"
     t.string "serial_screenshot_2"
     t.string "serial_screenshot_3"
     t.string "thumbnail_screenshot"
     t.string "thumbnail_640_screenshot"
     t.string "thumbnail_800_screenshot"
+    t.index ["admin_serial_id"], name: "index_admin_serial_thumbnails_on_admin_serial_id"
   end
 
   create_table "admin_serials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -337,16 +340,16 @@ ActiveRecord::Schema.define(version: 20190403014023) do
     t.index ["entity_type", "entity_id"], name: "index_rates_on_entity_type_and_entity_id"
   end
 
-  create_table "s3_multipart_uploads", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "s3_multipart_uploads", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "location"
     t.string "upload_id"
     t.string "key"
     t.string "name"
     t.string "uploader"
     t.integer "size"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.text "context"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "seasons", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -499,8 +502,10 @@ ActiveRecord::Schema.define(version: 20190403014023) do
   add_foreign_key "addresses", "users"
   add_foreign_key "admin_movie_captions", "admin_movies"
   add_foreign_key "admin_movie_thumbnails", "admin_movies"
+  add_foreign_key "admin_movie_thumbnails", "admin_serials"
   add_foreign_key "admin_movies", "admin_genres"
   add_foreign_key "admin_movies", "seasons"
+  add_foreign_key "admin_serial_thumbnails", "admin_serials"
   add_foreign_key "admin_serials", "admin_genres"
   add_foreign_key "blogs", "users"
   add_foreign_key "comments", "blogs"

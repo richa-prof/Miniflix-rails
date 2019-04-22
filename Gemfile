@@ -5,7 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-ruby '2.5.0'
+ruby '2.5.3'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 
 # do not update to Rails 5.2.2 - it causes wrong rendering of sidebar in admin!
@@ -96,7 +96,7 @@ gem 'omniauth-twitter'
 #for shorten url and tracking
 gem 'bitly'
 
-# For creating pretty URL’s and work with human-friendly strings as if they were numeric ids for ActiveRecord models.
+# For creating pretty URLï¿½s and work with human-friendly strings as if they were numeric ids for ActiveRecord models.
 gem 'friendly_id', '~> 5.2.3'
 
 #valiation for phone number

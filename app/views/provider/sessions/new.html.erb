@@ -1,11 +1,10 @@
 <div class="login-box">
 
   <div class="login-box-body">
-    <div class="login-logo mb20">
-      <div class="mb20"><%= image_tag('logo.png') %></div>
-      <strong style="font-size: 18px">Miniflix Content Provider</strong>
+    <div class="login-logo mb50">
+      <div><%= image_tag('logo-black.png') %></div>
     </div>
-    <h4 class="login-box-msg">Sign in to start your session</h4>
+    <h4 class="login-box-msg mb35">Sign In</h4>
     <%= form_for(resource, as: resource_name, url: provider_user_session_path) do |f| %>
       <%= f.hidden_field :category, value: 'content_provider' %>
       <% if !flash[:error].blank? %>
@@ -18,28 +17,34 @@
           </div>
         </div>
       <% end %>
-      <div class="form-group has-feedback">
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+      <div class="form-group has-feedback form-input-container mb35">
+        <label for="provider_user_email">Email</label>
         <%= f.email_field :email, class: "form-control", placeholder: t('placeholder.user.email'), required: true %>
       </div>
-      <div class="form-group has-feedback">
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-        <%= f.password_field :password, class: "form-control", placeholder: t('placeholder.user.password'), required: true %>
+      <div class="form-group has-feedback form-input-container">
+        <label for="provider_user_password">Password</label>
+        <%# Link to forgot %>
+        <a href="" class="forgot-password">Forgot Password?</a>
+        <%# Make show password logic %>
+        <div class="password-icon"><%= image_tag('provider/eye-visible.svg') %></div>
+        <%= f.password_field :password, class: "form-control password-input", placeholder: t('placeholder.user.password'), required: true %>
       </div>
       <div class="row">
         <!-- /.col -->
         <div class="col-xs-12">
-          <div style="height: 20px">
-          <button type="submit" class="btn btn-flat btn-black pull-right">
+          <button type="submit" class="btn btn-flat btn-black pull-right sign-in-btn">
             <%= t('links.sign_in') %>
           </button>
-        </div>
           <!-- <div class="checkbox icheck">
             <label> -->
               <!-- <input type="checkbox"> Remember Me -->
             <!-- </label>
           </div> -->
-          <br/>
+          <%# <br/> %>
+
+          <%# Link to terms and privacy %>
+          <p class="privacy-warning">By clicking "Confirm" I agree to Miniflix's <br /><a href="">Terms of Service and Privacy Policy</a>.</p>
+
           <div class="mt20">
             <%= link_to t('links.register'), new_provider_user_registration_path %><br />
             <%= link_to 'Sign In as Marketing Staff', new_marketing_staff_user_session_path %> <br/>
