@@ -168,7 +168,7 @@ class Serial < ApplicationRecord
       else
         entry[:data] = genre_serials + genre_movies
       end
-      out << entry
+      out << entry if entry.dig(:genre_data, :id)
     end
     out
   end

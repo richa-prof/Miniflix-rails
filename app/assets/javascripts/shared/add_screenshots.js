@@ -17,6 +17,13 @@ $(document).on('ready turbolinks:load', function(ev) {
     return;
   }
 
+  // avoid double init
+  if ($('body').attr('data-mfx-add-screenshots') == self.bid) {
+    console.warn('skipping initializing code related to adding screenshots/thumbnails on event ', ev.type);
+    return false;
+  }
+  $('body').attr('data-mfx-add-screenshots', self.bid); 
+
   console.warn('initialize code related to adding screenshots/thumbnails on event ', ev.type);
   
   window.URL = window.URL || window.webkitURL;

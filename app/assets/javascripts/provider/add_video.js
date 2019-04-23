@@ -8,20 +8,21 @@ $(document).on('ready turbolinks:load', function() {
     return;
   }
 
-  window.mfxObjects = window.mfxObjects || {};
   window.files = window.files || [];
   window.lockTimer = null;
-
   window.videoCategories = window.videoCategories || ['trailer', 'video'];  // [video1, video2, video3, video4, ..] for episodes
+
 
   // class 
   function MiniflixFileSelect(selector) {
     var self = this;
     self.bid = btoa(selector);
     self.uploadZone = $(selector);
-    if (window.mfxObjects['MiniflixFileSelect_' + self.bid]) {
+    if ($('body').attr('data-mfx-file-select') == self.bid) {
+      console.warn('skipping MiniflixFileSelect init - already have an instance');
       return false; // avoid init errors with Turbolinks
     }
+    $('body').attr('data-mfx-file-select', self.bid); 
     self.init();
     console.log('--- MiniflixFileSelect init passed, with selector: ' + selector + ' ----');
   }
@@ -34,7 +35,6 @@ $(document).on('ready turbolinks:load', function() {
     self.fileInputElement = self.uploadZone.find('input[type="file"]');
     self.fileInputElement.on('change', (ev) => self.handleFileSelect(ev));
     self.uploadZone.find('.dropbox-controls a').on('click', (ev) => self.clickFileSelect(ev));
-    window.mfxObjects['MiniflixFileSelect_' + self.bid] = true;
   }
 
   MiniflixFileSelect.prototype.formatBytes = function(bytes) {
@@ -218,13 +218,13 @@ $(document).on('ready turbolinks:load', function() {
     self.uploadWrapper = $('#' + category + '_upload_wrapper');
     console.log('uploadWrapper:', self.uploadWrapper);
     self.bid = btoa(selector + category);
-    if (window.mfxObjects['MiniflixVideosUploader_' + self.bid]) {
-      console.log('skipping init of MiniflixVideosUploader');
-      return false; 
+    if ($('body').attr('data-mfx-video-uploader') == self.bid) {
+      console.warn('skipping MiniflixVideoUploader init - already have an instance');
+      return false;
     }
+    $('body').attr('data-mfx-video-uploader', self.bid); 
+
     self.init();
-    window.mfxObjects['MiniflixVideosUploader_' + self.bid]= true;
-    //     return (async() => {self.submit(); })();
   }
 
   MiniflixVideosUploader.prototype.init = function() {
@@ -308,9 +308,6 @@ $(document).on('ready turbolinks:load', function() {
             console.log('resolve ', nextPageURL);
             resolve(nextPageURL);
           }
-          //Turbolinks.visit(urlPrefix + upload.id + '?kind=' + kind);
-          // http://admin.lvh.me:3001/admin/episodes/new?serial_id=37&season_id=31233737
-          // <div class="js-movie-paths" style="display: none;" data-video-upload-success-path="/admin/movies/upload_movie_trailer/"></div>
         },
 
         onPause: function(key) {
@@ -347,5 +344,5 @@ $(document).on('ready turbolinks:load', function() {
 });
 
 $(document).on('turbolinks:before-cache', function () {
-    console.log('--- turbolinks:befor-cache fired ---');
+    console.warn('--- turbolinks:before-cache fired ---');
 });

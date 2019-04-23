@@ -1,10 +1,7 @@
 
 $(document).on('ready turbolinks:load', function(event) {
 
-  window.mfxObjects = window.mfxObjects || {};
-
   var targetPages = ['/admin/movies/new', '/admin/movies/upload_movie_trailer', '/admin/episodes/new'];
-
   var basePath = window.location.pathname.split('/').slice(0,4).join('/');
   if (targetPages.indexOf(basePath) < 0) {
     console.warn('skip upload_movies js code init for page', window.location.pathname);
@@ -16,7 +13,6 @@ function MiniflixVideoUploader() {
   var self = this;
   self.init();
 }
-
 
 MiniflixVideoUploader.prototype.init = function() {
   var self = this;
