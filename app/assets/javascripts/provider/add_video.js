@@ -4,7 +4,7 @@ $(document).on('ready turbolinks:load', function() {
   var targetPages = ['/provider/serials/add_episode', '/provider/movies/add_video', '/provider/serials/add_trailer']
   var basePath = window.location.pathname.split('/').slice(0,4).join('/');
   if (targetPages.indexOf(basePath) < 0) {
-    console.log('skip js code init for page', window.location.pathname);
+    console.warn('skip add_video js code init for page', window.location.pathname);
     return;
   }
 

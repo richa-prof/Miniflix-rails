@@ -4,7 +4,7 @@ $(document).on('ready turbolinks:load', function() {
 
   var basePath = window.location.pathname.split('/').slice(0,4).join('/');
   if (targetPages.indexOf(basePath) < 0) {
-    console.log('skip js code init for page', window.location.pathname);
+    console.warn('skip settings js code init for page', window.location.pathname);
     return;
   }
 
