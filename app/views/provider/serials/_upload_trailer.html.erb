@@ -11,7 +11,7 @@
 
       <div style="margin: 20px 0">
 
-        <div class="dropbox-advanced-upload">
+        <div class="dropbox-advanced-upload" style="display: <%= movie&.movie_trailer.present? ? 'none' : 'block' %>">
           <div class="file-upload">
             <%= multipart_uploader_form( 
               input_name: 'trailer_video_file',
@@ -20,7 +20,7 @@
               button_text: t('label.upload_movie_trailer'),
               types: ["video/*"],
               html: %Q{} ) %>
-            <div class="dropbox-controls">Drag file here or <a onclick="$('#trailer_video_file').click();">browse</a></div>
+            <div class="dropbox-controls">Drag file here <br/> or <a class="js-video-browse">browse</a></div>
           </div>
         </div>
 

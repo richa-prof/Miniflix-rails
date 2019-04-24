@@ -82,10 +82,16 @@
 
             <div class="form-group">
               <div class="pull-left" style="width: 47%">
-                <%= f.label :released_date %>
-                <%= f.date_field( :released_date,
-                                  class: "form-control",
-                                  placeholder: "Choose #{t('placeholder.movie.released_date')}") %>
+                <%= f.label :release_year %><br />
+                <% years = 1990..Date.today.year %>
+                <%= f.select( :released_date,
+                              options_for_select(years.collect {|d| [d, d.to_s]}, f.object&.released_date&.year || Date.today.year),
+                              {
+                                include_blank: false
+                              }, {
+                                class: "form-control",
+                                placeholder: "Choose year"
+                              }) %>
               </div>
 
               <div class="pull-right" style="width: 47%">

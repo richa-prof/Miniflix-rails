@@ -3,25 +3,14 @@ $(document).on('ready turbolinks:load', function(ev) {
   var targetPages = ['/provider/movies', '/provider/serials'];
   var basePath = window.location.pathname.split('/').slice(0,4).join('/');
 
-  if (targetPages.indexOf(basePath) < 0) {
-    console.warn('skip video listing js code init for page', window.location.pathname);
+  if (targetPages.indexOf(basePath) < 0 || $('body').data('mfx-video-listing')) {
+    console.warn('skip video listing js code init for page ', window.location.pathname, ' on event ', ev.type);
     return;
   }
 
-  if ($('body').attr('data-mfx-video-listing')) {
-    console.warn('skip video listing js code init on event ', ev.type);
-    return false;
-  }
-  $('body').attr('data-mfx-video-listing', true);
-    
-
+  $('body').data('mfx-video-listing', true);
 
   window.lockTimer = 0;
-
-  // alt. way - analize body[data-page]
-  if (['/provider/serials', '/provider/movies'].indexOf(window.location.pathname) < 0) {
-    return false;
-  }
 
   $('.js-film-search').focus();
 
@@ -74,5 +63,5 @@ $(document).on('ready turbolinks:load', function(ev) {
     }, 400);
   });
 
-  console.log('initialize code for movies/serials listing page');
+  console.warn('>> initialize code for movies/serials listing page');
 });

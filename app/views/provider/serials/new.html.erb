@@ -88,9 +88,15 @@
             <div class="form-group">
               <div class="pull-left" style="width: 47%">
                 <%= f.label :release_year %>
-                <%= f.date_field( :year,
-                                  class: "form-control",
-                                  placeholder: "Choose #{t('placeholder.serial.released_date')}") %>
+               <% years = 1990..Date.today.year %>
+                <%= f.select( :year,
+                              options_for_select(years.collect {|d| [d, d.to_s]}, f.object&.year&.year || Date.today.year),
+                              {
+                                include_blank: false
+                              }, {
+                                class: "form-control",
+                                placeholder: "Choose year"
+                              }) %>
               </div>
 
               <div class="pull-right" style="width: 47%">

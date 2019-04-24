@@ -79,7 +79,7 @@ class Provider::MoviesController < ApplicationController
   end
 
   def create
-    @provider_movie = Movie.create(movie_params)
+    @provider_movie = Movie.create(fixed_movie_params)
     slug = movie_params[:name].gsub(/[\W]/,'-').downcase # FIXME!  why it was not autocreated ????
     @provider_movie.slug = slug
     @provider_movie.title ||= @provider_movie.name
@@ -121,7 +121,7 @@ class Provider::MoviesController < ApplicationController
     case step
     when :add_details
       session[:movie_kind] = 'movie'
-      @success = @provider_movie.update(movie_params)
+      @success = @provider_movie.update(fixed_movie_params)
     when :add_screenshots then @success= save_movie_thumbnails(@provider_movie)
     when :add_thumbnails then @success = save_movie_thumbnails(@provider_movie)
     when :finalize
@@ -169,6 +169,12 @@ class Provider::MoviesController < ApplicationController
   end
 
   private
+
+  def fixed_movie_params
+    mp = movie_params
+    mp[:released_date]  = Date.parse("01/01/#{mp.dig(:movie, :released_date)}").to_s
+    mp
+  end
 
   def set_provider_movie
     @provider_movie ||= Movie.friendly.find_by(id: params[:id]) ||

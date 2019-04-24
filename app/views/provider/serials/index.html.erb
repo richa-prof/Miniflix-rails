@@ -82,10 +82,10 @@
                             <td data-title="Name"><%= serial.title %></td>
                             <td data-title="Seasons"><%= serial.seasons_number %></td>
                             <td data-title="Genre"><%= serial.genre.name %></td>
-                            <td data-title="Year"><%= serial.year %></td>
+                            <td data-title="Year"><%= serial.year&.year %></td>
                             <td data-title="Audio"><%= serial.language %></td>
                             <td data-title="Producer"><%= serial.directed_by %></td>
-                            <td>0.00</td>
+                            <td><%= serial.rate&.price %></td>
                             <td>
                               <div class="dropdown show">
                                 <a class="btn btn-secondary dropdown-toggle" 

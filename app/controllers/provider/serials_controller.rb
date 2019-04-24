@@ -131,9 +131,9 @@ class Provider::SerialsController < ApplicationController
 
   def create
     begin
-      @serial = Serial.create!(serial_params)
+      @serial = Serial.create!(fixed_serial_params)
       unless @serial.slug
-        @serial.slug = serial_params[:title].gsub(/[\W]/,'-').downcase # FIXME!  why it was not autocreated ????
+        @serial.slug = fixed_serial_params[:title].gsub(/[\W]/,'-').downcase # FIXME!  why it was not autocreated ????
         @serial.save  #(validate: false)
       end
       @success = @serial.valid?
@@ -179,7 +179,7 @@ class Provider::SerialsController < ApplicationController
     when :add_details
       session[:movie_kind] = 'episode'
       params[:serial][:year] = params[:serial][:year].gsub("/", "-") if params.dig(:serial, :year)
-      @success = @serial.update(serial_params)
+      @success = @serial.update(fixed_serial_params)
       create_serial_service if @success
     when :add_screenshots
       begin
@@ -232,6 +232,12 @@ class Provider::SerialsController < ApplicationController
 
   def set_provider_serial
     @serial ||= Serial.friendly.find_by(id: params[:id]) || Serial.find_by(slug: params[:slug] || params[:id])
+  end
+
+  def fixed_serial_params
+    sp = serial_params
+    sp[:year]  = Date.parse("01/01/#{sp[:year]}").to_s
+    sp
   end
 
   def serial_params
