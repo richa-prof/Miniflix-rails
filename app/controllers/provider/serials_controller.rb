@@ -239,7 +239,7 @@ class Provider::SerialsController < ApplicationController
       :title, :year, :description, :admin_genre_id, :directed_by, :language, :star_cast, :seasons_number, 
       serial_thumbnail_attributes: [:id, :serial_screenshot_1, :serial_screenshot_2, :serial_screenshot_3, :thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot],
       rate_attributes: [
-        :price, :notes, :discount, :id, :entity_id, :entity_type
+        :price, :notes, :discount, :id, :entity_id, :entity_type 
       ]
     )
   end

@@ -12,7 +12,7 @@ class Serial < ApplicationRecord
   # associations for content provider
   has_many :own_films, as: :film
   has_many :owners, through: :own_films, source: :user
-  has_one :rate, as: :entity
+  has_one :rate, as: :entity, inverse_of: :entity # inverse_of important here! to save assocation object
 
   has_one :serial_thumbnail, dependent: :destroy, foreign_key: "admin_serial_id"
   has_one :movie_trailer, dependent: :destroy, foreign_key: "admin_serial_id"

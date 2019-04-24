@@ -111,7 +111,7 @@ MiniflixVideoUploader.prototype.bindOnMovieSubmit = function() {
 
 MiniflixVideoUploader.prototype.bindOnMovieTrailerSubmit = function() {
   var self = this;
-  console.log('>>>>> invoked bindOnMovieTrailerSubmit >>>>>');
+  //console.log('>>>>> invoked bindOnMovieTrailerSubmit >>>>>');
 
   self.movieTrailerSubmitButton().off('click').on('click', function() { // The button class passed into multipart_uploader_form (see "Getting Started")
     console.log('>>>>> Fired click event on `movie-trailer-submit-btn` >>>>>');

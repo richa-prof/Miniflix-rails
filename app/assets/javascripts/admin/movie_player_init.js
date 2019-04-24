@@ -1,6 +1,6 @@
 
 $(document).on('ready turbolinks:load', function(ev) {
-
+  
   // class 
   function MiniflixVideoPlayer(idx, el) {
     var self = this;
@@ -18,7 +18,7 @@ $(document).on('ready turbolinks:load', function(ev) {
     var self = this;
     //self.number = index + 1;
     //if (window['player' + self.number]) {return false;}
-    console.log('>>>>>> initializing player for ' + self.category + ' >>>>>>>>>');
+    console.warn('----  initializing player for ' + self.category + ' -----');
     console.log('wrapper', el);
     self.captionData = [];
     self.wrapper = $(el);
@@ -92,6 +92,7 @@ $(document).on('ready turbolinks:load', function(ev) {
   };
 
 
+  //console.log('>>>>> invoked `ready` function for jwPlayer >>>>>');
   $('.js-video-layer').each(function(idx, el) {
     console.warn('----- setting up video player with jwPlayer on event ', ev.type);
     new MiniflixVideoPlayer(idx, el);
