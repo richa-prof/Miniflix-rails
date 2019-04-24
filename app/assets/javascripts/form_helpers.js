@@ -18,19 +18,19 @@ var initValidators = function() {
     });
   };
 
-//  only for provider UI !!
-/*
-  window.previewImageForInput = function(input) {
-    if (input.files && input.files[0]) {
-      var reader = new FileReader();
-      reader.onload = function(ev) {
-        var wrapper = $(input).parent().find('img');
-        wrapper.attr('src', ev.target.result);
+//  only for provider UI 
+  if (window.location.pathname.indexOf('/provider/') > -1) {
+    window.previewImageForInput = function(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(ev) {
+          var wrapper = $(input).parent().find('img');
+          wrapper.attr('src', ev.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
       }
-      reader.readAsDataURL(input.files[0]);
     }
   }
-*/
 
   bindChangeEventOnMovieThumbnailFileFields = function() {
     $(".movie-thumbnail-file-field")
@@ -38,9 +38,10 @@ var initValidators = function() {
       .on("change", function(event) {
         var fileFieldId = $(this).attr("id");
         validFile(fileFieldId);
-        console.log('on movie-thumbnail-file-field change');
+        if (window.location.pathname.indexOf('/provider/') > -1) {
+          previewImageForInput(this); 
+        }
         return false;
-        //previewImageForInput(this); // FIXME: only for provider
       });
   };
 

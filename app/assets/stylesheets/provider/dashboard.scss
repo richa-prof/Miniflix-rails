@@ -2,18 +2,29 @@
 //  visibility: hidden;
 //}
 
+.content-header {
+  background: #f9f9f9;
+}
+
 .content-for-provider {
-  background-image: asset-url("provider/greasy_snow.jpg") !important;
+  background: #f9f9f9;
   /* position: fixed; 
   width: 100%;
   height: 100% !important; */
-  div,
   input[type="text"],
   select,
   textarea {
     /* height: 100% !important; */
-    background-image: asset-url("provider/greasy_snow.jpg") !important;
+    background: #f9f9f9;
   }
+  .bg-gr {
+    background-color: #f9f9f9 !important;
+    background: #f9f9f9 !important;
+  }
+}
+
+.js-video-layer {
+  background: none !important;
 }
 
 .bg-white {
@@ -180,7 +191,6 @@ a.previous-stage:hover {
 }
 
 .form-group {
-  color: gray;
   label {
     font-size: 90%;
     color: black;

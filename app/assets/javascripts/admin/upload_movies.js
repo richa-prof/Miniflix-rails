@@ -1,8 +1,7 @@
 
-$(document).on('ready turbolinks:load', function() {
+$(document).on('ready turbolinks:load', function(event) {
 
   var targetPages = ['/admin/movies/new', '/admin/movies/upload_movie_trailer', '/admin/episodes/new'];
-
   var basePath = window.location.pathname.split('/').slice(0,4).join('/');
   if (targetPages.indexOf(basePath) < 0) {
     console.warn('skip upload_movies js code init for page', window.location.pathname);
@@ -15,10 +14,15 @@ function MiniflixVideoUploader() {
   self.init();
 }
 
-
 MiniflixVideoUploader.prototype.init = function() {
   var self = this;
-  console.log('>>>>> MiniflixVideoUploader -> init  >>>>>');
+  self.bid = btoa('admin_upload_movies');
+  if ($('body').attr('data-mfx-video-uploader') == self.bid) {
+    console.warn('skipping MiniflixVideoUploader init - already have an instance');
+    return false; // avoid init errors with Turbolinks
+  }
+  $('body').attr('data-mfx-video-uploader', self.bid); // most relaible way to avoid double init in production
+  console.log('---- init MiniflixVideoUploader on event', event.type);
   $("#video_file").addClass('form-control');
   $("#trailer_video_file").addClass('form-control');
   if (self.videoSubmitButton().length) {
@@ -107,7 +111,7 @@ MiniflixVideoUploader.prototype.bindOnMovieSubmit = function() {
 
 MiniflixVideoUploader.prototype.bindOnMovieTrailerSubmit = function() {
   var self = this;
-  console.log('>>>>> invoked bindOnMovieTrailerSubmit >>>>>');
+  //console.log('>>>>> invoked bindOnMovieTrailerSubmit >>>>>');
 
   self.movieTrailerSubmitButton().off('click').on('click', function() { // The button class passed into multipart_uploader_form (see "Getting Started")
     console.log('>>>>> Fired click event on `movie-trailer-submit-btn` >>>>>');
@@ -188,7 +192,6 @@ MiniflixVideoUploader.prototype.bindOnMovieTrailerSubmit = function() {
   });
 };
 
-  console.log('>>>>> creating MiniflixVideoUploader >>>>>');
   new MiniflixVideoUploader();
 
 });

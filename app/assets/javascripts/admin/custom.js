@@ -18,8 +18,7 @@
 
 
 var ready = function() {
-  console.log('>>>>> invoked `ready` function of `admin/custom.js` >>>>>');
-
+  //console.log('>>>>> invoked `ready` function of `admin/custom.js` >>>>>');
   if (adminMainSidebar().length) {
     setMinHeightOfContentWrapper();
   }

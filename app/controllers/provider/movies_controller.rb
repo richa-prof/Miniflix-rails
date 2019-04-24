@@ -51,7 +51,7 @@ class Provider::MoviesController < ApplicationController
     case step
     when :add_details
       if params[:serial]
-        @serial = params[:serial]
+        @serial = Serial.find(params[:serial])
       end
       session[:movie_kind] = 'movie'
       @provider_movie = Movie.new

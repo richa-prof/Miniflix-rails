@@ -30,7 +30,7 @@ class Provider::SerialsController < ApplicationController
     sort_order = "#{sort_col} #{direction}"
     @serials =
       if params[:search]
-        Serial.where("admin_serials.name like :search", search: "%#{params[:search]}%").joins(:genre).order(sort_order)
+        Serial.where("admin_serials.title like :search", search: "%#{params[:search]}%").joins(:genre).order(sort_order)
       else
         Serial.joins(:genre).order(sort_order).limit(15)  #current_user.my_list_movies
       end
@@ -73,7 +73,7 @@ class Provider::SerialsController < ApplicationController
       session[:movie_kind] = 'episode'
       @serial = Serial.new
       @serial.build_serial_thumbnail
-      @rate = @serial.build_rate
+      @rate = @serial.rate || @serial.build_rate
       render :new
       return
     when :add_trailer
@@ -130,29 +130,46 @@ class Provider::SerialsController < ApplicationController
   end
 
   def create
-    @serial = Serial.create!(serial_params)
-    slug = serial_params[:title].gsub(/[\W]/,'-').downcase # FIXME!  why it was not autocreated ????
-    @serial.slug ||= slug
-    @serial.save  #(validate: false)
-    Rails.logger.debug @serial.errors.messages
-    @success = @serial.valid?
-    create_serial_service if @success
-    respond_to do |format|
-      format.html {
-        if @success
-          redirect_to wizard_path(:add_trailer, slug: @serial.slug), success: I18n.t('flash.serial.successfully_created')
-        else 
-          redirect_back(fallback_location: provider_serials_path)
-        end
-      }
-      format.js {
-        if @success
-          flash[:success] = I18n.t('flash.serial.successfully_created') 
-        else
+    begin
+      @serial = Serial.create!(serial_params)
+      unless @serial.slug
+        @serial.slug = serial_params[:title].gsub(/[\W]/,'-').downcase # FIXME!  why it was not autocreated ????
+        @serial.save  #(validate: false)
+      end
+      @success = @serial.valid?
+      create_serial_service if @success
+      respond_to do |format|
+        format.html {
+          if @success
+            redirect_to wizard_path(:add_trailer, slug: @serial.slug), success: I18n.t('flash.serial.successfully_created')
+          else 
+            redirect_back(fallback_location: provider_serials_path)
+          end
+        }
+        format.js {
+          if @success
+            flash[:success] = I18n.t('flash.serial.successfully_created') 
+          else
+            flash[:error] = 'At least one error prevents Serial from being created'
+          end
+          render 'update'
+          return
+        }
+      end
+    rescue Exception => e
+      Rails.logger.error e.message
+      Rails.logger.error 'tp1'
+      #Rails.logger.debug @serial.errors.full_messages
+      Rails.logger.error 'tp1.2'
+      respond_to do |format|
+        format.js {
+          Rails.logger.error 'tp1.3'
+          @success = false
           flash[:error] = 'At least one error prevents Serial from being created'
-        end
-        render 'update'
-      }
+          render 'update'
+          return
+        }
+      end
     end
   end
 
@@ -222,7 +239,7 @@ class Provider::SerialsController < ApplicationController
       :title, :year, :description, :admin_genre_id, :directed_by, :language, :star_cast, :seasons_number, 
       serial_thumbnail_attributes: [:id, :serial_screenshot_1, :serial_screenshot_2, :serial_screenshot_3, :thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot],
       rate_attributes: [
-        :price, :notes, :discount, :id, :entity_id, :entity_type
+        :price, :notes, :discount, :id, :entity_id, :entity_type 
       ]
     )
   end

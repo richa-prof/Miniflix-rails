@@ -10,12 +10,19 @@ $(document).on('ready turbolinks:load', function(ev) {
   var bp2 = window.location.pathname.split('/');
   bp2.splice(3,1);
   basePath2 = bp2.join('/');
-  console.log(basePath1, basePath2);
+  // console.log(basePath1, basePath2);
 
   if (targetPages.indexOf(basePath1) < 0 && targetPages.indexOf(basePath2) < 0) {
     console.warn('skip add_screenshot js code init for page', window.location.pathname);
     return;
   }
+
+  // avoid double init
+  if ($('body').attr('data-mfx-add-screenshots') == self.bid) {
+    console.warn('skipping initializing code related to adding screenshots/thumbnails on event ', ev.type);
+    return false;
+  }
+  $('body').attr('data-mfx-add-screenshots', self.bid); 
 
   console.warn('initialize code related to adding screenshots/thumbnails on event ', ev.type);
   

@@ -1,26 +1,24 @@
 
 $(document).on('ready turbolinks:load', function(ev) {
   
-  window.mfxObjects = window.mfxObjects || {};
-
   // class 
   function MiniflixVideoPlayer(idx, el) {
     var self = this;
     self.bid = btoa(el.id);
     self.category = el.id.split('_')[0];
-    if (window.mfxObjects['MiniflixVideoPlayer_' + self.bid]) {
-      console.log('skipping MiniflixVideoPlayer init - already have an instance');
-      return false; // avoid init errors with Turbolinks
+    if ($(el).attr('data-mfx-video-player') == self.bid) {
+      console.warn('skipping MiniflixVideoPlayer init (already initialized) on event ', ev.type);
+      return false;
     }
+    $(el).attr('data-mfx-video-player', self.bid);
     self.init(idx, el);
-    window.mfxObjects['MiniflixVideosPlayer_' + self.bid]= true;
   }
 
   MiniflixVideoPlayer.prototype.init = function(index, el) {
     var self = this;
     //self.number = index + 1;
     //if (window['player' + self.number]) {return false;}
-    console.log('>>>>>> initializing player for ' + self.category + ' >>>>>>>>>');
+    console.warn('----  initializing player for ' + self.category + ' -----');
     console.log('wrapper', el);
     self.captionData = [];
     self.wrapper = $(el);
@@ -94,6 +92,7 @@ $(document).on('ready turbolinks:load', function(ev) {
   };
 
 
+  //console.log('>>>>> invoked `ready` function for jwPlayer >>>>>');
   $('.js-video-layer').each(function(idx, el) {
     console.warn('----- setting up video player with jwPlayer on event ', ev.type);
     new MiniflixVideoPlayer(idx, el);

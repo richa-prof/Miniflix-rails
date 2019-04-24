@@ -1,12 +1,20 @@
-$(document).on('ready turbolinks:load', function() {
+$(document).on('ready turbolinks:load', function(ev) {
 
   var targetPages = ['/provider/movies', '/provider/serials'];
   var basePath = window.location.pathname.split('/').slice(0,4).join('/');
 
   if (targetPages.indexOf(basePath) < 0) {
-    console.log('skip js code init for page', window.location.pathname);
+    console.warn('skip video listing js code init for page', window.location.pathname);
     return;
   }
+
+  if ($('body').attr('data-mfx-video-listing')) {
+    console.warn('skip video listing js code init on event ', ev.type);
+    return false;
+  }
+  $('body').attr('data-mfx-video-listing', true);
+    
+
 
   window.lockTimer = 0;
 
