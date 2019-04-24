@@ -4,12 +4,12 @@
 
 .login-page .login-box {
   background: white;
-  margin: 10% auto;
+  margin: 13vh auto;
   margin-bottom: auto;
   width: 500px;
   padding: 50px 20px 60px 20px;
   border: 1px solid lightgray;
-  box-shadow: 0px -2px 15px rgba(51, 51, 51, 0.44);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
 }
 
 .login-box .login-box-body {
@@ -21,6 +21,31 @@
   .login-logo {
     max-width: 278px;
   }
+
+  div.form-input-container {
+    padding: 0;
+  }
+
+  div.registrations-actions {
+    padding: 0;
+
+    input.sign-in-btn {
+      margin-bottom: 15px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.provider-registration {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 35px;
+  letter-spacing: 1px;
+  font-size: 24px;
+  font-weight: 500;
 }
 
 .login-box-msg {
@@ -89,7 +114,8 @@ div.form-input-container {
   }
 }
 
-button.sign-in-btn {
+button.sign-in-btn,
+input.sign-in-btn {
   height: 40px;
   border-radius: 2px;
   margin-bottom: 40px;

@@ -1,56 +1,56 @@
 <!-- Content Header (Page header) -->
-<section class="content-header pl40">
-  <h1>
+<section class="content-header pl40 provider-page-header">
+  <h1 class="provider-page-title">
     <%= t('heading.movies') %>
   </h1>
 </section>
 
 <!-- Main content -->
-<section class="content p20" style="min-height: 100%;">
+<section class="content p20 provider-section" style="min-height: 100%;">
   <div class="row p20">
-    <div class="col-xs-12">
+    <div class="col-xs-12 search-filter-container">
 
       <%#= render( partial: 'shared/flash_notification', locals: { notice: notice } ) %>
       
       <div class="row">
 
-        <div class="col-lg-6 col-xs-12">
-          <div class="col-lg-2 col-xs-12">
+        <div class="col-lg-6 col-xs-12 filters-container">
+          <div class="col-lg-2 col-sm-12">
             <div class="sort-links">
               <strong>Genre</strong>&nbsp;
               <span class="js-sort-dir" data-sortby="genre" data-order="<%= params[:order] || 'desc' %>">
-                <i class="fa fa-sort-<%= @dir[:genre] == 'asc' ? 'up' : 'down' %>"></i>
+                <i class="fa icon-arrow fa-sort-<%= @dir[:genre] == 'asc' ? 'up' : 'down' %>"></i>
               </span>
             </div>
           </div>
-          <div class="col-lg-2 col-xs-12">
+          <div class="col-lg-2 col-sm-12">
             <div class="sort-links">
               <strong>Year</strong>&nbsp;
                 <span class="js-sort-dir" data-sortby="year" data-order="<%= params[:order] || 'desc' %>">
-                  <i class="fa fa-sort-<%= @dir[:year] == 'asc' ? 'up' : 'down' %>"></i>
+                  <i class="fa icon-arrow fa-sort-<%= @dir[:year] == 'asc' ? 'up' : 'down' %>"></i>
                 </span>
             </div>
           </div>
-          <div class="col-lg-3 col-xs-12">
+          <div class="col-lg-3 col-sm-12">
             <div class="sort-links">
               <strong>Rent Price</strong>&nbsp;
                 <span class="js-sort-dir" data-sortby="rent_price" data-order="<%= params[:order] || 'desc' %>">
-                  <i class="fa fa-sort-<%= @dir[:rent_price] == 'asc' ? 'up' : 'down' %>"></i>
+                  <i class="fa icon-arrow fa-sort-<%= @dir[:rent_price] == 'asc' ? 'up' : 'down' %>"></i>
                 </span>
             </div>
           </div>
         </div>
 
-        <div class="col-lg-4 col-xs-12" style="position: relative;">
+        <div class="col-lg-4 col-xs-12 search-container" style="position: relative;">
           <i class="fa fa-search" style="position: absolute; top: 50%; left: 25px; margin-top: -7px;"></i> 
-          <input type="text" class="js-film-search" value="<%= params[:search] %>"  
-                 style="width: 80%; height: 36px; padding-left: 30px; background: #E0E0E0; border:0; outline: 0" placeholder="Search" />
+          <input type="text" class="js-film-search search-input" value="<%= params[:search] %>"  
+                 style="height: 36px; padding-left: 30px; border:0; outline: 0" placeholder="Search" />
         </div>
 
         <div class="col-lg-2 col-xs-12">
           <%= link_to( 'Upload',
                        new_provider_movie_path,
-                       class: "btn btn-flat btn-black btn-block",
+                       class: "btn btn-flat btn-black btn-block upload-btn",
                        method: :get ) %>
         </div>
 
@@ -61,7 +61,7 @@
             <div class="col-md-12">
               <div class="">
                 <div class="box-body">
-                  <section id="">
+                  <section id="" class="table-wrapper">
 
                     <table id="tbl_provider_movies" class="table table-hover">
                       <thead>
@@ -93,23 +93,31 @@
                                       <%= image_tag('provider/menu.svg', alt: 'popup menu icon', class: "icon")  %>
                                 </a>
 
-                                <div class="dropdown-menu movie-actions" 
-                                     style="overflow: show; min-height: 100px; padding: 10px; left: -50px; min-width: 120px;" aria-labelledby="dropdownMenuLink">
+                                <ul class="dropdown-menu movie-actions" 
+                                     style="overflow: show; min-height: 100px; top: 10px; left: -160px; min-width: 120px;" aria-labelledby="dropdownMenuLink">
+                                  <li>
                                   <%= link_to provider_movie_path(movie.id, kind: 'movie') do %>
                                      View on Miniflix
-                                  <% end %><br/>
+                                  <% end %>
+                                  </li>
+                                  <li>
                                   <%= link_to wizard_path(:preview, slug: movie.slug) do %>
                                      Preview
-                                  <% end %><br/>
+                                  <% end %>
+                                  </li>
+                                  <li>
                                   <%= link_to edit_provider_movie_path(movie.id, slug: movie.slug), data: { turbolinks: false } do %>
                                      Edit
-                                  <% end %><br/>
+                                  <% end %>
+                                  </li>
+                                  <li>
                                   <%= link_to( provider_movie_path(movie.id, kind: 'movie'),
                                            method: :delete,
                                            data: { confirm: t('confirm.are_you_sure') } ) do %>
                                      Delete
-                                    <% end %><br/>
-                                </div>
+                                    <% end %>
+                                  </li>
+                                </ul>
                               </div>
                             </td>
                           </tr>

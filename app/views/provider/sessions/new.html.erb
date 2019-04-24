@@ -19,15 +19,15 @@
       <% end %>
       <div class="form-group has-feedback form-input-container mb35">
         <label for="provider_user_email">Email</label>
-        <%= f.email_field :email, class: "form-control", placeholder: t('placeholder.user.email'), required: true %>
+        <%= f.email_field :email, class: "form-control", placeholder: t('placeholder.user.email'), required: true, tabindex: 1 %>
       </div>
       <div class="form-group has-feedback form-input-container">
         <label for="provider_user_password">Password</label>
         <%# Link to forgot %>
-        <a href="" class="forgot-password">Forgot Password?</a>
+        <a href="" class="forgot-password" tabindex=3>Forgot Password?</a>
         <%# Make show password logic %>
         <div class="password-icon"><%= image_tag('provider/eye-visible.svg') %></div>
-        <%= f.password_field :password, class: "form-control password-input", placeholder: t('placeholder.user.password'), required: true %>
+        <%= f.password_field :password, class: "form-control password-input", placeholder: t('placeholder.user.password'), required: true, tabindex: 2 %>
       </div>
       <div class="row">
         <!-- /.col -->
