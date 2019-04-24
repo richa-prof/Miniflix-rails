@@ -38,7 +38,6 @@ var initValidators = function() {
       .on("change", function(event) {
         var fileFieldId = $(this).attr("id");
         validFile(fileFieldId);
-        console.log('on movie-thumbnail-file-field change');
         if (window.location.pathname.indexOf('/provider/') > -1) {
           previewImageForInput(this); 
         }

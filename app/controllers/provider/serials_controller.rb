@@ -30,7 +30,7 @@ class Provider::SerialsController < ApplicationController
     sort_order = "#{sort_col} #{direction}"
     @serials =
       if params[:search]
-        Serial.where("admin_serials.name like :search", search: "%#{params[:search]}%").joins(:genre).order(sort_order)
+        Serial.where("admin_serials.title like :search", search: "%#{params[:search]}%").joins(:genre).order(sort_order)
       else
         Serial.joins(:genre).order(sort_order).limit(15)  #current_user.my_list_movies
       end
