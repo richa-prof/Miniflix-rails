@@ -4,18 +4,18 @@
 <%= javascript_include_tag 'admin/flot/jquery.flot.categories.min.js', 'data-turbolinks-track' => true %>
 
 
-<div class="pl40">
-  <div class="mt20">
-    <h3>Dashboard</h3>
+<div class="pl40 pr40 page-container">
+  <div>
+    <h3 class="provider-page-title">Dashboard</h3>
     <div class="row mt20">
-      <div class="col-lg-3 col-xs-6">
+      <div class="col-lg-3 col-xs-6 provider-datepicker">
         Reports for <input type="date" value="2018-01-01" id="stats_date" min="2018-01-01" max="2018-12-31" />
       </div>
       <div class="col-lg-3 col-xs-6"></div>
     </div>
   </div>
 
-  <div id="stat_boxes" class="row mt20">
+  <div id="stat_boxes" class="row mt20 provider-stat-boxes">
     <div class="col-lg-3 col-xs-6">
       <!-- small box -->
       <div class="small-box bg-white stat-box">
@@ -24,7 +24,7 @@
           <p><%= @monthly_movies_cnt.length %></p>
         </div>
         <div class="icon">
-          <i class="ion ion-film-marker"></i>
+          <%= image_tag('provider/plays.svg', alt: 'dashboard icon')  %>
         </div>
 <!--         <%#= link_to admin_movies_path, class: "small-box-footer" do %>
           More info <i class="fa fa-arrow-circle-right"></i>
@@ -39,8 +39,7 @@
           <p><%= get_formatted_total_amount(@total_income_of_current_month) %></p>
         </div>
         <div class="icon">
-          <!-- <i class="ion ion-cash"></i> -->
-          <i class="ion ion-social-usd"></i>
+          <%= image_tag('provider/dollar-icon.svg', alt: 'dashboard icon')  %>
         </div>
 <!--         <%#= link_to admin_premium_users_path, class: "small-box-footer" do %>
           More info <i class="fa fa-arrow-circle-right"></i>
@@ -56,7 +55,7 @@
           <p><%=  @unique_month_wise.count %></p>
         </div>
         <div class="icon">
-          <i class="ion ion-pie-graph"></i>
+          <%= image_tag('provider/visitors.svg', alt: 'dashboard icon')  %>
         </div>
 <!--         <%#= link_to admin_visitors_path, method: "GET", class: "small-box-footer" do %>
           More info <i class="fa fa-arrow-circle-right"></i>
@@ -67,7 +66,7 @@
 
 	<div class="row">
 
-    <div class="col-md-6" style="display: block">
+    <div class="col-md-6 new-movies-chart-container" style="display: block">
       <!-- Donut chart -->
       <div class="box box-primary">
         <div class="box-header with-border">

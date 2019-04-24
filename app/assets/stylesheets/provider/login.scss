@@ -1,19 +1,150 @@
 .login-page {
-  background: #F9F9F9;
+  background: #f9f9f9;
 }
 
 .login-page .login-box {
-    background: white;
-    margin: 10% auto;
-    width: 500px;
-    padding: 20px;
-    border: 1px solid lightgray;
-    box-shadow: 0px -2px 15px rgba(51,51,51,0.44);
+  background: white;
+  margin: 13vh auto;
+  margin-bottom: auto;
+  width: 500px;
+  padding: 50px 20px 60px 20px;
+  border: 1px solid lightgray;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
 }
 
 .login-box .login-box-body {
   margin: 10px auto;
   width: 60%;
+  font-family: "Heebo", sans-serif;
+  color: #444444;
+
+  .login-logo {
+    max-width: 278px;
+  }
+
+  div.form-input-container {
+    padding: 0;
+  }
+
+  div.registrations-actions {
+    padding: 0;
+
+    input.sign-in-btn {
+      margin-bottom: 15px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.provider-registration {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 35px;
+  letter-spacing: 1px;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.login-box-msg {
+  font-weight: 500;
+  font-size: 24px;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+div.form-input-container {
+  margin-bottom: 40px;
+
+  &.mb-35 {
+    margin-bottom: 35px;
+  }
+
+  & > label {
+    margin-bottom: 5px;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+
+    &.error {
+      color: #ff0000;
+      font-weight: 400;
+      position: absolute;
+      -webkit-transform: translateY(3px);
+      -ms-transform: translateY(3px);
+      transform: translateY(3px);
+    }
+  }
+
+  & > .form-control,
+  & > input {
+    padding: 10px 15px;
+    height: 40px;
+    border-radius: 2px;
+    border: 1px solid #e0e0e0;
+    box-shadow: none;
+
+    &.error {
+      border-color: #ff0000;
+    }
+
+    &::placeholder {
+      color: #dadada;
+    }
+  }
+
+  .forgot-password {
+    float: right;
+    font-size: 12px;
+    margin: 0;
+    letter-spacing: 0.5px;
+    line-height: normal;
+    color: #009fe2;
+  }
+
+  .password-input {
+    padding-right: 35px;
+  }
+
+  .password-icon {
+    position: absolute;
+    top: 32px;
+    right: 10px;
+    cursor: pointer;
+  }
+}
+
+button.sign-in-btn,
+input.sign-in-btn {
+  height: 40px;
+  border-radius: 2px;
+  margin-bottom: 40px;
+
+  &:active:focus {
+    outline: 0;
+  }
+
+  &:focus {
+    color: white;
+    outline: 0;
+  }
+}
+
+.privacy-warning {
+  color: #979797;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  text-align: center;
+
+  & > a {
+    color: #444444;
+
+    &:hover {
+      text-decoration: underline;
+      color: #444444;
+    }
+  }
 }
 
 .login-box-body {
@@ -38,8 +169,6 @@
   }
 }
 
-
 .auth-links {
   padding: 10px;
 }
-

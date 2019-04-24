@@ -650,6 +650,7 @@ GEM
       macaddr (~> 1.0)
     warden (1.2.8)
       rack (>= 2.0.6)
+    wdm (0.1.1)
     web-console (3.7.0)
       actionview (>= 5.0)
       activemodel (>= 5.0)
@@ -757,6 +758,7 @@ DEPENDENCIES
   uglifier!
   underscore-rails
   useragent
+  wdm (>= 0.1.0)
   web-console (>= 3.3.0)
   whenever
   wicked

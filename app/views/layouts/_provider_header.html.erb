@@ -1,4 +1,4 @@
-<div class="main-header">
+<div class="main-header provider-main-header">
   <!-- Header Navbar: style can be found in header.less -->
   <nav class="navbar bg-white navbar-provider">
     <div class="sys-message pull-left">
@@ -11,16 +11,16 @@
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
         <!-- User Account: style can be found in dropdown.less -->
-        <li class="dropdown user user-menu" style="font-color: black;">
+        <li class="dropdown user user-menu provider-user-menu">
           <a href="#" class="dropdown-toggle " data-toggle="dropdown">
             <% if current_user&.profile_image_url %>
               <%= image_tag(current_user&.profile_image_url, alt: "User Image", class: "js-avatar user-image") %>
             <% else %>
-              <%= image_tag('admin/user2-160x160.jpg', alt: "User Image", class: "js-avatar user-image") %>
+              <%= image_tag('provider/profile_photo.svg', alt: "User Image", class: "js-avatar user-image") %>
             <% end %>
             <span class="hidden-xs"><%= current_user&.name %></span>
           </a>
-          <ul class="dropdown-menu" style="width: 150px;">
+          <ul class="dropdown-menu">
             <li>
                <a href="/provider/settings" class="btn btn-default btn-flat">Settings</a>
             </li>
