@@ -77,7 +77,8 @@ div.form-input-container {
     }
   }
 
-  & > .form-control {
+  & > .form-control,
+  & > input {
     padding: 10px 15px;
     height: 40px;
     border-radius: 2px;

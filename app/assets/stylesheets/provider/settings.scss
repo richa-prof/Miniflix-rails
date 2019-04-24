@@ -42,7 +42,49 @@
 }
 
 .provider-settings-menu {
-  //
+  ul.nav-pills {
+    border-bottom: 1px solid #e5e5e5;
+
+    li.nav-item {
+      margin-bottom: -1px;
+      margin-right: 100px;
+      opacity: 0.5;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      .nav-link {
+        padding: 15px 0 !important;
+        font-weight: 500;
+        font-size: 16px;
+        letter-spacing: 0.5px;
+        background: transparent !important;
+        border-radius: 0;
+
+        &.active {
+          border-bottom: 3px solid black;
+          opacity: 1;
+        }
+      }
+
+      &:hover {
+        background: transparent !important;
+        opacity: 1;
+
+        .nav-link {
+          background: transparent !important;
+          border-bottom: 3px solid black;
+        }
+      }
+
+      &.active,
+      &:active {
+        border-bottom: none !important;
+        opacity: 1;
+      }
+    }
+  }
 }
 
 .tab-pane {
@@ -96,5 +138,102 @@
       padding-left: 10px;
       height: 40px;
     }
+  }
+}
+
+.provider-settings-tab-content {
+  padding: 0;
+  margin-top: 50px;
+
+  .tab-content-wrapper {
+    max-width: 305px;
+    width: 100%;
+  }
+
+  div.form-input-container {
+    padding: 0;
+    margin-bottom: 20px;
+
+    &.mb35 {
+      margin-bottom: 35px;
+    }
+  }
+
+  .avatar-wrapper-2 {
+    margin: 0 auto;
+    margin-bottom: 4px;
+    height: 80px;
+    width: 80px;
+
+    .user-image-2 {
+      height: 80px;
+    }
+  }
+
+  .avatar-change-link#avatar_change_link {
+    margin-top: 0;
+    margin-bottom: 32px;
+    width: auto;
+
+    & > a {
+      color: #009fe2;
+      font-weight: 400;
+    }
+  }
+
+  .collection-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    & > div:first-child {
+      width: 70px;
+      padding: 0;
+      margin: 0;
+      margin-right: 30px;
+
+      .circle {
+        border-radius: 50%;
+        border: 1px solid black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 70px;
+        height: 70px;
+
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    & > div:last-child {
+      width: auto;
+      padding: 0;
+
+      h3 {
+        margin: 0;
+        margin-bottom: 10px;
+        letter-spacing: 0.5px;
+        font-weight: 700;
+        font-size: 21px;
+      }
+
+      strong {
+        font-weight: 400;
+        letter-spacing: 0.5px;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .no-padding {
+    padding: 0;
+  }
+
+  .custom-black-btn {
+    border-radius: 2px !important;
+    font-weight: 500 !important;
+    width: 100% !important;
   }
 }

@@ -123,7 +123,7 @@ ActiveRecord::Schema.define(version: 20190403014023) do
   end
 
   create_table "admin_serial_thumbnails", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "admin_serial_id"
+    t.integer "admin_serial_id"
     t.string "serial_screenshot_1"
     t.string "serial_screenshot_2"
     t.string "serial_screenshot_3"
