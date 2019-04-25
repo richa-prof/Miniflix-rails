@@ -54,6 +54,38 @@
                           </a>
                         <% end %>
                       </div>
+
+    
+                      <div class="row"><h4 class="text-center"> Serie thumbnails</h4></div>
+                      <div class="row">
+                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                          <ol class="carousel-indicators">
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>
+                          </ol>
+                          <% if @serial.serial_thumbnail %>
+                            <div class="carousel-inner">
+                              <% [:thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot].each_with_index do |screenshot, index| %>
+                                <div class="item <%= 'active' if index.zero? %>">
+                                  <% url = @serial.serial_thumbnail.send(screenshot)&.url %>
+                                  <%= image_tag(url&.to_s, class: "movie_thumbnail")  if url  %>
+                                  <div class="carousel-caption">
+                                  </div>
+                                </div>
+                              <% end %>
+                            </div>
+                            <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                              <span class="fa fa-angle-left"></span>
+                            </a>
+                            <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                              <span class="fa fa-angle-right"></span>
+                            </a>
+                          <% end %>
+                        </div>
+                      </div>
+
+
                     </div>
                   </div>
                   <div class="row">
@@ -103,6 +135,23 @@
                           </div>
                         </div>
 
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding-left: 0px;">
+                          <div class="box box-primary movie-block-box-primary">
+                            <div class="box-header with-border text-center movie-block-box-header">
+                              <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                  <h3 class="box-title text-blue">
+                                    <%= t('title.movie.stars_cast') %>
+                                  </h3>
+                                  <p class="star_cast"><%= @serial.star_cast || not_available  %></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+
                       </div>
 
                       <div class="row">
@@ -127,7 +176,22 @@
                         </div>
                       </div>
 
-
+                      <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div class="box box-primary movie-description-box">
+                            <div class="box-header with-border">
+                              <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                  <h3 class="box-title text-blue">
+                                    <%= t('title.serials.description') %>
+                                  </h3>
+                                  <p class="margin-btm-zero"><%= @serial.description %></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
 
                     </div>
                   </div>
