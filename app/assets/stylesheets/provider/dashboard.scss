@@ -243,7 +243,7 @@ div.provider-datepicker {
 
   & > input {
     padding: 11px 12px;
-    border: 1px solid #dadada;
+    border: none;
     border-radius: 2px;
     margin-left: 13px;
     font-size: 13px;
@@ -252,6 +252,7 @@ div.provider-datepicker {
     height: 38px;
     max-width: 175px;
     width: 100%;
+    background-color: #f0f0f0;
   }
 }
 
@@ -341,8 +342,10 @@ input.custom-black-btn {
   }
 }
 
-#logout_dialog, #delete_video_dialog {
-  .modal-footer, .modal-header {
+#logout_dialog,
+#delete_video_dialog {
+  .modal-footer,
+  .modal-header {
     border: 0;
   }
 }

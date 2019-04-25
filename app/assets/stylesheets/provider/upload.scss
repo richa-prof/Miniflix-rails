@@ -35,7 +35,6 @@
   /* upload progress ring */
 
   .progress-ring {
-    
   }
 
   .progress-ring-circle {
@@ -47,7 +46,6 @@
 }
 
 .file-info {
-  
   height: 100px;
 
   .about-file {
@@ -77,14 +75,99 @@
   }
 
   .rm-file-control {
-     a {
-       cursor: pointer;
-       text-decoration: none;
-     }
+    a {
+      cursor: pointer;
+      text-decoration: none;
+    }
   }
-
 }
 
 input.movie-thumbnail-file-field {
   visibility: hidden;
+}
+
+.provider-upload-content {
+  padding: 0 40px;
+
+  & > .row {
+    margin-top: 0;
+  }
+
+  .main-content-container {
+    max-width: 305px;
+    width: 100%;
+    padding: 0;
+  }
+
+  .provider-upload-title {
+    margin: 0 auto;
+    margin-top: 60px;
+    margin-bottom: 60px;
+    letter-spacing: 1px;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    max-width: 305px;
+
+    & > strong {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    & > strong > span {
+      padding-left: 0;
+      margin: 0 auto;
+    }
+  }
+
+  .form-container {
+    padding: 0;
+    margin: 0 auto;
+    max-width: 305px;
+  }
+
+  .steps-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & > div:first-child {
+      h4 {
+        margin: 0;
+      }
+    }
+  }
+
+  .upload-form {
+    margin-top: 60px;
+
+    .custom-row {
+      margin: 0;
+      & > div:first-child {
+        margin: 0;
+        padding: 0;
+      }
+
+      .custom-form-footer {
+        margin-bottom: 50px;
+        padding-top: 0;
+        button.custom-black-btn {
+          margin-bottom: 0;
+          width: 47%;
+          margin-left: 53%;
+        }
+      }
+    }
+
+    div.form-input-container {
+      margin-bottom: 30px;
+      &.mb50 {
+        margin-bottom: 50px;
+      }
+    }
+  }
+}
+
+.arrow-next {
+  transform: rotate(180deg);
 }

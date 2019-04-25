@@ -1,20 +1,20 @@
-<section class="content-for-provider p20">
+<section class="content-for-provider provider-upload-content p20">
 
   <div class="row mt10">
     <div class="col-lg-4 col-xs-12"></div>
 
-    <div class="col-lg-4 col-xs-12">
+    <div class="col-lg-4 col-xs-12 main-content-container">
    
       <%= render partial: 'title_and_prev_link', locals: {hide_prev_link: true} %>
 
-      <div class="p20 mt10">
-        <div class="mt20" style="height: 20px;">
-          <div class="pull-left"><h4>Details</h4></div><div class="pull-right">1/5 steps</div>
+      <div class="p20 mt10 form-container">
+        <div class="steps-section">
+          <div class="pull-left"><h4>Upload</h4></div><div class="pull-right">1/5 steps</div>
         </div>
 
       <% f_method, url = !@serial.persisted? ? [:post, provider_serials_path] : [:put, provider_serials_path + "/add_details?slug=#{@serial.slug}"] %>
 
-      <%= form_with model: @serial, scope: 'serial', url: url, method: f_method, class: 'mt40' do |f| %>
+      <%= form_with model: @serial, scope: 'serial', url: url, method: f_method, class: 'mt40 upload-form' do |f| %>
 
         <% if @serial.errors.any? %>
           <div class="row">
@@ -28,25 +28,25 @@
           </div>
         <% end %>
 
-        <div class="row bg-gr">
-          <div class="col-md-12" style="padding: 20px 0">
+        <div class="row custom-row">
+          <div class="col-md-12 bg-gr">
             <!-- general form elements -->
 
-            <div class="form-group">
+            <div class="form-group form-input-container">
               <%= f.label :title %>
               <%= f.text_field( :title,
                                 class: "form-control",
                                 placeholder: t('placeholder.serial.title')) %>
             </div>
 
-            <div class="form-group">
+            <div class="form-group form-input-container">
               <%= f.label :audio %>
               <%= f.text_field( :language,
                                 class: "form-control",
                                 placeholder: t('placeholder.serial.language')  ) %>
             </div>
 
-            <div class="form-group">
+            <div class="form-group form-input-container">
               <%= f.label :genre %>
               <%= f.collection_select( :admin_genre_id,
                                        Genre.alfa_order,
@@ -56,21 +56,21 @@
                                        class: "form-control" ) %>
             </div>
 
-            <div class="form-group">
+            <div class="form-group form-input-container">
               <%= f.label :star_cast %>
               <%= f.text_field( :star_cast,
                                 class: "form-control",
                                 placeholder: t('placeholder.serial.star_cast')) %>
             </div>
 
-            <div class="form-group">
+            <div class="form-group form-input-container">
               <%= f.label :directed_by %>
               <%= f.text_field( :directed_by,
                                class: "form-control",
                                placeholder: t('placeholder.serial.directed_by') ) %>
             </div>
 
-            <div class="form-group">
+            <div class="form-group form-input-container">
               <%= f.label :description %>
               <%= f.text_area( :description,
                                rows: 5,
@@ -78,14 +78,14 @@
                                placeholder: t('placeholder.serial.description') ) %>
             </div>
 
-            <div class="form-group">
+            <div class="form-group form-input-container">
               <%= f.label :number_of_seasons %>
               <%= f.number_field( :seasons_number,
-                               class: "form-control",
+                               class: "form-control bg-gr",
                                placeholder: t('placeholder.serial.seasons_number') ) %>
             </div>
 
-            <div class="form-group">
+            <div class="form-group form-input-container">
               <div class="pull-left" style="width: 47%">
                 <%= f.label :release_year %>
                <% years = 1990..Date.today.year %>
@@ -107,13 +107,14 @@
                                   placeholder: "$23") %>
                 <% end %>
               </div>
+              <div style="clear: both;" />
             </div>
 
           </div>
 
 
-          <div class="box-footer pt20">
-            <%= f.button 'Continue', "data-disable-with": "Saving...", class: "btn btn-flat btn-black", type: 'submit' %>
+          <div class="box-footer custom-form-footer pt20 bg-gr">
+            <%= f.button 'Continue', "data-disable-with": "Saving...", class: "btn btn-flat btn-black custom-black-btn", type: 'submit' %>
           </div>
 
         </div>

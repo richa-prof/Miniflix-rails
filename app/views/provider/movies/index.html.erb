@@ -12,7 +12,7 @@
 
       <%#= render( partial: 'shared/flash_notification', locals: { notice: notice } ) %>
       
-      <div class="row">
+      <div class="row custom-row">
 
         <div class="col-lg-6 col-xs-12 filters-container">
           <div class="col-lg-2 col-sm-12">
@@ -42,7 +42,8 @@
         </div>
 
         <div class="col-lg-4 col-xs-12 search-container" style="position: relative;">
-          <i class="fa fa-search" style="position: absolute; top: 50%; left: 25px; margin-top: -7px;"></i> 
+          <%# <i class="fa fa-search" style="position: absolute; top: 50%; left: 25px; margin-top: -7px;"></i>  %>
+          <%= image_tag('provider/search.svg', alt: 'search icon', class: "icon search-icon")  %>
           <input type="text" class="js-film-search search-input" value="<%= params[:search] %>"  
                  style="height: 36px; padding-left: 30px; border:0; outline: 0" placeholder="Search" />
         </div>

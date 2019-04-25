@@ -37,6 +37,7 @@ a.episode-control {
     min-width: 975px;
     margin-bottom: 0;
     background-color: white;
+    table-layout: fixed;
 
     th,
     td {
@@ -51,6 +52,21 @@ a.episode-control {
     th {
       padding-top: 15px;
       padding-bottom: 15px;
+      font-size: 17px;
+      width: 100%;
+
+      &:last-child {
+        width: 58px;
+      }
+    }
+
+    td {
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      &:last-child {
+        overflow: unset;
+      }
     }
 
     td .dropdown {
@@ -93,6 +109,7 @@ a.episode-control {
       width: 100%;
       border-radius: 2px;
       background-color: #f0f0f0;
+      padding-left: 42px !important;
     }
 
     .upload-btn {
@@ -104,16 +121,26 @@ a.episode-control {
     }
 
     div.search-container {
-      & > i {
-        color: #979797;
+      & > .search-icon {
+        position: absolute;
+        top: 50%;
+        left: 23px;
+        margin-top: -9px;
+        width: 18px;
       }
     }
 
     div.filters-container {
-      padding-top: 8px;
+      padding: 0;
+      padding-top: 14px;
 
-      & > div:first-child {
-        padding-left: 0;
+      & > div:last-child {
+        margin-right: 0;
+      }
+
+      & > div {
+        width: auto;
+        margin-right: 60px;
       }
 
       .sort-links {
@@ -143,28 +170,64 @@ a.episode-control {
 
     a.custom-black-btn {
       height: auto;
+      margin-bottom: 0;
+    }
+  }
+
+  .custom-row {
+    display: flex;
+
+    & > div {
+      max-width: 300px;
+      width: 100%;
+      box-sizing: content-box;
+
+      &:first-child {
+        width: 100%;
+        max-width: unset;
+        display: flex;
+        flex-wrap: nowrap;
+      }
+
+      &:last-child {
+        max-width: 124px;
+        width: 100%;
+      }
     }
   }
 }
 
 @media only screen and (max-width: 1200px) {
-  .provider-section .search-filter-container {
-    div.filters-container {
-      padding-top: 0;
+  .provider-section {
+    .custom-row {
+      flex-direction: column;
+
+      & > div {
+        max-width: unset;
+        width: 100%;
+      }
     }
 
-    div.filters-container > div {
-      padding-left: 0;
-      margin-bottom: 15px;
-      width: auto;
-    }
+    .search-filter-container {
+      div.filters-container {
+        padding-top: 0;
+        padding-left: 15px;
+      }
 
-    div.filters-container > div:last-child {
-      margin-bottom: 15px;
-    }
+      div.filters-container > div {
+        padding-left: 0;
+        margin-bottom: 15px;
+        width: auto;
+      }
 
-    .search-container {
-      margin-bottom: 15px;
+      div.filters-container > div:last-child {
+        margin-bottom: 15px;
+      }
+
+      .search-container {
+        margin-bottom: 15px;
+        max-width: 300px;
+      }
     }
   }
 }

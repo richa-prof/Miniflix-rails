@@ -19,3 +19,5 @@ Rails.application.config.assets.precompile += %w(
   admin/flot/jquery.flot.categories.min.js vendor.js admin/upload_movies admin/series swagger_ui.css \
   swagger_ui_base.css swagger_ui_bundle.js swagger_ui_standalone_preset.js admin/movie_player_init.js
 )
+
+Rails.application.config.assets.precompile << /\.(?:svg|eot|woff|ttf)\z/  

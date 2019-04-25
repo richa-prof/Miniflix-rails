@@ -1,3 +1,31 @@
+// @font-face {
+//   font-family: "Heebo";
+//   src: url("../../fonts/Heebo-Regular.ttf");
+//   font-weight: 400;
+//   font-style: normal;
+// }
+
+// @font-face {
+//   font-family: "Heebo";
+//   src: url("../../fonts/Heebo-Bold.ttf");
+//   font-weight: 700;
+//   font-style: bold;
+// }
+
+// @font-face {
+//   font-family: "Heebo";
+//   src: url("../../fonts/Heebo-Light.ttf");
+//   font-weight: 300;
+//   font-style: normal;
+// }
+
+// @font-face {
+//   font-family: "Heebo";
+//   src: url("../../fonts/Heebo-Medium.ttf");
+//   font-weight: 500;
+//   font-style: normal;
+// }
+
 .login-page {
   background: #f9f9f9;
 }
@@ -8,13 +36,13 @@
   margin-bottom: auto;
   width: 500px;
   padding: 50px 20px 60px 20px;
-  border: 1px solid lightgray;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
 }
 
 .login-box .login-box-body {
   margin: 10px auto;
-  width: 60%;
+  width: 100%;
+  max-width: 285px;
   font-family: "Heebo", sans-serif;
   color: #444444;
 
@@ -58,6 +86,15 @@
 div.form-input-container {
   margin-bottom: 40px;
 
+  &.with-icon {
+    position: relative;
+
+    & > .form-control,
+    & > input {
+      padding-right: 35px;
+    }
+  }
+
   &.mb-35 {
     margin-bottom: 35px;
   }
@@ -77,13 +114,18 @@ div.form-input-container {
     }
   }
 
-  & > .form-control,
-  & > input {
+  .form-control,
+  input {
     padding: 10px 15px;
     height: 40px;
     border-radius: 2px;
     border: 1px solid #e0e0e0;
     box-shadow: none;
+    font-size: 16px;
+
+    &:focus {
+      outline: 0;
+    }
 
     &.error {
       border-color: #ff0000;
@@ -112,6 +154,15 @@ div.form-input-container {
     top: 32px;
     right: 10px;
     cursor: pointer;
+  }
+
+  select {
+    padding: 7px 11px !important;
+  }
+
+  & > textarea {
+    resize: none;
+    height: 80px !important;
   }
 }
 
