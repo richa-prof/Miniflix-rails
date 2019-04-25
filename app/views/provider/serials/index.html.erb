@@ -112,11 +112,13 @@
                                   <% end %>
                                   </li>
                                   <li>
-                                  <%= link_to( provider_serial_path(serial.id),
-                                           method: :delete,
-                                           data: { confirm: t('confirm.are_you_sure') } ) do %>
-                                     Delete
-                                    <% end %>
+                                  <%= link_to(
+                                    "Delete","#",
+                                     rel: provider_serial_path(serial.id),
+                                     data: {kind: 'serie', toggle: "modal", target: "#delete_video_dialog"},
+                                     onclick: "$('#delete_video_dialog .js-video-delete-link').attr('href', this.rel); $('.js-video-category').html($(this).data('kind')); return true;"
+                                    )
+                                  %>
                                   </li>
                                 </ul>
                               </div>

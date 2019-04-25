@@ -175,7 +175,8 @@ section.pr40 {
 
 .btn-black {
   background: black;
-  color: white;
+  background-color: black;
+  color: white !important;
   font-weight: 700 !important;
   width: 100%;
 }
@@ -340,3 +341,13 @@ input.custom-black-btn {
   }
 }
 
+#logout_dialog, #delete_video_dialog {
+  .modal-footer, .modal-header {
+    border: 0;
+  }
+}
+
+.btn-red {
+  background-color: orangered;
+  color: white;
+}
