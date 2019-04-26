@@ -57,8 +57,8 @@ $(document).on('ready turbolinks:load', function(ev) {
     var ev = evt || window.event;
     ev.stopPropagation();
     ev.preventDefault();
-    var fileName = self.files ? self.files[0].name : $(ev.target).parent().parent().prev().find('.js-file-name').html();
-    choice = confirm("Are you sure you want to delete file named '" + fileName + "' ?");
+    var fileName = self.files ? self.files[0].name : $(ev.target).parent().parent().prev().find('.js-file-name strong').html();
+    choice = confirm("Are you sure you want to remove '" + fileName + "' file ?");
     if(choice) {
       self.uploadZone.find('input')[0].value = '';
       self.uploadZone.parent().find('.file-info').hide();
@@ -75,13 +75,6 @@ $(document).on('ready turbolinks:load', function(ev) {
       }
      window.lockTimer = 1;
      var ev = evt || window.event;
-     //ev.stopPropagation();
-     //ev.preventDefault();
-     //var el = $(ev.target);
-     //var inp = el.parent().parent().find('input[type="file"]');
-     //console.log('bid ', self.bid, ' video input to click on',  inp);
-     //inp.click();
-     console.log('click file input');
      self.fileInputElement.click();
      window.lockTimer = null;
      return false;
@@ -102,14 +95,14 @@ $(document).on('ready turbolinks:load', function(ev) {
     evt.stopPropagation();
     evt.preventDefault();
     self.files = dataTransfer.files;
+    self.fileInputElement[0].files = self.files;
+    console.log('files in input after drop ', self.fileInputElement[0].files, ' for input', self.fileInputElement);
     self.handleFiles();
     return false;
   }
 
   MiniflixFileSelect.prototype.handleFiles = function() {
     var self = this;
-    console.log('files:', self.files);
-    console.log('bid:', self.bid);
     if (!self.checkFileType()) {
       alert('Wrong file type! Please select video!');
       return false;
@@ -147,27 +140,27 @@ $(document).on('ready turbolinks:load', function(ev) {
 
      // using recursion for handling dynamic list of videos!
       function submitVideos(url) {
-        console.log('submitVideos', url);
+        console.log('-- submitVideos', url);
         console.log(window.videoCategories, window.videoCategories.length);
         if (!window.videoCategories.length) {
           window.lockTimer = null;
-          console.log('returning url from submitVideos', url);
+          console.log('-- returning url from submitVideos', url);
           return url;
         }
         var category = window.videoCategories.shift();
-        console.log('creating uploader for ',category);
+        console.log('-- creating uploader for ',category);
         var uploader = new MiniflixVideosUploader('.js-provider-video-upload-wrapper', category); //  trailer
         uploader.submit().then((url) => {
           var finalURL = submitVideos(url);
-          console.log('continue with', finalURL);
+          console.log('-- continue with', finalURL);
           // the last video uploader should return redirect url via promise
           if (finalURL && finalURL.length > 5) {
-            console.log('redirect to :', finalURL);
+            console.log('-- redirect to :', finalURL);
             Turbolinks.visit(finalURL);
           } else {
             return finalURL;
           }
-          console.log('finish');
+          console.log('-- finish');
         }).catch((reason) => {
            console.error('Promise to upload movie rejected with reason: ', reason);
         });
@@ -228,24 +221,23 @@ $(document).on('ready turbolinks:load', function(ev) {
     self.uploadWrapper = $('#' + category + '_upload_wrapper');
     console.log('uploadWrapper:', self.uploadWrapper);
     self.bid = btoa(selector + category);
-    if ($('body').attr('data-mfx-video-uploader') == self.bid) {
+    if (self.wrapper.data('mfx-video-uploader') == self.bid) {
       console.warn('skipping MiniflixVideoUploader init - already have an instance');
       return false;
     }
-    $('body').attr('data-mfx-video-uploader', self.bid); 
-
+    self.wrapper.data('mfx-video-uploader', self.bid); 
     self.init();
   }
 
   MiniflixVideosUploader.prototype.init = function() {
     var self = this;
     self.errors = [];
-    // self.wrapper.find("#video_file").addClass('form-control');
-    // self.wrapper.find("#trailer_video_file").addClass('form-control');
     self.myLoadBar = new ldBar('#' + self.category + '_upload_wrapper .ldBar');
     self.inputName = (self.category == 'trailer') ? '#trailer_video_file' : '#' + self.category + '_file';
+    self.fileInput = self.uploadWrapper.find(self.inputName);
+    console.log('file input', self.fileInput, 'files: ', self.fileInput[0].files);
     self.files = $(self.inputName)[0].files;
-    console.log('--- MiniflixVideosUploader -> init ---');
+    console.warn('--- MiniflixVideosUploader  init  passed ---');
   };
 
   MiniflixVideosUploader.prototype.setProgress = function(percent) {
@@ -265,12 +257,14 @@ $(document).on('ready turbolinks:load', function(ev) {
 
   MiniflixVideosUploader.prototype.submit = function() {
     var self = this;
+    console.log('submit fired for', self);
+    console.log('files:', self.files)
 
     return new Promise((resolve, reject) => {
       new window.S3MP({
         bucket: self.s3InputBucketName(),
-        fileInputElement: self.inputName,  // check + fixme !  '.file-upload input[type="file"]''
-        fileList: self.files, // An array of files to be uploaded (see "Getting Started")
+        fileInputElement: self.inputName,
+        fileList: self.files, 
 
         onStart: function(upload) {
           self.uploadWrapper.find('.file-read-progress').show();
