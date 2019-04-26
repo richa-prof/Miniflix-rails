@@ -156,7 +156,7 @@ class Provider::MoviesController < ApplicationController
 
   # DELETE /provider/movies/1
   def destroy
-    s3_multipart = S3Multipart::Upload.find_by(id: @provider_movie.s3_multipart_upload_id)
+    s3_multipart = S3Multipart::Upload.find_by(id: @provider_movie&.s3_multipart_upload_id)
     if @provider_movie.has_trailer?
       movie_trailer = @provider_movie.movie_trailer
       s3_multipart_obj = S3Multipart::Upload.find_by(id: movie_trailer.s3_multipart_upload_id)
