@@ -11,7 +11,7 @@
 
     <div style="margin: 20px 0">
 
-      <div class="dropbox-advanced-upload">
+      <div class="dropbox-advanced-upload" style="display: <%= movie&.film_video ? 'none' : 'block' %>" >
         <div class="file-upload">
           <%= multipart_uploader_form(
                input_name: 'video_file',

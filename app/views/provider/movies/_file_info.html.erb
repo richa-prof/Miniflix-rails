@@ -8,7 +8,7 @@
       <div>
       <% if movie&.film_video && category == 'video' %>
           <span class="js-file-name"><strong> <%= movie.film_video.split('%2F')[1] %> </span></strong>
-          <span><%= movie.video_size %></span>
+          <span><%= movie.video_size %> bytes </span>
       <% elsif movie&.movie_trailer && category == 'trailer' %>
           <span class="js-file-name"><strong> <%= movie.movie_trailer.file.split('%2F')[1] %> </span></strong>
       <% end %>

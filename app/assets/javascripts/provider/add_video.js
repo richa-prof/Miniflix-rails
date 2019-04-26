@@ -20,7 +20,7 @@ $(document).on('ready turbolinks:load', function(ev) {
     self.selector = selector;
     self.uploadZone = $(selector);
     if (self.uploadZone.data('mfx-file-select') == self.bid) {
-      console.warn('skip MiniflixFileSelect init - already have an instance for specified container');
+      //console.warn('skip MiniflixFileSelect init - already have an instance for specified container');
       return false; // avoid init errors with Turbolinks
     }
     self.uploadZone.data('mfx-file-select', self.bid); 
@@ -81,6 +81,7 @@ $(document).on('ready turbolinks:load', function(ev) {
      //var inp = el.parent().parent().find('input[type="file"]');
      //console.log('bid ', self.bid, ' video input to click on',  inp);
      //inp.click();
+     console.log('click file input');
      self.fileInputElement.click();
      window.lockTimer = null;
      return false;
