@@ -1,4 +1,4 @@
-$(document).on('ready turbolinks:load', function() {
+$(document).on('ready turbolinks:load', function(ev) {
 
    // alt. way - analize body[data-page]
   var targetPages = ['/provider/serials/add_episode', '/provider/movies/add_video', '/provider/serials/add_trailer']
@@ -17,12 +17,13 @@ $(document).on('ready turbolinks:load', function() {
   function MiniflixFileSelect(selector) {
     var self = this;
     self.bid = btoa(selector);
+    self.selector = selector;
     self.uploadZone = $(selector);
-    if ($('body').attr('data-mfx-file-select') == self.bid) {
-      console.warn('skipping MiniflixFileSelect init - already have an instance');
+    if (self.uploadZone.data('mfx-file-select') == self.bid) {
+      console.warn('skip MiniflixFileSelect init - already have an instance for specified container');
       return false; // avoid init errors with Turbolinks
     }
-    $('body').attr('data-mfx-file-select', self.bid); 
+    self.uploadZone.data('mfx-file-select', self.bid); 
     self.init();
     console.log('--- MiniflixFileSelect init passed, with selector: ' + selector + ' ----');
   }
@@ -34,7 +35,9 @@ $(document).on('ready turbolinks:load', function() {
     self.uploadZone.parent().find('.rm-file-control').on('click', (ev) => self.handleFileRemove(ev));
     self.fileInputElement = self.uploadZone.find('input[type="file"]');
     self.fileInputElement.on('change', (ev) => self.handleFileSelect(ev));
+    //console.log('uploadZone:', self.uploadZone);
     self.uploadZone.find('.dropbox-controls a').on('click', (ev) => self.clickFileSelect(ev));
+    //$(self.selector + ' .dropbox-controls a').on('click', (ev) => self.clickFileSelect(ev));
   }
 
   MiniflixFileSelect.prototype.formatBytes = function(bytes) {
@@ -48,7 +51,6 @@ $(document).on('ready turbolinks:load', function() {
     var self = this;
     return self.files[0].type.indexOf('video/') > -1;
   }
-
 
   MiniflixFileSelect.prototype.handleFileRemove = function(evt) {
     var self = this;
@@ -68,12 +70,19 @@ $(document).on('ready turbolinks:load', function() {
 
   MiniflixFileSelect.prototype.clickFileSelect = function(evt) {
      var self = this;
+      if (window.lockTimer) {
+        return false;
+      }
+     window.lockTimer = 1;
      var ev = evt || window.event;
-     var el = $(ev.target);
-     //var inp = el.parent().parent().find('#video_file');
-     //console.log('video input to click on', inp);
+     //ev.stopPropagation();
+     //ev.preventDefault();
+     //var el = $(ev.target);
+     //var inp = el.parent().parent().find('input[type="file"]');
+     //console.log('bid ', self.bid, ' video input to click on',  inp);
      //inp.click();
      self.fileInputElement.click();
+     window.lockTimer = null;
      return false;
   }
 
