@@ -9,7 +9,7 @@
           data-embed-loaded="false">
     <%= render partial: 'shared/jwplayer_config', locals: {movie: movie} %>
     <div itemscope="" itemtype="http://schema.org/VideoObject">
-      <div id="movie_embed_cnt" data-embed-url="video-url" class="jw-player"></div>
+      <div id="mfx_jw_player_<%= movie.id %>" data-embed-url="video-url" class="jw-player"></div>
     </div>
   </div>
 </div>
@@ -26,7 +26,7 @@
        data-embed-loaded="false">
     <%= render partial: 'shared/jwplayer_config', locals: {movie: movie.movie_trailer} %>
     <div itemscope="" itemtype="http://schema.org/VideoObject">
-      <div id="trailer_embed_cnt" data-embed-url="video-url" class="jw-player"></div>
+      <div id="mfx_jw_trailer_player_<%= movie.movie_trailer.id %>" data-embed-url="video-url" class="jw-player"></div>
     </div>
   </div>
 </div>
