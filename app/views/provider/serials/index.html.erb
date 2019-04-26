@@ -71,7 +71,7 @@
                           <th><%= t('table.movies.year') %></th>
                           <th><%= t('table.movies.audio') %></th>
                           <th><%= t('table.movies.producer') %></th>
-                          <th><%= t('table.movies.rent_price') %></th>
+                          <th class="rent-price-th"><%= t('table.movies.rent_price') %></th>
                           <th></th>
                         </tr>
                       </thead>
@@ -85,7 +85,7 @@
                             <td data-title="Year"><%= serial.year&.year %></td>
                             <td data-title="Audio"><%= serial.language %></td>
                             <td data-title="Producer"><%= serial.directed_by %></td>
-                            <td><%= serial.rate&.price %></td>
+                            <td class="rent-price-td"><%= serial.rate&.price %></td>
                             <td>
                               <div class="dropdown show">
                                 <a class="btn btn-secondary dropdown-toggle" 

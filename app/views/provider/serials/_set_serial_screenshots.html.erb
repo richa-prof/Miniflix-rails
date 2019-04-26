@@ -1,11 +1,11 @@
 <% is_edit_mode = true %>
 
-<div class="pt20">
-  <div class="pull-left"><h4><%= t('label.serial.add_screenshots') %></h4></div>
-  <div class="pull-right" style="padding-top: 10px;">3/5 steps</div>
+<div class="steps-section">
+  <div><h4><%= t('label.serial.add_screenshots') %></h4></div>
+  <div>4/5 steps</div>
 </div>
 
-<div class="row mt40">
+<div class="row">
 
   <% 3.times do |n| %>
     <% ms = "serial_screenshot_#{n+1}".to_sym %>

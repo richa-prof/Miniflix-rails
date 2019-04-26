@@ -140,30 +140,90 @@ input.movie-thumbnail-file-field {
 
   .upload-form {
     margin-top: 60px;
+  }
 
-    .custom-row {
+  .custom-row {
+    margin: 0;
+    & > div:first-child {
       margin: 0;
-      & > div:first-child {
-        margin: 0;
-        padding: 0;
-      }
+      padding: 0;
+    }
 
-      .custom-form-footer {
-        margin-bottom: 50px;
-        padding-top: 0;
-        button.custom-black-btn {
-          margin-bottom: 0;
-          width: 47%;
-          margin-left: 53%;
+    .custom-form-footer {
+      margin-bottom: 50px;
+      padding-top: 0;
+      button.custom-black-btn,
+      input.custom-black-btn {
+        margin-bottom: 0;
+        width: 47%;
+        margin-left: 53%;
+      }
+    }
+  }
+
+  div.form-input-container {
+    margin-bottom: 30px;
+    &.mb50 {
+      margin-bottom: 50px;
+    }
+  }
+
+  .trailer-upload-wrapper {
+    margin-bottom: 50px;
+
+    .dropbox-advanced-upload {
+      background-color: transparent;
+
+      .dropbox-controls {
+        margin: 33px auto;
+        text-align: center;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+        color: #979797;
+
+        & > a {
+          color: black;
         }
       }
     }
+  }
 
-    div.form-input-container {
-      margin-bottom: 30px;
-      &.mb50 {
+  .add-new-episode-wrapper {
+    margin-top: -40px;
+    margin-bottom: 50px;
+
+    & > a {
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      color: #009fe2;
+    }
+  }
+
+  .upload-imgs-custom-row {
+    & > div:first-child {
+      width: 100%;
+
+      .steps-section {
+        margin-bottom: 25px;
+      }
+
+      .custom-thumbnails-steps {
         margin-bottom: 50px;
       }
+
+      .custom-form-footer {
+        margin-top: 50px;
+      }
+
+      .custom-thumbnails-footer {
+        margin-top: 30px;
+      }
+    }
+
+    .fileupload-new {
+      text-align: center;
+      margin-bottom: 0;
     }
   }
 }

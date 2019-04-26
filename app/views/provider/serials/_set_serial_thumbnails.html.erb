@@ -1,14 +1,14 @@
 <% is_edit_mode = true %>
 
-<div class="pt20">
-  <div class="pull-left"><h4><%= t('label.serial.add_serial_thumbnails') %></h4></div>
-  <div class="pull-right" style="padding-top: 10px;">4/5 steps</div>
+<div class="steps-section custom-thumbnails-steps">
+  <div><h4><%= t('label.serial.add_serial_thumbnails') %></h4></div>
+  <div>5/5 steps</div>
 </div>
 
-<div class="row mt40">
+<div class="row custom-row">
   <% [:thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot].each do |thumb| %>
-    <div class="mt10">
-      <div class="fileupload fileupload-new" data-provides="fileupload" style="width: 200px; margin: 0 auto;">
+    <div>
+      <div class="fileupload fileupload-new" data-provides="fileupload">
 
         <%= link_to("#", class: 'movie-thumbnail-file-field-wrapper') do %>
           <div class="fileupload-new thumbnail">

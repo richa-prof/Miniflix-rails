@@ -25,7 +25,7 @@
          data-kind="serial">
     </div>
 
-    <div class="row">
+    <div class="row custom-row">
       <div class="col-md-12">
 
         <%= render partial: 'title_and_prev_link' %>
@@ -38,7 +38,7 @@
         <div class="mt40 upload-form">
           <%= form_with model: movie, scope: 'movie', url: provider_movies_path, method: :post, class: 'pt40', local: true, multipart: true do |f| %>
             <%= render( partial: 'upload_trailer', locals: { movie: @serial } ) %>
-            <div class="form-footer">
+            <div class="form-footer custom-form-footer">
               <input type="button" id="upload_videos" data-disable-with="Saving..." class="btn btn-flat btn-black custom-black-btn" value="Continue" />
             </div>
           <% end %>

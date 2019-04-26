@@ -236,4 +236,12 @@
     font-weight: 500 !important;
     width: 100% !important;
   }
+
+  .settings-fields {
+    .form-input-container {
+      input {
+        font-size: 14px;
+      }
+    }
+  }
 }

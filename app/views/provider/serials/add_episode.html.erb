@@ -1,10 +1,10 @@
 <% movie = @serial %>
 
-<section class="content">
+<section class="content content-for-provider provider-upload-content">
 <div class="row js-provider-video-upload-wrapper">
 
   <div class="col-lg-4 col-xs-12"></div>
-  <div class="col-lg-4 col-xs-12 p20">
+  <div class="col-lg-4 col-xs-12 main-content-container">
 
     <div id="movie-id-container"
          class="js-movie-paths"
@@ -27,17 +27,17 @@
          data-kind="episode">
     </div>
 
-    <div class="row">
+    <div class="row custom-row">
       <div class="col-md-12 js-videos">
 
         <%= render partial: 'title_and_prev_link' %>
 
-        <div class="mt20" style="height: 25px">
-          <div class="pull-left"><h4>Upload Episodes</h4></div>
-          <div class="pull-right" style="padding-top: 10px;">3/4 steps</div>
+        <div class="steps-section">
+          <div><h4>Upload Episodes</h4></div>
+          <div>3/5 steps</div>
         </div>
 
-        <div class="mt40">
+        <div class="mt40 upload-form">
           <%= render( partial: 'choose_season', locals: { serial: @serial } ) %>
         </div>
 
@@ -74,12 +74,12 @@
           <%= form_with model: new_episode, scope: 'movie', url: provider_movies_path, method: :post, class: 'pt40', local: true, multipart: true do |f| %>
             <div id="episodes_wrapper"></div>
 
-            <div>
-              <a href="#" id="add_new_episode"  data-disable-with="Adding ..." style="margin: 20px 12px;" class="js-add-episode"> + Add New Episode</a>
+            <div class="add-new-episode-wrapper">
+              <a href="#" id="add_new_episode"  data-disable-with="Adding ..." class="js-add-episode"> + Add New Episode</a>
             </div>
 
-            <div class="form-footer mt40">
-              <input type="button" id="upload_videos" data-disable-with="Saving..." style="width: 95%; margin: 20px 12px;" class="btn btn-flat btn-black" value="Continue" />
+            <div class="form-footer custom-form-footer">
+              <input type="button" id="upload_videos" data-disable-with="Saving..." class="btn btn-flat btn-black custom-black-btn" value="Continue" />
             </div>
           <% end %>
             

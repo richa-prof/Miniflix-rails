@@ -1,15 +1,11 @@
 <% is_edit_mode = local_assigns.has_key?(:is_edit_mode) ? is_edit_mode : false %>
 
-<div id="trailer_upload_wrapper" class="row">
+<div id="trailer_upload_wrapper" class="row trailer-upload-wrapper">
   <div class="col-md-12">
 
-      <div class="">
-        <label>
-          <%= t('label.trailer') %>
-        </label>
-      </div>
+      
 
-      <div style="margin: 20px 0">
+      <div>
 
         <div class="dropbox-advanced-upload" style="display: <%= movie&.movie_trailer.present? ? 'none' : 'block' %>">
           <div class="file-upload">

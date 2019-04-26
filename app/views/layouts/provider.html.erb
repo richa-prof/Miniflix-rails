@@ -40,7 +40,7 @@
     </div>
 
     <div id="modal_dialogs" class="position: relative">
-      <div id="logout_dialog" class="modal fade" role="dialog" style="top: 30%">
+      <div id="logout_dialog" class="modal fade custom-modal" role="dialog" style="top: 30%">
         <div class="modal-dialog">
           <div class="modal-content p10">
             <div class="modal-header">
@@ -50,14 +50,14 @@
               <p>Are you sure you want to logout?</p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Cancel</button> &nbsp;
-              <%= link_to "Log out", destroy_provider_user_session_path, 'data-method': :delete, class: "btn btn-default btn-flat", style: "width: 100px" %>
+              <button type="button" class="btn btn-default btn-flat custom-modal-cancel-btn" data-dismiss="modal">Cancel</button>
+              <%= link_to "Log out", destroy_provider_user_session_path, 'data-method': :delete, class: "btn btn-default btn-flat custom-modal-approve-btn" %>
             </div>
           </div>
 
         </div>
       </div>
-      <div id="delete_video_dialog" class="modal fade" role="dialog" style="top: 30%">
+      <div id="delete_video_dialog" class="modal fade custom-modal" role="dialog" style="top: 30%">
         <div class="modal-dialog">
           <div class="modal-content p10">
             <div class="modal-header">
@@ -70,10 +70,10 @@
                <a data-method="delete" class="js-video-delete-link" href="/provider/movies/256?kind=movie"></a>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-flat" data-dismiss="modal">Cancel</button> &nbsp;
+              <button type="button" class="btn btn-flat custom-modal-cancel-btn" data-dismiss="modal">Cancel</button>
               <%= link_to "Delete", '#', 
                     onclick: "$(this).parent().parent().find('.js-video-delete-link').click(); return false;",
-                    class: "btn btn-flat btn-red js-video-delete-ctrl", style: "width: 100px" %>
+                    class: "btn btn-flat btn-red js-video-delete-ctrl custom-modal-approve-btn" %>
             </div>
           </div>
 

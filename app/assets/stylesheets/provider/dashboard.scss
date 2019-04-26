@@ -354,3 +354,90 @@ input.custom-black-btn {
   background-color: orangered;
   color: white;
 }
+
+.custom-modal {
+  background: transparent;
+
+  .modal-content {
+    box-shadow: none;
+    padding: 25px 30px;
+  }
+
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 0;
+  }
+
+  .model-header {
+    margin-bottom: 25px;
+  }
+
+  .modal-title {
+    font-weight: 700;
+    color: #303030;
+    font-size: 21px;
+  }
+
+  .modal-body {
+    margin-bottom: 30px;
+
+    p {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: 0.23px;
+      color: #444;
+    }
+  }
+
+  .custom-modal-cancel-btn,
+  .custom-modal-approve-btn {
+    border-radius: 2px;
+    height: 30px;
+    max-width: 80px;
+    width: 100%;
+
+    &:hover,
+    &:active,
+    &:active:hover,
+    &:focus {
+      background-color: transparent;
+      color: black;
+      border: 1px solid black;
+      outline: 0;
+      box-shadow: none;
+    }
+  }
+
+  .custom-modal-cancel-btn {
+    background-color: transparent;
+    border: 1px solid black;
+    border-radius: 3px;
+    color: black;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    margin-right: 20px;
+  }
+
+  .custom-modal-approve-btn {
+    background-color: black;
+    color: white;
+    font-size: 14px;
+    letter-spacing: 0;
+    margin-left: 0;
+    border: none;
+
+    &:hover,
+    &:active,
+    &:active:hover,
+    &:focus {
+      border: none;
+      background-color: black;
+      color: white;
+    }
+
+    &:hover {
+      background-color: #444444;
+    }
+  }
+}
