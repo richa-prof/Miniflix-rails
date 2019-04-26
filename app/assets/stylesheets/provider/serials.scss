@@ -1,5 +1,6 @@
 a#add_new_episode {
   text-decoration: none;
+  cursor: pointer;
 }
 
 a#add_new_episode:hover {
@@ -236,4 +237,8 @@ a.episode-control {
       }
     }
   }
+}
+
+.js-added-episode {
+  min-height: 40px;
 }

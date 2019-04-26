@@ -21,7 +21,7 @@
  
     <div class="tab-content-wrapper">
       <div class="avatar-wrapper-2">
-        <div><%= image_tag(current_user.profile_image_url, alt: "User Image", class: "js-avatar user-image-2") %></div>
+        <div><%= image_tag(current_user&.profile_image_url, alt: "User Image", class: "js-avatar user-image-2") %></div>
       </div>
       <div id="avatar_change_link" class="avatar-change-link"><a onclick="$('#avatar_field').click();">Change photo</a></div>
 

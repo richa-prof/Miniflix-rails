@@ -5,7 +5,7 @@ $(".sys-message").removeClass('error notice').html('');
 <% else %>
    $('.sys-message').addClass('error').html("<div><%= flash[:error] %></div>");
     $('.errors ul').empty()
-  <% @serial&.errors&.full_messages.each do |message| %>
+  <% @serial&.errors&.full_messages&.each do |message| %>
     $(".errors ul").append("<li class='error'><%= escape_javascript(message) %></li>");
   <% end %>
 <% end %>

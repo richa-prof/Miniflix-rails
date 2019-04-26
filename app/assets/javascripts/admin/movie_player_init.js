@@ -1,34 +1,32 @@
 
 $(document).on('ready turbolinks:load', function(ev) {
   
-  // class 
-  function MiniflixVideoPlayer(idx, el) {
+  // prevent double init
+  if ($('body').data('mfx-video-players')) {return; } 
+  $('body').data('mfx-video-players', 1);
+  
+  function MiniflixVideoPlayer(el) {
     var self = this;
     self.bid = btoa(el.id);
     self.category = el.id.split('_')[0];
-    if ($(el).attr('data-mfx-video-player') == self.bid) {
-      console.warn('skipping MiniflixVideoPlayer init (already initialized) on event ', ev.type);
-      return false;
-    }
-    $(el).attr('data-mfx-video-player', self.bid);
-    self.init(idx, el);
+    self.wrapper = $('#' + el.id);
+    console.log('wrapper:', self.wrapper);
+    // if ($(el).attr('data-mfx-video-player') == self.bid) {
+    //   console.warn('skip MiniflixVideoPlayer init (already initialized) on event ', ev.type);
+    //   return false;
+    // }
+    // $(el).attr('data-mfx-video-player', self.bid);
+    self.init(el);
   }
 
-  MiniflixVideoPlayer.prototype.init = function(index, el) {
+  MiniflixVideoPlayer.prototype.init = function() {
     var self = this;
-    //self.number = index + 1;
-    //if (window['player' + self.number]) {return false;}
-    console.warn('----  initializing player for ' + self.category + ' -----');
-    console.log('wrapper', el);
     self.captionData = [];
-    self.wrapper = $(el);
-
     self.config = self.wrapper.find('.jwPlayerConfigContainer');
     jwplayer.key = self.config.data('jwplayer-key');
-    // console.log('config:', self.config);
     if (self.config.length) {
       self.bindChangeEventOnBrowserScreens();
-      self.jwPlayerInit();  //Setup();
+      self.jwPlayerInit();
       self.jwPlayerSetupError();
     } else {
       console.error('no config found for player with category ', self.category);
@@ -37,16 +35,15 @@ $(document).on('ready turbolinks:load', function(ev) {
   }
 
   MiniflixVideoPlayer.prototype.isEmptyValue = function(value) {
-      return (undefined === value || null === value || "" === value)
-    }
-
+    return (undefined === value || null === value || "" === value)
+  }
 
   MiniflixVideoPlayer.prototype.jwPlayerInit = function() { //container, type) {
     var self = this;
-    var videoObject =  self.wrapper.find("#" + self.category + "_embed_cnt")[0];  //div[data-embed-url='video-url']"); // [0]
+    var videoObject = self.wrapper.find('.jw-player')  //"#" + self.category + "_embed_cnt");  
     console.log('videoObject:', videoObject);
     console.log('jwPlayerInit called for ', self.category);
-    var videoPlayerInstance = window.jwplayer(videoObject);
+    var videoPlayerInstance = window.jwplayer(videoObject[0]);
     self.hlsUrl = self.config.data('hls-file');
     console.log('hlsUrl', self.hlsUrl);
     self.originalFileUrl = self.config.data('original-file');
@@ -67,8 +64,9 @@ $(document).on('ready turbolinks:load', function(ev) {
         allownetworking: 'all'
       };
     }
-    console.log('jwPlayer options for ', self.category, opts)
+    //console.log('jwPlayer options for ', self.category, opts)
     videoPlayerInstance.setup(opts);
+    console.log('videoPlayerInstance', videoPlayerInstance.getContainer());
   }
 
 
@@ -91,11 +89,10 @@ $(document).on('ready turbolinks:load', function(ev) {
     });
   };
 
-
   //console.log('>>>>> invoked `ready` function for jwPlayer >>>>>');
   $('.js-video-layer').each(function(idx, el) {
     console.warn('----- setting up video player with jwPlayer on event ', ev.type);
-    new MiniflixVideoPlayer(idx, el);
+    new MiniflixVideoPlayer(el);
   });
 
 });

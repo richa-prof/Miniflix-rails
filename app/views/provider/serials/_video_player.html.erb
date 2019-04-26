@@ -6,7 +6,7 @@
           data-embed-loaded="false">
     <%= render partial: 'shared/jwplayer_config', locals: {movie: movie} %>
     <div itemscope="" itemtype="http://schema.org/VideoObject">
-      <div id="movie_embed_cnt" data-embed-url="video-url" class="jw-player"></div>
+      <div id="mfx_jwplayer_<%= movie.id %>" data-embed-url="video-url" class="jw-player"></div>
     </div>
   </div>
   <strong>

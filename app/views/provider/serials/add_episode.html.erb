@@ -64,7 +64,6 @@
                 <%= render( partial: 'video_player', locals: { movie: episode, counter: idx } ) %>
               </div>
             </div>
-          </div>
           <% end %>
 
         </div>
@@ -72,10 +71,10 @@
         <div class="mt40">
           <% new_episode = Episode.new %>
           <%= form_with model: new_episode, scope: 'movie', url: provider_movies_path, method: :post, class: 'pt40', local: true, multipart: true do |f| %>
-            <div id="episodes_wrapper"></div>
+            <div id="new_episodes_wrapper"></div>
 
             <div class="add-new-episode-wrapper">
-              <a href="#" id="add_new_episode"  data-disable-with="Adding ..." class="js-add-episode"> + Add New Episode</a>
+              <a id="add_new_episode"  data-disable-with="Adding ..." class="js-add-episode"> + Add New Episode</a>
             </div>
 
             <div class="form-footer custom-form-footer">
@@ -103,7 +102,7 @@
   <% if @serial.episodes.empty? %>
     window.videoCategories = ['episode']; 
   <% else %>
-    window.videoCategories = <%= @serial.episodes.map {|e| ('episode') }.to_json.html_safe %>;
+    //window.videoCategories = <%= @serial.episodes.map {|e| ('episode') }.to_json.html_safe %>;
   <% end %>
 </script>
 
