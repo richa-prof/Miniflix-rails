@@ -14,10 +14,8 @@ $(document).on('ready turbolinks:load', function(ev) {
   window.files = window.files || [];
   window.lockTimer = null;
   window.videoCategories = window.videoCategories || []; //['trailer', 'video'];  
-  window.debug_counter = 0;
 
 
-  // class 
   function MiniflixFileSelect(selector) {
     var self = this;
     self.bid = btoa(selector);
@@ -160,7 +158,7 @@ $(document).on('ready turbolinks:load', function(ev) {
         $(selector).attr('id','video_' + ms);
         console.log('-- creating uploader for ', category, $(selector)[0].id);
         var uploader = new MiniflixVideosUploader('#' + $(selector)[0].id, category);
-        $(selector).removeClass(category + '-upload-wrapper');
+        $(selector).removeClass('js-' + category + '-upload-wrapper');
         uploader.submit().then((url) => {
           var finalURL = submitVideos(url);
           console.log('-- resolve URL', finalURL);
@@ -231,9 +229,6 @@ $(document).on('ready turbolinks:load', function(ev) {
     var self = this;
     self.category = category;
     self.selector = selector;
-    // self.wrapper = $(selector);
-    // self.uploadWrapper = $('#' + category + '_upload_wrapper');
-
     //var uploader = new MiniflixVideosUploader('.js-provider-video-upload-wrapper', category);  --> '.js-provider-video-upload-wrapper .js-' + category + '-upload-wrapper')
 
     self.uploadWrapper = $(selector);  //'#' + category + '_upload_wrapper');

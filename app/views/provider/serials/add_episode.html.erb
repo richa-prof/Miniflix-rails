@@ -98,11 +98,4 @@
 </div>
 </section>
 
-<script>
-  <% if @serial.episodes.empty? %>
-    window.videoCategories = ['episode']; 
-  <% else %>
-    //window.videoCategories = <%= @serial.episodes.map {|e| ('episode') }.to_json.html_safe %>;
-  <% end %>
-</script>
 
