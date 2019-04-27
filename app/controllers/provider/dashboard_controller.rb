@@ -5,9 +5,13 @@ class Provider::DashboardController < ApplicationController
 
   def index
     @unique_month_wise = User.select("created_at").map{ |item| item.created_at.beginning_of_month }.uniq # FIXME!
-    # FIXME!
+    
+    # own_videos = []
+    # own_videos << current_user.own_movies.pluck(:id)
+    
+    # UserVideoLastStop.joins(:movie).where
     @monthly_movies_cnt = current_user.own_movies.group("created_day").select("count(*) as movies_cnt,DATE_FORMAT(admin_movies.created_at,'%m') as created_day,admin_movies.created_at")
-    @total_income_of_current_month = UserPaymentTransaction.total_income_of_current_month
+    @total_income_of_current_month = UserPaymentTransaction.total_income_of_current_month_for_user(current_user)
 
     @m_months = []
     @monthly_movies_cnt.each do |main| 

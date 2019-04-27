@@ -35,9 +35,9 @@ class Provider::MoviesController < ApplicationController
     sort_order = "#{sort_col} #{direction}"
     @provider_movies =
       if params[:search]
-        Movie.where("admin_movies.name like :search", search: "%#{params[:search]}%").joins(:genre).order(sort_order)
+        current_user.own_movies.where("admin_movies.name like :search", search: "%#{params[:search]}%").joins(:genre).order(sort_order)
       else
-        Movie.joins(:genre).order(sort_order)  #current_user.my_list_movies
+        current_user.own_movies.joins(:genre).order(sort_order)  #current_user.my_list_movies
       end
     count = @provider_movies.count
     @provider_movies = @provider_movies.limit(PER_PAGE)
