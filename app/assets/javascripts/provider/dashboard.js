@@ -1,10 +1,21 @@
 
   // Pie chart JS code
-$(document).on('ready turbolinks:load', function() {
+$(document).on('ready turbolinks:load', function(ev) {
 
-  if (window.location.pathname != '/provider/dashboard') {
+  var targetPages = ['/provider/dashboard', '/provider/analytics'];
+  var basePath1 = window.location.pathname.split('/').slice(0,4).join('/');
+
+  if (targetPages.indexOf(basePath1) < 0) {
+    console.warn('skip chart draw scripts init for page', window.location.pathname);
     return;
   }
+
+  if ($('body').data('mfx-charts-stats')) {
+    console.warn('skipping initializing code related to charts on event ', ev.type);
+    return false;
+  }
+  $('body').data('mfx-charts-stats', 1); 
+
   
   drawLineChart(m_months);
 

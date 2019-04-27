@@ -3,25 +3,25 @@
   <section class="sidebar provider-sidebar-menu">
     <ul class="sidebar-menu mt20">
       <li class="<%= 'active' if params[:controller] == 'provider/dashboard' %>">
-        <%= link_to provider_dashboard_path, method: "GET" do %>
+        <%= link_to provider_dashboard_path do %>
           <%= image_tag('provider/dashboard.svg', alt: 'dashboard icon', class: "icon provider-sidebar-icon")  %><span>Dashboard</span>
         <% end %>
       </li>
 
       <li class="<%= 'active' if controller_path == 'provider/movies' %>">
-        <%= link_to provider_movies_path, method: :get do %>
+        <%= link_to provider_movies_path do %>
           <%= image_tag('provider/movie.svg', alt: 'movie icon', class: "icon provider-sidebar-icon")  %><span><%= t('heading.movies') %></span>
         <% end %>
       </li>
 
       <li class="<%= 'active' if controller_path == 'provider/series' %>">
-        <%= link_to provider_serials_path, method: :get do %>
+        <%= link_to provider_serials_path do %>
           <%= image_tag('provider/serials.svg', alt: 'series icon', class: "icon provider-sidebar-icon")  %><span>Series</span>
         <% end %>
       </li>
 
       <li class="<%= 'active' if controller_path == 'provider/analytics' %>">
-        <%= link_to provider_analytics_path, method: :get do %>
+        <%= link_to provider_analytics_path do %>
           <%= image_tag('provider/analytics.svg', alt: 'analytics icon', class: "icon provider-sidebar-icon")  %><span>Analytics</span>
         <% end %>
       </li>
