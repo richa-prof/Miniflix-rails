@@ -44,6 +44,7 @@ class User < ActiveRecord::Base
   has_many :own_films
   has_many :own_serials, through: :own_films, source: :film, source_type: 'Serial'
   has_many :own_movies,  through: :own_films, source: :film , source_type: 'Movie'
+  has_many :own_episodes,  through: :own_films, source: :film , source_type: 'Episode'
 
   #has_one  :video_statistic, dependent: :destroy
 

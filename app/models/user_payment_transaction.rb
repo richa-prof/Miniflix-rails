@@ -14,6 +14,11 @@ class UserPaymentTransaction < ApplicationRecord
     def total_income_of_current_month
       total_amount = without_invalid_transaction_ids.where('created_at >= ?', Time.now.beginning_of_month).sum(:amount)
     end
+
+    def total_income_of_current_month_for_user(user)
+      # FIXME add left join
+      total_amount = without_invalid_transaction_ids.where('created_at >= ?', Time.now.beginning_of_month).joins(:user_payment_method).sum(:amount)
+    end
   end
   # ===== Class methods End =====
 

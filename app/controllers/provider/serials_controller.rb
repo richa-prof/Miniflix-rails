@@ -131,13 +131,16 @@ class Provider::SerialsController < ApplicationController
 
   def create
     begin
-      @serial = Serial.create!(fixed_serial_params)
+      @serial = current_user.own_serials.create!(fixed_serial_params)
       unless @serial.slug
         @serial.slug = fixed_serial_params[:title].gsub(/[\W]/,'-').downcase # FIXME!  why it was not autocreated ????
         @serial.save  #(validate: false)
       end
       @success = @serial.valid?
-      create_serial_service if @success
+      if @success
+        create_serial_service
+        # current_user.own_serials << @serial
+      end
       respond_to do |format|
         format.html {
           if @success

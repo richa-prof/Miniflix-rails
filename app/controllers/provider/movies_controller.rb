@@ -79,7 +79,7 @@ class Provider::MoviesController < ApplicationController
   end
 
   def create
-    @provider_movie = Movie.create(fixed_movie_params)
+    @provider_movie = current_user.own_movies.create(fixed_movie_params)
     slug = movie_params[:name].gsub(/[\W]/,'-').downcase # FIXME!  why it was not autocreated ????
     @provider_movie.slug = slug
     @provider_movie.title ||= @provider_movie.name
