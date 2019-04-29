@@ -219,8 +219,13 @@ class Provider::SerialsController < ApplicationController
   end
 
   def destroy
-    @serial.destroy
-    redirect_to provider_serials_url, notice: I18n.t('flash.serial.successfully_deleted')
+    if @serial
+      flash[:success] = I18n.t('flash.serial.successfully_deleted')
+    else
+      flash[:error] = 'Specified Serie not found'
+    end
+    @serial&.destroy
+    redirect_to provider_serials_url
   end
 
   private

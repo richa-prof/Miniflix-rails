@@ -10,13 +10,16 @@ class Serial < ApplicationRecord
 # SELECT `users`.* FROM `users` INNER JOIN `liked_info` ON `users`.`id` = `liked_info`.`user_id` WHERE `liked_info`.`thing_id` = 28 AND `like_info.thing_type` = 'Serial'
 
   # associations for content provider
-  has_many :own_films, as: :film
-  has_many :owners, through: :own_films, source: :user
-  has_one :rate, as: :entity, inverse_of: :entity # inverse_of important here! to save assocation object
+  has_one :own_film, as: :film
+  has_one :owner, through: :own_film, source: :user
+  has_one :rate, as: :entity, inverse_of: :entity # inverse_of important here! to save assocatiated object
 
   has_one :serial_thumbnail, dependent: :destroy, foreign_key: "admin_serial_id"
   has_one :movie_trailer, dependent: :destroy, foreign_key: "admin_serial_id"
   belongs_to :genre, class_name: "Genre", foreign_key: "admin_genre_id"
+
+  alias_method :trailer, :movie_trailer
+  alias_method :thumbnail, :serial_thumbnail
 
   accepts_nested_attributes_for :serial_thumbnail
   accepts_nested_attributes_for :rate, allow_destroy: true
@@ -29,9 +32,6 @@ class Serial < ApplicationRecord
 
   scope :alfa_order, -> { order(:name) }
   
-  def owner
-    owners&.first
-  end
 
   def find_genre(id)
     genre = Genre.find(id)

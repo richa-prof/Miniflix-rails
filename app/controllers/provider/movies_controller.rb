@@ -79,11 +79,7 @@ class Provider::MoviesController < ApplicationController
   end
 
   def create
-    @provider_movie = current_user.own_movies.create(fixed_movie_params)
-    slug = movie_params[:name].gsub(/[\W]/,'-').downcase # FIXME!  why it was not autocreated ????
-    @provider_movie.slug = slug
-    @provider_movie.title ||= @provider_movie.name
-    @provider_movie.save  #(validate: false)
+    @provider_movie = current_user.own_movies.create!(fixed_movie_params)
     Rails.logger.debug @provider_movie.errors.messages
     @success = @provider_movie.valid?
     respond_to do |format|
@@ -121,9 +117,15 @@ class Provider::MoviesController < ApplicationController
     case step
     when :add_details
       session[:movie_kind] = 'movie'
-      @success = @provider_movie.update(fixed_movie_params)
-    when :add_screenshots then @success= save_movie_thumbnails(@provider_movie)
-    when :add_thumbnails then @success = save_movie_thumbnails(@provider_movie)
+      @success = @provider_movie.update!(fixed_movie_params)
+    when :add_screenshots, :add_thumbnails
+      begin
+        thumb = save_movie_thumbnails(@provider_movie)
+        if !thumb&.valid? && params[:movie_thumbnail].present?
+          @success = false
+          @provider_movie.errors.add(:base, thumb&.errors&.full_messages || 'Something went wrong!')
+        end
+      end
     when :finalize
     else
       Rails.logger.error "--- Uknown step: #{step} ----"
@@ -135,11 +137,13 @@ class Provider::MoviesController < ApplicationController
     if @success
       flash[:success] = I18n.t('flash.movie.successfully_updated') 
     else
-      flash[:error] = 'At least one error prevents movie from being updated'
+      error = 
+      flash[:error] = @provider_movie.errors.full_messages
+      #render wizard_path
     end
     respond_to do |format|
       format.html {
-        if @provider_movie.valid?
+        if @success
           previous_featured_film.try(:set_is_featured_film_false)
           redirect_to wizard_path(next_step, slug: @provider_movie.slug)
           #redirect_to next_wizard_path(slug: @provider_movie.slug), notice: I18n.t('flash.movie.successfully_updated')

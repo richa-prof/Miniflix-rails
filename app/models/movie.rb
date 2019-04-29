@@ -50,8 +50,8 @@ class Movie < ApplicationRecord
   has_many :movie_versions, dependent: :destroy
 
   # associations for content provider
-  has_many :own_films, as: :film
-  has_many :owners, through: :own_films, source: :user
+  has_one :own_film, as: :film
+  has_one :owner, through: :own_film, source: :user
   has_one :rate, as: :entity, inverse_of: :entity # inverse_of important here! to save assocation object
 
   accepts_nested_attributes_for :movie_thumbnail
@@ -59,6 +59,7 @@ class Movie < ApplicationRecord
   
   # CALLBACKS
   before_save :create_bitly_url, if: -> { slug_changed? }
+  before_validation :fix_attrs
   after_create :write_file
   after_update :send_notification
 
@@ -413,6 +414,11 @@ class Movie < ApplicationRecord
   def create_bitly_url
     bitly = Bitly.client.shorten(movie_show_url)
     self.bitly_url = bitly.short_url
+  end
+
+  def fix_attrs
+    self.slug ||= name.gsub(/[\W]/,'-').downcase
+    self.title ||= name
   end
 
   def movie_show_url

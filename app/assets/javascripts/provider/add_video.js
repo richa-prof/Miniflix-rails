@@ -166,12 +166,15 @@ $(document).on('ready turbolinks:load', function(ev) {
           if (finalURL && finalURL.length > 5) {
             console.log('-- redirect to :', finalURL);
             $('body').removeClass('busy');
+            window.lockTimer = null;
             Turbolinks.visit(finalURL);
           } else {
             return finalURL;
           }
           console.log('-- finish');
         }).catch((reason) => {
+           $('body').removeClass('busy');
+           window.lockTimer = null;
            console.error('Promise to upload movie rejected with reason: ', reason);
         });
       };
@@ -229,9 +232,7 @@ $(document).on('ready turbolinks:load', function(ev) {
     var self = this;
     self.category = category;
     self.selector = selector;
-    //var uploader = new MiniflixVideosUploader('.js-provider-video-upload-wrapper', category);  --> '.js-provider-video-upload-wrapper .js-' + category + '-upload-wrapper')
-
-    self.uploadWrapper = $(selector);  //'#' + category + '_upload_wrapper');
+    self.uploadWrapper = $(selector);
     self.wrapper = self.uploadWrapper.find('.dropbox-advanced-upload');
     console.log('uploadWrapper:', self.uploadWrapper);
     self.bid = btoa(selector + category);
@@ -249,7 +250,6 @@ $(document).on('ready turbolinks:load', function(ev) {
     self.inputName = (self.category == 'trailer') ? '#trailer_video_file' : '#' + self.category + '_file';
     self.fileInput = self.uploadWrapper.find(self.inputName);
     self.files = self.fileInput[0].files;
-    //console.log('file input', self.fileInput, 'files: ', self.files);
     self.myLoadBar = new ldBar(self.selector + ' .ldBar');
     console.warn('--- MiniflixVideosUploader  init  passed ---');
   };
@@ -321,7 +321,6 @@ $(document).on('ready turbolinks:load', function(ev) {
             console.log("Video file %d successfully uploaded", upload.key);
             $(".sys-message .success").append("Video has been uploaded successfully.");
             var nextPageURL = $('.js-movie-paths').data('next-stage-path');
-            //console.log('resolve ', nextPageURL);
             resolve(nextPageURL);
           }
         },
@@ -336,14 +335,10 @@ $(document).on('ready turbolinks:load', function(ev) {
         },
 
         onError: function(err) {
-          console.error("<<<<<< onError callback invoked :: error --> ", err);
           var er = JSON.stringify(err);
-          console.error("There was an error" + er);
-          self.wrapper.find("#success_msg").hide();
-          self.wrapper.find("#progress-bar").hide();
-          self.wrapper.find("#error_msg").show();
-          self.wrapper.find("#error_msg").empty().append('Error : '+err.message);
-          reject('bad');
+          console.error("Error occured: " + er);
+          $('.sys-message').html('<div id="flash_error" class="error">' + err.message + ' for file "' + self.files[0].name + '"</div>')
+          reject(err.message);
         },
 
         onProgress: function(num, size, done, percent, speed) {

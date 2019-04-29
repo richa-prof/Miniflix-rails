@@ -12,10 +12,11 @@ $(document).on('ready turbolinks:load', function(ev) {
 
   window.lockTimer = 0;
 
-  $('.js-film-search').focus();
+  //$('.js-film-search').focus();
 
   $('.js-film-search').on('keyup', function(ev) {
     var el = $(ev.target);
+    console.log(ev);
 
     if (el.val().length < 3 && !el.val().length) {
       return false;

@@ -156,7 +156,7 @@ var initValidators = function() {
   };
 
   adminMovieEditForm = function() {
-    return $("#frm_admin_movie.edit_movie_frm");
+    return $(".edit_movie_frm");
   };
 
   adminMovieFormValidationRules = function() {
@@ -254,7 +254,6 @@ var initValidators = function() {
 
   applyValidationToAdminMovieEditForm = function() {
     var formObject = adminMovieEditForm();
-
     formObject.validate({
       rules: adminMovieFormValidationRules(),
       messages: adminMovieFormValidationMessages(),

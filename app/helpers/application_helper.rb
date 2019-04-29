@@ -28,4 +28,8 @@ module ApplicationHelper
   def body_page_name
     @body_page_name ||= [controller_name.camelcase.gsub('::',''), action_name.camelcase].join
   end
+
+  def watch_video_url(video_slug)
+    "#{ENV['Host']}/watch/#{video_slug}"
+  end
 end

@@ -4,7 +4,9 @@ class UserVideoLastStop < ApplicationRecord
 
 
   scope :who_watched_videos, -> (video_ids) {
-    joins('INNER JOIN `admin_movies` ON `admin_movies`.`id` = `user_video_last_stops`.`admin_movie_id`').where("admin_movies.id in (:ids)", ids: video_ids)
+    out = joins('INNER JOIN `admin_movies` ON `admin_movies`.`id` = `user_video_last_stops`.`admin_movie_id`')
+    out.where!("admin_movies.id in (:ids)", ids: video_ids) unless video_ids.empty?
+    out
   }
 
   #constants
