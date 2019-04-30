@@ -176,7 +176,7 @@ class Provider::MoviesController < ApplicationController
 
   def fixed_movie_params
     mp = movie_params
-    mp[:released_date]  = Date.parse("01/01/#{mp.dig(:movie, :released_date)}").to_s
+    mp[:released_date]  = Date.parse("#{mp[:released_date]}/01/01")
     mp
   end
 

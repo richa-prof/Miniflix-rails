@@ -15,7 +15,6 @@ $(document).on('ready turbolinks:load', function(ev) {
   window.lockTimer = null;
   window.videoCategories = window.videoCategories || []; //['trailer', 'video'];  
 
-
   function MiniflixFileSelect(selector) {
     var self = this;
     self.bid = btoa(selector);
@@ -33,7 +32,9 @@ $(document).on('ready turbolinks:load', function(ev) {
 
   MiniflixFileSelect.prototype.init = function() {
     var self = this;
+    console.log('bid:', self.bid);
     self.uploadZone.on('dragover', self.handleDragOver);
+    self.videoCategoriesBkp = window.videoCategories;
     self.uploadZone.on('drop', (ev) => self.handleFileDrop(ev));
     self.uploadZone.parent().find('.rm-file-control').on('click', (ev) => self.handleFileRemove(ev));
     self.fileInputElement = self.uploadZone.find('input[type="file"]');
@@ -73,7 +74,7 @@ $(document).on('ready turbolinks:load', function(ev) {
 
   MiniflixFileSelect.prototype.clickFileSelect = function(evt) {
      var self = this;
-     console.log('clickFileSelect');
+     //console.log('clickFileSelect');
       if (window.lockTimer) {
         return false;
       }
@@ -86,7 +87,7 @@ $(document).on('ready turbolinks:load', function(ev) {
 
   MiniflixFileSelect.prototype.handleFileSelect = function(evt) {
     var self = this;
-    console.log('handleFileSelect');
+    //console.log('handleFileSelect');
     var ev = evt || window.event;
     ev.stopPropagation();
     ev.preventDefault();
@@ -101,7 +102,7 @@ $(document).on('ready turbolinks:load', function(ev) {
     evt.preventDefault();
     self.files = dataTransfer.files;
     self.fileInputElement[0].files = self.files;
-    console.log('files in input after drop ', self.fileInputElement[0].files, ' for input', self.fileInputElement);
+    //console.log('files in input after drop ', self.fileInputElement[0].files, ' for input', self.fileInputElement);
     self.handleFiles();
     return false;
   }
@@ -112,6 +113,9 @@ $(document).on('ready turbolinks:load', function(ev) {
       alert('Wrong file type! Please select video!');
       return false;
     }
+    console.log('bid:', self.bid);
+    console.log('bkp categories:', self.videoCategoriesBkp);
+    window.videoCategories = self.videoCategoriesBkp;
     var out = [];
     for (var i = 0, f; f = self.files[i]; i++) {
       out.push('<div><span class="js-file-name" data-file-attached="true"><strong>', escape(f.name), '</strong></span></div>','<div>' + self.formatBytes(f.size) + '</div>');
@@ -267,12 +271,23 @@ $(document).on('ready turbolinks:load', function(ev) {
     return $('#s3-input-bucket-name-container').data('kind');
   };
 
+  MiniflixVideosUploader.prototype.sysMessage = function (klass, msg) {
+    $('.sys-message').html('<div id="flash_' + klass + '" class="' + klass + '"></div>')
+    $(".sys-message ." + klass).html(msg);
+  }
+
   MiniflixVideosUploader.prototype.submit = function() {
     var self = this;
     console.log('submit fired for', self);
     console.log('files:', self.files)
 
+
     return new Promise((resolve, reject) => {
+      var redirectUrl = $('#movie-id-container').data('redirect-path') ;
+      var nextPageURL = $('.js-movie-paths').data('next-stage-path');
+      if (!self.files.length) {
+        resolve(nextPageURL);
+      }
       new window.S3MP({
         bucket: self.s3InputBucketName(),
         fileInputElement: self.inputName,
@@ -289,12 +304,11 @@ $(document).on('ready turbolinks:load', function(ev) {
           var up_file = JSON.stringify(upload);
           self.setProgress(100);
           self.wrapper.find("#error_msg").hide();
-          $('.sys-message').html('<div id="flash_success" class="success"></div>')
           var kind = self.kind(); // movie or episode or serial
           if (self.category == 'trailer') {
             console.log("trailer upload --> " + up_file);
             //console.log("Trailer file %d successfully uploaded", upload.key);
-            $(".sys-message .success").append("Trailer for movie has been uploaded successfully.");
+            self.sysMessage('success', "Trailer for movie has been uploaded successfully.");
             var is_edit_page = $('#movie-id-container').data('is-edit-mode');
             var postProcessUrl = $('.js-movie-paths').data('trailer-upload-success-path');
             var data = { upload_id: upload.id, kind: kind };
@@ -319,7 +333,7 @@ $(document).on('ready turbolinks:load', function(ev) {
             });
           } else {
             console.log("Video file %d successfully uploaded", upload.key);
-            $(".sys-message .success").append("Video has been uploaded successfully.");
+            self.sysMessage('success', "Video has been uploaded successfully.");
             var nextPageURL = $('.js-movie-paths').data('next-stage-path');
             resolve(nextPageURL);
           }
@@ -337,7 +351,7 @@ $(document).on('ready turbolinks:load', function(ev) {
         onError: function(err) {
           var er = JSON.stringify(err);
           console.error("Error occured: " + er);
-          $('.sys-message').html('<div id="flash_error" class="error">' + err.message + ' for file "' + self.files[0].name + '"</div>')
+          self.sysMessage('error', err.message + ' for file "' + self.files[0].name);
           reject(err.message);
         },
 
