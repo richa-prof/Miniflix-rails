@@ -5,7 +5,7 @@
       <div><%= image_tag('logo-black.png') %></div>
     </div>
     <h4 class="login-box-msg mb35">Forgot Password?</h4>
-    <span>Fill the details to complete the process.</span>
+    <span>Enter your email address and we'll send<br/>you a link to get back into your account.</span>
     <br/><br/>
 
     <% unless flash[:alert].blank? %>
@@ -21,13 +21,18 @@
 
     <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "forgot-pass-form signup-form" }) do |f| %>
       <div class="form-group">
-        <label for="forgot_email_">E-mail</label>
-        <%= f.email_field :email, class: "form-control", id: "forgot_email_", placeholder: "Enter e-mail", required: true %>
+        <label for="forgot_email_">Email</label>
+        <%= f.email_field :email, class: "form-control", id: "forgot_email_", placeholder: "Enter your email", required: true %>
         <%= errors_for(f, :email) %>
       </div>
-      <%= button_tag(type: 'submit', data: {"disable-with": "Sending ..."}, class: "btn btn-flat btn-black") do %>
-        Send me reset password instructions
-      <% end %>
+      <div class="pull-left" style="line-height: 36px">
+             <%= link_to '< Return to Sign In', new_provider_user_session_path %>
+      </div>
+      <div class="pull-right" style="width: 50%">
+        <%= button_tag(type: 'submit', data: {"disable-with": "Sending ..."}, class: "btn btn-flat btn-black") do %>
+          Confirm
+        <% end %>
+      </div>
     <% end %>
 
   </div>
