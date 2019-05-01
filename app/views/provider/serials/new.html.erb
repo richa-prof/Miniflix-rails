@@ -12,23 +12,14 @@
           <div class="pull-left"><h4>Upload</h4></div><div class="pull-right">1/5 steps</div>
         </div>
 
+
       <% f_method, url = !@serial.persisted? ? [:post, provider_serials_path] : [:put, provider_serials_path + "/add_details?slug=#{@serial.slug}"] %>
 
-      <%= form_with model: @serial, scope: 'serial', url: url, method: f_method, class: 'mt40 upload-form' do |f| %>
+      <%= form_with model: @serial, scope: 'serial', url: url, method: f_method, class: 'mt20 upload-form' do |f| %>
 
-        <% if @serial.errors.any? %>
-          <div class="row">
-            <div class="col-md-12">
-              <% @serial.errors.full_messages.each do |message| %>
-                <div class="callout callout-success">
-                  <p><%= message %></p>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-
-        <div class="row custom-row">
+        <span class="errors help-block"><ul></ul></span>
+        
+        <div class="row custom-row mt20">
           <div class="col-md-12 bg-gr">
             <!-- general form elements -->
 
@@ -121,17 +112,6 @@
       <% end %>
 
 
-      <section>
-        <div class="field">
-          <%#= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: ' your name', required: true %>
-        </div>
-
-        <div class="field">
-          <%#= f.submit "Save",  data: { "disable-with": "Saving..." }, class: 'btn btn-flat btn-black btn-block' %>
-        </div>
-      </section>
-
-      <span class="errors help-block"><ul></ul></span>
         
     </div>
     <div class="col-lg-4 col-xs-12"></div>

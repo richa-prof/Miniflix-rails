@@ -7,6 +7,7 @@ require 'constraints/provider_subdomain_constraint'
 def provider_block
   devise_for :users, as: :provider, controllers: {
     sessions: 'provider/sessions',
+    password: 'provider/password'
   }
 
   get 'dashboard' => 'dashboard#index'

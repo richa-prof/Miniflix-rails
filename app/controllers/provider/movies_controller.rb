@@ -6,7 +6,7 @@ class Provider::MoviesController < ApplicationController
 
   PER_PAGE = 15
 
-  #before_action :authenticate_provider_user!
+  before_action :authenticate_provider_user!
   before_action :set_provider_movie, only: [:show, :edit, :update, :destroy]
 
   skip_before_action :setup_wizard, only: [:edit, :destroy]
@@ -137,9 +137,7 @@ class Provider::MoviesController < ApplicationController
     if @success
       flash[:success] = I18n.t('flash.movie.successfully_updated') 
     else
-      error = 
       flash[:error] = @provider_movie.errors.full_messages
-      #render wizard_path
     end
     respond_to do |format|
       format.html {
@@ -148,7 +146,7 @@ class Provider::MoviesController < ApplicationController
           redirect_to wizard_path(next_step, slug: @provider_movie.slug)
           #redirect_to next_wizard_path(slug: @provider_movie.slug), notice: I18n.t('flash.movie.successfully_updated')
         else 
-          Rails.logger.error @provider_movie.errors.full_messages
+          Rails.logger.error flash[:error]
           redirect_back(fallback_location: provider_movies_path)
         end
       }

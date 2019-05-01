@@ -52,7 +52,7 @@ class Movie < ApplicationRecord
   # associations for content provider
   has_one :own_film, as: :film
   has_one :owner, through: :own_film, source: :user
-  has_one :rate, as: :entity, inverse_of: :entity # inverse_of important here! to save assocation object
+  has_one :rate, as: :entity, inverse_of: :entity # inverse_of important here! to save associated object
 
   accepts_nested_attributes_for :movie_thumbnail
   accepts_nested_attributes_for :rate, allow_destroy: true

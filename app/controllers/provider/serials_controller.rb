@@ -1,5 +1,5 @@
 class Provider::SerialsController < ApplicationController
-  #before_action :authenticate_provider_user!
+  before_action :authenticate_provider_user!
   before_action :set_provider_serial, only: [:show, :edit, :update, :destroy]
 
   include Admin::MovieHandlers
@@ -106,20 +106,18 @@ class Provider::SerialsController < ApplicationController
     else
       Rails.logger.error "--- Uknown step: #{step} ----"
     end
-    Rails.logger.debug "errors: #{@serial.errors}"
+    Rails.logger.debug "errors: #{@serial.errors.full_messages.inspect}"
     if @success
-      flash[:success] = I18n.t('flash.serial.successfully_updated') 
+      flash[:success].now = I18n.t('flash.serial.successfully_updated') 
     else
-      flash[:error] = 'At least one error prevents Serie from being updated'
+      flash[:error].now = @serial.errors.full_messages
     end
     respond_to do |format|
       format.html {
         if @success
           previous_featured_film.try(:set_is_featured_film_false)
           redirect_to wizard_path(next_step, slug: @serial.slug)
-          #redirect_to next_wizard_path(slug: @serial.slug), notice: I18n.t('flash.movie.successfully_updated')
         else 
-          Rails.logger.error @serial.errors.full_messages
           redirect_back(fallback_location: provider_movies_path)
         end
       }
@@ -244,14 +242,16 @@ class Provider::SerialsController < ApplicationController
 
   def fixed_serial_params
     sp = serial_params
-    sp[:year]  = Date.parse("01/01/#{sp[:year]}").to_s
+    sp[:year]  = Date.parse("01/01/#{sp[:year]}")
     sp
   end
 
   def serial_params
     params.require(:serial).permit(
       :title, :year, :description, :admin_genre_id, :directed_by, :language, :star_cast, :seasons_number, 
-      serial_thumbnail_attributes: [:id, :serial_screenshot_1, :serial_screenshot_2, :serial_screenshot_3, :thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot],
+      serial_thumbnail_attributes: [
+        :id, :serial_screenshot_1, :serial_screenshot_2, :serial_screenshot_3, :thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot
+      ],
       rate_attributes: [
         :price, :notes, :discount, :id, :entity_id, :entity_type 
       ]

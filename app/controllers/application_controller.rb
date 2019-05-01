@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :exception,  unless: :api_request?
+  protect_from_forgery prepend: true, with: :exception,  unless: :api_request?
   layout :determine_layout
 
   def api_request?

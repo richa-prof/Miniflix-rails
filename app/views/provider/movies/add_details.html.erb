@@ -12,23 +12,13 @@
           <div class="pull-right" style="padding-top: 10px;">1/2 steps</div>
         </div>
 
-      <%= form_with model: @movie, scope: 'movie', url: provider_movies_path, method: :post, class: 'pt40', local: true, multipart: true do |f| %>
+      <%= form_with model: @movie, scope: 'movie', url: provider_movies_path, method: :post, class: 'mt20', local: true, multipart: true do |f| %>
 
-        <% if @movie.errors.any? %>
-          <div class="row">
-            <div class="col-md-12">
-              <% @movie.errors.full_messages.each do |message| %>
-                <div class="callout callout-success">
-                  <p><%= message %></p>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
+        <span class="errors help-block"><ul></ul></span>
 
         <%= f.hidden_field :kind, value: 'movie' %>
 
-        <div class="row">
+        <div class="row mt20">
           <div class="col-md-12" style="margin: 20px 0">
             <!-- general form elements -->
 
@@ -96,19 +86,6 @@
         </div>
       <% end %>
 
-
-      <section>
-        <div class="field">
-          <%#= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: ' Enter your name', required: true %>
-        </div>
-
-        <div class="field">
-          <%#= f.submit "Save",  data: { "disable-with": "Saving..." }, class: 'btn btn-flat btn-black btn-block' %>
-        </div>
-      </section>
-
-      <span class="errors help-block"><ul></ul></span>
-        
     </div>
     <div class="col-lg-4 col-xs-12"></div>
   </div>

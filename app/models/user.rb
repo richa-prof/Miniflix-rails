@@ -123,6 +123,7 @@ class User < ActiveRecord::Base
     admin: 'Admin',
     staff: 'Staff',
     user: 'User',
+#    provider: 'Content Provider',
     marketing_staff: 'marketing_staff' 
   }
 

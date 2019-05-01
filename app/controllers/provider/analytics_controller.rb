@@ -1,6 +1,6 @@
 class Provider::AnalyticsController < ApplicationController
 
-  #before_action :authenticate_admin_user!, only: [:index]  # FIXME!
+  before_action :authenticate_provider_user!
 
   layout "provider"
 
