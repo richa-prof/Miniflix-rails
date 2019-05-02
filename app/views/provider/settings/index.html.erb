@@ -64,22 +64,19 @@
     <div class="tab-content-wrapper">
       <%= form_with model: current_user, scope: 'provider', url: provider_settings_path + '/' + current_user.id.to_s, method: :put do |f| %>
         <section>
-          <div class="field form-input-container with-icon">
+          <div class="field form-input-container">
             <label for="current-password">Current Password</label>
-            <div class="password-icon"><%= image_tag('provider/eye-visible.svg') %></div>
             <%= f.password_field :current_password, autocomplete: "off", id: "current-password", placeholder: ' Current password', required: true  %>
           </div>
-          <div class="field form-input-container with-icon">
+          <div class="field form-input-container">
             <% if @minimum_password_length %>
             <em>(<%= @minimum_password_length %> characters minimum)</em>
             <% end %>
             <label for="new-password">New Password</label>
-            <div class="password-icon"><%= image_tag('provider/eye-visible.svg') %></div>
             <%= f.password_field :password, autocomplete: "off", id: "new-password", placeholder: ' New password', required: true  %>
           </div>
-          <div class="field form-input-container with-icon mb35">
+          <div class="field form-input-container mb35">
             <label for="confirm-password">Confirm New Password</label>
-            <div class="password-icon"><%= image_tag('provider/eye-visible.svg') %></div>
             <%= f.password_field :password_confirmation, autocomplete: "off", id: "confirm-password", placeholder: ' Confirm new password', required: true  %>
           </div>
           <div class="field no-padding">
