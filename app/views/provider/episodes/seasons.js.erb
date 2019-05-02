@@ -1,0 +1,5 @@
+$(".sys-message").removeClass('error notice').html(''); 
+<% if @serial %>
+  $('.sys-message').addClass('success').html("<div>Please select season for Serie '<%= @serial.title %>'</div>");
+  $(".js-seasons-wrapper").html("<%= escape_javascript(render(partial: 'provider/episodes/choose_season', locals: {serial: @serial})) %>");
+<% end %>

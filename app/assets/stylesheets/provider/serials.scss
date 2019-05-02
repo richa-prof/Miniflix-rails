@@ -186,7 +186,7 @@ a.episode-control {
     display: flex;
 
     & > div {
-      max-width: 300px;
+      /* max-width: 300px; */
       width: 100%;
       box-sizing: content-box;
 
@@ -198,7 +198,7 @@ a.episode-control {
       }
 
       &:last-child {
-        max-width: 124px;
+        /* max-width: 124px; */
         width: 100%;
       }
     }

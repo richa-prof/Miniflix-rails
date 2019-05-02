@@ -3,12 +3,12 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    <%= t('heading.episode') %>
+    <%= t('heading.admin_movie') %>
   </h1>
 </section>
 
 <!-- Main content -->
-<section class="content">
+<section class="content-for-provider">
   <div class="row">
     <div class="col-xs-12">
       <div class="box">
@@ -23,7 +23,7 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body" id="upload_video">
-          <%= render( partial: 'upload_trailer', locals: { movie: @movie, kind: 'episode' } ) %>
+          <%= render( partial: 'upload_trailer', locals: { movie: @movie } ) %>
         </div>
         <!-- /.box-body -->
       </div>

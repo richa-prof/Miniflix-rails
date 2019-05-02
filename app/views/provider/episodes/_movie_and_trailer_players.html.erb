@@ -1,39 +1,33 @@
-<div id="miniflix_player_<%= movie.id %>" 
-     class="js-video-layer">
-  <%= render partial: 'shared/jwplayer_config', locals: {movie: movie} %>
-  <div id="player_<%= movie.id %>"
+<div class="mt20">
+  <h4 class="box-title">
+      <%= t('heading.movie') %>
+  </h4>
+  <div id="movie_player_<%= movie.id %>"
+          class="js-video-layer"
           data-embed-type="jwplayer" 
           data-embed-url="video-url"
           data-embed-loaded="false">
+    <%= render partial: 'shared/jwplayer_config', locals: {movie: movie} %>
     <div itemscope="" itemtype="http://schema.org/VideoObject">
-      <div data-embed-url="video-url" class="jw-player"></div>
+      <div id="mfx_jw_player_<%= movie.id %>" data-embed-url="video-url" class="jw-player"></div>
     </div>
   </div>
-  <h3 class="box-title text-blue">
-      <%= t('heading.movie') %>
-      <% if movie && movie.downloadable %>
-          <%= link_to( t('links.download_now'),
-                       movie.film_video,
-                       class: "" ) %>
-      <% end %>
-  </h3>
-
+</div>
 
 <% if movie.has_trailer? %>
-  <%= render partial: 'shared/jwplayer_config', locals: {movie: movie.movie_trailer} %>
+<div class="mt40">
+  <h4 class="box-title">
+    <%= t('heading.movie_trailer') %>
+  </h4>
   <div id="trailer_player_<%= movie.movie_trailer.id %>"
        class="js-video-layer"
        data-embed-type="jwplayer"
        data-embed-url="video-url"
-       data-embed-loaded="true">
+       data-embed-loaded="false">
+    <%= render partial: 'shared/jwplayer_config', locals: {movie: movie.movie_trailer} %>
     <div itemscope="" itemtype="http://schema.org/VideoObject">
-      <div data-embed-url="video-url" class="jw-player"></div>
+      <div id="mfx_jw_trailer_player_<%= movie.movie_trailer.id %>" data-embed-url="video-url" class="jw-player"></div>
     </div>
   </div>
-  <h3 class="box-title text-blue">
-    <%= t('heading.movie_trailer') %>
-  </h3>
-<% end %>
-
-
 </div>
+<% end %>

@@ -129,15 +129,14 @@ class Provider::SerialsController < ApplicationController
 
   def create
     begin
-      @serial = current_user.own_serials.create!(fixed_serial_params)
-      unless @serial.slug
-        @serial.slug = fixed_serial_params[:title].gsub(/[\W]/,'-').downcase # FIXME!  why it was not autocreated ????
-        @serial.save  #(validate: false)
-      end
+      @serial = current_user.own_serials.create(fixed_serial_params)
       @success = @serial.valid?
       if @success
+        unless @serial.slug
+          @serial.slug = fixed_serial_params[:title].gsub(/[\W]/,'-').downcase # FIXME!  why it was not autocreated ????
+          @serial.save  #(validate: false)
+        end
         create_serial_service
-        # current_user.own_serials << @serial
       end
       respond_to do |format|
         format.html {
@@ -157,16 +156,13 @@ class Provider::SerialsController < ApplicationController
           return
         }
       end
-    rescue Exception => e
+    rescue ActiveRecord::RecordInvalid => e
       Rails.logger.error e.message
-      Rails.logger.error 'tp1'
-      #Rails.logger.debug @serial.errors.full_messages
-      Rails.logger.error 'tp1.2'
       respond_to do |format|
         format.js {
           Rails.logger.error 'tp1.3'
           @success = false
-          flash[:error] = 'At least one error prevents Serial from being created'
+          flash[:error] = e.message || 'At least one error prevents Serial from being created!'
           render 'update'
           return
         }
@@ -224,6 +220,14 @@ class Provider::SerialsController < ApplicationController
     end
     @serial&.destroy
     redirect_to provider_serials_url
+  end
+
+  def fetch_seasons
+    @seasons = @serial.seasons
+    respond_to do |format|
+      format.html { }
+      format.js { render 'seasons' }
+    end
   end
 
   private

@@ -6,6 +6,10 @@ class Episode < Movie
     season.episodes.where('created_at > ?', created_at)
   end
 
+  def serial
+    season&.serial
+  end
+
   def compact_response
     {
       episode_id: id, 

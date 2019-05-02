@@ -1,61 +1,27 @@
-<% thumbnail = movie.movie_thumbnail %>
+<% is_edit_mode = true %>
 
-<label for="admin_movie_thumbnails">
-  <%= t('label.movie.upload_movie_screenshots') %>
-</label>
+<div class="pt20">
+  <div class="pull-left"><h4><%= t('label.movie.add_episode_screenshots') %></h4></div>
+  <div class="pull-right" style="padding-top: 10px;">3/5 steps</div>
+</div>
 
-<div class="row">
-  <div class="col-md-3 col-sm-12">
-    <div class="fileupload fileupload-new" data-provides="fileupload">
-      <%= link_to("javascript:void(0);", class: 'movie-thumbnail-file-field-wrapper') do %>
-        <div class="fileupload-new thumbnail">
-          <%= render_thumbnail_image_for( is_edit_mode,
-                                          'movie_screenshot_1',
-                                          thumbnail.try(:movie_screenshot_1) ) %>
-        </div>
-        <div class="fileupload-preview fileupload-exists thumbnail"></div>
-      <% end %>
+<div class="row mt40">
 
-      <%= thumbnail_fields.file_field( :movie_screenshot_1,
-                                       class: 'default movie-thumbnail-file-field',
-                                       id: "movie_screenshot_1",
-                                       accept: "image/*" ) %>
+  <% 3.times do |n| %>
+    <% ms = "movie_screenshot_#{n+1}".to_sym %>
+    <div class="mt20">
+      <div class="fileupload fileupload-new" data-provides="fileupload" style="width: 200px; margin: 0 auto;">
+        <%= link_to("javascript:void(0);", class: 'movie-thumbnail-file-field-wrapper') do %>
+          <div class="fileupload-new thumbnail">
+            <%= render_thumbnail_image_for(is_edit_mode, ms.to_s, thumbnail.try(ms)) %>
+          </div>
+        <% end %>
+        <%= thumbnail_fields.file_field( ms,
+                                         class: 'default movie-thumbnail-file-field',
+                                         id: ms.to_s,
+                                         accept: "image/*" ) %>
+      </div>
     </div>
-  </div>
+  <% end %>
 
-  <div class="col-md-3 col-sm-12">
-    <div class="fileupload fileupload-new" data-provides="fileupload">
-      <%= link_to("javascript:void(0);", class: 'movie-thumbnail-file-field-wrapper') do %>
-        <div class="fileupload-new thumbnail">
-          <%= render_thumbnail_image_for( is_edit_mode,
-                                          'movie_screenshot_2',
-                                          thumbnail.try(:movie_screenshot_2) ) %>
-        </div>
-
-        <div class="fileupload-preview fileupload-exists thumbnail"></div>
-      <% end %>
-
-      <%= thumbnail_fields.file_field( :movie_screenshot_2,
-                                       class: 'default movie-thumbnail-file-field',
-                                       id: "movie_screenshot_2",
-                                       accept: "image/*" ) %>
-    </div>
-  </div>
-  <div class="col-md-3 col-sm-12">
-    <div class="fileupload fileupload-new" data-provides="fileupload">
-      <%= link_to("javascript:void(0);", class: 'movie-thumbnail-file-field-wrapper') do %>
-        <div class="fileupload-new thumbnail">
-          <%= render_thumbnail_image_for( is_edit_mode,
-                                          'movie_screenshot_3',
-                                          thumbnail.try(:movie_screenshot_3) ) %>
-        </div>
-        <div class="fileupload-preview fileupload-exists thumbnail"></div>
-      <% end %>
-
-      <%= thumbnail_fields.file_field( :movie_screenshot_3,
-                                       class: 'default movie-thumbnail-file-field',
-                                       id: "movie_screenshot_3",
-                                       accept: "image/*" ) %>
-    </div>
-  </div>
 </div>

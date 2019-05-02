@@ -3,6 +3,7 @@ $(document).on('ready turbolinks:load', function(ev) {
   // alt. way - analize body[data-page]
   var targetPages = [
    '/provider/serials/add_screenshots', '/provider/movies/add_screenshots', '/provider/serials/add_thumbnails', '/provider/movies/add_thumbnails', 
+   '/provider/episodes/add_screenshots', '/provider/episodes/add_thumbnails',
    '/admin/movies/add_movie_details', '/admin/movies/edit', '/admin/serials/edit'
   ];
 

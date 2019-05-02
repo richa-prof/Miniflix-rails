@@ -13,7 +13,7 @@
       
       <div class="row custom-row">
 
-        <div class="col-lg-6 col-xs-12 filters-container">
+        <div class="col-lg-4 col-xs-12 filters-container">
           <div class="col-lg-2 col-sm-12">
             <div class="sort-links" data-sortby="genre">
               <strong>Genre</strong>&nbsp;
@@ -46,10 +46,17 @@
                  style="height: 36px; padding-left: 30px; border:0; outline: 0" placeholder="Search" />
         </div>
 
-        <div class="col-lg-2 col-xs-12">
-          <%= link_to( 'Upload',
+        <div class="col-lg-4 col-xs-12">
+          <%= link_to( 'Add Series',
                        new_provider_serial_path,
-                       class: "btn btn-flat btn-black btn-block upload-btn custom-black-btn",
+                       class: "btn btn-flat btn-black upload-btn custom-black-btn pull-left",
+                       style: "width: 40%",
+                       method: :get ) %>
+
+          <%= link_to( 'Add Episode',
+                       new_provider_episode_path,
+                       class: "btn btn-flat btn-black upload-btn custom-black-btn ml10 pull-left",
+                       style: "width: 40%",
                        method: :get ) %>
         </div>
 
@@ -105,6 +112,9 @@
                                   <%= link_to wizard_path(:preview, slug: serial.slug) do %>
                                      Preview
                                   <% end %>
+                                  </li>
+                                  <li>
+                                    <%= link_to( 'Add Episode', new_provider_episode_path(serial: serial.slug)) %>
                                   </li>
                                   <li>                               
                                   <%= link_to edit_provider_serial_path(serial.id, slug: serial.slug), data: { turbolinks: false } do %>

@@ -198,6 +198,10 @@ a.previous-stage:hover {
   }
 }
 
+.errors ul {
+  clear: both;  
+}
+
 li.error {
   color: red;
 }

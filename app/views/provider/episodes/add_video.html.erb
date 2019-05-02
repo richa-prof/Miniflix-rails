@@ -1,0 +1,61 @@
+<% movie = @episode %>
+
+<section class="content-for-provider">
+<div class="row js-provider-video-upload-wrapper">
+
+  <div class="col-lg-4 col-xs-12"></div>
+  <div class="col-lg-4 col-xs-12 p20">
+
+    <div id="movie-id-container"
+         class="js-movie-paths"
+         style="display: none;" 
+         data-stage="add_movie"
+         data-movie-id="<%= movie.id %>" 
+         data-video-upload-success-path=""
+         data-trailer-upload-success-path="<%= save_uploaded_movie_trailer_provider_movies_path %>" 
+         data-next-stage-path="<%= wizard_path(:add_screenshots, slug: movie.slug) %>"
+         data-prev-stage-path="<%= wizard_path(:add_details, slug: movie.slug) %>"
+         data-is-edit-mode="true"
+         data-redirect-path="<%= next_wizard_path %>">
+    </div>
+
+
+    <div id="s3-input-bucket-name-container" style="display: none;" 
+         data-s3-input-bucket="<%= ENV['S3_INPUT_BUCKET'] %>"
+         data-kind="episode">
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+
+        <%= render partial: 'title_and_prev_link' %>
+
+        <div class="pt20">
+          <div class="pull-left"><h4>Upload</h4></div>
+          <div class="pull-right" style="padding-top: 10px;">2/5 steps</div>
+        </div>
+
+        <div class="mt40">
+          <%= form_with model: @episode, scope: 'episode', url: provider_episodes_path, method: :post, class: 'pt40', local: true, multipart: true do |f| %>
+            <%= render( partial: 'upload_trailer', locals: { movie: movie } ) %>
+            <%= render( partial: 'upload_video',   locals: { movie: movie } ) %>
+            <div class="form-footer">
+              <a id="upload_videos" data-disable-with="Saving..." style="width: 95%; margin: 20px 12px;" class="btn btn-flat btn-black">Continue</a>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4 col-xs-12"></div>
+
+</div>
+</section>
+
+<script>
+  window.videoCategories = ['trailer', 'video']; 
+</script>
+
+
+
