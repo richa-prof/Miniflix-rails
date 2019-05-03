@@ -35,15 +35,57 @@
           <div class="pull-right" style="padding-top: 10px;">2/5 steps</div>
         </div>
 
+
         <div class="mt40">
           <%= form_with model: @episode, scope: 'episode', url: provider_episodes_path, method: :post, class: 'pt40', local: true, multipart: true do |f| %>
-            <%= render( partial: 'upload_trailer', locals: { movie: movie } ) %>
-            <%= render( partial: 'upload_video',   locals: { movie: movie } ) %>
-            <div class="form-footer">
-              <a id="upload_videos" data-disable-with="Saving..." style="width: 95%; margin: 20px 12px;" class="btn btn-flat btn-black">Continue</a>
+
+            <%= render( partial: 'upload_trailer', locals: { movie: movie } ) %>       
+
+            <span>Other Episodes for Serie "<%= @serial.title %>":</span><br/><br/>
+            <div class="episodes mb20 clearfix">
+
+              <% @serial.episodes.each_with_index do |episode, idx| %>
+                <div class="js-added-episode js-video">
+                  <div class="episode-name pl20 pull-left" >
+                    <div>
+                      <span class="js-file-name" data-file-attached="true">
+                        <strong><%= (idx + 1).to_s %>. <%= episode.name %></strong>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="view-file-control pull-right">
+                    <a class="episode-control" title="Expand" 
+                       onclick="$(this).parent().parent().find('.js-episode-player').toggle(); $(this).find('i').toggleClass('fa-angle-down');">
+                       <%#= image_tag('provider/plays.svg', alt: 'expand icon', class: "icon")  %><i class="fa fa-angle-right"></i>
+                    </a>
+                  </div>
+                  <div class="clearfix"></div>
+                  <div class="js-episode-player mt20 mb20 text-center" style="display: none; overflow: visible; margin-left: auto;">
+                    <%= render( partial: 'video_player', locals: { movie: episode, counter: idx } ) %>
+                  </div>
+                </div>
+              <% end %>
+
+            </div>
+
+            <div id="new_episodes_wrapper"></div>
+
+            <div class="add-new-episode-wrapper">
+              <a id="add_new_episode"  data-disable-with="Adding ..." class="js-add-episode"> + Add New Episode</a>
+            </div>
+
+            <div class="form-footer custom-form-footer mt20">
+              <input type="button" id="upload_videos" data-disable-with="Saving..." class="btn btn-flat btn-black custom-black-btn" value="Continue" />
             </div>
           <% end %>
+            
         </div>
+
+
+        <div class="js-episode-template" style="display: none;">
+          <%= render( partial: 'upload_video', locals: { movie: @episode } ) %>
+        </div>
+
       </div>
     </div>
   </div>
@@ -54,7 +96,7 @@
 </section>
 
 <script>
-  window.videoCategories = ['trailer', 'video']; 
+  window.videoCategories = ['trailer']; 
 </script>
 
 
