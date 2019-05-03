@@ -31,6 +31,7 @@ class Provider::EpisodesController < ApplicationController
         return
       }
       format.html {
+        Rails.logger.debug "creating new Episode"
         session[:movie_kind] = 'episode'
         @episode = Episode.new
         @episode.build_movie_thumbnail
@@ -171,7 +172,8 @@ class Provider::EpisodesController < ApplicationController
   end
 
   def set_episode
-    @episode ||= Episode.find_by(slug: params[:slug]) || Episode.friendly.find_by(id: params[:id]) || Episode.find_by_s3_multipart_upload_id(params[:id])
+    @episode ||= Episode.friendly.find_by(id: params[:id]) || Episode.find_by_s3_multipart_upload_id(params[:id])
+    @episode ||= Episode.find_by(slug: params[:slug])  if params[:slug]
       
   end
 
