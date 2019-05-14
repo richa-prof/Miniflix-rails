@@ -34,7 +34,7 @@ class Provider::SerialsController < ApplicationController
       else
         current_user.own_serials.joins(:genre).order(sort_order).limit(15)  #current_user.my_list_movies
       end
-      flash[:success] = "Found #{@serials.count} series"
+      flash.now[:success] = "Found #{@serials.count} series"
   end
 
   def new
@@ -43,11 +43,8 @@ class Provider::SerialsController < ApplicationController
     redirect_to wizard_path(:add_details)
   end
 
-  # GET /provider/movies/1/edit
   def edit
     session[:flow] = 'edit'
-    # @s3_multipart = S3Multipart::Upload.find(@provider_movie.s3_multipart_upload_id) if @provider_movie&.s3_multipart_upload_id  # FIXME!
-    #@movie_thumbnail = @provider_movie.movie_thumbnail || @provider_movie.build_movie_thumbnail
     @serial.build_serial_thumbnail unless @serial.serial_thumbnail
     @rate = @serial.rate || @serial.build_rate
     render :new
@@ -65,9 +62,6 @@ class Provider::SerialsController < ApplicationController
 
 
   def show
-    #@s3_multipart = S3Multipart::Upload.find(@episode.s3_multipart_upload_id) if @episode&.s3_multipart_upload_id 
-    #@movie_thumbnail = @episode&.movie_thumbnail || @episode&.build_movie_thumbnail
-
     case step
     when :add_details
       session[:movie_kind] = 'episode'
@@ -82,7 +76,6 @@ class Provider::SerialsController < ApplicationController
       session[:current_season_id] = @serial.seasons&.first&.id
     when :add_screenshots
     when :add_thumbnails
-      # " /provider/movies/upload_movie_trailer/" 
     when :preview
     else
       @movie_film_url = @episode.film_video  # FIXME do we need this?
@@ -108,9 +101,9 @@ class Provider::SerialsController < ApplicationController
     end
     Rails.logger.debug "errors: #{@serial.errors.full_messages.inspect}"
     if @success
-      flash[:success].now = I18n.t('flash.serial.successfully_updated') 
+      flash[:success] = I18n.t('flash.serial.successfully_updated') 
     else
-      flash[:error].now = @serial.errors.full_messages
+      flash[:error] = @serial.errors.full_messages
     end
     respond_to do |format|
       format.html {
@@ -148,9 +141,9 @@ class Provider::SerialsController < ApplicationController
         }
         format.js {
           if @success
-            flash[:success] = I18n.t('flash.serial.successfully_created') 
+            flash.now[:success] = I18n.t('flash.serial.successfully_created') 
           else
-            flash[:error] = 'At least one error prevents Serial from being created'
+            flash.now[:error] = 'At least one error prevents Serial from being created'
           end
           render 'update'
           return
@@ -162,7 +155,7 @@ class Provider::SerialsController < ApplicationController
         format.js {
           Rails.logger.error 'tp1.3'
           @success = false
-          flash[:error] = e.message || 'At least one error prevents Serial from being created!'
+          flash.now[:error] = e.message || 'At least one error prevents Serial from being created!'
           render 'update'
           return
         }

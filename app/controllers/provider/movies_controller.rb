@@ -41,7 +41,7 @@ class Provider::MoviesController < ApplicationController
       end
     count = @provider_movies.count
     @provider_movies = @provider_movies.limit(PER_PAGE)
-    flash[:success] = "Found #{count} movies"
+    flash.now[:success] = "Found #{count} movies"
   end
 
   # GET /provider/movies/1
@@ -144,7 +144,6 @@ class Provider::MoviesController < ApplicationController
         if @success
           previous_featured_film.try(:set_is_featured_film_false)
           redirect_to wizard_path(next_step, slug: @provider_movie.slug)
-          #redirect_to next_wizard_path(slug: @provider_movie.slug), notice: I18n.t('flash.movie.successfully_updated')
         else 
           Rails.logger.error flash[:error]
           redirect_back(fallback_location: provider_movies_path)
