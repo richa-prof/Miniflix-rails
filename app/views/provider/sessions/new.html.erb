@@ -23,10 +23,8 @@
       </div>
       <div class="form-group has-feedback form-input-container">
         <label for="provider_user_password">Password</label>
-        <%# Link to forgot %>
         <%= link_to("Forgot Password", new_provider_user_password_path, id:"forgot_password", class: "forgot-password") %>
-        <%# Make show password logic %>
-        <div class="password-icon"><%= image_tag('provider/eye-visible.svg') %></div>
+        <div class="password-icon js-invisible"><%= image_tag('provider/eye-visible.svg', class: 'hidden js-eye-visible') %><%= image_tag('provider/eye-invisible.svg', class: 'js-eye-invisible') %></div>
         <%= f.password_field :password, class: "form-control password-input", placeholder: t('placeholder.user.password'), required: true, tabindex: 2 %>
       </div>
       <div class="row">
