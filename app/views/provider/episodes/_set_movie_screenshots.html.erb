@@ -13,7 +13,7 @@
       <div class="fileupload fileupload-new" data-provides="fileupload" style="width: 200px; margin: 0 auto;">
         <%= link_to("javascript:void(0);", class: 'movie-thumbnail-file-field-wrapper') do %>
           <div class="fileupload-new thumbnail">
-            <%= render_thumbnail_image_for(is_edit_mode, ms.to_s, thumbnail.try(ms)) %>
+            <%= render_thumbnail_image_for_episode(is_edit_mode, ms.to_s, thumbnail.try(ms)) %>
           </div>
         <% end %>
         <%= thumbnail_fields.file_field( ms,

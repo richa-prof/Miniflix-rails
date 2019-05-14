@@ -1,6 +1,6 @@
 <div class="mt20">
   <h4 class="box-title">
-      <%= t('heading.movie') %>
+      <%= t('heading.episode') %> <%= @episode.title %>
   </h4>
   <div id="movie_player_<%= movie.id %>"
           class="js-video-layer"
@@ -17,7 +17,7 @@
 <% if movie.has_trailer? %>
 <div class="mt40">
   <h4 class="box-title">
-    <%= t('heading.movie_trailer') %>
+    <%= t('heading.episode_trailer') %>
   </h4>
   <div id="trailer_player_<%= movie.movie_trailer.id %>"
        class="js-video-layer"

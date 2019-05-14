@@ -16,7 +16,7 @@
          data-next-stage-path="<%= wizard_path(:add_screenshots, slug: movie.slug) %>"
          data-prev-stage-path="<%= wizard_path(:add_details, slug: movie.slug) %>"
          data-is-edit-mode="true"
-         data-redirect-path="<%= next_wizard_path %>">
+         data-redirect-path="<%= wizard_path(:add_screenshots, slug: movie.slug) %>">
     </div>
 
 

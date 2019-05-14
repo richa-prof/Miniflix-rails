@@ -11,7 +11,8 @@ class Provider::EpisodesController < ApplicationController
   before_action :set_serial, only: [:new, :show, :edit]
 
   skip_before_action :setup_wizard, only: [:edit, :destroy]
-  steps :add_details, :add_video, :add_screenshots, :add_thumbnails, :finalize, :preview #, only: [:show, :update]
+#  steps :add_details, :add_video, :add_screenshots, :add_thumbnails, :finalize, :preview #, only: [:show, :update]
+  steps :add_details, :add_trailer, :add_episode, :add_screenshots, :add_thumbnails, :finalize #, only: [:show, :update]
 
   layout 'provider'
 
@@ -40,6 +41,8 @@ class Provider::EpisodesController < ApplicationController
         return
       }
     end
+    when :add_trailer
+    when :add_episode
     when :add_video
       session[:current_video_id] = @episode.id
     when :add_screenshots
@@ -118,6 +121,8 @@ class Provider::EpisodesController < ApplicationController
           @episode.errors.add(:base, thumb&.errors&.full_messages || 'Something went wrong!')
         end
       end
+    when :add_trailer
+    when :add_episode
     when :finalize
     else
       Rails.logger.error "--- Uknown step: #{step} ----"
