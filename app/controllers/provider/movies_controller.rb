@@ -54,9 +54,10 @@ class Provider::MoviesController < ApplicationController
         @serial = Serial.find(params[:serial])
       end
       session[:movie_kind] = 'movie'
-      @provider_movie = Movie.new
-      @provider_movie.build_movie_thumbnail
-      @rate = @provider_movie.build_rate
+      @provider_movie ||= Movie.new
+      @movie_thumbnail = @provider_movie.movie_thumbnail || @provider_movie.build_movie_thumbnail
+      @provider_movie.build_movie_thumbnail unless @provider_movie.movie_thumbnail
+      @rate = @provider_movie.rate || @provider_movie.build_rate
       render :new
       return
     when :add_video

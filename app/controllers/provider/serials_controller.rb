@@ -65,8 +65,8 @@ class Provider::SerialsController < ApplicationController
     case step
     when :add_details
       session[:movie_kind] = 'episode'
-      @serial = Serial.new
-      @serial.build_serial_thumbnail
+      @serial ||= Serial.new
+      @serial.build_serial_thumbnail unless @serial.serial_thumbnail
       @rate = @serial.rate || @serial.build_rate
       render :new
       return
