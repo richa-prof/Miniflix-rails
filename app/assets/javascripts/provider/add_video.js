@@ -114,7 +114,6 @@ $(document).on('ready turbolinks:load', function(ev) {
       return false;
     }
     console.log('bid:', self.bid);
-    console.log('bkp categories:', self.videoCategoriesBkp);
     window.videoCategories = self.videoCategoriesBkp;
     var out = [];
     for (var i = 0, f; f = self.files[i]; i++) {
@@ -278,8 +277,19 @@ $(document).on('ready turbolinks:load', function(ev) {
 
   MiniflixVideosUploader.prototype.submit = function() {
     var self = this;
-    console.log('submit fired for', self);
-    console.log('files:', self.files)
+    console.log('files:', self.files);
+
+    // sample code to get video duration
+    // var video = document.createElement('video');
+    // video.preload = 'metadata';
+
+    // video.onloadedmetadata = function() {
+    //   console.log(this);
+    //   window.URL.revokeObjectURL(video.src);
+    //   var duration = video.duration;
+    //   console.log("duration:", duration);
+    // }
+    // video.src = URL.createObjectURL(self.files[0]);
 
 
     return new Promise((resolve, reject) => {

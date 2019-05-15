@@ -24,7 +24,7 @@ class Episode < Movie
 
   def film_video_map
     h = {
-      hls: film_video,
+      hls: film_video.to_s,
       video_720: "",
       video_480: "",
       video_320: ""
@@ -36,13 +36,18 @@ class Episode < Movie
   end
 
   def screenshot_list
-    h = {
+    out = {
       original: "",
       thumb330: "",
       thumb640: "",
       thumb800: ""
     }
-    movie_thumbnail&.screenshot_urls_map || h
+    if movie_thumbnail
+      out.merge! movie_thumbnail&.screenshot_urls_map
+    else
+      Rails.logger.error "No thumbnail exist for Episode #{id} !!"
+    end
+    out
   end
 
   def format(mode: nil)
