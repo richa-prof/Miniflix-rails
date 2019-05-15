@@ -36,7 +36,13 @@ class Episode < Movie
   end
 
   def screenshot_list
-    movie_thumbnail.screenshot_urls_map
+    h = {
+      original: "",
+      thumb330: "",
+      thumb640: "",
+      thumb800: ""
+    }
+    movie_thumbnail&.screenshot_urls_map || h
   end
 
   def format(mode: nil)
