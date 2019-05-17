@@ -1,0 +1,58 @@
+<% movie = @episode %>
+
+<section class="content-for-provider provider-upload-content ">
+<div class="row js-provider-video-upload-wrapper">
+
+  <div class="col-lg-4 col-xs-12 "></div>
+  <div class="col-lg-4 col-xs-12 main-content-container">
+
+    <div id="movie-id-container"
+         class="js-movie-paths"
+         style="display: none;" 
+         data-stage="add_trailer"
+         data-movie-id="<%= @episode.id %>" 
+         data-video-upload-success-path=""
+         data-trailer-upload-success-path="<%= save_uploaded_serial_trailer_provider_serials_path %>" 
+         data-next-stage-path="<%= next_wizard_path(slug: @episode.slug) %>"
+         data-prev-stage-path="<%= previous_wizard_path(slug: @episode.slug) %>"
+         data-is-edit-mode="true"
+         data-redirect-path="<%= next_wizard_path(slug: @episode.slug) %>">
+    </div>
+
+
+    <div id="s3-input-bucket-name-container" style="display: none;" 
+         data-s3-input-bucket="<%= ENV['S3_INPUT_BUCKET'] %>"
+         data-kind="serial">
+    </div>
+
+    <div class="row custom-row">
+      <div class="col-md-12">
+
+        <%= render partial: 'title_and_prev_link' %>
+
+        <div class="steps-section">
+          <div><h4>Upload Trailer</h4></div>
+          <div>2/5 steps</div>
+        </div>
+
+        <div class="mt40 upload-form">
+          <%= form_with model: movie, scope: 'movie', url: provider_movies_path, method: :post, class: 'pt40', local: true, multipart: true do |f| %>
+            <%= render( partial: 'upload_trailer', locals: { movie: @episode } ) %>
+            <div class="form-footer custom-form-footer">
+              <input type="button" id="upload_videos" data-disable-with="Saving..." class="btn btn-flat btn-black custom-black-btn" value="Continue" />
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4 col-xs-12"></div>
+
+</div>
+</section>
+
+<script>
+  window.videoCategories = ['trailer']; 
+</script>
+

@@ -126,7 +126,7 @@
                                     "Delete","#",
                                      rel: provider_serial_path(serial.id),
                                      data: {kind: 'serie', toggle: "modal", target: "#delete_video_dialog"},
-                                     onclick: "$('#delete_video_dialog .js-video-delete-link').attr('href', this.rel); $('.js-video-category').html($(this).data('kind')); return true;"
+                                     onclick: "$('#delete_video_dialog .js-video-delete-link').attr('href', this.rel); $('.js-video-category').html('Series'); return true;"
                                     )
                                   %>
                                   </li>

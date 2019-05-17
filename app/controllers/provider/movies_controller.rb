@@ -28,17 +28,18 @@ class Provider::MoviesController < ApplicationController
       case params[:sort_by]
       when 'year' then 'admin_movies.released_date'
       when 'genre' then 'admin_genres.name'
-      when 'rate_price' then ''
+      when 'rent_price' then 'rates.price'
       else 
         'admin_movies.created_at'
       end
     sort_order = "#{sort_col} #{direction}"
     @provider_movies =
       if params[:search]
-        current_user.own_movies.where("admin_movies.name like :search", search: "%#{params[:search]}%").joins(:genre).order(sort_order)
+        current_user.own_movies.where("admin_movies.name like :search", search: "%#{params[:search]}%")
       else
-        current_user.own_movies.joins(:genre).order(sort_order)  #current_user.my_list_movies
+        current_user.own_movies
       end
+    @provider_movies = @provider_movies.joins(:genre, :rate).order(sort_order)
     count = @provider_movies.count
     @provider_movies = @provider_movies.limit(PER_PAGE)
     flash.now[:success] = "Found #{count} movies"

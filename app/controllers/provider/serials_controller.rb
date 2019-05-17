@@ -23,18 +23,19 @@ class Provider::SerialsController < ApplicationController
       case params[:sort_by]
       when 'year' then 'admin_serials.updated_at'
       when 'genre' then 'admin_genres.name'
-      when 'rate_price' then ''
+      when 'rent_price' then 'rates.price'
       else 
         'admin_serials.created_at'
       end
     sort_order = "#{sort_col} #{direction}"
     @serials =
       if params[:search]
-        current_user.own_serials.where("admin_serials.title like :search", search: "%#{params[:search]}%").joins(:genre).order(sort_order)
+        current_user.own_serials.where("admin_serials.title like :search", search: "%#{params[:search]}%")
       else
-        current_user.own_serials.joins(:genre).order(sort_order).limit(15)  #current_user.my_list_movies
+        current_user.own_serials
       end
-      flash.now[:success] = "Found #{@serials.count} series"
+    @serials = @serials.joins(:genre, :rate).order(sort_order).limit(15)
+    flash.now[:success] = "Found #{@serials.count} series"
   end
 
   def new
