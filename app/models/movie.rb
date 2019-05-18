@@ -154,6 +154,10 @@ class Movie < ApplicationRecord
   # ===== Class methods End =====
 
   # ===== Instance methods Start =====
+  def should_generate_new_friendly_id?
+    name_changed?
+  end
+
   def hls_movie_url
     version_file.present? ? ENV['VERSION_FILE_CLOUD_FRONT_URL'] + version_file : nil
   end

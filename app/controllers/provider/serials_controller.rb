@@ -92,27 +92,36 @@ class Provider::SerialsController < ApplicationController
     case step
     when :add_details
       session[:movie_kind] = 'episode'
-      @success = @serial.update(serial_params)
+      params[:serial][:year] = params[:serial][:year].gsub("/", "-") if params.dig(:serial, :year)
+      @success = @serial.update(fixed_serial_params)
+      create_serial_service if @success
     when :add_trailer
-    when :add_screenshots then @success= save_movie_thumbnails(@serial)
-    when :add_thumbnails then @success = save_movie_thumbnails(@serial)
+    when :add_screenshots
+      begin
+        save_serial_thumbnails(@serial)
+        flash[:success] ||= I18n.t('flash.serial.screenshots_added') 
+      end
+    when :add_thumbnails
+      begin
+        save_serial_thumbnails(@serial)
+        flash[:success] ||= I18n.t('flash.serial.thumbnails_added') 
+      end
     when :preview
     else
       Rails.logger.error "--- Uknown step: #{step} ----"
     end
-    Rails.logger.debug "errors: #{@serial.errors.full_messages.inspect}"
+    Rails.logger.debug "errors: #{@serial.errors}"
     if @success
-      flash[:success] = I18n.t('flash.serial.successfully_updated') 
+      flash[:success] ||= I18n.t('flash.serial.successfully_updated') 
     else
-      flash[:error] = @serial.errors.full_messages
+      flash[:error] = 'At least one error prevents Serial from being updated'
     end
     respond_to do |format|
       format.html {
         if @success
-          previous_featured_film.try(:set_is_featured_film_false)
           redirect_to wizard_path(next_step, slug: @serial.slug)
         else 
-          redirect_back(fallback_location: provider_movies_path)
+          redirect_back(fallback_location: provider_serials_path)
         end
       }
       format.js {
@@ -164,47 +173,6 @@ class Provider::SerialsController < ApplicationController
     end
   end
 
-  def update
-    @success = true
-    case step
-    when :add_details
-      session[:movie_kind] = 'episode'
-      params[:serial][:year] = params[:serial][:year].gsub("/", "-") if params.dig(:serial, :year)
-      @success = @serial.update(fixed_serial_params)
-      create_serial_service if @success
-    when :add_screenshots
-      begin
-        save_serial_thumbnails(@serial)
-        flash[:success] ||= I18n.t('flash.serial.screenshots_added') 
-      end
-    when :add_thumbnails
-      begin
-        save_serial_thumbnails(@serial)
-        flash[:success] ||= I18n.t('flash.serial.thumbnails_added') 
-      end
-    when :preview
-    else
-      Rails.logger.error "--- Uknown step: #{step} ----"
-    end
-    Rails.logger.debug "errors: #{@serial.errors}"
-    if @success
-      flash[:success] ||= I18n.t('flash.serial.successfully_updated') 
-    else
-      flash[:error] = 'At least one error prevents Serial from being updated'
-    end
-    respond_to do |format|
-      format.html {
-        if @success
-          redirect_to wizard_path(next_step, slug: @serial.slug)
-        else 
-          redirect_back(fallback_location: provider_serials_path)
-        end
-      }
-      format.js {
-        render 'update'
-      }
-    end
-  end
 
   def destroy
     if @serial

@@ -32,6 +32,10 @@ class Serial < ApplicationRecord
 
   scope :alfa_order, -> { order(:name) }
   
+  def should_generate_new_friendly_id?
+    title_changed?
+  end
+
 
   def find_genre(id)
     genre = Genre.find(id)
