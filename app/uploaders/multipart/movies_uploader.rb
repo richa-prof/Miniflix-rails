@@ -49,7 +49,7 @@ class MoviesUploader < ApplicationController
     upload_location = upload.location
     file_type = MIME::Types.type_for(upload_location).first.content_type.split("/").last rescue nil
 
-    puts "saving video as Movie object"
+    puts "MovieUploader, saving video as Movie object"
 
     @admin_movie =  Movie.find_by(id: session[:current_video_id]) || Movie.new
     @admin_movie.update(

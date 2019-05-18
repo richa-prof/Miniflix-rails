@@ -12,7 +12,7 @@
          data-stage="add_trailer"
          data-movie-id="<%= @episode.id %>" 
          data-video-upload-success-path=""
-         data-trailer-upload-success-path="<%= save_uploaded_serial_trailer_provider_serials_path %>" 
+         data-trailer-upload-success-path="<%= save_uploaded_episode_trailer_provider_episodes_path %>" 
          data-next-stage-path="<%= next_wizard_path(slug: @episode.slug) %>"
          data-prev-stage-path="<%= previous_wizard_path(slug: @episode.slug) %>"
          data-is-edit-mode="true"
@@ -22,7 +22,7 @@
 
     <div id="s3-input-bucket-name-container" style="display: none;" 
          data-s3-input-bucket="<%= ENV['S3_INPUT_BUCKET'] %>"
-         data-kind="serial">
+         data-kind="episode">
     </div>
 
     <div class="row custom-row">

@@ -42,6 +42,7 @@
         <div class="mt40 episodes mb20 clearfix">
 
           <% @serial.episodes.each_with_index do |episode, idx| %>
+            <% next unless episode.film_video %>
             <div class="js-added-episode js-video">
               <div class="episode-name pl20 pull-left" >
                 <div>

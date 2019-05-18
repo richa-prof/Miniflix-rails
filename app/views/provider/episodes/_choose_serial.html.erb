@@ -6,7 +6,7 @@
             id="serial_id"
             data-remote="true"
             aria-required="true" aria-invalid="false">
-        <%= current_user.own_serials.each do |serial| %>
+        <%= current_user.own_serials.order('updated_at desc').each do |serial| %>
           <option value="<%= serial.id %>" rel="<% serial.slug %>" <% if serial.id == @serial.id %> selected="selected" <% end %> ><%= serial.title %></option>
         <% end %>
     </select>

@@ -12,7 +12,7 @@ class Provider::EpisodesController < ApplicationController
 
   skip_before_action :setup_wizard, only: [:edit, :destroy]
 #  steps :add_details, :add_video, :add_screenshots, :add_thumbnails, :finalize, :preview #, only: [:show, :update]
-  steps :add_details, :add_trailer, :add_episode, :add_screenshots, :add_thumbnails, :finalize #, only: [:show, :update]
+  steps :add_details, :add_trailer, :add_video, :add_screenshots, :add_thumbnails, :finalize #, only: [:show, :update]
 
   layout 'provider'
 
@@ -42,7 +42,6 @@ class Provider::EpisodesController < ApplicationController
       }
     end
     when :add_trailer
-    when :add_episode
     when :add_video
       session[:current_video_id] = @episode.id
     when :add_screenshots
@@ -122,7 +121,7 @@ class Provider::EpisodesController < ApplicationController
         end
       end
     when :add_trailer
-    when :add_episode
+    when :add_video
     when :finalize
     else
       Rails.logger.error "--- Uknown step: #{step} ----"
@@ -166,6 +165,9 @@ class Provider::EpisodesController < ApplicationController
     redirect_to provider_movies_url, success: I18n.t('flash.episode.successfully_deleted')
   end
 
+  def save_uploaded_episode_trailer
+    save_uploaded_movie_trailer
+  end
 
   private
 
