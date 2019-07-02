@@ -16,7 +16,7 @@ class Notification < ApplicationRecord
   class << self
 
     def send_movie_added_push_notification(movie)
-      notification_message = movie.new_movie_added_notification_message
+      notification_message = Movie.new.new_movie_added_notification_message
 
       user_ids = UserEmailNotification.where(films_added: true).pluck("user_id")
       values = []
@@ -61,9 +61,9 @@ class Notification < ApplicationRecord
     end
 
     def test_notification(token,device)
-      @adminMovie = Movie.first
+      @adminMovie = Movie.order("RAND()").limit(1).first
 
-      notification_message = movie.new_movie_added_notification_message
+      notification_message = Movie.new.new_movie_added_notification_message
 
       data_image_url = CommonHelpers.cloud_front_url(@adminMovie.movie_thumbnail.try(:thumbnail_screenshot).try(:path))
 

@@ -1,0 +1,39 @@
+<div class="login-box">
+
+  <div class="login-box-body">
+    <div class="login-logo mb50">
+      <div><%= image_tag('logo-black.png') %></div>
+    </div>
+    <h4 class="login-box-msg mb35">Forgot Password?</h4>
+    <span>Enter your email address and we'll send<br/>you a link to get back into your account.</span>
+    <br/><br/>
+
+    <% unless flash[:alert].blank? %>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <%= flash[:alert] %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "forgot-pass-form signup-form" }) do |f| %>
+      <div class="form-group">
+        <label for="forgot_email_">Email</label>
+        <%= f.email_field :email, class: "form-control", id: "forgot_email_", placeholder: "Enter your email", required: true %>
+        <%= errors_for(f, :email) %>
+      </div>
+      <div class="pull-left" style="line-height: 36px">
+             <%= link_to '< Return to Sign In', new_provider_user_session_path %>
+      </div>
+      <div class="pull-right" style="width: 50%">
+        <%= button_tag(type: 'submit', data: {"disable-with": "Sending ..."}, class: "btn btn-flat btn-black") do %>
+          Confirm
+        <% end %>
+      </div>
+    <% end %>
+
+  </div>
+</div>

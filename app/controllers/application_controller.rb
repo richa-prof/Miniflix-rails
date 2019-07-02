@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :exception,  unless: :api_request?
+  protect_from_forgery prepend: true, with: :exception,  unless: :api_request?
   layout :determine_layout
 
   def api_request?
@@ -13,6 +13,9 @@ class ApplicationController < ActionController::Base
   protected
 
   def after_sign_in_path_for(resource)
+    Rails.logger.debug "after_sign_in_path_for, resource: #{resource}"
+    sign_in(:user, resource) unless current_user
+    return provider_dashboard_path if resource.provider?
     return admin_dashboard_path if resource.admin?
     return marketing_staff_genres_path if resource.marketing_staff?
     return root_path if resource.staff?

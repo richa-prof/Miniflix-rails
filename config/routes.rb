@@ -2,6 +2,49 @@ require 'sidekiq/web'
 require 'constraints/admin_subdomain_constraint'
 require 'constraints/api_subdomain_constraint'
 require 'constraints/blog_subdomain_constraint'
+require 'constraints/provider_subdomain_constraint'
+
+def provider_block
+  devise_for :users, as: :provider, controllers: {
+    sessions: 'provider/sessions',
+    password: 'provider/password'
+  }
+
+  get 'dashboard' => 'dashboard#index'
+  get 'get_monthly_revenue/:id' => 'dashboard#get_monthly_revenue', as: :get_monthly_revenue
+  get 'analytics' => 'analytics#index'
+
+  get 'dashboard' => 'dashboard#index'
+
+  resources :movies do
+    collection do
+      get :search
+      get 'upload_movie_trailer/:id' => "movies#upload_movie_trailer", as: :upload_movie_trailer
+      post 'save_uploaded_movie_trailer' => "movies#save_uploaded_movie_trailer", as: :save_uploaded_movie_trailer
+    end
+    resources :movie_captions, except: [:show]
+  end
+
+  resources :episodes do
+    collection do
+      get 'add_movie_details/:id' => "episodes#add_movie_details", as: :add_movie_details
+      get 'upload_movie_trailer/:id' => "episodes#upload_movie_trailer", as: :upload_movie_trailer
+      post 'save_uploaded_episode_trailer' => "episodes#save_uploaded_movie_trailer", as: :save_uploaded_episode_trailer
+    end
+    resources :movie_captions, except: [:show]
+  end
+
+  resources :serials do
+    collection do
+      get :search
+      post 'select_season' => "serials#select_season", as: :select_season
+      post 'save_uploaded_serial_trailer' => "serials#save_uploaded_serial_trailer", as: :save_uploaded_serial_trailer
+    end
+  end
+  resources :settings
+
+
+end
 
 Rails.application.routes.draw do
   mount S3Multipart::Engine => "/s3_multipart"
@@ -10,6 +53,7 @@ Rails.application.routes.draw do
   # Starts common routing
   get 'send_download_link' => 'mobile_apps#send_download_link'
   resources :movies, only: [:show]
+  resources :episodes, only: [:show]
 
   # Starts routing for API subdomain
   constraints Constraints::ApiSubdomainConstraint do
@@ -104,11 +148,22 @@ Rails.application.routes.draw do
       post 'users/update_registration_plan'
       post 'users/get_user_by_id'
       delete 'users/:id' => 'users#destroy'
+      get 'users/check_email_exists' => 'users#check_email_exists'
 
       get 'genres/genres' => 'genres#genres'
       post 'genres/genres_wise_movies' =>'genres#genres_wise_movies'
       get 'genres/genres_with_latest_movie' =>'genres#genres_with_latest_movie'
       post 'genres/id_wise_gener' => 'genres#id_wise_gener_with_movie',as: :id_wise_gener
+
+      post 'serials/getData' => 'serials#get_data'
+      post 'serials/getSerial' => 'serials#get_serial_detail'
+      post 'serials/manageLike' => 'serials#manage_like'
+      post 'serials/myList' => 'serials#my_list'
+      post 'serials/search' => 'serials#search'
+      post 'serials/getDataForGenre' => 'serials#get_data_for_genre'
+      post 'serials/getDataForNew' => 'serials#get_data_for_new'
+      post 'serials/getDataForRecent' => 'serials#get_data_for_recent'
+      post 'serials/getEpisodeDetails' => 'serials#get_episode_details'
 
       post 'movies/get_movie_detail' => 'movies#get_movie_detail'
       post 'movies/get_movie_detail/:id' => 'movies#get_movie_detail'
@@ -123,6 +178,11 @@ Rails.application.routes.draw do
       post 'movies/add_to_recently_watched_visitor' => 'movies#add_to_recently_watched_visitor'
       post 'movies/get_watched_movie_count_visitor' => 'movies#get_watched_movie_count_visitor'
       get  'movies/latest_movies' => 'movies#latest_movies'
+
+      post 'browse/getData' => 'browse#get_data'
+      post 'browse/getDataForGenre' => 'browse#get_data_for_genre'
+      post 'browse/getDataForNew' => 'browse#get_data_for_new'
+      post 'browse/getDataForRecent' => 'browse#get_data_for_recent'
 
       post 'sessions/sign_in', :defaults => { :format => 'json' }
       post 'sessions/sign_up'
@@ -141,6 +201,9 @@ Rails.application.routes.draw do
       post 'notifications/get_notifications' => 'notifications#get_notifications'
       post 'notifications/delete_notifications' => 'notifications#delete_notifications'
       post 'notifications/send_test_notification' => 'notifications#send_test_notification'
+      post 'notifications/mark_notification' => 'notifications#mark_notification'
+      get 'notifications/mark_unread_notifications' => 'notifications#mark_unread_notifications'
+      post 'notifications/mark_all_notifications' => 'notifications#mark_all_notifications'
       end
     end
   end
@@ -204,27 +267,54 @@ Rails.application.routes.draw do
         resources :movie_captions, except: [:show]
       end
 
+      resources :episodes do
+        collection do
+          get 'add_movie_details/:id' => "episodes#add_movie_details", as: :add_movie_details
+          get 'upload_movie_trailer/:id' => "episodes#upload_movie_trailer", as: :upload_movie_trailer
+          post 'save_uploaded_movie_trailer' => "episodes#save_uploaded_movie_trailer", as: :save_uploaded_movie_trailer
+        end
+        resources :movie_captions, except: [:show]
+      end
+
       resources :genres do
         collection do
           get 'check_genre_name/:id' => 'genres#check_genre_name', as: :check_genre_name
         end
       end
+
+      resources :serials do
+        collection do
+          get 'choose_mode' => 'serials#choose_mode'
+          get 'new2' => 'serials#new2'
+          get 'new3' => 'serials#new3'
+          get 'new4' => 'serials#new4'
+        end
+      end
     end
+
 
     namespace :marketing_staff do
       devise_for :users, as: :marketing_staff, controllers: {
         sessions: 'marketing_staff/sessions',
       }
-
       resources :genres, only: [:index, :show, :edit, :update] do
         collection do
           get 'check_genre_name/:id' => 'genres#check_genre_name', as: :check_genre_name
         end
       end
-
       resources :seo_metas
     end
+
+    namespace :provider do
+      provider_block
+    end
   end
+
+  # Starts routing for Provider subdomain
+  # constraints Constraints::ProviderSubdomainConstraint do
+  #   get '/' => 'provider/dashboard#index'
+  #   provider_block
+  # end
 
   # Starts routing for Blog Feature
   constraints Constraints::BlogSubdomainConstraint do
@@ -255,3 +345,4 @@ Rails.application.routes.draw do
     end
   end
 end
+

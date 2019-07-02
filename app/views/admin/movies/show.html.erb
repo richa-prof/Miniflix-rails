@@ -1,5 +1,4 @@
 <!-- Content Header (Page header) -->
-<%= render 'shared/jwplayer_config' %>
 
  <div id="err-player"></div>
 
@@ -58,10 +57,11 @@
                           <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>
                           <li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>
                         </ol>
+                        <% if movie_thumbnail&.movie_screenshot_1 %>
                         <div class="carousel-inner">
                           <% movie_thumbnail.thumb_screenshots_arr.each_with_index do |screenshot, index| %>
                             <div class="item <%= 'active' if index.zero? %>">
-                              <%= image_tag(screenshot.presence || '', class: "movie_thumbnail") if movie_thumbnail.present? %>
+                              <%= image_tag(screenshot.presence || '', class: "movie_thumbnail")  %>
                               <div class="carousel-caption">
                               </div>
                             </div>
@@ -73,6 +73,7 @@
                         <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
                           <span class="fa fa-angle-right"></span>
                         </a>
+                        <% end %>
                       </div>
                     </div>
                   </div>
@@ -116,7 +117,7 @@
                                   <h3 class="box-title text-blue">
                                     <%= t('title.movie.released_on') %>
                                   </h3>
-                                  <p class="margin-btm-zero"><%= formatted_released_date_for(@admin_movie) %></p>
+                                  <p class="margin-btm-zero"><%= formatted_released_date_for_movie(@admin_movie) %></p>
                                 </div>
                               </div>
                             </div>
@@ -143,7 +144,6 @@
                             <div class="box-header with-border text-center">
                               <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
-
                                   <%= render( partial: 'movie_and_trailer_players', locals: { movie: @admin_movie } ) %>
                                 </div>
                               </div>
@@ -184,104 +184,3 @@
   <!-- /.row -->
 </section>
 <!-- /.content -->
-
-<script type="text/javascript">
-  isEmptyValue = function(value) {
-    return (undefined === value || null === value || "" === value)
-  }
-
-  jwPlayerConfigContainer = function() {
-    return $('#jwPlayerConfigContainer');
-  };
-
-  caption_data = []
-  <% @admin_movie.movie_captions.active_caption.each do |caption| %>
-    var stringValue = "<%= caption.is_default  %>";
-    var boolValue = stringValue.toLowerCase() == 'true' ? true : false;   //returns true
-
-    caption_data.push({
-      file: "<%= caption.caption_file_cloudfront_url %>",
-      label: "<%= caption.language %>",
-      kind: "captions",
-      default: boolValue
-    })
-  <% end %>
-
-  jwplayer_setup = function() {
-    var jwPlayerConfig = jwPlayerConfigContainer();
-    var hlsUrl = jwPlayerConfig.data('hls-file');
-    var originalUrl = jwPlayerConfig.data('original-file');
-    var trailerFileUrl = jwPlayerConfig.data('trailer-file');
-
-    var sources = [{
-              file: hlsUrl
-            }]
-
-    var videoObject = document.querySelector("div[data-embed-url='video-url1']");
-    videoObject.id = "player-1";
-    var newplayerInstance = window.jwplayer(videoObject);
-    window.player2 = newplayerInstance;
-    newplayerInstance.setup({
-      sources: sources,
-      hlshtml: true,
-      tracks: caption_data,
-      allowscriptaccess: 'always',
-      allownetworking: 'all'
-    });
-
-    if (!isEmptyValue(trailerFileUrl)) {
-      var trailerSources = [{
-                file: trailerFileUrl
-              }]
-
-      var trailerVideoObject = document.querySelector("div[data-embed-url='video-url2']");
-      trailerVideoObject.id = "player-2";
-      var newplayerInstance = window.jwplayer(trailerVideoObject);
-      window.player2 = newplayerInstance;
-      newplayerInstance.setup({
-        sources: trailerSources,
-        allowscriptaccess: 'always',
-        allownetworking: 'all'
-      });
-    }
-  };
-
-  jwplayer_setup_error = function() {
-    jwplayer().on('setupError',function(er){
-      $('.full-screen-play').removeClass('full-screen-play');
-
-      $('#err-player').html('<div class="alert alert-danger alert-dismissible" style="margin-top: 12px;"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+ er.message +'</div>');
-    });
-  };
-
-  bindChangeEventOnBrowserScreens = function() {
-    $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function(el){
-
-      var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen || document.msFullscreenElement;
-      if (state != true){
-        jwplayer("flim_video").pause(true);
-        $(".player").addClass('hide');
-      } else{
-        jwplayer("flim_video").play(true);
-      }
-    });
-  };
-
-var ready;
-
-ready = function() {
-  console.log('>>>>> invoked `ready` function >>>>>');
-
-  jwplayer.key = jwPlayerConfigContainer().data('jwplayer-key');
-
-  if (jwPlayerConfigContainer().length) {
-    bindChangeEventOnBrowserScreens();
-    jwplayer_setup();
-    jwplayer_setup_error();
-  }
-};
-
-$(document).ready(ready);
-$(document).on('turbolinks:load', ready);
-
-</script>

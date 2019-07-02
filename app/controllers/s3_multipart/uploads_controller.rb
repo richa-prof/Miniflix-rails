@@ -4,12 +4,13 @@ module S3Multipart
     def create
       begin
         upload = Upload.create(upload_params)
-        upload.execute_callback(:begin, session)
+        upload.execute_callback(:begin, session)  # on_begin_callback
         response = upload.to_json
       rescue FileTypeError, FileSizeError => e
         response = {error: e.message}
       rescue => e
-        logger.error "EXC: #{e.message}"
+        Rails.logger.error "EXC: #{e.message}"
+        Rails.logger.error e.backtrace.join("\n\t")
         response = { error: t("s3_multipart.errors.create") }
       ensure
         render :json => response
@@ -51,8 +52,8 @@ module S3Multipart
           response = Upload.complete(params)
           upload = Upload.find_by_upload_id(params[:upload_id])
           upload.update_attributes(location: response[:location])
-          upload.execute_callback(:complete, session)
-        rescue => e
+          upload.execute_callback(:complete, session) # on_complete_callback
+        rescue => e 
           logger.error "EXC: #{e.message}"
           response = {error: t("s3_multipart.errors.complete")}
         ensure

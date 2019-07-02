@@ -1,0 +1,135 @@
+<section class="content-for-provider provider-upload-content p20">
+
+  <div class="row mt10">
+    <div class="col-lg-4 col-xs-12"></div>
+
+    <div class="col-lg-4 col-xs-12 main-content-container">
+   
+      <%= render partial: 'title_and_prev_link', locals: {hide_prev_link: true} %>
+
+      <div class="p20 mt10 form-container">
+        <div class="steps-section">
+          <div class="pull-left"><h4>Upload</h4></div><div class="pull-right">1/5 steps</div>
+        </div>
+
+      <% f_method, url = !@provider_movie.persisted? ? [:post, provider_movies_path] : [:put, provider_movies_path + "/add_details?slug=#{@provider_movie.slug}"] %>
+
+      <%= form_with model: @provider_movie, scope: 'movie', url: url, method: f_method, class: 'mt40 upload-form' do |f| %>
+
+        <% if @provider_movie.errors.any? %>
+          <div class="row">
+            <div class="col-md-12">
+              <% @provider_movie.errors.full_messages.each do |message| %>
+                <div class="callout callout-success">
+                  <p><%= message %></p>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <%= f.hidden_field :kind, value: 'movie' %>
+
+        <div class="row custom-row">
+          <div class="col-md-12">
+            <!-- general form elements -->
+
+            <div class="form-group form-input-container">
+              <%= f.label :name %>
+              <%= f.text_field( :name,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.name')) %>
+            </div>
+
+            <div class="form-group form-input-container">
+              <%= f.label :audio %>
+              <%= f.text_field( :language,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.language')  ) %>
+            </div>
+
+            <div class="form-group form-input-container">
+              <%= f.label :admin_genre_id %>
+              <%= f.collection_select( :admin_genre_id,
+                                       Genre.alfa_order,
+                                       :id,
+                                       :name,
+                                       { include_blank: t(:SelectGenre) },
+                                       class: "form-control" ) %>
+            </div>
+
+            <div class="form-group form-input-container">
+              <%= f.label :star_cast %>
+              <%= f.text_field( :star_cast,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.star_cast')) %>
+            </div>
+
+            <div class="form-group form-input-container">
+              <%= f.label :producer %>
+              <%= f.text_field( :directed_by,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.directed_by') ) %>
+            </div>
+
+            <div class="form-group form-input-container">
+              <%= f.label :description %>
+              <%= f.text_area( :description,
+                               rows: 5,
+                               class: "form-control",
+                               placeholder: t('placeholder.movie.description') ) %>
+            </div>
+
+            <div class="form-group form-input-container mb50">
+              <div class="pull-left" style="width: 47%">
+                <%= f.label :release_year %><br />
+                <% years = 1990..Date.today.year %>
+                <%= f.select( :released_date,
+                              options_for_select(years.collect {|d| [d, d.to_s]}, f.object&.released_date&.year || Date.today.year),
+                              {
+                                include_blank: false
+                              }, {
+                                class: "form-control",
+                                placeholder: "Choose year"
+                              }) %>
+              </div>
+
+              <div class="pull-right" style="width: 47%">
+                <%= f.fields_for :rate, @rate do |ff| %>
+                <%= ff.label :rent_price %>
+                <%= ff.text_field( :price,
+                                  class: "form-control",
+                                  placeholder: "$23") %>
+                <% end %>
+              </div>
+              <div style="clear: both" />
+            </div>
+
+          </div>
+
+
+          <div class="form-footer custom-form-footer pt20">
+            <%= f.button 'Continue', class: "btn btn-flat btn-black custom-black-btn", type: 'submit' %>
+          </div>
+
+        </div>
+      <% end %>
+
+
+      <section>
+        <div class="field">
+          <%#= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: ' your name', required: true %>
+        </div>
+
+        <div class="field">
+          <%#= f.submit "Save",  data: { "disable-with": "Saving..." }, class: 'btn btn-flat btn-black btn-block' %>
+        </div>
+      </section>
+
+      <span class="errors help-block"><ul></ul></span>
+        
+    </div>
+    <div class="col-lg-4 col-xs-12"></div>
+  </div>
+
+</section>

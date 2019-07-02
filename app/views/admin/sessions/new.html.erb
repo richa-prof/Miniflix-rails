@@ -1,6 +1,8 @@
 <div class="login-box">
-  <%= link_to 'Sign In as marketing staff', new_marketing_staff_user_session_path, class: "btn-fixed-top btn btn-primary pull-right" %>
-
+  <div class="btn-fixed-top">
+  <%= link_to 'Sign In as Marketing Staff', new_marketing_staff_user_session_path, class: "btn btn-primary pull-right" %> <br/><br/>
+  <%= link_to 'Sign In as Content Provider', new_provider_user_session_path, class: "btn btn-primary pull-right" %>
+  </div>
   <div class="login-logo">
     <a href=""><b>Miniflix Admin</b></a>
   </div>

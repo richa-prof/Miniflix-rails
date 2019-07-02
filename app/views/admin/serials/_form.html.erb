@@ -1,0 +1,143 @@
+<% released_date = @admin_serial.year ? @admin_serial.year.strftime("%m/%d/%Y") : "" %>
+<% form_css_class = is_edit_mode ? 'edit_movie_frm' : 'add_movie_details_frm' %>
+<% serial_thumbnail = @admin_serial.serial_thumbnail %>
+
+<%= form_for( [:admin, @admin_serial],
+              html: { id: "frm_admin_series",
+                      class: form_css_class,
+                      multipart: true } ) do |f| %>
+  <% if @admin_serial.errors.any? %>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-default">
+          <div class="box-body">
+            <% @admin_serial.errors.full_messages.each do |message| %>
+              <div class="callout callout-success">
+                <p><%= message %></p>
+              </div>
+            <% end %>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-12">
+      <!-- general form elements -->
+      <div class="box box-primary">
+        <!-- /.box-header -->
+
+          <div class="box-body">
+            <div class="form-group">
+              <%= f.label :series_title %>
+              <%= f.text_field( :title,
+                                class: "form-control",
+                                placeholder: t('placeholder.serial.title'),
+                                required: true,
+                                maxlength: 200 ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :directed_by %>
+              <%= f.text_field( :directed_by,
+                                class: "form-control",
+                                placeholder: t('placeholder.serial.directed_by'),
+                                maxlength: 200 ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :description %>
+              <%= f.text_area( :description,
+                               rows: 5,
+                               class: "form-control description-textarea",
+                               placeholder: t('placeholder.serial.description'),
+                               required: true,
+                                maxlength: 1000 ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :admin_genre_id %>
+              <%= f.collection_select( :admin_genre_id,
+                                       Genre.alfa_order,
+                                       :id,
+                                       :name,
+                                       { include_blank: t(:SelectGenre) },
+                                       class: "form-control",
+                                       required: true ) %>
+            </div>
+
+            <div class="form-group">
+              <%= fields_for :serial_thumbnail, @serial_thumbnail do |thumbnail_fields| %>
+                <div class="row">
+                  <div class="col-md-9 col-sm-12">
+                    <%= render( partial: 'set_series_screenshots',
+                                locals: { serial: @admin_serial,
+                                          is_edit_mode: is_edit_mode,
+                                          thumbnail_fields: thumbnail_fields } ) %>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-9 col-sm-12">
+                    <%= render( partial: 'set_thumbnail_screenshots',
+                                locals: { serial: @admin_serial,
+                                          is_edit_mode: is_edit_mode,
+                                          thumbnail_fields: thumbnail_fields } ) %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :number_of_seasons %>
+              <%= f.number_field( :seasons_number,
+                                class: "form-control",
+                                minlength: 1,
+                                placeholder: t('placeholder.serial.seasons_number'),
+                                style: "width: 200px",
+                                required: true,
+                                maxlength: 3 ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :year %>
+              <%= f.text_field( 'year',
+                                class: "form-control date-picker",
+                                placeholder: t('placeholder.serial.year'),
+                                style: "width: 200px",
+                                required: true ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :language %>
+              <%= f.text_field( :language,
+                                class: "form-control",
+                                placeholder: t('placeholder.serial.language'),
+                                required: true,
+                                maxlength: 200 ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :star_cast %>
+              <%= f.text_field( :star_cast,
+                                class: "form-control",
+                                placeholder: t('placeholder.serial.star_cast'),
+                                maxlength: 200 ) %>
+            </div>
+
+
+          </div>
+          <!-- /.box-body -->
+
+          <div class="box-footer">
+          <%# Change button text to Continue %>
+            <%= f.submit nil, class: "btn btn-primary" , value: 'Submit'%>
+            <%= link_to t('links.cancel'), admin_serials_path, class: "btn btn-default" %>
+          </div>
+      </div>
+      <!-- /.box -->
+    </div>
+  </div>
+<% end %>

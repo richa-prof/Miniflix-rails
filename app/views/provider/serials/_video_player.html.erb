@@ -1,0 +1,23 @@
+<div>
+  <div id="movie_player_<%= movie.id %>"
+          class="js-video-layer"
+          data-embed-type="jwplayer" 
+          data-embed-url="video-url"
+          data-embed-loaded="false">
+    <%= render partial: 'shared/jwplayer_config', locals: {movie: movie} %>
+    <div itemscope="" itemtype="http://schema.org/VideoObject">
+      <div id="mfx_jwplayer_<%= movie.id %>" data-embed-url="video-url" class="jw-player"></div>
+    </div>
+  </div>
+  <strong>
+      <%= movie.name %>
+      <% if movie && movie.downloadable %>
+          <%= link_to( t('links.download_now'),
+                       movie.film_video,
+                       class: "" ) %>
+      <% end %>
+  </strong>
+</div>
+
+
+

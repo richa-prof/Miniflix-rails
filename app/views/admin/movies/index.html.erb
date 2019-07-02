@@ -72,19 +72,19 @@
                               </span>
                             </td>
                             <td data-title="Action">
-                              <%= link_to admin_movie_path(admin_movie), class: "text-green", data: { turbolinks: false } do %>
+                              <%= link_to admin_movie_path(admin_movie.id, kind: 'movie'), class: "text-green", data: { turbolinks: false } do %>
                                 <i class="fa fa-fw fa-eye"></i>
                               <% end %>
-                              <%= link_to edit_admin_movie_path(admin_movie), data: { turbolinks: false }, class: "text-blue" do %>
+                              <%= link_to edit_admin_movie_path(admin_movie.id, kind: 'movie'), data: { turbolinks: false }, class: "text-blue" do %>
                                 <i class="fa fa-fw fa-edit"></i>
                               <% end %>
-                              <%= link_to( admin_movie_path(admin_movie),
+                              <%= link_to( admin_movie_path(admin_movie.id, kind: 'movie'),
                                            class: "text-red",
                                            method: :delete,
                                            data: { confirm: t('confirm.are_you_sure') } ) do %>
                                 <i class="fa fa-fw fa-trash"></i>
                               <% end %>
-                              <%= link_to( admin_movie_movie_captions_path(admin_movie),
+                              <%= link_to( admin_movie_movie_captions_path(admin_movie.id),
                                            title: t('links.add_caption') ) do %>
                                 <i class="fa fa-file-text-o"></i>
                               <% end %>

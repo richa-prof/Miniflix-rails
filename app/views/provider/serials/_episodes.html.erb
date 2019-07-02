@@ -1,0 +1,34 @@
+<h3> Episodes attached to this Serie:</h3>
+
+<% serial.episodes.each do |episode| %>
+
+        <div class="box-body">
+
+          <div class= "player">
+            <div>
+              <strong>Episode for season <%= episode.season.season_number %></strong>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-8 col-md-10 col-sm-12">
+              <div class="box box-primary">
+                <br/>
+
+                <%= render( partial: 'admin/serials/movie_player', locals: { movie: episode } ) %>
+                <div class="pull-right">
+                <%= link_to admin_episode_path(episode.id, kind: 'episode'), 
+                          class: "btn btn-default btn-flat text-red",
+                          title: 'Click to remove episode',
+                          method: :delete, data: { confirm: 'Are you sure?' } do %>
+                              <i class="fa fa-fw fa-trash"></i>
+                <% end %>
+               </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+<% end %>

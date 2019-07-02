@@ -1,24 +1,38 @@
-<figure data-embed-type="jwplayer" data-embed-url="video-url1" data-embed-loaded="false">
-  <div itemscope="" itemtype="http://schema.org/VideoObject">
-    <div data-embed-url="video-url1" class="jw-player"></div>
+<div class="mt20">
+  <h3 class="box-title text-blue">
+      <%= t('heading.movie') %>
+      <% if movie && movie.downloadable %>
+          <%= link_to( t('links.download_now'),
+                       movie.film_video,
+                       class: "" ) %>
+      <% end %>
+  </h3>
+  <div id="movie_player_<%= movie.id %>"
+          class="js-video-layer"
+          data-embed-type="jwplayer" 
+          data-embed-url="video-url"
+          data-embed-loaded="false">
+    <%= render partial: 'shared/jwplayer_config', locals: {movie: movie} %>
+    <div itemscope="" itemtype="http://schema.org/VideoObject">
+      <div id="movie_embed_cnt" data-embed-url="video-url" class="jw-player"></div>
+    </div>
   </div>
-</figure>
-<h3 class="box-title text-blue">
-  <%= t('heading.movie') %>
-  <% if movie.downloadable %>
-    <%= link_to( t('links.download_now'),
-                 movie.film_video,
-                 class: "" ) %>
-  <% end %>
-</h3>
+</div>
 
 <% if movie.has_trailer? %>
-  <figure data-embed-type="jwplayer" data-embed-url="video-url2" data-embed-loaded="true">
-    <div itemscope="" itemtype="http://schema.org/VideoObject">
-      <div data-embed-url="video-url2" class="jw-player"></div>
-    </div>
-  </figure>
+<div class="mt40">
   <h3 class="box-title text-blue">
     <%= t('heading.movie_trailer') %>
   </h3>
+  <div id="trailer_player_<%= movie.movie_trailer.id %>"
+       class="js-video-layer"
+       data-embed-type="jwplayer"
+       data-embed-url="video-url"
+       data-embed-loaded="false">
+    <%= render partial: 'shared/jwplayer_config', locals: {movie: movie.movie_trailer} %>
+    <div itemscope="" itemtype="http://schema.org/VideoObject">
+      <div id="trailer_embed_cnt" data-embed-url="video-url" class="jw-player"></div>
+    </div>
+  </div>
+</div>
 <% end %>

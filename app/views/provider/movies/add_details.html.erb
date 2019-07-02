@@ -1,0 +1,93 @@
+<section class="content-for-provider p20">
+
+  <div class="row mt10 p20">
+    <div class="col-lg-4 col-xs-12"></div>
+
+    <div class="col-lg-4 col-xs-12">
+   
+      <div class="p20 mt10">
+        <h2 class="provider-title"><strong><--- Add Movie</strong></h2>
+        <div class="pt20">
+          <div class="pull-left"><strong>Details</strong></div>
+          <div class="pull-right" style="padding-top: 10px;">1/2 steps</div>
+        </div>
+
+      <%= form_with model: @movie, scope: 'movie', url: provider_movies_path, method: :post, class: 'mt20', local: true, multipart: true do |f| %>
+
+        <span class="errors help-block"><ul></ul></span>
+
+        <%= f.hidden_field :kind, value: 'movie' %>
+
+        <div class="row mt20">
+          <div class="col-md-12" style="margin: 20px 0">
+            <!-- general form elements -->
+
+            <div class="form-group">
+              <%= f.label :name %>
+              <%= f.text_field( :name,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.name') ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :title %>
+              <%= f.text_field( :title,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.title') ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :description %>
+              <%= f.text_area( :description,
+                               rows: 5,
+                               class: "form-control",
+                               placeholder: t('placeholder.movie.description') ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :admin_genre_id %>
+              <%= f.collection_select( :admin_genre_id,
+                                       Genre.alfa_order,
+                                       :id,
+                                       :name,
+                                       { include_blank: t(:SelectGenre) },
+                                       class: "form-control" ) %>
+            </div>
+            <div class="form-group">
+              <%= f.label :directed_by %>
+              <%= f.text_field( :directed_by,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.directed_by') ) %>
+            </div>
+
+
+            <div class="form-group">
+              <%= f.label :star_cast %>
+              <%= f.text_field( :star_cast,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.star_cast') ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :actors %>
+              <%= f.text_field( :actors,
+                                class: "form-control",
+                                placeholder: t('placeholder.movie.actors') ) %>
+            </div>
+
+
+          </div>
+
+
+          <div class="form-footer pt20">
+            <%= f.button 'Save',  "data-disable-with": "Saving...", class: "btn btn-flat btn-black", type: 'submit' %>
+          </div>
+
+        </div>
+      <% end %>
+
+    </div>
+    <div class="col-lg-4 col-xs-12"></div>
+  </div>
+
+</section>

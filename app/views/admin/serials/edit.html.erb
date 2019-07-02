@@ -1,0 +1,39 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    <%= @admin_serial.genre.name %>
+  </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <div class="row">
+            <div class="col-lg-12 col-xs-12">
+              <h3 class="box-title">Editing common Series information</h3>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <%= render( partial: 'form', locals: { is_edit_mode: true } ) %>
+          <br />
+          <%= render partial: 'episodes', locals: {serial: @admin_serial} %>
+          <br/>
+          <%= render partial: 'choose_season_add_episode', locals: {serial: @admin_serial} %>
+
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</section>
+<!-- /.content -->
+
+<%= javascript_include_tag 'admin/movie_player_init.js' %>

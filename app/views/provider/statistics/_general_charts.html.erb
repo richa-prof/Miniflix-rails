@@ -1,0 +1,130 @@
+<%= javascript_include_tag 'admin/flot/jquery.flot.min.js', 'data-turbolinks-track' => true %>
+<%= javascript_include_tag 'admin/flot/jquery.flot.resize.min.js', 'data-turbolinks-track' => true %>
+<%= javascript_include_tag 'admin/flot/jquery.flot.pie.min.js', 'data-turbolinks-track' => true %>
+<%= javascript_include_tag 'admin/flot/jquery.flot.categories.min.js', 'data-turbolinks-track' => true %>
+
+
+<div class="pl40 pr40 page-container">
+  <div>
+    <h3 class="provider-page-title"> <%= title %></h3>
+    <div class="row mt20">
+
+      <% if use_filter %>
+        <div class="col-lg-5 col-xs-12 search-container" style="position: relative;">
+          <%= image_tag('provider/search.svg', alt: 'search icon', class: "icon search-icon")  %>
+          <input type="text" class="js-film-search search-input"
+                 value="<%= params[:search] %>"
+                 data-path="<%= refresh_path %>"
+                 style="width: 80%; height: 36px; padding-left: 30px; border:0; outline: 0" placeholder="Search for movie or episode" />
+        </div>
+      <% end %>
+
+      <div class="col-lg-3 col-xs-12 provider-datepicker">
+        Reports for <input type="text" value="2018-01-01" id="stats_date" min="2018-01-01" class="datepicker"/>
+      </div>
+      <div class="col-lg-3 col-xs-12"></div>
+    </div>
+  </div>
+
+  <div id="stat_boxes" class="row mt20 provider-stat-boxes">
+    <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-white stat-box">
+        <div class="inner">
+          <h4>New Movies</h4>
+          <p><%= monthly_movies_cnt.first&.movies_cnt.to_i %></p>
+        </div>
+        <div class="icon">
+          <%= image_tag('provider/plays.svg', alt: 'dashboard icon')  %>
+        </div>
+<!--         <%#= link_to admin_movies_path, class: "small-box-footer" do %>
+          More info <i class="fa fa-arrow-circle-right"></i>
+        <#% end %> -->
+      </div>
+    </div>
+    <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-white stat-box">
+        <div class="inner">
+          <h4>Total Income of <%=  Date.today.strftime('%b, %Y') %></h4>
+          <p><%= number_with_precision(total_income, precision: 2) %></p>
+        </div>
+        <div class="icon">
+          <%= image_tag('provider/dollar-icon.svg', alt: 'dashboard icon')  %>
+        </div>
+<!--         <%#= link_to admin_premium_users_path, class: "small-box-footer" do %>
+          More info <i class="fa fa-arrow-circle-right"></i>
+        <%# end %> -->
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-white stat-box">
+        <div class="inner">
+          <h4>Unique Visitors</h4>
+          <p><%=  unique_month_wise.count %></p>
+        </div>
+        <div class="icon">
+          <%= image_tag('provider/visitors.svg', alt: 'dashboard icon')  %>
+        </div>
+<!--         <%#= link_to admin_visitors_path, method: "GET", class: "small-box-footer" do %>
+          More info <i class="fa fa-arrow-circle-right"></i>
+        <%# end %> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="col-md-6 new-movies-chart-container" style="display: block">
+      <!-- Donut chart -->
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <i class="fa fa-bar-chart-o"></i>
+          <h3 class="box-title">New Movies</h3>
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          </div>
+        </div>
+        <div class="box-body">
+          <div id="bar-chart" style="height: 300px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-md-6" style="display: none">
+  <!-- Line chart -->
+    <div class="box box-primary">
+    <div class="box-header with-border">
+      <i class="fa fa-bar-chart-o"></i>
+      <h3 class="box-title" id="chat_title">Unique Visitors</h3>
+      <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+      </div>
+    </div>
+    <div class="box-body">
+      <div class="col-lg-4 col-md-12">
+        <label>Change Month</label>
+        <select name="unique_month_wise" id="unique_month_wise" class="form-control">
+          <% unique_month_wise.each do |u_m| %>
+            <option value="<%= u_m.strftime('%m-%Y') %>"><%= u_m.strftime('%B, %Y') %></option>
+          <% end %>
+        </select>
+        <br/>
+      </div>
+      <div class="col-lg-8 col-md-12">
+        <div id="graph2" style="height: 300px;"></div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+</div>
+
+
+<script type="text/javascript"> 
+  var m_months = JSON.parse("<%= escape_javascript @m_months.to_json.html_safe %>");
+</script>

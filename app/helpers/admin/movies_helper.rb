@@ -13,12 +13,12 @@ module Admin::MoviesHelper
   end
 
   def render_thumbnail_image_for(is_edit_mode, thumbnail_type, thumbnail_screenshot)
-    target_image_url = if is_edit_mode && thumbnail_screenshot.present?
-                        CommonHelpers.cloud_front_url(thumbnail_screenshot.path)
-                      else
-                        get_default_thumbnail_url_for(thumbnail_type)
-                      end
-
+    target_image_url = 
+      if is_edit_mode && thumbnail_screenshot.present?
+        CommonHelpers.cloud_front_url(thumbnail_screenshot.path)
+      else
+        get_default_thumbnail_url_for(thumbnail_type)
+      end
     image_tag(target_image_url).html_safe
   end
 
@@ -37,7 +37,6 @@ module Admin::MoviesHelper
 
   def movie_posted_on_details_for(movie)
     posted_date = movie.posted_date
-
     if posted_date.present?
       t( 'content.movie.posted_on_details', formatted_date: posted_date.to_s(:movie_posted_on_format) )
     else
@@ -45,11 +44,9 @@ module Admin::MoviesHelper
     end
   end
 
-  def formatted_released_date_for(movie)
+  def formatted_released_date_for_movie(movie)
     released_date = movie.released_date
-
     return t('label.not_available') unless released_date.present?
-
     released_date.to_s(:full_date_month_and_year_format)
   end
 end

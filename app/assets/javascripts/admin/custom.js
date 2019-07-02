@@ -16,15 +16,12 @@
 
 }) (jQuery);
 
-var ready;
 
-ready = function() {
-  console.log('>>>>> invoked `ready` function of `admin/cutsom.js` >>>>>');
-
+var ready = function() {
+  //console.log('>>>>> invoked `ready` function of `admin/custom.js` >>>>>');
   if (adminMainSidebar().length) {
     setMinHeightOfContentWrapper();
   }
 };
 
-$(document).ready(ready);
-$(document).on('turbolinks:load', ready);
+$(document).on('ready turbolinks:load', ready);

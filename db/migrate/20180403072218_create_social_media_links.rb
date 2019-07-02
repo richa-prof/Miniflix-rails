@@ -5,8 +5,7 @@ class CreateSocialMediaLinks < ActiveRecord::Migration[5.1]
       t.string :twitter
       t.string :google_plus
       t.string :linekdin
-      t.references :user, foreign_key: true
-
+      t.integer :user_id, foreign_key: true
       t.timestamps
     end
   end

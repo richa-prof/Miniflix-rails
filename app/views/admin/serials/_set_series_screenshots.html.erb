@@ -1,0 +1,27 @@
+<% thumbnail = serial.serial_thumbnail  %>
+
+<label for="admin_movie_thumbnails">
+  <%= t('contents.serial.upload_serial_screenshots') %>
+</label>
+
+<div class="row">
+  <% 3.times do |n| %>
+    <% ss = "serial_screenshot_#{n+1}".to_sym %>
+    <div class="col-md-3 col-sm-12">
+      <div class="fileupload fileupload-new" data-provides="fileupload">
+        <%= link_to("#", class: 'movie-thumbnail-file-field-wrapper') do %>
+          <div class="fileupload-new thumbnail">
+            <%= render_thumbnail_image_for_episode(is_edit_mode, ss.to_s, thumbnail.try(ss)) %>
+          </div>
+          <div class="fileupload-preview fileupload-exists thumbnail"></div>
+        <% end %>
+        <%= thumbnail_fields.file_field( ss,
+                                         class: 'default movie-thumbnail-file-field',
+                                         id: ss.to_s,
+                                         accept: "image/*" ) %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+

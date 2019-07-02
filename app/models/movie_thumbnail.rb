@@ -20,10 +20,10 @@ class MovieThumbnail < ApplicationRecord
 
   def screenshot_urls_map
     {
-      original: image_url(movie_screenshot_1.carousel_thumb.path),
-      thumb330: image_url(thumbnail_screenshot.carousel_thumb.path),
-      thumb640: image_url(thumbnail_640_screenshot.path),
-      thumb800: thumb_800_url
+      original: image_url(movie_screenshot_1.carousel_thumb.path).to_s,
+      thumb330: image_url(thumbnail_screenshot.carousel_thumb.path).to_s,
+      thumb640: image_url(thumbnail_640_screenshot.path).to_s,
+      thumb800: thumb_800_url.to_s
     }
   end
 

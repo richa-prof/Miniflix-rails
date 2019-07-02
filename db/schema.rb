@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180928091621) do
+ActiveRecord::Schema.define(version: 20190403014023) do
 
   create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "city"
@@ -50,7 +50,9 @@ ActiveRecord::Schema.define(version: 20180928091621) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "thumbnail_800_screenshot"
+    t.bigint "admin_serial_id"
     t.index ["admin_movie_id"], name: "index_admin_movie_thumbnails_on_admin_movie_id"
+    t.index ["admin_serial_id"], name: "index_admin_movie_thumbnails_on_admin_serial_id"
   end
 
   create_table "admin_movies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -79,8 +81,12 @@ ActiveRecord::Schema.define(version: 20180928091621) do
     t.datetime "updated_at", null: false
     t.string "bitly_url"
     t.string "slug"
+    t.bigint "season_id"
+    t.string "kind", default: "movie"
     t.index ["admin_genre_id"], name: "index_admin_movies_on_admin_genre_id"
+    t.index ["kind"], name: "index_admin_movies_on_kind"
     t.index ["s3_multipart_upload_id"], name: "index_admin_movies_on_s3_multipart_upload_id"
+    t.index ["season_id"], name: "index_admin_movies_on_season_id"
   end
 
   create_table "admin_paypal_access_tokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -114,6 +120,33 @@ ActiveRecord::Schema.define(version: 20180928091621) do
     t.string "stripe_plan_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "admin_serial_thumbnails", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "admin_serial_id"
+    t.string "serial_screenshot_1"
+    t.string "serial_screenshot_2"
+    t.string "serial_screenshot_3"
+    t.string "thumbnail_screenshot"
+    t.string "thumbnail_640_screenshot"
+    t.string "thumbnail_800_screenshot"
+    t.index ["admin_serial_id"], name: "index_admin_serial_thumbnails_on_admin_serial_id"
+  end
+
+  create_table "admin_serials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "title", null: false
+    t.date "year"
+    t.bigint "admin_genre_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "directed_by", null: false
+    t.string "star_cast", null: false
+    t.text "description", null: false
+    t.string "language", null: false
+    t.string "slug"
+    t.integer "seasons_number"
+    t.index ["admin_genre_id"], name: "index_admin_serials_on_admin_genre_id"
+    t.index ["slug"], name: "index_admin_serials_on_slug", unique: true
   end
 
   create_table "background_images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -213,6 +246,16 @@ ActiveRecord::Schema.define(version: 20180928091621) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
+  create_table "liked_info", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "user_id"
+    t.integer "thing_id"
+    t.string "thing_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["thing_type", "thing_id"], name: "index_liked_info_on_thing_type_and_thing_id"
+    t.index ["user_id"], name: "index_liked_info_on_user_id"
+  end
+
   create_table "likes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "user_id"
     t.bigint "blog_id"
@@ -246,7 +289,9 @@ ActiveRecord::Schema.define(version: 20180928091621) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "uploader"
+    t.bigint "admin_serial_id"
     t.index ["admin_movie_id"], name: "index_movie_trailers_on_admin_movie_id"
+    t.index ["admin_serial_id"], name: "index_movie_trailers_on_admin_serial_id"
     t.index ["s3_multipart_upload_id"], name: "index_movie_trailers_on_s3_multipart_upload_id"
   end
 
@@ -269,8 +314,30 @@ ActiveRecord::Schema.define(version: 20180928091621) do
     t.string "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_read", default: false
     t.index ["admin_movie_id"], name: "index_notifications_on_admin_movie_id"
     t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
+  create_table "own_films", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "user_id"
+    t.integer "film_id"
+    t.string "film_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["film_type", "film_id"], name: "index_own_films_on_film_type_and_film_id"
+    t.index ["user_id"], name: "index_own_films_on_user_id"
+  end
+
+  create_table "rates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "entity_id"
+    t.string "entity_type"
+    t.string "notes"
+    t.float "price", limit: 24
+    t.integer "discount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["entity_type", "entity_id"], name: "index_rates_on_entity_type_and_entity_id"
   end
 
   create_table "s3_multipart_uploads", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -283,6 +350,12 @@ ActiveRecord::Schema.define(version: 20180928091621) do
     t.text "context"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "seasons", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "admin_serial_id"
+    t.integer "season_number"
+    t.index ["admin_serial_id"], name: "index_seasons_on_admin_serial_id"
   end
 
   create_table "seo_meta", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -358,8 +431,8 @@ ActiveRecord::Schema.define(version: 20180928091621) do
 
   create_table "user_video_last_stops", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "admin_movie_id"
-    t.integer "role_id"
-    t.string "role_type"
+    t.integer "watcher_id"
+    t.string "watcher_type"
     t.float "last_stopped", limit: 24
     t.float "total_time", limit: 24
     t.float "watched_percent", limit: 24
@@ -367,6 +440,7 @@ ActiveRecord::Schema.define(version: 20180928091621) do
     t.datetime "updated_at", null: false
     t.integer "watched_count", default: 0
     t.index ["admin_movie_id"], name: "index_user_video_last_stops_on_admin_movie_id"
+    t.index ["watcher_type", "watcher_id"], name: "index_user_video_last_stops_on_watcher_type_and_watcher_id"
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -412,6 +486,7 @@ ActiveRecord::Schema.define(version: 20180928091621) do
     t.boolean "valid_for_thankyou_page", default: false
     t.string "token"
     t.boolean "battleship"
+    t.string "category", default: "general"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -427,15 +502,21 @@ ActiveRecord::Schema.define(version: 20180928091621) do
   add_foreign_key "addresses", "users"
   add_foreign_key "admin_movie_captions", "admin_movies"
   add_foreign_key "admin_movie_thumbnails", "admin_movies"
+  add_foreign_key "admin_movie_thumbnails", "admin_serials"
   add_foreign_key "admin_movies", "admin_genres"
+  add_foreign_key "admin_movies", "seasons"
+  add_foreign_key "admin_serial_thumbnails", "admin_serials"
+  add_foreign_key "admin_serials", "admin_genres"
   add_foreign_key "blogs", "users"
   add_foreign_key "comments", "blogs"
   add_foreign_key "contact_user_replies", "contact_us", column: "contact_us_id"
   add_foreign_key "likes", "blogs"
   add_foreign_key "logged_in_users", "users"
   add_foreign_key "movie_trailers", "admin_movies"
+  add_foreign_key "movie_trailers", "admin_serials"
   add_foreign_key "notifications", "admin_movies"
   add_foreign_key "notifications", "users"
+  add_foreign_key "seasons", "admin_serials"
   add_foreign_key "social_media_links", "users"
   add_foreign_key "user_email_notifications", "users"
   add_foreign_key "user_filmlists", "admin_movies"

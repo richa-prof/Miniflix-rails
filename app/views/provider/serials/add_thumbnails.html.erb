@@ -1,0 +1,37 @@
+<% thumbnail = @serial.serial_thumbnail %>
+
+<section class="content-for-provider provider-upload-content">
+
+<div class="row js-add-sshots-wrapper">
+
+  <div class="col-lg-4 col-xs-12"></div>
+  <div class="col-lg-4 col-xs-12 main-content-container">
+
+  <%= render partial: 'title_and_prev_link' %>
+  
+  <%= form_for @serial, scope: :serial, url: wizard_path(:add_thumbnails, slug: @serial.slug), method: :put, local: true, class: 'pt40', html: {multipart: true} do |f| %>
+
+    <div class="form-group">
+        <div class="row custom-row upload-imgs-custom-row">
+          <div class="col-md-9 col-sm-12">
+
+          <%= fields_for :serial_thumbnail, @serial.serial_thumbnail, scope: :serial do |tf| %>
+            <%= render( partial: 'set_serial_thumbnails', locals: {thumbnail_fields: tf, thumbnail: thumbnail } ) %>
+          <% end %>
+
+            <div class="form-footer custom-form-footer custom-thumbnails-footer">
+              <%= f.button 'Continue', class: "btn btn-flat btn-black custom-black-btn", type: 'submit' %>
+            </div>
+
+          </div>
+        </div>
+    </div>
+
+  <% end %>
+
+  </div>
+
+  <div class="col-lg-4 col-xs-12"></div>
+
+</div>
+</section>

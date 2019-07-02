@@ -8,6 +8,7 @@ class Genre < ApplicationRecord
 
   # ASSOCIATIONS
   has_many :movies, dependent: :destroy, foreign_key: "admin_genre_id"
+  has_many :serials, dependent: :destroy, foreign_key: "admin_genre_id"
 
   #Friendly id
   extend FriendlyId

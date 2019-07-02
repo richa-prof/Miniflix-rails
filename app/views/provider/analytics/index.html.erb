@@ -1,0 +1,14 @@
+
+
+<%= render partial: '/provider/statistics/general_charts', 
+    locals: {
+      title: t('heading.analytics'),
+      use_filter: true,
+      refresh_path: provider_analytics_path,
+      monthly_movies_cnt: @monthly_movies_cnt,
+      m_months: @m_months,
+      total_income: @total_income_of_current_month,
+      unique_month_wise: @unique_month_wise
+    } 
+%>
+

@@ -18,5 +18,6 @@
 //= require underscore
 //= require s3_multipart_modified
 //= require jquery.mask
-//= require lightbox-bootstrap
-//= require admin/bootstrap-fileupload
+//#= require lightbox-bootstrap
+
+//= require shared/add_screenshots

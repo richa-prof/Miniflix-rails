@@ -12,5 +12,5 @@ end
 
 def add_validations
   attr_accessor :check_seo_meta_tags
-  validates_presence_of :browser_title, :meta_keywords, :meta_description, if: "check_seo_meta_tags.present?"
+  validates_presence_of :browser_title, :meta_keywords, :meta_description, if: -> { check_seo_meta_tags.present? }
 end

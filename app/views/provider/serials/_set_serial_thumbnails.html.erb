@@ -1,0 +1,29 @@
+<% is_edit_mode = true %>
+
+<div class="steps-section custom-thumbnails-steps">
+  <div><h4><%= t('label.serial.add_serial_thumbnails') %></h4></div>
+  <div>5/5 steps</div>
+</div>
+
+<div class="row custom-row">
+  <% [:thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot].each do |thumb| %>
+    <div>
+      <div class="fileupload fileupload-new" data-provides="fileupload">
+
+        <%= link_to("#", class: 'movie-thumbnail-file-field-wrapper') do %>
+          <div class="fileupload-new thumbnail">
+            <%= render_thumbnail_image_for_episode( is_edit_mode, thumb.to_s, thumbnail.try(thumb) ) %>
+          </div>
+        <% end %>
+
+        <%= thumbnail_fields.file_field(
+                thumb,
+                class: 'default movie-thumbnail-file-field',
+                id: thumb.to_s,
+                accept: "image/*" ) %>
+
+        <label id="<%= thumb.to_s.gsub('screenshot', 'error') %>" class="cust_error" style="color: red;"></label>
+      </div>
+    </div>
+  <% end %>
+</div>

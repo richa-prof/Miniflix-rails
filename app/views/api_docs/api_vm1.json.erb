@@ -335,6 +335,28 @@ paths:
                 type: boolean
               is_valid_payment:
                 type: boolean
+  /users/check_email_exists:
+    get:
+      tags:
+      - "Check email exist"
+      summary: 'Check email exist'
+      security:
+        - authentication: []
+      parameters:
+      - in: "params"
+        name: "email"
+        description: "user email"
+        schema:
+          properties:
+            email:
+              type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              user:
+                type: boolean
 
   /users/contact_us:
     post:
@@ -468,7 +490,7 @@ paths:
   /notifications/get_notifications:
     post:
       tags:
-      - "Ntification"
+      - "Notification"
       summary: 'Fetch all the notifications'
       security:
         - authentication: []
@@ -493,7 +515,7 @@ paths:
   /notifications/delete_notifications:
     post:
       tags:
-      - "Ntification"
+      - "Notification"
       summary: 'Fetch all the notifications'
       security:
         - authentication: []
@@ -522,7 +544,7 @@ paths:
   /notifications/send_test_notification:
     post:
       tags:
-      - "Ntification"
+      - "Notification"
       summary: 'Fetch all the notifications'
       security:
         - authentication: []

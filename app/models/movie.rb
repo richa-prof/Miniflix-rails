@@ -3,6 +3,7 @@ class Movie < ApplicationRecord
 
   # CONSTANT STARTS
   PER_PAGE = 6
+  ENTRY_TYPE = 2
 
   SHARE_ON = ['facebook', 'twitter']
 
@@ -32,27 +33,48 @@ class Movie < ApplicationRecord
 
   # ASSOCIATIONS
   belongs_to :genre, class_name: "Genre", foreign_key: "admin_genre_id"
-  has_one :movie_thumbnail, dependent: :destroy, foreign_key: "admin_movie_id"
+  belongs_to :season, optional: true
+
+  has_one :movie_thumbnail, dependent: :destroy, foreign_key: "admin_movie_id", inverse_of: :movie
   has_one :movie_trailer, dependent: :destroy, foreign_key: "admin_movie_id"
   has_many :notifications, dependent: :destroy, foreign_key: "admin_movie_id"
+  
   has_many :user_filmlists, dependent: :destroy, foreign_key: "admin_movie_id"
+  alias_method :favorite_for_users, :user_filmlists
+
+  # point in timeline where user stopped watching movie
   has_many :user_video_last_stops, dependent: :destroy, foreign_key: "admin_movie_id"
+  alias_method  :watched_by_users, :user_video_last_stops
+
   has_many :movie_captions, dependent: :destroy, foreign_key: "admin_movie_id"
   has_many :movie_versions, dependent: :destroy
 
-  accepts_nested_attributes_for :movie_thumbnail
+  # associations for content provider
+  has_one :own_film, as: :film
+  has_one :owner, through: :own_film, source: :user
+  has_one :rate, as: :entity, inverse_of: :entity # inverse_of important here! to save associated object
 
+  accepts_nested_attributes_for :movie_thumbnail
+  accepts_nested_attributes_for :rate, allow_destroy: true
+  
   # CALLBACKS
   before_save :create_bitly_url, if: -> { slug_changed? }
+  before_validation :fix_attrs
   after_create :write_file
   after_update :send_notification
 
 
   # SCOPES
+  default_scope  { where(kind: self.name.downcase) }
+
   scope :featured, -> { where(is_featured_film: true) }
+  scope :episodes, -> { where(kind: 'episode') }
+  scope :my_movies, -> (user) { joins(:user_filmlists).where('user_filmlists.user_id = ?', user.id) }
 
   # DELIGATES
   delegate :name, to: :genre, prefix: :genre,  allow_nil: true
+
+  validates_presence_of :title
 
   self.per_page = PER_PAGE
 
@@ -108,15 +130,36 @@ class Movie < ApplicationRecord
                    .order("total_watches DESC")
 
       return movies_arr unless target_count.present?
-
       movies_arr.first(target_count)
     end
+
+    def new_entries_for_user(user: nil, limit: nil, offset: 0)
+      where("id not in (:list)", list: UserVideoLastStop.pluck(:id).uniq).order("updated_at desc").limit(limit).offset(offset)
+    end
+
+    def new_entries(limit: PER_PAGE, offset: 0)
+      order("updated_at desc").limit(limit).offset(offset)
+    end
+
+    def recently_watched(limit: PER_PAGE, offset: 0)
+      where("id in (:list)", list: UserVideoLastStop.order(:updated_at).pluck(:id).uniq).order(:updated_at).limit(limit).offset(offset)
+    end
+
+    def top_watched(limit: PER_PAGE, offset: 0)
+      q = "INNER JOIN (SELECT admin_movie_id, COUNT(*) AS cnt FROM user_video_last_stops GROUP BY admin_movie_id ORDER BY cnt DESC LIMIT 100) AS top_watched ON admin_movies.id = top_watched.admin_movie_id"
+      joins(q).limit(limit).offset(offset)
+    end
+
   end
   # ===== Class methods End =====
 
   # ===== Instance methods Start =====
+  def should_generate_new_friendly_id?
+    name_changed?
+  end
+
   def hls_movie_url
-    ENV['VERSION_FILE_CLOUD_FRONT_URL'] + version_file if version_file.present?
+    version_file.present? ? ENV['VERSION_FILE_CLOUD_FRONT_URL'] + version_file : nil
   end
 
   def active_movie_captions
@@ -133,8 +176,11 @@ class Movie < ApplicationRecord
 
   def write_file
     movie = self
+    # FIXME
+    return unless s3_multipart_upload_id
     s3_upload = S3Multipart::Upload.find(movie.s3_multipart_upload_id)
-    folder_environment_name =  "streaming_#{Rails.env}"
+    #folder_environment_name =  "streaming_#{Rails.env}"
+    folder_environment_name =  "streaming_development"
     output_key_prefix = "#{folder_environment_name}/#{movie.id.to_s}/"
     new_file_name = fetch_movie_file_name(s3_upload.name)
 
@@ -190,6 +236,7 @@ class Movie < ApplicationRecord
   end
 
   def trancode_videos_for_mobile(s3_upload_obj, admin_movie, version_file_name)
+    Rails.logger.debug ">>>>> transcode_videos_for_mobile  <<<<"
     pipeline_id = ENV['S3_TRANSCODE_PIPELINE_Mobile']
     input_key = s3_upload_obj.key
     input = { key: input_key }
@@ -207,7 +254,9 @@ class Movie < ApplicationRecord
         key: file_name,
         preset_id: version_value
       }
-      admin_movie.movie_versions.create(film_video: "#{output_key_prefix}/#{file_name}", resolution: file_resolution )
+      Rails.logger.debug ">>> creating movie version for resolution #{file_resolution} <<<"
+      mv = admin_movie.movie_versions.create(film_video: "#{output_key_prefix}/#{file_name}", resolution: file_resolution )
+      #Rails.logger.debug mv.errors.full_messages
     end
     job = TRANSCODER.create_job(
       pipeline_id: pipeline_id,
@@ -226,36 +275,40 @@ class Movie < ApplicationRecord
     (self.user_filmlists.find_by_user_id user_id).present?
   end
 
-  def as_json(options=nil)
-    case options
+  def as_json(mode = nil)
+    case mode
     when "full_movie_detail"
-      return super(except: [:created_at, :updated_at, :version_file, :uploader, :s3_multipart_upload_id, :admin_genre_id]).merge(movie_screenshot: movie_screenshot_list, captions: self.movie_captions.map(&:as_json), film_video: fetch_movie_urls, genre_name: genre_name)
+      return super(except: [
+        :created_at, :updated_at, :version_file, :uploader, :s3_multipart_upload_id
+      ]).merge(
+        movie_screenshot: screenshot_list,
+        captions: self.movie_captions.map(&:as_json),
+        film_video: film_video_map,
+        genre_name: genre_name
+      )
     when "genre_wise_list"
-      return super(only: [:id, :name]).merge(movie_screenshot: movie_screenshot_list)
+      return super(only: [:id, :name, :admin_genre_id]).merge(movie_screenshot: movie_screenshot_list)
     when 'genres_with_latest_movie'
-      return super(only: [:id, :name, :title, :description, :language, :video_duration]).merge(film_video: fetch_movie_urls, genre_name: genre_name, movie_screenshot: movie_screenshot_list)
+      return super(only: [:id, :name, :title, :description, :language, :video_duration, :admin_genre_id]).merge(film_video: fetch_movie_urls, genre_name: genre_name, movie_screenshot: movie_screenshot_list)
     else
-      movie_detail =  super(only: [:id, :name, :title, :description, :language, :video_duration]).merge(film_video: fetch_movie_urls, genre_name: genre_name, movie_screenshot: movie_screenshot_list)
-      movie_detail.merge!(last_stopped: fetch_last_stop(options)) if options.present?
+      movie_detail =  super(only: [:id, :name, :title, :description, :language, :video_duration, :admin_genre_id]).merge(film_video: fetch_movie_urls, genre_name: genre_name, movie_screenshot: movie_screenshot_list)
       return movie_detail
     end
   end
 
+  # invalid ? use film_video_map instead
   def fetch_movie_urls
     movie_urls = {}
-
     movie_urls[:hls] = ENV['VERSION_FILE_CLOUD_FRONT_URL'] + version_file if version_file.present?
-
     self.movie_versions.each do |version|
       movie_urls["video_"+version.resolution.to_s]  = CommonHelpers.cloud_front_url(version.film_video)
     end
-
     movie_urls
   end
 
+  # invalid? use screenshot_list instead
   def movie_screenshot_list
-    movie_thumbnail = self.movie_thumbnail
-    movie_thumbnail.screenshot_urls_map
+    movie_thumbnail ? movie_thumbnail.screenshot_urls_map : {}
   end
 
   def fetch_last_stop(user)
@@ -279,6 +332,87 @@ class Movie < ApplicationRecord
     I18n.t( 'contents.movie.new_movie_added_notification_message', movie_name: self.name )
   end
 
+  def screenshot_list
+    out = {
+      original: "",
+      thumb330: "",
+      thumb640: "",
+      thumb800: ""
+    }
+    if movie_thumbnail
+      out.merge!(movie_thumbnail.screenshot_urls_map)
+    else
+      out
+    end
+  end
+
+
+  def compact_response
+    {
+      id: id, 
+      title: name.to_s, 
+      year: created_at.year.to_s, 
+      genre_data: { 
+        id: genre&.id, 
+        name: genre&.name.to_s
+      },
+      screenshot: screenshot_list,
+      type: ENTRY_TYPE,
+      trailer: movie_trailer&.file
+    }
+  end
+
+  def short_response
+    {
+      id: id,
+      name: name.to_s, 
+      title: name, 
+      description: description,
+      language: language,
+      video_duration: video_duration,
+      genre_name: genre&.name.to_s,
+      last_stopped: user_video_last_stops.last.as_json(only: [:total_time, :last_stopped, :watched_percent]),
+      film_video: film_video_map,
+      movie_screenshot: screenshot_list
+    }
+  end
+
+  def film_video_map
+    h = {
+      hls: film_video || '',
+      video_720: '',
+      video_480: '',
+      video_320: ''
+    }
+    upload_host = film_video.split('/').slice(0,3).join('/') if film_video
+    movie_versions.each do |mv|
+      h["video_#{mv.resolution}".to_sym] = film_video ? "#{upload_host}/#{mv.film_video}" : ''
+    end
+    h
+  end
+
+  def format(mode: nil)
+    case mode
+    when "compact"
+      compact_response
+    when 'short'
+      short_response
+    when 'full'
+      short_response.merge!(
+        admin_genre_id: admin_genre_id,
+        captions: movie_captions.map(&:as_json),
+        trailer: movie_trailer&.file
+      )
+      # super(except: [:created_at, :updated_at, :version_file, :uploader, :s3_multipart_upload_id]).merge(movie_screenshot: movie_screenshot_list, captions: self., film_video: fetch_movie_urls, genre_name: genre_name)
+    else # 'browse'
+      compact_response.merge!(
+       film_video: film_video_map,
+       screenshot: screenshot_list
+      )
+    end
+  end
+
+
   private
 
   def create_bitly_url
@@ -286,12 +420,17 @@ class Movie < ApplicationRecord
     self.bitly_url = bitly.short_url
   end
 
+  def fix_attrs
+    self.slug ||= name.gsub(/[\W]/,'-').downcase
+    self.title ||= name
+  end
+
   def movie_show_url
      "#{ENV['Host']}/movies/#{self.slug}"
   end
 
   def send_notification
-    if title_was.nil? && title.present?
+    if title_was.nil? && title.present?  # saved_change_to_attribute?(:title)
       Notification.send_movie_added_push_notification(self)
     end
   end

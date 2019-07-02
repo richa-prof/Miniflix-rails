@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   # Include default devise modules.
   devise :database_authenticatable, :registerable,
           :recoverable, :rememberable, :trackable, :validatable, :omniauthable
+
   include DeviseTokenAuth::Concerns::User
 
   attr_accessor :skip_callbacks, :social_login, :paypal_token, :payment_type
@@ -19,17 +20,41 @@ class User < ActiveRecord::Base
 
   # ASSOCIATION STARTS
   has_many :user_payment_methods, dependent: :destroy
+  has_many :my_transactions, through: :user_payment_methods, source: "user_payment_transactions"
+
   has_many :user_filmlists,  dependent: :destroy
   has_many :my_list_movies,  through: :user_filmlists, source: "movie"
-  has_many :user_video_last_stops,  dependent: :destroy
+  has_many :favorite_episodes,  through: :user_filmlists, source: "episode"
+
+
   has_one :user_email_notification, dependent: :destroy
   has_one :logged_in_user, dependent: :destroy
-  has_many :user_video_last_stops, as: :role, dependent: :destroy
+  
+  has_many :user_video_last_stops, as: :watcher,  dependent: :destroy
+  alias_method :recent_videos, :user_video_last_stops
+
+  has_many :liked_things, dependent: :destroy
+  has_many :liked_serials,  through: :liked_things, source: :thing, source_type: 'Serial'
+  has_many :liked_movies,   through: :liked_things, source: :thing, source_type: 'Movie'
+  has_many :liked_episodes, through: :liked_things, source: :thing, source_type: 'Episode'
+  has_many :liked_seasons,  through: :liked_things, source: :thing, source_type: 'Season'
+
+  # associations for content provider
+  has_one :rate, as: :entity
+  has_many :own_films
+  has_many :own_serials, through: :own_films, source: :film, source_type: 'Serial'
+  has_many :own_movies,  through: :own_films, source: :film , source_type: 'Movie'
+  has_many :own_episodes,  through: :own_films, source: :film , source_type: 'Episode'
+
+  #has_one  :video_statistic, dependent: :destroy
+
+  alias_method :recently_watched, :user_video_last_stops
+
   has_many :notifications, dependent: :destroy
   has_many :blogs, dependent: :destroy
   has_one :address, dependent: :destroy
   has_one :social_media_link, dependent: :destroy
-  has_many :my_transactions, through: :user_payment_methods, source: "user_payment_transactions"
+
   # ASSOCIATION ENDS
 
   accepts_nested_attributes_for :address, :social_media_link
@@ -74,26 +99,46 @@ class User < ActiveRecord::Base
   validates_presence_of :sign_up_from, unless: -> { skip_sign_up_from_validation }
 
   # ENUM STARTS
-  enum registration_plan: { Educational: 'Educational',
-                            Monthly:'Monthly',
-                            Annually: 'Annually',
-                            Freemium: 'Freemium' }
-  enum sign_up_from: { by_admin: 'by_admin',
-                       Web: 'web',
-                       Android: 'android',
-                       iOS: 'ios' }
-  enum provider: {  email: 'email',
-                    facebook: 'facebook',
-                    twitter: 'twitter' }
-  enum role: { admin: 'Admin',
-               staff: 'Staff',
-               user: 'User',
-               marketing_staff: 'marketing_staff' }
-  enum subscription_plan_status: { incomplete: 'Incomplete',
-                                   trial: 'Trial',
-                                   activate: 'Activate',
-                                   cancelled: 'Cancelled',
-                                   expired: 'Expired' }
+  enum registration_plan: {
+    Educational: 'Educational',
+    Monthly:'Monthly',
+    Annually: 'Annually',
+    Freemium: 'Freemium'
+  }
+
+  enum sign_up_from: {
+    by_admin: 'by_admin',
+    Web: 'web',
+    Android: 'android',
+    iOS: 'ios'
+  }
+
+  enum provider: {
+    email: 'email',
+    facebook: 'facebook',
+    twitter: 'twitter'
+  }
+
+  enum role: { 
+    admin: 'Admin',
+    staff: 'Staff',
+    user: 'User',
+#    provider: 'Content Provider',
+    marketing_staff: 'marketing_staff' 
+  }
+
+  enum subscription_plan_status: {
+    incomplete: 'Incomplete',
+    trial: 'Trial',
+    activate: 'Activate',
+    cancelled: 'Cancelled',
+    expired: 'Expired'
+  }
+
+  enum category: {
+    general: 'general',
+    provider: 'content_provider'
+  }
   # ENUM ENDS
 
   # SCOPE STARTS
@@ -103,6 +148,9 @@ class User < ActiveRecord::Base
   scope :premium_users, -> { without_admin.without_educational_plan }
   scope :paid_users, -> {where(registration_plan: ['Monthly','Annually'])}
   scope :find_by_month_and_year, ->(month_year){where('extract(month from created_at) = ? and extract(year from created_at) = ? ', month_year.first, month_year.last)}
+
+
+
   # SCOPE ENDS
 
   # ===== Class methods Start =====
@@ -124,7 +172,11 @@ class User < ActiveRecord::Base
   end
 
   def skip_registration_plan_validation
-    social_login || staff? || marketing_staff? || is_social_login?
+    social_login || staff? || marketing_staff? || is_social_login? || !content_provider?
+  end
+
+  def content_provider?
+    category == 'content_provider'
   end
 
   def is_social_login?
@@ -132,7 +184,7 @@ class User < ActiveRecord::Base
   end
 
   def skip_sign_up_from_validation
-    staff? || marketing_staff?
+    staff? || marketing_staff? || !content_provider?
   end
 
   def is_payment_verified?
@@ -376,6 +428,7 @@ class User < ActiveRecord::Base
   end
 
   def profile_image_url
+    return image_url if image_url
     path = image.try(:staff_medium).try(:path)
 
     if path.present?

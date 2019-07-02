@@ -1,6 +1,13 @@
 class UserVideoLastStop < ApplicationRecord
-  belongs_to :role, polymorphic: true
+  belongs_to :watcher, polymorphic: true, foreign_key: :watcher_id, foreign_type: :watcher_type
   belongs_to :movie, foreign_key: :admin_movie_id
+
+
+  scope :who_watched_videos, -> (video_ids) {
+    out = joins('INNER JOIN `admin_movies` ON `admin_movies`.`id` = `user_video_last_stops`.`admin_movie_id`')
+    out.where!("admin_movies.id in (:ids)", ids: video_ids) unless video_ids.empty?
+    out
+  }
 
   #constants
   PER_PAGE = 10

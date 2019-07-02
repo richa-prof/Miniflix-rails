@@ -4,8 +4,7 @@ class CreateComments < ActiveRecord::Migration[5.1]
       t.text :body
       t.string :commenter
       t.integer :user_id
-      t.references :blog, foreign_key: true
-
+      t.integer :blog_id, foreign_key: true
       t.timestamps
     end
   end
