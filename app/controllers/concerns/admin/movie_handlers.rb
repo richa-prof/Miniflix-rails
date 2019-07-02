@@ -4,19 +4,19 @@ module Admin::MovieHandlers
 
   # !important to pass with request !!
   def kind
-     params[:kind]
+     params[:kind] || 'movie'
   end
 
   def movie_id_param
      @movie_id_param ||= params["#{kind}_id".to_sym]
   end
 
-  def movie_klass
+  def video_klass
     kind&.humanize&.constantize
   end
 
   def upload_movie_trailer
-    @movie = movie_klass.find_by_s3_multipart_upload_id(params[:id])
+    @movie = video_klass.find_by_s3_multipart_upload_id(params[:id])
     case kind
     when 'movie'
     when 'episode'
@@ -24,8 +24,10 @@ module Admin::MovieHandlers
       if serial
         flash[:success] = 'Episode has been successfully uploaded'
       else
-        flash[:error] = 'Something went wrong during Episode upload: Episode not found in DB'
+        Rails.logger.debug @movie.inspect
+        flash[:error] = 'Something went wrong during Episode upload: Serie not specified for Episode'
       end
+      session[:reset_turbolinks_cache] = true
       redirect_to serial ? admin_serial_path(serial.id) : admin_serials_path
     end
   end
@@ -33,23 +35,32 @@ module Admin::MovieHandlers
   def save_uploaded_movie_trailer
     success = false
     upload_id = params[:upload_id]
-    @movie = movie_klass.find(movie_id_param)
+    video = video_klass.find(movie_id_param)
     s3_upload = S3Multipart::Upload.find(upload_id)
-    movie_trailer = @movie.create_movie_trailer(
+    args = {
       s3_multipart_upload_id: upload_id,
       uploader: s3_upload.uploader,
-      admin_serial_id: @movie.season&.serial&.id,
       file: s3_upload.location
-    )
-    if movie_trailer.valid?
+    }
+    if video_klass == Episode
+      args[:admin_serial_id] = video.season&.serial&.id
+    elsif video_klass == Serial
+      args[:admin_serial_id] = video.id
+    else
+      args[:admin_movie_id] = video.id
+    end
+    trailer = video.create_movie_trailer(args)
+    if trailer.valid?
       success = true
     end
     render json: { success: success }
   end
 
+  alias_method  :save_uploaded_serial_trailer, :save_uploaded_movie_trailer
+
   def add_movie_details
     movie_trailer = MovieTrailer.find_by_s3_multipart_upload_id(params[:id])
-    @admin_movie = movie_trailer.movie
+    @admin_movie = movie_trailer&.movie
     @s3_multipart = S3Multipart::Upload.find(@admin_movie.s3_multipart_upload_id)
   end
 
@@ -58,8 +69,9 @@ module Admin::MovieHandlers
 
   # Use callbacks to share common setup or constraints between actions.
   def set_admin_movie
-    # @admin_movie = Movie.friendly.find(params[:id])
-    @admin_movie ||= movie_klass.friendly.find_by(id: params[:id]) || movie_klass.find_by_s3_multipart_upload_id(params[:id])
+    @admin_movie ||= video_klass.friendly.find_by(id: params[:id]) ||
+      video_klass.find_by_s3_multipart_upload_id(params[:id]) ||
+      video_klass.find_by(slug: params[:id]) || video_klass.find_by(id: params[:id])
     session[:movie_kind] = @admin_movie.kind
     session[:serial_id] = params[:serial_id]
   end
@@ -82,13 +94,15 @@ module Admin::MovieHandlers
 
   def save_movie_thumbnails(movie)
     movie_thumbnail = movie.movie_thumbnail
-    return unless params[:movie_thumbnail].present?
+    return nil unless params[:movie_thumbnail].present?
     if movie_thumbnail.present?
       movie_thumbnail.update(movie_thumbnail_params)
+      Rails.logger.debug movie_thumbnail_params
     else
       movie_thumbnail = movie.build_movie_thumbnail(movie_thumbnail_params)
       movie_thumbnail.save
     end
+    movie_thumbnail
   end
 
   def movie_default_params

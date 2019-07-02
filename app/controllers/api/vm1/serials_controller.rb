@@ -1,5 +1,5 @@
 class Api::Vm1::SerialsController < Api::Vm1::ApplicationController
-  before_action :authenticate_api, only: []
+  before_action :authenticate_api
   #before_action :authenticate_according_to_devise, only: [:get_serial_detail, :manage_like, :my_list ]
 
   def limit
@@ -8,8 +8,7 @@ class Api::Vm1::SerialsController < Api::Vm1::ApplicationController
 
   # /serials/getData
   def get_data
-    begin
-
+    #begin
       data = {
         topSerials: Serial.fetch_top_watched_serials(limit: limit).map {|s| s&.format(mode: 'compact')}.uniq,
         recentlyWatched:  Serial.fetch_recent_watched_serials(limit: limit).map {|s| s&.format(mode: 'compact')}.uniq,
@@ -17,9 +16,9 @@ class Api::Vm1::SerialsController < Api::Vm1::ApplicationController
         genres: Serial.collect_genres_data
       }
       api_response = {code: "0", status: "Success", data: data}
-    rescue Exception => e
-      api_response = {code: "-1", status: "Error", message: e.message}
-    end
+    #rescue Exception => e
+    #  api_response = {code: "-1", status: "Error", message: e.message}
+    #end
     render json: api_response
   end
 
@@ -53,18 +52,7 @@ class Api::Vm1::SerialsController < Api::Vm1::ApplicationController
   # /serials/myList
   def my_list
     begin
-      data = []
-      valid_user = api_user.try(:check_login) || false
-      fav_serials_ids  = []
-      raise 'User not found or not logged in' unless valid_user
-      api_user.favorite_episodes.limit(limit).offset(params[:skip].to_i).each do |ep|
-         fav_serials_ids << ep.season&.serial&.id if ep.kind == 'episode'
-      end
-      p fav_serials_ids
-      fav_serials = Serial.where("id in (:ids)", ids: fav_serials_ids.uniq)
-      fav_serials.each do |serial|
-        data << serial.format(mode: 'compact')
-      end
+      data = api_user.liked_serials.limit(limit).offset(params[:skip].to_i).uniq.map {|s| s&.format(mode: 'compact')}
       api_response =  {:code => "0", :status => "Success", data: data}
     rescue Exception => e
       api_response = {:code => "-1",:status => "Error",:message => e.message}
@@ -133,7 +121,7 @@ class Api::Vm1::SerialsController < Api::Vm1::ApplicationController
 
 
   # /serials/getDataForRecent
-  # хоча б один фільм
+  # at least one episode
   def get_data_for_recent
     begin
       data = []
@@ -152,12 +140,11 @@ class Api::Vm1::SerialsController < Api::Vm1::ApplicationController
   # /serials/getEpisodeDetails
   def get_episode_details
     begin
-      #valid_user = api_user.try(:check_login) || false
       episode = Episode.find(params[:episode_id])
       data = {
         serial: episode.season.serial.format(mode: 'compact'),
         selected_episode: episode.format(mode: 'full'),
-        next_episodes: episode.next&.map {|ep| ep.format('full')}
+        next_episodes: episode.next&.map {|ep| ep.format(mode: 'full')}
       } 
       api_response =  {:code => "0", :status => "Success", data: data}
     rescue Exception => e

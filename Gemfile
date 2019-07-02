@@ -36,7 +36,11 @@ gem 'jquery_mask_rails'
 gem 'lightbox-bootstrap-rails', '~> 5.1', '>= 5.1.0.1'
 
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
+#gem 'uglifier', '>= 1.3.0'
+
+gem 'uglifier', github: 'skudryk/uglifier'
+
+
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
@@ -92,11 +96,14 @@ gem 'omniauth-twitter'
 #for shorten url and tracking
 gem 'bitly'
 
-# For creating pretty URL’s and work with human-friendly strings as if they were numeric ids for ActiveRecord models.
+# For creating pretty URLâ€™s and work with human-friendly strings as if they were numeric ids for ActiveRecord models.
 gem 'friendly_id', '~> 5.2.3'
 
 #valiation for phone number
 gem 'phony_rails'
+
+# wizard for controller
+gem 'wicked'
 
 #sidekiq
 gem 'sidekiq', '5.1.3'

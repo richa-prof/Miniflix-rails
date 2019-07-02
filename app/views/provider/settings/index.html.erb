@@ -1,0 +1,113 @@
+<section class="content settings-tab page-container pl40 pr40">
+
+<h3 class="provider-page-title">Settings</h3>
+
+<div class="settings-menu provider-settings-menu">
+<ul class="nav nav-pills">
+  <li class="nav-item active">
+    <a href="#profile_tab" data-turbolinks="false" class="nav-link active">Profile</a>
+  </li>
+  <li class="nav-item">
+    <a href="#password_tab" data-turbolinks="false" class="nav-link">Password</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#collection_tab" data-turbolinks="false">Collection</a>
+  </li>
+</ul>
+</div>
+<div class="tab-content mt10 p20 provider-settings-tab-content" id="myTabContent">
+
+  <div class="tab-pane active" id="profile_tab" role="tabpanel" aria-labelledby="profile-tab">
+ 
+    <div class="tab-content-wrapper">
+      <div class="avatar-wrapper-2">
+        <div><%= image_tag(current_user&.profile_image_url, alt: "User Image", class: "js-avatar user-image-2") %></div>
+      </div>
+      <div id="avatar_change_link" class="avatar-change-link"><a onclick="$('#avatar_field').click();">Change photo</a></div>
+
+      <%= form_with model: current_user, scope: 'provider', url: provider_settings_path + '/' + current_user.id.to_s, method: :put do |f| %>
+        <%#= devise_error_messages! %>
+
+        <%= f.hidden_field :category, value: 'content_provider' %>
+        <%= f.hidden_field :id %>
+
+        <%= f.file_field :image, id:"avatar_field", style: "display: none" %>
+
+        <section class="settings-fields">
+          <div class="field form-input-container">
+            <label for="name">Name</label>
+            <%= f.text_field :name, autofocus: true, id: "name", autocomplete: "name", placeholder: ' Enter your name', required: true %>
+          </div>
+
+          <div class="field form-input-container">
+            <label for="email">Email</label>
+            <%= f.email_field :email, autocomplete: "email", id: "email", placeholder: ' Enter e-mail', required: true %>
+          </div>
+
+          <div class="field form-input-container mb35">
+            <label for="phone-number">Phone number</label>
+            <%= f.text_field :phone_number, autocomplete: "phone", id: "phone-number", placeholder: ' Specify phone number' %>
+          </div>
+
+          <div class="field no-padding">
+            <%= f.submit "Save",  data: { "disable-with": "Saving..." }, class: 'btn btn-flat btn-black btn-block custom-black-btn' %>
+          </div>
+        </section>
+
+        <span class="errors help-block"><ul></ul></span>
+      <% end %>
+    </div>
+  </div>
+
+
+  <div class="tab-pane" id="password_tab" role="tabpanel" aria-labelledby="password-tab">
+    <div class="tab-content-wrapper">
+      <%= form_with model: current_user, scope: 'provider', url: provider_settings_path + '/' + current_user.id.to_s, method: :put do |f| %>
+        <section>
+          <div class="field form-input-container">
+            <label for="current-password">Current Password</label>
+            <%= f.password_field :current_password, autocomplete: "off", id: "current-password", placeholder: ' Current password', required: true  %>
+          </div>
+          <div class="field form-input-container">
+            <% if @minimum_password_length %>
+            <em>(<%= @minimum_password_length %> characters minimum)</em>
+            <% end %>
+            <label for="new-password">New Password</label>
+            <%= f.password_field :password, autocomplete: "off", id: "new-password", placeholder: ' New password', required: true  %>
+          </div>
+          <div class="field form-input-container mb35">
+            <label for="confirm-password">Confirm New Password</label>
+            <%= f.password_field :password_confirmation, autocomplete: "off", id: "confirm-password", placeholder: ' Confirm new password', required: true  %>
+          </div>
+          <div class="field no-padding">
+            <%= f.submit "Save", data: { "disable-with": "Saving..." }, class: 'btn btn-flat btn-black btn-block custom-black-btn' %>
+          </div>
+        </section>
+        <span class="errors help-block"><ul></ul></span>
+      <% end %>
+    </div>
+  </div>
+  
+  <div class="tab-pane" id="collection_tab" role="tabpanel" aria-labelledby="collection-tab">
+
+      <div class="row pt20">
+
+        <div class="col-lg-4 col-xs-12 collection-container">
+          <div class="col-lg-4 col-xs-12">
+            <div class="circle">
+                <div><span id="general_rental_price">95</span>%</div>
+            </div>            
+          </div>
+          <div class="col-lg-8 col-xs-12">
+            <h3>Your rental option</h3>
+            <strong>you take home 95% we take 5%</strong>
+          </div>
+        </div>
+      </div>
+
+
+  </div>
+</div>
+
+</section>
+

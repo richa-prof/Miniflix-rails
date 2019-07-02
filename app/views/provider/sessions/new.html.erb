@@ -1,0 +1,57 @@
+<div class="login-box">
+
+  <div class="login-box-body">
+    <div class="login-logo mb50">
+      <div><%= image_tag('logo-black.png') %></div>
+    </div>
+    <h4 class="login-box-msg mb35">Sign In</h4>
+    <%= form_for(resource, as: resource_name, url: provider_user_session_path) do |f| %>
+      <%= f.hidden_field :category, value: 'content_provider' %>
+      <% if !flash[:error].blank? %>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="alert alert-danger alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              <%= flash[:error] %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <div class="form-group has-feedback form-input-container mb35">
+        <label for="provider_user_email">Email</label>
+        <%= f.email_field :email, class: "form-control", placeholder: t('placeholder.user.email'), required: true, tabindex: 1 %>
+      </div>
+      <div class="form-group has-feedback form-input-container">
+        <label for="provider_user_password">Password</label>
+        <%= link_to("Forgot Password", new_provider_user_password_path, id:"forgot_password", class: "forgot-password") %>
+        <div class="password-icon js-invisible"><%= image_tag('provider/eye-visible.svg', class: 'hidden js-eye-visible') %><%= image_tag('provider/eye-invisible.svg', class: 'js-eye-invisible') %></div>
+        <%= f.password_field :password, class: "form-control password-input", placeholder: t('placeholder.user.password'), required: true, tabindex: 2 %>
+      </div>
+      <div class="row">
+        <!-- /.col -->
+        <div class="col-xs-12">
+          <button type="submit" class="btn btn-flat btn-black pull-right sign-in-btn">
+            <%= t('links.sign_in') %>
+          </button>
+          <!-- <div class="checkbox icheck">
+            <label> -->
+              <!-- <input type="checkbox"> Remember Me -->
+            <!-- </label>
+          </div> -->
+          <%# <br/> %>
+
+          <%# Link to terms and privacy %>
+          <p class="privacy-warning">By clicking "Confirm" I agree to Miniflix's <br /><a href="">Terms of Service and Privacy Policy</a>.</p>
+
+          <div class="mt20">
+            <%= link_to t('links.register'), new_provider_user_registration_path %><br />
+            <%= link_to 'Sign In as Marketing Staff', new_marketing_staff_user_session_path %> <br/>
+            <%= link_to 'Sign In as Admin', new_admin_user_session_path %>
+          </div>
+        </div>
+        <!-- /.col -->
+      </div>
+    <% end %>
+  </div>
+  <!-- /.login-box-body -->
+</div>

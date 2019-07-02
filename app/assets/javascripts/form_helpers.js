@@ -1,5 +1,7 @@
 // Reference: http://developmentmode.wordpress.com/2011/05/09/defining-custom-functions-on-jquery/
-(function($) {
+
+var initValidators = function() {
+
   fileFields = function() {
     return $(".uploadfile-field .form-control");
   };
@@ -16,12 +18,30 @@
     });
   };
 
+//  only for provider UI 
+  if (window.location.pathname.indexOf('/provider/') > -1) {
+    window.previewImageForInput = function(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(ev) {
+          var wrapper = $(input).parent().find('img');
+          wrapper.attr('src', ev.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+  }
+
   bindChangeEventOnMovieThumbnailFileFields = function() {
     $(".movie-thumbnail-file-field")
       .off("change")
       .on("change", function(event) {
         var fileFieldId = $(this).attr("id");
         validFile(fileFieldId);
+        if (window.location.pathname.indexOf('/provider/') > -1) {
+          previewImageForInput(this); 
+        }
+        return false;
       });
   };
 
@@ -31,6 +51,7 @@
       .on("click", function(event) {
         var targetObj = $(this).siblings(".movie-thumbnail-file-field");
         targetObj.click();
+        return false;
       });
   };
 
@@ -135,7 +156,7 @@
   };
 
   adminMovieEditForm = function() {
-    return $("#frm_admin_movie.edit_movie_frm");
+    return $(".edit_movie_frm");
   };
 
   adminMovieFormValidationRules = function() {
@@ -233,7 +254,6 @@
 
   applyValidationToAdminMovieEditForm = function() {
     var formObject = adminMovieEditForm();
-
     formObject.validate({
       rules: adminMovieFormValidationRules(),
       messages: adminMovieFormValidationMessages(),
@@ -295,11 +315,7 @@
       return true;
     });
   };
-})(jQuery);
 
-var ready;
-
-ready = function() {
   enableDatePicker();
   enableICheckToCheckboxes();
   enableMaskToVideoDurationField();
@@ -334,7 +350,9 @@ ready = function() {
   if (adminMovieEditForm().length) {
     applyValidationToAdminMovieEditForm();
   }
+
 };
 
-$(document).ready(ready);
-$(document).on("turbolinks:load", ready);
+
+// $(document).ready(ready);
+$(document).on("ready turbolinks:load", initValidators);

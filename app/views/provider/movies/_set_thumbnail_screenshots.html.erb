@@ -1,0 +1,31 @@
+<% thumbnail = movie.movie_thumbnail %>
+
+<label>
+  <%= t('label.movie.upload_movie_thumbnails') %>
+</label>
+
+<div class="row">
+
+  <% [:thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot].each do |thumb| %>
+    <div class="col-md-4 col-xs-12">
+      <div class="fileupload fileupload-new" data-provides="fileupload">
+
+        <%= link_to("javascript:void(0);", class: 'movie-thumbnail-file-field-wrapper') do %>
+          <div class="fileupload-new thumbnail">
+            <%= render_thumbnail_image_for( is_edit_mode,
+                                            thumb.to_s,
+                                            thumbnail.try(thumb) ) %>
+          </div>
+          <div class="fileupload-preview fileupload-exists thumbnail"></div>
+        <% end %>
+
+        <%= thumbnail_fields.file_field(thumb,
+                                         class: 'default movie-thumbnail-file-field',
+                                         id: thumb.to_s,
+                                         accept: "image/*" ) %>
+
+        <label id="<%= thumb.to_s.gsub('screenshot', 'error') %>" class="cust_error" style="color: red;"></label>
+      </div>
+    </div>
+  <% end %>
+</div>

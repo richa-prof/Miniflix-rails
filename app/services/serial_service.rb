@@ -5,7 +5,7 @@ class SerialService
 
   def  call
     ActiveRecord::Base.transaction do
-      create_seasons(@serial)
+      check_seasons
     end
   end
 

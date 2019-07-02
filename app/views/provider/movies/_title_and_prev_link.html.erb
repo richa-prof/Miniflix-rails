@@ -1,0 +1,19 @@
+<% hide_next_link = !@provider_movie.persisted? %>
+<% hide_prev_link ||= false %>
+
+<h3 class="provider-title provider-upload-title"> 
+  <strong>
+    <% unless hide_prev_link %>
+      <a class="previous-stage" href="<%= previous_wizard_path(slug: @provider_movie.slug) %>" title="Go to previous step">
+        <%= image_tag('provider/back.svg', alt: 'back icon', class: "icon arrow-back")  %>
+      </a>
+    <% end %>
+    <span class="pl100"><%= action_name == 'show' ? 'Add' : 'Edit' %> Movie</span>
+    <% unless hide_next_link %>
+      <% url = (request.url.include?('/edit?slug=')) ? "#{provider_movies_path}/add_video?slug=#{@provider_movie.slug}" : next_wizard_path(slug: @provider_movie.slug) %>
+      <a class="next-stage" href="<%= url %>" title="Jump to next step">
+        <%= image_tag('provider/back.svg', alt: 'next icon', class: "icon arrow-next")  %>
+      </a>
+    <% end %>
+  </strong>
+</h3>

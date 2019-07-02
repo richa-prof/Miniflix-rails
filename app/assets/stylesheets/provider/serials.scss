@@ -1,0 +1,245 @@
+a#add_new_episode {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a#add_new_episode:hover {
+  text-decoration: none;
+  font-weight: 900;
+}
+
+a.episode-control {
+  cursor: pointer;
+}
+
+.provider-section {
+  padding: 0;
+  padding-left: 40px;
+  padding-right: 40px;
+  margin-bottom: 100px;
+
+  & > div {
+    padding-top: 0;
+  }
+
+  .box-body {
+    padding: 0;
+  }
+
+  .table-wrapper {
+    width: 100%;
+    /* overflow: auto; */
+    margin-bottom: 20px;
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.07);
+    border-radius: 2px;
+    margin-top: 0;
+  }
+
+  .table {
+    min-width: 975px;
+    margin-bottom: 0;
+    background-color: white;
+    table-layout: fixed;
+
+    th,
+    td {
+      vertical-align: middle;
+      border-bottom: 1px solid #e0e0e0;
+
+      &:first-child {
+        padding-left: 20px;
+      }
+    }
+
+    th {
+      padding-top: 15px;
+      padding-bottom: 15px;
+      font-size: 17px;
+      width: 100%;
+
+      &:last-child {
+        width: 58px;
+      }
+    }
+
+    td {
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      &:last-child {
+        overflow: unset;
+      }
+    }
+
+    td .dropdown {
+      .dropdown-toggle {
+        &:active {
+          box-shadow: none;
+        }
+      }
+
+      .dropdown-menu {
+        width: 184px;
+        padding: 5px 0;
+        box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+        border-radius: 2px;
+        border: none;
+
+        a {
+          border: none;
+          padding: 8px 15px 6px 15px;
+          font-size: 14px;
+          color: #666666;
+          text-align: left;
+          width: 100%;
+
+          &:hover {
+            text-decoration: none;
+            background-color: #f5f5f5;
+          }
+        }
+      }
+    }
+
+    .rent-price-th,
+    .rent-price-td {
+      text-align: right;
+      padding-right: 3%;
+    }
+  }
+
+  .search-filter-container {
+    padding-left: 0;
+    padding-right: 0;
+    margin-bottom: 20px;
+
+    input.search-input {
+      width: 100%;
+      border-radius: 2px;
+      background-color: #f0f0f0;
+      padding-left: 42px !important;
+    }
+
+    .upload-btn {
+      border-radius: 2px;
+
+      &:active {
+        color: white;
+      }
+    }
+
+    div.search-container {
+      & > .search-icon {
+        position: absolute;
+        top: 50%;
+        left: 23px;
+        margin-top: -9px;
+        width: 18px;
+      }
+    }
+
+    div.filters-container {
+      padding: 0;
+      padding-top: 14px;
+
+      & > div:last-child {
+        margin-right: 0;
+      }
+
+      & > div {
+        width: auto;
+        margin-right: 60px;
+      }
+
+      .sort-links {
+        font-size: 16px;
+        letter-spacing: 0.5px;
+        color: black;
+        display: flex;
+        flex-shrink: 0;
+        cursor: pointer;
+        white-space: nowrap;
+
+        & > strong {
+          font-weight: 400;
+        }
+
+        .icon-arrow {
+          display: block;
+          margin-left: 5px;
+          margin-top: -1px;
+
+          &.fa-sort-up {
+            margin-top: 6px;
+          }
+        }
+      }
+    }
+
+    a.custom-black-btn {
+      height: auto;
+      margin-bottom: 0;
+    }
+  }
+
+  .custom-row {
+    display: flex;
+
+    & > div {
+      /* max-width: 300px; */
+      width: 100%;
+      box-sizing: content-box;
+
+      &:first-child {
+        width: 100%;
+        max-width: unset;
+        display: flex;
+        flex-wrap: nowrap;
+      }
+
+      &:last-child {
+        /* max-width: 124px; */
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .provider-section {
+    .custom-row {
+      flex-direction: column;
+
+      & > div {
+        max-width: unset;
+        width: 100%;
+      }
+    }
+
+    .search-filter-container {
+      div.filters-container {
+        padding-top: 0;
+        padding-left: 15px;
+      }
+
+      div.filters-container > div {
+        padding-left: 0;
+        margin-bottom: 15px;
+        width: auto;
+      }
+
+      div.filters-container > div:last-child {
+        margin-bottom: 15px;
+      }
+
+      .search-container {
+        margin-bottom: 15px;
+        max-width: 300px;
+      }
+    }
+  }
+}
+
+.js-added-episode {
+  min-height: 40px;
+}

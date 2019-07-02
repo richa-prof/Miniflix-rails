@@ -30,8 +30,8 @@ class MoviesUploader < ApplicationController
 
   on_begin do |upload, session|
     # Code to be evaluated when upload begins.
-    puts "on_begin upload ---> #{upload.to_json}"
-    puts "on_begin session ---> #{session.to_json}"
+    puts "on_begin , upload ---> #{upload.to_json}"
+    puts "on_begin , session ---> #{session.to_json}"
   end
 
   # See above comment. Called when the upload has successfully completed
@@ -41,23 +41,24 @@ class MoviesUploader < ApplicationController
 
   on_complete do |upload, session|
     # Code to be evaluated when upload completes   
-    puts "on_complete upload ---> #{upload.to_json}"
-    puts "on_complete session ---> #{session.to_json}"  
+    puts "on_complete , upload ---> #{upload.to_json}"
+    puts "on_complete , session ---> #{session.to_json}"  
     # film_video = "https://d1jqh0kfebho7s.cloudfront.net/"+upload.key
+
     puts "-------------------"
     upload_location = upload.location
     file_type = MIME::Types.type_for(upload_location).first.content_type.split("/").last rescue nil
 
-    movie_klass = session[:movie_kind].humanize.constantize
-    puts "saving video as #{session[:movie_kind]}"
-    @admin_movie = movie_klass.new( s3_multipart_upload_id: upload.id,
-                              uploader: upload.uploader,
-                              film_video: upload_location,
-                              name: upload.name,
-                              video_size: upload.size,
-                              video_format: file_type )
+    puts "MovieUploader, saving video as Movie object"
 
-    @admin_movie.season_id = session[:episode_season_id] if session[:movie_kind] == 'episode'
+    @admin_movie =  Movie.find_by(id: session[:current_video_id]) || Movie.new
+    @admin_movie.update(
+      s3_multipart_upload_id: upload.id,
+      uploader: upload.uploader,
+      film_video: upload_location,
+      video_size: upload.size,
+      video_format: file_type
+    )  #name: upload.name,
     @admin_movie.build_movie_thumbnail
     @admin_movie.save(validate: false)
   end

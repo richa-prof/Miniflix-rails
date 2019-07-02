@@ -1,0 +1,15 @@
+  <div class="form-group form-input-container">
+      <label>Season</label>
+      <select class="form-control valid" name="episode[season_id]" 
+              aria-required="true" aria-invalid="false"
+              onchange="$('#season_errors').css('display', this.value.length ? 'none' : 'block');">
+          <option value selected>Choose Season</option>
+          <%= serial.seasons.each do |season| %>
+            <option value="<%= season.id %>"><%= season.season_number %></option>
+          <% end %>
+      </select>
+      <div class="errors-container" id="season_errors" style="display: none">
+          <p>Please, choose the season</p>
+      </div>
+  </div>
+

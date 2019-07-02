@@ -23,7 +23,8 @@ class ImageUploader < CarrierWave::Uploader::Base
 
     dir_path = ActionController::Base.helpers.asset_path("fallback/" + [version_name, "default_user_image.png"].compact.join('_'))
 
-    "#{ENV['RAILS_HOST']}/#{dir_path}"
+    #"#{ENV['RAILS_HOST']}/#{dir_path}"
+    dir_path
   end
 
   # Process files as they are uploaded:

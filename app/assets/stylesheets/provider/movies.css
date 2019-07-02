@@ -1,0 +1,61 @@
+/*
+  Place all the styles related to the matching controller here.
+  They will automatically be included in application.css.
+*/
+
+.padding-zero {
+  padding: 0px;
+}
+
+.margin-btm-zero {
+  margin-bottom: 0px;
+}
+
+.movie-thumbnail-file-field {
+  height: 0px !important;
+}
+
+.movie-thumbnail-file-field-wrapper .fileupload-new.thumbnail {
+  width: 200px;
+  height: 150px;
+}
+
+.fileupload-preview.fileupload-exists.thumbnail {
+  max-width: 200px;
+  max-height: 150px;
+  line-height: 20px;
+}
+
+.movie-watch-download-link {
+  width: 30%;
+}
+
+.movie-block-box-primary {
+  border-top-width: 0px;
+  margin-bottom: 5px;
+}
+
+.movie-block-box-header {
+  height: 82px;
+}
+
+.movie-description-box {
+  border-top-width: 0px;
+  margin-bottom: 0px;
+}
+
+.upload-trailer-block .trailer-upload-box {
+  border: none;
+}
+
+.upload-trailer-block .trailer-upload-box > .box-body {
+  padding: 0;
+}
+
+.movie-block-box-primary .jwplayer {
+    margin: 2px auto 10px;
+}
+
+.movie-block-box-primary h3.box-title.text-blue {
+    margin-bottom: 20px;
+}

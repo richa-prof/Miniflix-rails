@@ -1,0 +1,205 @@
+<!-- Content Header (Page header) -->
+
+ <div id="err-player"></div>
+
+<section class="content-header">
+  <h1>
+    <%= t('heading.serie') %>
+  </h1>
+  <ol class="breadcrumb">
+    <%= link_to admin_serials_path, method: :get do %>
+      <i class="fa fa-fw fa-file-movie-o"></i> <span><%= t('heading.serie') %></span>
+    <% end %>
+    / <%= @admin_serial.title %>
+    <li>  </li>
+    <li class="active"><%= t('heading.show') %></li>
+  </ol>
+</section>
+
+<% serial_genre = @admin_serial.genre %>
+<% not_available = t('label.not_available') %>
+
+<!-- Main content -->
+<section class="content-for-provider">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <%= render( partial: 'shared/flash_notification', locals: { notice: notice } ) %>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div class= "player hide">
+            <div id="flim_video">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-2 col-md-1 col-sm-12"></div>
+            <div class="col-lg-8 col-md-10 col-sm-12">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                      <h2 class="box-title text-blue">
+                        <%= @admin_serial.title || not_available %>
+                      </h2>
+                      <p class="margin-btm-zero">
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="box-body">
+                  <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+
+                      <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                          <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                          <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>
+                          <li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>
+                        </ol>
+                        <% if @admin_serial.serial_thumbnail %>
+                          <div class="carousel-inner">
+                            <% 3.times do |index| %>
+                              <% screenshot = @admin_serial.serial_thumbnail.method("serial_screenshot_#{index+1}".to_sym).call %>
+                              <div class="item <%= 'active' if index.zero? %>">
+                                <%= image_tag(screenshot&.url&.to_s, class: "movie_thumbnail")  if screenshot&.url  %>
+                                <div class="carousel-caption">
+                                </div>
+                              </div>
+                            <% end %>
+                          </div>
+                          <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                            <span class="fa fa-angle-left"></span>
+                          </a>
+                          <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                            <span class="fa fa-angle-right"></span>
+                          </a>
+                        <% end %>
+                      </div>
+
+
+
+
+
+
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                      <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 padding-zero">
+                          <div class='box box-primary movie-block-box-primary'>
+                            <div class="box-header with-border text-center movie-block-box-header">
+                              <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                  <h3 class="box-title text-blue">
+                                    <%= t('title.serials.genre') %>
+                                  </h3>
+
+                                  <p class="margin-btm-zero"><%= serial_genre.try(:name) || not_available %></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 padding-zero">
+                          <div class="box box-primary movie-block-box-primary">
+                            <div class="box-header with-border text-center movie-block-box-header">
+                              <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                  <h3 class="box-title text-blue">
+                                    <%= t('title.movie.directed_by') %>
+                                  </h3>
+                                  <p class="margin-btm-zero"><%= @admin_serial.directed_by || not_available %></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 padding-zero">
+                          <div class="box box-primary movie-block-box-primary">
+                            <div class="box-header with-border text-center movie-block-box-header">
+                              <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                  <h3 class="box-title text-blue">
+                                    <%= t('title.movie.released_on') %>
+                                  </h3>
+                                  <p class="margin-btm-zero"><%= formatted_released_date_for_serial(@admin_serial) %></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding-left: 0px;">
+                          <div class="box box-primary movie-block-box-primary">
+                            <div class="box-header with-border text-center movie-block-box-header">
+                              <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                  <h3 class="box-title text-blue">
+                                    <%= t('title.movie.stars_cast') %>
+                                  </h3>
+                                  <p class="star_cast"><%= @admin_serial.star_cast || not_available  %></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div class="box box-primary movie-block-box-primary">
+                            <div class="box-header with-border text-center">
+                              <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                   <% @admin_serial.seasons.each do |season| %>
+                                      <hr />
+                                      <div>
+                                        <h3>Season <%= season.season_number %></h3>
+                                        <div>
+                                        <% season.episodes.each_with_index do |episode, index| %>
+                                          <%= render( partial: 'admin/serials/movie_player', locals: { movie: episode, counter: index + 1 } ) %>
+                                        <% end %>
+                                        </div>
+                                      </div>
+                                    <% end %>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div class="box box-primary movie-description-box">
+                            <div class="box-header with-border">
+                              <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                  <h3 class="box-title text-blue">
+                                    <%= t('title.serials.description') %>
+                                  </h3>
+                                  <p class="margin-btm-zero"><%= @admin_serial.description %></p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-1 col-sm-12"></div>
+          </div>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+
+</section>
+<!-- /.content -->
+

@@ -1,0 +1,122 @@
+.navbar-provider {
+  .sys-message {
+    padding-top: 10px;
+    width: 85%;
+    div {
+      text-align: center;
+      padding-left: 16%;
+    }
+  }
+
+  .success,
+  .notice {
+    color: green;
+  }
+  .error,
+  .danger {
+    color: orangered;
+  }
+}
+
+.main-header {
+  border-bottom: 2px solid lightgray;
+  .navbar-provider {
+    margin-left: 0;
+  }
+}
+
+.provider-main-header {
+  border-bottom: none;
+  -moz-box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.05);
+  padding-right: 40px;
+  background-color: white;
+
+  .nav .open > a,
+  .nav .open > a:hover,
+  .nav .open > a:focus {
+    background: white;
+    border-color: transparent;
+  }
+
+  // max-width can be changed appropriate to
+  // .navbar-provider .sys-message width;
+  .navbar-custom-menu {
+    max-width: 15%;
+
+    .navbar-nav,
+    .provider-user-menu {
+      width: 100%;
+    }
+  }
+}
+
+.provider-user-menu {
+  & > .dropdown-toggle {
+    padding: 7px 0;
+    padding-top: 8px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: black;
+
+    .user-image {
+      margin-top: 0;
+      margin-right: 15px;
+      width: 35px;
+      height: 35px;
+    }
+
+    & > span {
+      line-height: 16px;
+      padding-right: 18px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      position: relative;
+      font-family: "Heebo", sans-serif;
+      font-size: 16px;
+
+      &:after {
+        content: "";
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        border-bottom: 1px solid black;
+        border-right: 1px solid black;
+        right: 1px;
+        top: 50%;
+        transform: rotate(45deg) translate(-50%, -50%);
+      }
+    }
+
+    &:hover,
+    &:focus {
+      background-color: white;
+    }
+  }
+}
+
+.navbar-provider .navbar-nav > .provider-user-menu > .dropdown-menu {
+  width: 184px;
+  padding: 5px 0;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  border: none;
+
+  a {
+    border: none;
+    padding: 8px 15px 6px 15px;
+    font-size: 14px;
+    color: #666666;
+    text-align: left;
+  }
+}
+
+@media only screen and (max-width: 991px) {
+  .provider-main-header .navbar-provider .provider-user-menu {
+    & > .dropdown-toggle {
+      padding: 7px 0;
+    }
+  }
+}

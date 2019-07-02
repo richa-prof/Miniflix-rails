@@ -1,0 +1,255 @@
+<% released_date = @provider_serial.year ? @provider_serial.year.strftime("%m/%d/%Y") : "" %>
+<% form_css_class = is_edit_mode ? 'edit_movie_frm' : 'add_movie_details_frm' %>
+<% serial_thumbnail = @provider_serial.serial_thumbnail %>
+
+<div class="row">
+<div class="col-lg-8 col-xs-12">
+
+<%= form_for( [:provider, @provider_serial],
+              html: { id: "frm_provider_series",
+                      class: form_css_class,
+                      multipart: true } ) do |f| %>
+  <% if @provider_serial.errors.any? %>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-default">
+          <div class="box-body">
+            <% @provider_serial.errors.full_messages.each do |message| %>
+              <div class="callout callout-success">
+                <p><%= message %></p>
+              </div>
+            <% end %>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-12">
+      <!-- general form elements -->
+      <div class="">
+          <div class="">
+            <div class="form-group">
+              <%= f.label :series_title %>
+              <%= f.text_field( :title,
+                                class: "form-control",
+                                placeholder: t('placeholder.serial.title'),
+                                required: true,
+                                maxlength: 200 ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :directed_by %>
+              <%= f.text_field( :directed_by,
+                                class: "form-control",
+                                placeholder: t('placeholder.serial.directed_by'),
+                                maxlength: 200 ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :description %>
+              <%= f.text_area( :description,
+                               rows: 5,
+                               class: "form-control description-textarea",
+                               placeholder: t('placeholder.serial.description'),
+                               required: true,
+                                maxlength: 1000 ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :admin_genre_id %>
+              <%= f.collection_select( :admin_genre_id,
+                                       Genre.alfa_order,
+                                       :id,
+                                       :name,
+                                       { include_blank: t(:SelectGenre) },
+                                       class: "form-control",
+                                       required: true ) %>
+            </div>
+
+            <div class="form-group">
+              <%= fields_for :serial_thumbnail, @serial_thumbnail do |thumbnail_fields| %>
+                <div class="row">
+                  <div class="col-md-9 col-sm-12">
+                    <%= render( partial: 'set_serial_screenshots',
+                                locals: { serial: @provider_serial,
+                                          is_edit_mode: is_edit_mode,
+                                          thumbnail_fields: thumbnail_fields } ) %>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-9 col-sm-12">
+                    <%= render( partial: 'set_thumbnail_screenshots',
+                                locals: { serial: @provider_serial,
+                                          is_edit_mode: is_edit_mode,
+                                          thumbnail_fields: thumbnail_fields } ) %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :number_of_seasons %>
+              <%= f.number_field( :seasons_number,
+                                class: "form-control",
+                                minlength: 1,
+                                placeholder: t('placeholder.serial.seasons_number'),
+                                style: "width: 200px",
+                                required: true,
+                                maxlength: 3 ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :year %>
+              <%= f.text_field( 'year',
+                                class: "form-control date-picker",
+                                placeholder: t('placeholder.serial.year'),
+                                style: "width: 200px",
+                                required: true ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :language %>
+              <%= f.text_field( :language,
+                                class: "form-control",
+                                placeholder: t('placeholder.serial.language'),
+                                required: true,
+                                maxlength: 200 ) %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :star_cast %>
+              <%= f.text_field( :star_cast,
+                                class: "form-control",
+                                placeholder: t('placeholder.serial.star_cast'),
+                                maxlength: 200 ) %>
+            </div>
+
+          </div>
+
+          <div class="box-footer">
+          <%# Change button text to Continue %>
+            <%= f.submit nil, class: "btn btn-flat btn-black", style: "width: 25%" %>
+            <%= link_to t('links.cancel'), provider_serials_path, class: "ml10 btn btn-flat btn-black", style: "width: 25%" %>
+          </div>
+      </div>
+      <!-- /.box -->
+    </div>
+  </div>
+<% end %>
+
+</div>
+</div>
+
+<script type="text/javascript">
+
+  window.URL = window.URL || window.webkitURL;
+
+  function validate_thumbnails(form){
+    var fileInput = $("#thumbnail_screenshot");
+    var file = fileInput[0].files && fileInput[0].files[0];
+
+    var fileInput640 = $("#thumbnail_640_screenshot");
+    file640 = fileInput640[0].files && fileInput640[0].files[0];
+
+    var fileInput800 = $("#thumbnail_800_screenshot");
+    file800 = fileInput800[0].files && fileInput800[0].files[0];
+
+    var error = false;
+    if( file ) {
+      var img = new Image();
+      img.src = window.URL.createObjectURL( file );
+
+      img.onload = function() {
+        var width = img.naturalWidth,
+          height = img.naturalHeight;
+
+        window.URL.revokeObjectURL( img.src );
+
+        if( width == 330 && height == 360 ) {
+          // form.submit();
+        }
+        else {
+            //fail
+          $("#thumbnail_error").html("Please upload image with 330x360 size only").show();
+          error = true;
+        }
+      };
+    }
+    else { //No file was input or browser doesn't support client side reading
+      <% unless serial_thumbnail.present? %>
+        $("#thumbnail_error").html("Please upload thumbnail image").show();
+        error = true;
+      <% end %>
+    }
+
+    if( file640 ) {
+      var img640 = new Image();
+      img640.src = window.URL.createObjectURL( file640 );
+
+      img640.onload = function() {
+        var width = img640.naturalWidth,
+          height = img640.naturalHeight;
+
+        window.URL.revokeObjectURL( img640.src );
+
+        if( width == 600 && height == 300 ) {
+          // form.submit();
+        }
+        else {
+            //fail
+          console.log("invalid dimention==>",width,"--height-->",height)
+          $("#thumbnail_640_error").html("Please upload image with 600x300 size only").show();
+          error = true;
+        }
+      };
+    }
+    else { //No file was input or browser doesn't support client side reading
+      <% unless serial_thumbnail.present? %>
+        $("#thumbnail_640_error").html("Please upload thumbnail image").show();
+        error = true;
+      <% end %>
+    }
+
+    if( file800 ) {
+      var img800 = new Image();
+      img800.src = window.URL.createObjectURL( file800 );
+
+      img800.onload = function() {
+        var width = img800.naturalWidth,
+          height = img800.naturalHeight;
+
+        window.URL.revokeObjectURL( img800.src );
+
+        if( width == 800 && height == 400 ) {
+          // form.submit();
+        }
+        else {
+            //fail
+          console.log("invalid dimention==>",width,"--height-->",height)
+          $("#thumbnail_800_error").html("Please upload image with 800x400 size only").show();
+          error = true;
+        }
+      };
+    }
+    else { //No file was input or browser doesn't support client side reading
+      <% unless serial_thumbnail.present? %>
+        $("#thumbnail_800_error").html("Please upload thumbnail image").show();
+        error = true;
+      <% end %>
+    }
+
+    setTimeout(function() {
+      if (error){
+        console.log("Error in", error)
+        return false;
+      }else{
+        console.log("else", error)
+        form.submit();
+      }
+    },1000)
+  }
+</script>

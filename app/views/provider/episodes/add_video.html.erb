@@ -1,0 +1,99 @@
+<% movie = @episode %>
+
+<section class="content content-for-provider provider-upload-content">
+<div class="row js-provider-video-upload-wrapper">
+
+  <div class="col-lg-4 col-xs-12"></div>
+  <div class="col-lg-4 col-xs-12 main-content-container">
+
+    <div id="movie-id-container"
+         class="js-movie-paths"
+         style="display: none;" 
+         data-stage="add_episode"
+         data-movie-id="<%= @episode.id %>"
+         data-season-id="<%= @episode.season_id %>"
+         data-video-upload-success-path=""
+         data-trailer-upload-success-path="<%= save_uploaded_episode_trailer_provider_episodes_path %>" 
+         data-next-stage-path="<%= next_wizard_path(slug: @episode.slug) %>"
+         data-prev-stage-path="<%= previous_wizard_path(slug: @episode.slug) %>"
+         data-is-edit-mode="true"
+         data-select-season-url="<%= select_season_provider_serials_path %>"
+         data-redirect-path="<%= next_wizard_path(slug: @episode.slug) %>">
+    </div>
+
+
+    <div id="s3-input-bucket-name-container" style="display: none;" 
+         data-s3-input-bucket="<%= ENV['S3_INPUT_BUCKET'] %>"
+         data-kind="episode">
+    </div>
+
+    <div class="row custom-row">
+      <div class="col-md-12 js-videos">
+
+        <%= render partial: 'title_and_prev_link' %>
+
+        <div class="steps-section">
+          <div><h4>Upload video</h4></div>
+          <div>3/5 steps</div>
+        </div>
+
+
+
+        <div class="mt40 episodes mb20 clearfix">
+
+          <% @serial.episodes.each_with_index do |episode, idx| %>
+            <% next unless episode.film_video %>
+            <div class="js-added-episode js-video">
+              <div class="episode-name pl20 pull-left" >
+                <div>
+                  <span class="js-file-name" data-file-attached="true">
+                    <strong><%= (idx + 1).to_s %>. <%= episode.name %></strong>
+                  </span>
+                </div>
+              </div>
+              <div class="view-file-control pull-right">
+                <a class="episode-control" title="Expand" 
+                   onclick="$(this).parent().parent().find('.js-episode-player').toggle(); $(this).find('i').toggleClass('fa-angle-down');">
+                   <%#= image_tag('provider/plays.svg', alt: 'expand icon', class: "icon")  %><i class="fa fa-angle-right"></i>
+                </a>
+              </div>
+              <div class="clearfix"></div>
+              <div class="js-episode-player mt20 mb20 text-center" style="display: none; overflow: visible; margin-left: auto;">
+                <%= render( partial: 'video_player', locals: { movie: episode, counter: idx } ) %>
+              </div>
+            </div>
+          <% end %>
+
+        </div>
+
+        <div class="mt40">
+          <% new_episode = @episode %>
+          <%= form_with model: new_episode, scope: 'movie', url: provider_movies_path, method: :post, class: 'pt40', local: true, multipart: true do |f| %>
+            <div id="new_episodes_wrapper"></div>
+
+            <div class="add-new-episode-wrapper">
+              <a id="add_new_episode"  data-disable-with="Adding ..." class="js-add-episode"> + Add New Video</a>
+            </div>
+
+            <div class="form-footer custom-form-footer">
+              <input type="button" id="upload_videos" data-disable-with="Saving..." class="btn btn-flat btn-black custom-black-btn" value="Continue" />
+            </div>
+          <% end %>
+            
+        </div>
+      </div>
+
+      <div class="js-episode-template" style="display: none;">
+        <%= render( partial: 'upload_video', locals: { movie: new_episode } ) %>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="col-lg-4 col-xs-12"></div>
+
+</div>
+</section>
+
+

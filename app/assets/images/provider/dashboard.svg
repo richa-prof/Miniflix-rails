@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="19px" height="19px" viewBox="0 0 19 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53 (72520) - https://sketchapp.com -->
+    <title>ic/dashboard</title>
+    <desc>Created with Sketch.</desc>
+    <g id="ic/dashboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M2.1,6.5 C2.1,6.2790861 2.2790861,6.1 2.5,6.1 C2.7209139,6.1 2.9,6.2790861 2.9,6.5 L2.9,18 C2.9,18.2209139 2.7209139,18.4 2.5,18.4 C2.2790861,18.4 2.1,18.2209139 2.1,18 L2.1,6.5 Z" id="Line-5" fill="#FFFFFF" fill-rule="nonzero"></path>
+        <path d="M7.1,0.409090909 C7.1,0.188177009 7.2790861,0.00909090909 7.5,0.00909090909 C7.7209139,0.00909090909 7.9,0.188177009 7.9,0.409090909 L7.9,18 C7.9,18.2209139 7.7209139,18.4 7.5,18.4 C7.2790861,18.4 7.1,18.2209139 7.1,18 L7.1,0.409090909 Z" id="Line-5-Copy" fill="#FFFFFF" fill-rule="nonzero"></path>
+        <path d="M12.1,12.25 C12.1,12.0290861 12.2790861,11.85 12.5,11.85 C12.7209139,11.85 12.9,12.0290861 12.9,12.25 L12.9,18 C12.9,18.2209139 12.7209139,18.4 12.5,18.4 C12.2790861,18.4 12.1,18.2209139 12.1,18 L12.1,12.25 Z" id="Line-5-Copy-2" fill="#FFFFFF" fill-rule="nonzero"></path>
+        <path d="M17.1,5 C17.1,4.7790861 17.2790861,4.6 17.5,4.6 C17.7209139,4.6 17.9,4.7790861 17.9,5 L17.9,18 C17.9,18.2209139 17.7209139,18.4 17.5,18.4 C17.2790861,18.4 17.1,18.2209139 17.1,18 L17.1,5 Z" id="Line-5-Copy-3" fill="#FFFFFF" fill-rule="nonzero"></path>
+    </g>
+</svg>

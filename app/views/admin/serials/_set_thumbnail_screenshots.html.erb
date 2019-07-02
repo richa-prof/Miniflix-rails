@@ -1,4 +1,3 @@
-<%# Change to series %>
 <% thumbnail = @admin_serial.serial_thumbnail%>
 
 <label>
@@ -6,64 +5,28 @@
 </label>
 
 <div class="row">
-  <div class="col-md-3 col-sm-12">
-    <div class="fileupload fileupload-new" data-provides="fileupload">
+  <% [:thumbnail_screenshot, :thumbnail_640_screenshot, :thumbnail_800_screenshot].each do |thumb| %>
+    <div class="col-md-3 col-sm-12">
+      <div class="fileupload fileupload-new" data-provides="fileupload">
 
-      <%= link_to("javascript:void(0);", class: 'movie-thumbnail-file-field-wrapper') do %>
-        <div class="fileupload-new thumbnail">
-          <%= render_thumbnail_image_for( is_edit_mode,
-                                          'thumbnail_screenshot',
-                                          thumbnail.try(:thumbnail_screenshot) ) %>
-        </div>
-        <div class="fileupload-preview fileupload-exists thumbnail"></div>
-      <% end %>
+        <%= link_to("#", class: 'movie-thumbnail-file-field-wrapper') do %>
+          <div class="fileupload-new thumbnail">
+            <%= render_thumbnail_image_for_episode( is_edit_mode, thumb.to_s, thumbnail.try(thumb) ) %>
+          </div>
+          <div class="fileupload-preview fileupload-exists thumbnail"></div>
+        <% end %>
 
-      <%= thumbnail_fields.file_field( :thumbnail_screenshot,
-                                       class: 'default movie-thumbnail-file-field',
-                                       id: "thumbnail_screenshot",
-                                       accept: "image/*" ) %>
+        <%= thumbnail_fields.file_field(
+                thumb,
+                class: 'default movie-thumbnail-file-field',
+                id: thumb.to_s,
+                accept: "image/*"
+            ) %>
 
-      <label id="thumbnail_error" class="cust_error" style="color: red;"></label>
+        <label id="<%= thumb.to_s.gsub('screenshot', 'error') %>" class="cust_error" style="color: red;"></label>
+      </div>
     </div>
-  </div>
-
-  <div class="col-md-3 col-sm-12">
-    <div class="fileupload fileupload-new" data-provides="fileupload">
-      <%= link_to("javascript:void(0);", class: 'movie-thumbnail-file-field-wrapper') do %>
-        <div class="fileupload-new thumbnail">
-          <%= render_thumbnail_image_for( is_edit_mode,
-                                          'thumbnail_640_screenshot',
-                                          thumbnail.try(:thumbnail_640_screenshot) ) %>
-        </div>
-        <div class="fileupload-preview fileupload-exists thumbnail"></div>
-      <% end %>
-
-      <%= thumbnail_fields.file_field( :thumbnail_640_screenshot,
-                                       class: 'default movie-thumbnail-file-field',
-                                       id: "thumbnail_640_screenshot",
-                                       accept: "image/*" ) %>
-
-      <label id="thumbnail_640_error" class="cust_error" style="color: red;"></label>
-    </div>
-  </div>
-
-  <div class="col-md-3 col-sm-12">
-    <div class="fileupload fileupload-new" data-provides="fileupload">
-      <%= link_to("javascript:void(0);", class: 'movie-thumbnail-file-field-wrapper') do %>
-        <div class="fileupload-new thumbnail">
-          <%= render_thumbnail_image_for( is_edit_mode,
-                                          'thumbnail_800_screenshot',
-                                          thumbnail.try(:thumbnail_800_screenshot) ) %>
-        </div>
-        <div class="fileupload-preview fileupload-exists thumbnail"></div>
-      <% end %>
-
-      <%= thumbnail_fields.file_field( :thumbnail_800_screenshot,
-                                       class: 'default movie-thumbnail-file-field',
-                                       id: "thumbnail_800_screenshot",
-                                       accept: "image/*" ) %>
-
-      <label id="thumbnail_800_error" class="cust_error" style="color: red;"></label>
-    </div>
-  </div>
+  <% end %>
 </div>
+
+

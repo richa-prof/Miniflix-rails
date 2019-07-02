@@ -30,8 +30,27 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
 
+  activerecord:
+    attributes:
+      rate:
+        price: "Rent price"
+        entity: "Rent"
+    errors:
+      models:
+        movie:
+          attributes:
+            genre:
+              blank: "is required"
+              required: "not specified"
+        rate:
+          attributes:
+            price:
+              blank: "is required"
+            entity:
+              taken: "taken"
+              empty: "empty"
+              required: "must be specified"
   table:
     admin_side_users:
       user_name: User Name
@@ -140,6 +159,7 @@ en:
     serie: Serie
   title:
     miniflix_admin: Miniflix Admin
+    miniflix_content_provider: Miniflix Content Provider
     movie:
       released_on: Released [On]
       movie_story: "Movie Story :"
@@ -179,13 +199,22 @@ en:
     user_email_notification:
       successfully_updated: 'Email notifications settings have updated successfully.'
     movie:
-      successfully_created: 'Movie was successfully created.'
-      successfully_updated: 'Movie was successfully updated.'
-      successfully_deleted: 'Movie was successfully deleted.'
+      successfully_created: 'Movie has been successfully created.'
+      successfully_updated: 'Movie has been successfully updated.'
+      successfully_deleted: 'Movie has been successfully deleted.'
     serial:
-      successfully_created: 'Series were successfully created.'
-      successfully_updated: 'Series were successfully updated.'
-      successfully_deleted: 'Series were successfully deleted.'
+      successfully_created: 'Serie has been successfully created.'
+      successfully_updated: 'Serie has been successfully updated.'
+      successfully_deleted: 'Serie has been successfully deleted.'
+      screenshots_added: 'Screenshots has been successfully added'
+      thumbnails_added: 'Thumbnails has been successfully added'
+    episode:
+      successfully_created: 'Episode has been successfully created.'
+      successfully_updated: 'Episode has been successfully updated.'
+      successfully_deleted: 'Episode has been successfully deleted.'
+      screenshots_added: 'Screenshots has been successfully added for Episode'
+      thumbnails_added: 'Thumbnails has been successfully added for Episode'
+
     movie_caption:
       caption_file:
         successfully_created: 'Caption File successfully saved, Fill other detail for caption file.'

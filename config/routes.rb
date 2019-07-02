@@ -2,6 +2,49 @@ require 'sidekiq/web'
 require 'constraints/admin_subdomain_constraint'
 require 'constraints/api_subdomain_constraint'
 require 'constraints/blog_subdomain_constraint'
+require 'constraints/provider_subdomain_constraint'
+
+def provider_block
+  devise_for :users, as: :provider, controllers: {
+    sessions: 'provider/sessions',
+    password: 'provider/password'
+  }
+
+  get 'dashboard' => 'dashboard#index'
+  get 'get_monthly_revenue/:id' => 'dashboard#get_monthly_revenue', as: :get_monthly_revenue
+  get 'analytics' => 'analytics#index'
+
+  get 'dashboard' => 'dashboard#index'
+
+  resources :movies do
+    collection do
+      get :search
+      get 'upload_movie_trailer/:id' => "movies#upload_movie_trailer", as: :upload_movie_trailer
+      post 'save_uploaded_movie_trailer' => "movies#save_uploaded_movie_trailer", as: :save_uploaded_movie_trailer
+    end
+    resources :movie_captions, except: [:show]
+  end
+
+  resources :episodes do
+    collection do
+      get 'add_movie_details/:id' => "episodes#add_movie_details", as: :add_movie_details
+      get 'upload_movie_trailer/:id' => "episodes#upload_movie_trailer", as: :upload_movie_trailer
+      post 'save_uploaded_episode_trailer' => "episodes#save_uploaded_movie_trailer", as: :save_uploaded_episode_trailer
+    end
+    resources :movie_captions, except: [:show]
+  end
+
+  resources :serials do
+    collection do
+      get :search
+      post 'select_season' => "serials#select_season", as: :select_season
+      post 'save_uploaded_serial_trailer' => "serials#save_uploaded_serial_trailer", as: :save_uploaded_serial_trailer
+    end
+  end
+  resources :settings
+
+
+end
 
 Rails.application.routes.draw do
   mount S3Multipart::Engine => "/s3_multipart"
@@ -254,16 +297,24 @@ Rails.application.routes.draw do
       devise_for :users, as: :marketing_staff, controllers: {
         sessions: 'marketing_staff/sessions',
       }
-
       resources :genres, only: [:index, :show, :edit, :update] do
         collection do
           get 'check_genre_name/:id' => 'genres#check_genre_name', as: :check_genre_name
         end
       end
-
       resources :seo_metas
     end
+
+    namespace :provider do
+      provider_block
+    end
   end
+
+  # Starts routing for Provider subdomain
+  # constraints Constraints::ProviderSubdomainConstraint do
+  #   get '/' => 'provider/dashboard#index'
+  #   provider_block
+  # end
 
   # Starts routing for Blog Feature
   constraints Constraints::BlogSubdomainConstraint do
@@ -294,3 +345,4 @@ Rails.application.routes.draw do
     end
   end
 end
+

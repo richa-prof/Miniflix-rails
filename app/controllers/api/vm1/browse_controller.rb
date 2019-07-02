@@ -7,13 +7,13 @@ class Api::Vm1::BrowseController < Api::Vm1::ApplicationController
 
   # /browse/getData
   def get_data
-    begin
+    #begin
       top_serials = Serial.fetch_top_watched_serials(limit: limit).map {|s| s&.format(mode: 'compact')}.uniq
       top_movies = Movie.top_watched(limit: limit).map {|s| s&.format(mode: 'compact')}.uniq
       recent_serials = Serial.fetch_recent_watched_serials(limit: limit).map {|s| s&.format(mode: 'compact')}.uniq
-      recent_movies = Movie.recently_watched(limit: limit).map {|s| s&.format(mode: 'compact')}.uniq
+      recent_movies = Movie.recently_watched(limit: limit).map {|m| m&.format(mode: 'compact')}.uniq
       new_serials = Serial.fetch_new_serials(limit: limit).map {|s| s&.format(mode: 'compact')}.uniq
-      new_movies = Movie.new_entries(limit: limit).map {|s| s&.format(mode: 'compact')}.uniq
+      new_movies = Movie.new_entries(limit: limit).map {|m| m&.format(mode: 'compact')}.uniq
       genre_data = Serial.collect_genres_data(mode: 'with_movies')
       data = {
         top: top_serials + top_movies,
@@ -22,9 +22,9 @@ class Api::Vm1::BrowseController < Api::Vm1::ApplicationController
         genres: genre_data
       }
       api_response = {code: "0", status: "Success", data: data}
-    rescue Exception => e
-      api_response = {code: "-1", status: "Error", message: e.message}
-    end
+    #rescue Exception => e
+    #  api_response = {code: "-1", status: "Error", message: e.message}
+    #end
     render json: api_response
   end
 
@@ -55,7 +55,7 @@ class Api::Vm1::BrowseController < Api::Vm1::ApplicationController
   def get_data_for_new
     begin
       serials = Serial.fetch_new_serials(limit: limit, offset: params[:skip].to_i).uniq.map{|s| s.format(mode: 'compact')}
-      movies = Movie.new_entries.map{|m| m.format(mode: 'compact')}
+      movies = Movie.new_entries.offset(params[:skip].to_i).map{|m| m.format(mode: 'compact')}
       api_response =  {:code => "0", :status => "Success", data: serials + movies}
     rescue Exception => e
       api_response = {:code => "-1",:status => "Error",:message => e.message}
@@ -70,7 +70,7 @@ class Api::Vm1::BrowseController < Api::Vm1::ApplicationController
     begin
       data = []
       serials = Serial.fetch_recent_watched_serials(limit: limit, offset: params[:skip].to_i).uniq.map{|s| s.format(mode: 'compact')}
-      movies = Movie.recently_watched.map{|m| m.format(mode: 'compact')}
+      movies = Movie.recently_watched.offset(params[:skip].to_i).map{|m| m.format(mode: 'compact')}
       api_response =  {:code => "0", :status => "Success", data: serials + movies}
     rescue Exception => e
       api_response = {:code => "-1",:status => "Error",:message => e.message}

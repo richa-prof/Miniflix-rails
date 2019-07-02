@@ -17,6 +17,8 @@ module Miniflix
     # -- all .rb files in that directory are automatically loaded.
 
     #use sidekiq for active job
+    config.autoload_paths += Dir[Rails.root.join('app','uploaders','multipart')]
+
     config.active_job.queue_adapter = :sidekiq
 
     config.generators do |g|

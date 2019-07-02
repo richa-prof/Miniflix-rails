@@ -1,9 +1,11 @@
+<%= javascript_include_tag 'admin/series', 'data-turbolinks-track' => true %>
+
 <h3> Add New Episode</h3>
 
 <div class="form-group" style="width: 25%">
-    <select class="form-control valid" name="season_id" 
-            aria-required="true" aria-invalid="false"
-            onclick="return handleSeasonSelection(this);">
+    <select class="form-control valid" name="season_id"
+            id="season_id" aria-required="true" aria-invalid="false"
+            >
 
         <option value selected>Choose Season</option>
         <%= serial.seasons.each do |season| %>
@@ -18,22 +20,3 @@
     </div>
 </div>
 
-<script>
-
-var handleSeasonSelection = function(el) {
-  var link = $('#new_episode_link a');
-  var lhref = link.attr('href');
-  if (lhref.indexOf('season_id') < 0 ) {
-    link.attr('href', lhref + '&season_id=' + el.value);
-  }
-  if (el.value.length) {
-    $('#season_errors').hide();
-    $('#new_episode_link').show();
-  } else {
-    $('#season_errors').show();
-    $('#new_episode_link').hide();
-  }
-  return true;
-};
-
-</script>

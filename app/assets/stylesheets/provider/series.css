@@ -1,0 +1,81 @@
+.series-table .actions-td i {
+  cursor: pointer;
+}
+
+#tbl_admin_series {
+  max-width: 100% !important;
+}
+
+.box-subtitle, .add-series-text {
+  margin: 0;
+}
+
+.choose-series-section .content-container, .add-episode-content .content-container {
+  padding: 10px;
+}
+
+.choose-series-section .box-header, .add-episode-content .box-header {
+  padding: 10px 0;
+}
+
+.choose-series-section .form-group {
+  margin-bottom: 30px;
+}
+
+.create-series-section .form-group {
+  margin-bottom: 15px;
+}
+
+textarea.form-control.description-textarea {
+  resize: vertical;
+}
+
+.add-episode-content .movie-thumbnail-file-field {
+  visibility: hidden;
+}
+
+.add-series-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 30px;
+}
+
+.add-series-text {
+  margin-left: 13px;
+  font-weight: bold;
+}
+
+.errors-container {
+  margin: 7px 0;
+  color: red;
+}
+
+.errors-container p {
+  margin-bottom: 0;
+  font-size: 12px;
+}
+
+.season-tab {
+  background-color: #ccc;
+  border: none;
+  outline: 0;
+  margin-right: 5px;
+  padding: 5px 10px;
+}
+
+.season-tab:hover {
+  background-color: grey;
+}
+
+.season-tab.current-tab {
+  background-color: #616161;
+  color: white;
+}
+
+.season-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}

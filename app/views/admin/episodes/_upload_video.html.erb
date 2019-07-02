@@ -3,6 +3,11 @@
      data-kind="<%= kind %>">
 </div>
 
+<div class="js-movie-paths"
+     style="display: none;"
+     data-video-upload-success-path="/admin/movies/upload_movie_trailer/">
+</div>
+
 <div class="row">
   <div class="col-md-12">
     <div class="box box-primary">
@@ -30,7 +35,7 @@
           </div>
         </div>
           <%= multipart_uploader_form( input_name: 'video_file',
-                                       uploader: 'MoviesUploader',
+                                       uploader: 'EpisodesUploader',
                                        button_class: 'video-submit-button btn btn-primary m-t-15',
                                        button_text: 'Upload episode',
                                        types: ["video/*"],
