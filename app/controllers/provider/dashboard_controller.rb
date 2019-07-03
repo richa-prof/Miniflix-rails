@@ -8,11 +8,11 @@ class Provider::DashboardController < ApplicationController
     own_videos = current_user.own_movies.pluck(:id) + current_user.own_serials.map{|s| s.episodes.pluck(:id)}.flatten
     users_who_watched_videos = UserVideoLastStop.who_watched_videos(own_videos)
     @unique_month_wise = users_who_watched_videos.select("created_at").map{ |item| item.created_at.beginning_of_month }.uniq
-    @monthly_movies_cnt = current_user.own_movies.group("created_day").select("count(*) as movies_cnt,DATE_FORMAT(admin_movies.created_at,'%m') as created_day,admin_movies.created_at")
+    @monthly_movies_cnt = current_user.own_movies.group("created_at").select("count(*) as movies_cnt,DATE_FORMAT(admin_movies.created_at,'%m') as created_day,admin_movies.created_at")
     @total_income_of_current_month = UserPaymentTransaction.total_income_of_current_month_for_user(current_user)
 
     @m_months = []
-    @monthly_movies_cnt.each do |main| 
+    @monthly_movies_cnt.each do |main|
       m_month = [];
       m_month << main.created_at.strftime('%B')
       m_month << main.movies_cnt
