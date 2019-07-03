@@ -7,8 +7,8 @@
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
-server '52.33.20.12', user: 'deploy', roles: %w{app db web}
-set :deploy_to, "/data/apps/staging/miniflix-rails"
+server '54.203.7.74', user: 'ubuntu', roles: %w{app db web}
+set :deploy_to, "/var/www/staging/miniflix_rails"
 
 set :stage, "staging"
 set :whenever_environment, -> { fetch(:stage) }
@@ -46,10 +46,11 @@ set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 #
 # Global options
 # --------------
- set :ssh_options, {
-   keys: %w(~/.ssh/miniflix.pem),
-   forward_agent: false,
- }
+
+set :ssh_options, {
+    keys: %w(~/.ssh/id_rsa),
+    forward_agent: false
+}
 #
 # The server-based syntax can be used to override options:
 # ------------------------------------
