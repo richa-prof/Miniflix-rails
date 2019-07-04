@@ -4,7 +4,7 @@
     <div class="col-lg-4 col-xs-12"></div>
 
     <div class="col-lg-4 col-xs-12 main-content-container">
-   
+
       <%= render partial: 'title_and_prev_link', locals: {hide_prev_link: true} %>
 
       <div class="p20 mt10 form-container">
@@ -14,7 +14,7 @@
 
       <% f_method, url = !@provider_movie.persisted? ? [:post, provider_movies_path] : [:put, provider_movies_path + "/add_details?slug=#{@provider_movie.slug}"] %>
 
-      <%= form_with model: @provider_movie, scope: 'movie', url: url, method: f_method, class: 'mt40 upload-form' do |f| %>
+      <%= form_with model: @provider_movie, scope: 'movie', url: url, method: f_method, id: "frm_admin_movie", class: 'mt40 upload-form add_movie_details_frm' do |f| %>
 
         <% if @provider_movie.errors.any? %>
           <div class="row">
@@ -127,7 +127,7 @@
       </section>
 
       <span class="errors help-block"><ul></ul></span>
-        
+
     </div>
     <div class="col-lg-4 col-xs-12"></div>
   </div>
