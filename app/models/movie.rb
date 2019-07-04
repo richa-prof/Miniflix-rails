@@ -38,7 +38,7 @@ class Movie < ApplicationRecord
   has_one :movie_thumbnail, dependent: :destroy, foreign_key: "admin_movie_id", inverse_of: :movie
   has_one :movie_trailer, dependent: :destroy, foreign_key: "admin_movie_id"
   has_many :notifications, dependent: :destroy, foreign_key: "admin_movie_id"
-  
+
   has_many :user_filmlists, dependent: :destroy, foreign_key: "admin_movie_id"
   alias_method :favorite_for_users, :user_filmlists
 
@@ -56,7 +56,7 @@ class Movie < ApplicationRecord
 
   accepts_nested_attributes_for :movie_thumbnail
   accepts_nested_attributes_for :rate, allow_destroy: true
-  
+
   # CALLBACKS
   before_save :create_bitly_url, if: -> { slug_changed? }
   before_validation :fix_attrs
@@ -349,11 +349,11 @@ class Movie < ApplicationRecord
 
   def compact_response
     {
-      id: id, 
-      title: name.to_s, 
-      year: created_at.year.to_s, 
-      genre_data: { 
-        id: genre&.id, 
+      id: id,
+      title: name.to_s,
+      year: created_at.year.to_s,
+      genre_data: {
+        id: genre&.id,
         name: genre&.name.to_s
       },
       screenshot: screenshot_list,
@@ -365,8 +365,8 @@ class Movie < ApplicationRecord
   def short_response
     {
       id: id,
-      name: name.to_s, 
-      title: name, 
+      name: name.to_s,
+      title: name,
       description: description,
       language: language,
       video_duration: video_duration,
@@ -421,8 +421,9 @@ class Movie < ApplicationRecord
   end
 
   def fix_attrs
+    name = S3Multipart::Upload.find(s3_multipart_upload_id).name if s3_multipart_upload_id.present?
     self.slug ||= name.gsub(/[\W]/,'-').downcase
-    self.title ||= name
+    self.title ||= self.name
   end
 
   def movie_show_url
