@@ -1,5 +1,5 @@
 class Api::V1::UserSerializer < ActiveModel::Serializer
-  attributes :id, :name, :email, :provider, :registration_plan, :phone_number, :customer_id, :subscription_id, :cancelation_date, :receipt_data, :subscription_plan_status, :image, :sign_up_from, :cancelation_date, :payment_verified, :migrate_user, :valid_for_thankyou_page, :current_payment_method, :subscription_info
+  attributes :id, :name, :email, :provider, :registration_plan, :phone_number, :customer_id, :subscription_id, :cancelation_date, :receipt_data, :subscription_plan_status, :image, :sign_up_from, :cancelation_date, :payment_verified, :migrate_user, :valid_for_thankyou_page, :current_payment_method, :subscription_info, :film_school_users_role
 
   def image
     { staff_medium: { url: object.profile_image_url } }
@@ -43,5 +43,11 @@ class Api::V1::UserSerializer < ActiveModel::Serializer
 
   def price_rate_of_plan(plan_type)
     (plan_type == User.registration_plans['Monthly']) ? "$3.99 per month" : "$24 per year"
+  end
+
+  def film_school_users_role
+    if (object.registration_plan['FilmSchool'] && object.activate?)
+      object.organizations_users_infos.try(:take).try(:role) if object.organizations_users_infos.present?
+    end
   end
 end

@@ -257,6 +257,11 @@ Rails.application.routes.draw do
           get 'check_email' => 'free_members#check_email'
         end
       end
+      resources :organizations do
+        collection do
+          get 'check_email' => 'organizations#check_email'
+        end
+      end
 
       resources :movies do
         collection do
