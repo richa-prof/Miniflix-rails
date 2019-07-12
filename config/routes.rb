@@ -133,6 +133,8 @@ Rails.application.routes.draw do
         end
 
         resources :seo_metas, only: [:index]
+
+        resources :film_school_students_sessions, only: [:create, :index]
       end
     end
 
