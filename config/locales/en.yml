@@ -167,6 +167,10 @@ en:
       directed_by: Directed [by]
       genre: Genre
   flash:
+    organization:
+      successfully_created: 'Organization was successfully created.'
+      successfully_updated: 'Organization was successfully updated.'
+      successfully_deleted: 'Organization was successfully deleted.'
     visitor:
       successfully_deleted: Visitor was successfully deleted.
       send_reply_successfully: Send reply successfully.
