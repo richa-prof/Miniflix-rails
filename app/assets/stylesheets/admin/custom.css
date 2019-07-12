@@ -3,3 +3,16 @@
   right: 30px;
   top: 30px;
 }
+.box.box-primary .form-group{
+	position: relative;
+}
+.box.box-primary .form-group .toggle-password{
+    position: absolute;
+    right: 15px;
+    top: 35px;
+}
+.box.box-primary .form-group label.error {
+    color: red;
+    position: absolute;
+    right: 0;
+}

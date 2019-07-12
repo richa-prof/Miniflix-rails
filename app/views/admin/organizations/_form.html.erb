@@ -1,0 +1,77 @@
+<!-- form start -->
+<%= form_for([:admin, @organization], :html => { id: 'frm_admin_organization' }) do |f| %>
+  <% if @organization.errors.any? %>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-default">
+          <div class="box-body">
+            <% @organization.errors.full_messages.each do |message| %>
+              <div class="callout callout-success">
+                <p><%= message %></p>
+              </div>
+            <% end %>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-12">
+      <!-- general form elements -->
+      <div class="box box-primary">
+          <div class="box-body">
+            <div class="form-group">
+              <%= f.label 'Organization name' %>
+              <%= f.text_field :org_name, class: "form-control", placeholder: "Enter Organization Name", required: true %>
+            </div>
+            <div class="form-group">
+                <%= f.label 'No Of Students' %>
+                <%= f.number_field :no_of_students, class: "form-control", placeholder: "Enter no of students", required: true %>
+            </div>
+            <div class="col-md-6">
+              <h3>Professor</h3>
+              <div class="form-group">
+                <%= label_tag 'Email' %>
+                <%= email_field_tag 'professor[email]', @professor_user.present? ? @professor_user.user.email : '' , class: "form-control", placeholder: "Enter Email", required: true %>
+              </div>
+              <div class="form-group">
+                <%= label_tag 'Password' %>
+                <%= password_field_tag 'professor[password]', '', class: "form-control", placeholder: "Enter Password", required: true %>
+                <span toggle="#professor_password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+              </div>
+              <%= hidden_field_tag 'professor[registration_plan]', 'FilmSchool' %>
+              <%= hidden_field_tag 'professor[role]', 'admin' %>
+              <%= hidden_field_tag 'professor[id]', @professor_user.user_id if @professor_user.present? %>
+            </div>
+
+            <div class="col-md-6">
+              <h3>Student</h3>
+                <div class="form-group">
+                  <%= label_tag 'Email' %>
+                  <%= email_field_tag 'student[email]', @student_user.present? ? @student_user.user.email : '', class: "form-control", placeholder: "Enter Email", required: true %>
+                </div>
+                <div class="form-group">
+                  <%= label_tag 'Password' %>
+                  <%= password_field_tag 'student[password]', '', class: "form-control", placeholder: "Enter Password", required: true %>
+                  <span toggle="#student_password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                </div>
+                <%= hidden_field_tag 'student[registration_plan]', 'FilmSchool' %>
+                <%= hidden_field_tag 'student[role]', 'student' %>
+                <%= hidden_field_tag 'student[id]', @student_user.user_id if @student_user.present? %>
+              </div>
+
+          </div>
+          <!-- /.box-body -->
+
+          <div class="box-footer">
+            <%= f.submit nil,class: "btn btn-primary" %>
+            <%= link_to 'Cancel', admin_organizations_path, class: "btn btn-default" %>
+          </div>
+      </div>
+      <!-- /.box -->
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,96 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    Film School Users
+  </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <%= render( partial: 'shared/flash_notification', locals: { notice: notice } ) %>
+          <div class="row">
+            <div class="col-lg-10 col-xs-12">
+              <h3 class="box-title admin-box-title">Listing Film School Users</h3></div>
+            <div class="col-lg-2 col-xs-12">
+                <%= link_to 'New Film School User', new_admin_organization_path, class: "btn btn-primary pull-right", method: :get %>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body admin-box-body">
+          <div class="row">
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="box box-primary">
+                <!-- /.box-header -->
+                <div class="box-body">
+                  <table id="tbl_organizations" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>Organization name</th>
+                        <th>Professor Email</th>
+                        <th>Student Email</th>
+                        <th>Plan</th>
+                        <th>Subscription Status</th>
+                        <th width="150px">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% @organizations.each do |organization| %>
+                        <%- admin_user = organization.organizations_users_infos.admin.user %>
+                        <tr>
+                          <td></td>
+                          <td><%= organization.org_name %></td>
+                          <td><%= admin_user.email %></td>
+                          <td><%= organization.organizations_users_infos.student.user.email %></td>
+                          <td><%= admin_user.registration_plan %></td>
+                          <td><%= admin_user.subscription_plan_status %></td>
+                          <td width="150px">
+                            <%= link_to edit_admin_organization_path(organization.id), class: "text-blue" do %>
+                              <i class="fa fa-fw fa-edit"></i>
+                            <% end %>
+                            <%= link_to admin_organization_path(organization), class: "text-red", method: :delete do %>
+                              <i class="fa fa-fw fa-trash"></i>
+                            <% end %>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</section>
+<!-- /.content -->
+
+<script>
+  $(document).ready(function() {
+    $('#tbl_organizations').dataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "aoColumnDefs": [
+        { 'bSortable': false, 'aTargets': [ 4 ] },
+        { "bSearchable": false,"bVisible": false, "aTargets": [ 0 ] }
+      ],
+      "aaSorting": [[0, 'desc']]
+    });
+  });
+</script>
