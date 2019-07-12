@@ -25,7 +25,7 @@
           <div class="box-body">
             <div class="form-group">
               <%= f.label 'Organization name' %>
-              <%= f.text_field :org_name , class: "form-control", placeholder: "Enter Organization Name", required: true %>
+              <%= f.text_field :org_name, class: "form-control", placeholder: "Enter Organization Name", required: true %>
             </div>
             <div class="form-group">
                 <%= f.label 'No Of Students' %>
@@ -35,28 +35,32 @@
               <h3>Professor</h3>
               <div class="form-group">
                 <%= label_tag 'Email' %>
-                <%= email_field_tag 'professor[email]', '', class: "form-control", placeholder: "Enter Email", required: true %>
+                <%= email_field_tag 'professor[email]', @professor_user.present? ? @professor_user.user.email : '' , class: "form-control", placeholder: "Enter Email", required: true %>
               </div>
               <div class="form-group">
                 <%= label_tag 'Password' %>
                 <%= password_field_tag 'professor[password]', '', class: "form-control", placeholder: "Enter Password", required: true %>
+                <span toggle="#professor_password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
               </div>
               <%= hidden_field_tag 'professor[registration_plan]', 'FilmSchool' %>
               <%= hidden_field_tag 'professor[role]', 'admin' %>
+              <%= hidden_field_tag 'professor[id]', @professor_user.user_id if @professor_user.present? %>
             </div>
 
             <div class="col-md-6">
               <h3>Student</h3>
                 <div class="form-group">
                   <%= label_tag 'Email' %>
-                  <%= email_field_tag 'student[email]', '', class: "form-control", placeholder: "Enter Email", required: true %>
+                  <%= email_field_tag 'student[email]', @student_user.present? ? @student_user.user.email : '', class: "form-control", placeholder: "Enter Email", required: true %>
                 </div>
                 <div class="form-group">
                   <%= label_tag 'Password' %>
                   <%= password_field_tag 'student[password]', '', class: "form-control", placeholder: "Enter Password", required: true %>
+                  <span toggle="#student_password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                 </div>
                 <%= hidden_field_tag 'student[registration_plan]', 'FilmSchool' %>
                 <%= hidden_field_tag 'student[role]', 'student' %>
+                <%= hidden_field_tag 'student[id]', @student_user.user_id if @student_user.present? %>
               </div>
 
           </div>
@@ -71,55 +75,3 @@
     </div>
   </div>
 <% end %>
-<script type="text/javascript">
-  $(document).ready(function () {
-    $("#frm_admin_organization").validate({
-      rules: {
-        "organization[org_name]": {
-          required: true,
-        },
-        "organization[no_of_students]": {
-          required: true,
-        },
-        "professor[email]": {
-          required: true,
-          email: true,
-          remote: "/admin/organizations/check_email?for_admin=true"
-        },
-        "professor[password]": {
-          required: true,
-        },
-        "student[email]": {
-          required: true,
-          email: true,
-          remote: "/admin/organizations/check_email?for_admin=false"
-        },
-        "student[password]": {
-          required: true,
-        }
-      },
-      messages: {
-        "organization[org_name]": {
-          required: "Please enter an Organization name."
-        },
-        "organization[no_of_students]": {
-          required: "Please enter no  of students."
-        },
-        "professor[email]": {
-          required: "Please enter professor email.",
-          remote: "Email already exist."
-        },
-        "professor[password]": {
-          required: "Please enter professor password."
-        },
-        "student[email]": {
-          required: "Please enter student email.",
-          remote: "Email already exist."
-        },
-        "student[password]": {
-          required: "Please enter student password."
-        }
-      }
-    });
-  });
-</script>

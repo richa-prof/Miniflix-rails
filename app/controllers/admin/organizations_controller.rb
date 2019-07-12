@@ -34,13 +34,17 @@ class Admin::OrganizationsController < ApplicationController
 
   # GET /admin/organizations/1/edit
   def edit
+    @professor_user = @organization.organizations_users_infos.admin
+    @student_user = @organization.organizations_users_infos.student
   end
 
   # PATCH/PUT /admin/organizations/1
   # PATCH/PUT /admin/organizations/1.json
   def update
     respond_to do |format|
-      if @organization.update(organization_params)
+      professor_user = User.find(params[:professor][:id])
+      student_user = User.find(params[:student][:id])
+      if @organization.update(organization_params) && professor_user.update(professor_params) && student_user.update(student_params)
         format.html { redirect_to admin_organizations_path,
                       notice: I18n.t('flash.organization.successfully_updated') }
       else
@@ -85,14 +89,14 @@ class Admin::OrganizationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def organization_params
-      params.require(:organization).permit(:org_name, :no_of_students)
+      params.require(:organization).permit(:id, :org_name, :no_of_students)
     end
 
     def student_params
-      params.require(:student).permit(:email, :password, :registration_plan, :subscription_plan_status)
+      params.require(:student).permit(:id, :email, :password, :registration_plan, :subscription_plan_status)
     end
 
     def professor_params
-      params.require(:professor).permit(:email, :password, :registration_plan, :subscription_plan_status)
+      params.require(:professor).permit(:id, :email, :password, :registration_plan, :subscription_plan_status)
     end
 end

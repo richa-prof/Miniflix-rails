@@ -51,7 +51,10 @@
                           <td><%= admin_user.registration_plan %></td>
                           <td><%= admin_user.subscription_plan_status %></td>
                           <td width="150px">
-                            <%= link_to admin_organization_path(organization), class: "text-red", method: :delete, data: { confirm: 'Are you sure?' } do %>
+                            <%= link_to edit_admin_organization_path(organization.id), class: "text-blue" do %>
+                              <i class="fa fa-fw fa-edit"></i>
+                            <% end %>
+                            <%= link_to admin_organization_path(organization), class: "text-red", method: :delete do %>
                               <i class="fa fa-fw fa-trash"></i>
                             <% end %>
                           </td>
@@ -84,7 +87,7 @@
       "info": true,
       "autoWidth": false,
       "aoColumnDefs": [
-        { 'bSortable': false, 'aTargets': [ 5 ] },
+        { 'bSortable': false, 'aTargets': [ 4 ] },
         { "bSearchable": false,"bVisible": false, "aTargets": [ 0 ] }
       ],
       "aaSorting": [[0, 'desc']]

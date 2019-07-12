@@ -31,6 +31,7 @@ class User < ActiveRecord::Base
   has_one :logged_in_user, dependent: :destroy
 
   has_many :user_video_last_stops, as: :watcher,  dependent: :destroy
+  has_many :film_school_students_sessions, dependent: :destroy
   alias_method :recent_videos, :user_video_last_stops
 
   has_many :liked_things, dependent: :destroy
