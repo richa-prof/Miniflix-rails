@@ -34,8 +34,10 @@ class Admin::OrganizationsController < ApplicationController
 
   # GET /admin/organizations/1/edit
   def edit
-    @professor_user = @organization.organizations_users_infos.admin
-    @student_user = @organization.organizations_users_infos.student
+    if @organization.organizations_users_infos.present?
+      @professor_user = @organization.organizations_users_infos.admin
+      @student_user = @organization.organizations_users_infos.student
+    end
   end
 
   # PATCH/PUT /admin/organizations/1
@@ -56,15 +58,17 @@ class Admin::OrganizationsController < ApplicationController
   # DELETE /admin/organizations/1
   # DELETE /admin/organizations/1.json
   def destroy
-    @organization.users.each do |user|
-      user.destroy
-    end
-    @organization.destroy
+    if @organization.users.present?
+      @organization.users.each do |user|
+        user.destroy
+      end
+      @organization.destroy
 
-    respond_to do |format|
-      format.html { redirect_to admin_organizations_path,
-                    notice: I18n.t('flash.organization.successfully_deleted') }
-      format.json { head :no_content }
+      respond_to do |format|
+        format.html { redirect_to admin_organizations_path,
+                      notice: I18n.t('flash.organization.successfully_deleted') }
+        format.json { head :no_content }
+      end
     end
   end
 

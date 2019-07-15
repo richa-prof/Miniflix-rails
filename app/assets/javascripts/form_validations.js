@@ -1,4 +1,4 @@
-$(document).on('turbolinks:load', function() {
+$(document).on("ready turbolinks:load", function() {
 
   $("#frm_admin_organization").validate({
       rules: {
