@@ -2,9 +2,18 @@ class Api::V1::FilmSchoolStudentsSessionsController < Api::V1::ApplicationContro
   before_action :authenticate_user!
 
   def index
-    film_school_students_serializer = ActiveModelSerializers::SerializableResource.new(FilmSchoolStudentsSession.all, scope: {current_user: current_user},
-      each_serializer: Api::V1::FilmSchoolStudentsSessionSerializer)
-    render json: { film_school_students_sessions: film_school_students_serializer }
+    if current_user.organizations.present? && current_user.organizations_users_infos.present?
+      if current_user.organizations_users_infos.try(:take).try(:role).present? && current_user.organizations_users_infos.try(:take).try(:role).eql?('admin')
+        film_school_students = current_user.organizations.take.film_school_students_sessions
+        film_school_students_serializer = ActiveModelSerializers::SerializableResource.new(film_school_students, scope: {current_user: current_user},
+          each_serializer: Api::V1::FilmSchoolStudentsSessionSerializer)
+        render json: { film_school_students_sessions: film_school_students_serializer }
+      else
+        response = {success: false, message: 'Film school is Invalid' }
+      end
+    else
+      response = {success: false, message: 'Film school is Invalid' }
+    end
   end
 
   def create
