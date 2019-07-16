@@ -6,9 +6,13 @@ input.error, select.error, textarea.error { border: 1px solid red; }
 input.error[type="file"] {
   border: none !important;
 }
-label.error {
+.form-group label.error {
   color: red;
+  font-weight: normal
 }
+label.error {
+	color: red;
+  }
 .admin-box-title {
 	position: absolute;
 	top: 8px;

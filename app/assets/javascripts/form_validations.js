@@ -7,11 +7,12 @@ $(document).on("ready turbolinks:load", function() {
         },
         "organization[no_of_students]": {
           required: true,
+          range: [1, 60]
         },
         "professor[email]": {
           required: true,
           email: true,
-          remote: "/admin/organizations/check_email?for_admin=true"
+          remote: "/admin/organizations/check_email?for_admin=true&id=" + $('#professor_id').val()
         },
         "professor[password]": {
           required: true,
@@ -19,7 +20,7 @@ $(document).on("ready turbolinks:load", function() {
         "student[email]": {
           required: true,
           email: true,
-          remote: "/admin/organizations/check_email?for_admin=false"
+          remote: "/admin/organizations/check_email?for_admin=false&id=" + $('#student_id').val()
         },
         "student[password]": {
           required: true,

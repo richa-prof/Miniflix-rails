@@ -9,8 +9,8 @@
   <div class="col-lg-4 col-xs-12 p20">
 
   <%= render partial: 'title_and_prev_link' %>
-  
-  <%= form_for movie, scope: :movie, url: wizard_path(:add_thumbnails, slug: movie.slug), method: :put, local: true, html: {class: 'pt40 edit_movie_frm', multipart: true} do |f| %>
+
+  <%= form_for movie, scope: :movie, url: provider_movie_path(:add_thumbnails, slug: movie.slug), method: :put, local: true, html: {id: "frm_admin_movies_thumbnail", class: 'pt40 edit_movie_frm', multipart: true} do |f| %>
 
     <%= f.hidden_field :kind, value: movie.kind %>
 
@@ -23,7 +23,8 @@
           <% end %>
 
             <div class="form-footer pt20">
-              <%= f.button 'Continue',  "data-disable-with": "Saving...", class: "btn btn-flat btn-black", type: 'submit' %>
+              <a id="upload_thumbnails" style="width: 95%; margin: 20px 12px;" class="btn btn-flat btn-black">Continue</a>
+              <%#= f.button 'Continue',  "data-disable-with": "Saving...", class: "btn btn-flat btn-black", type: 'submit' %>
             </div>
 
           </div>

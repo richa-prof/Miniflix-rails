@@ -2,6 +2,9 @@ class MovieThumbnail < ApplicationRecord
   self.table_name = "admin_movie_thumbnails"
   belongs_to :movie, :foreign_key => 'admin_movie_id'
 
+  #validations
+  validates_presence_of :movie_screenshot_1, :movie_screenshot_2, :movie_screenshot_3
+
   mount_uploader :movie_screenshot_1, MovieThumbnailUploader
 	mount_uploader :movie_screenshot_2, MovieThumbnailUploader
 	mount_uploader :movie_screenshot_3, MovieThumbnailUploader

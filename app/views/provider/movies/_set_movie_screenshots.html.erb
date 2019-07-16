@@ -19,7 +19,8 @@
         <%= thumbnail_fields.file_field( ms,
                                          class: 'default movie-thumbnail-file-field',
                                          id: ms.to_s,
-                                         accept: "image/*" ) %>
+                                         accept: "image/*",
+                                         required: !thumbnail.try(ms).path.present? ) %>
       </div>
     </div>
   <% end %>

@@ -2,7 +2,7 @@ $(document).on('ready turbolinks:load', function(ev) {
 
   // alt. way - analize body[data-page]
   var targetPages = [
-   '/provider/serials/add_screenshots', '/provider/movies/add_screenshots', '/provider/serials/add_thumbnails', '/provider/movies/add_thumbnails', 
+   '/provider/serials/add_screenshots', '/provider/movies/add_screenshots', '/provider/serials/add_thumbnails', '/provider/movies/add_thumbnails',
    '/provider/episodes/add_screenshots', '/provider/episodes/add_thumbnails',
    '/admin/movies/add_movie_details', '/admin/movies/edit', '/admin/serials/edit'
   ];
@@ -18,10 +18,10 @@ $(document).on('ready turbolinks:load', function(ev) {
     return;
   }
 
-  $('body').data('mfx-add-screenshots', 1); 
+  $('body').data('mfx-add-screenshots', 1);
 
   console.log('-- init code related to adding screenshots/thumbnails on event ', ev.type);
-  
+
   window.URL = window.URL || window.webkitURL;
 
   window.validate_thumbnails = function(form){
@@ -52,11 +52,12 @@ $(document).on('ready turbolinks:load', function(ev) {
 
         if( width == 330 && height == 360 ) {
           // form.submit();
+          $("#thumbnail_error").html("Please upload image with 330x360 size only").hide();
         }
         else {
             //fail
           $("#thumbnail_error").html("Please upload image with 330x360 size only").show();
-          $('.sys-message').html('<div id="flash_error" class="error">Please upload thumbnail of image size 330 x 360</div>');
+          // $('.sys-message').html('<div id="flash_error" class="error">Please upload thumbnail of image size 330 x 360</div>');
           error = true;
         }
       };
@@ -64,7 +65,7 @@ $(document).on('ready turbolinks:load', function(ev) {
     else { //No file was input or browser doesn't support client side reading
       if (!haveExistedImage) {
         $("#thumbnail_error").html("Please upload thumbnail image").show();
-        $('.sys-message').html('<div id="flash_error" class="error">Please upload thumbnail of image size 330 x 360</div>');
+        // $('.sys-message').html('<div id="flash_error" class="error">Please upload thumbnail of image size 330 x 360</div>');
       }
     }
 
@@ -80,12 +81,13 @@ $(document).on('ready turbolinks:load', function(ev) {
 
         if( width == 600 && height == 300 ) {
           // form.submit();
+          $("#thumbnail_640_error").html("Please upload image with 600x300 size only").hide();
         }
         else {
             //fail
           console.log("invalid dimention==>",width,"--height-->",height)
           $("#thumbnail_640_error").html("Please upload image with 600x300 size only").show();
-          $('.sys-message').html('<div id="flash_error" class="error">Please upload thumbnail of image size 600 x 300</div>');
+          // $('.sys-message').html('<div id="flash_error" class="error">Please upload thumbnail of image size 600 x 300</div>');
           error = true;
         }
       };
@@ -93,7 +95,7 @@ $(document).on('ready turbolinks:load', function(ev) {
     else { //No file was input or browser doesn't support client side reading
       if (!haveExistedImage640) {
         $("#thumbnail_640_error").html("Please upload thumbnail image").show();
-        $('.sys-message').html('<div id="flash_error" class="error">Please upload thumbnail of image size 600 x 300</div>');
+        // $('.sys-message').html('<div id="flash_error" class="error">Please upload thumbnail of image size 600 x 300</div>');
         error = true;
       }
     }
@@ -110,12 +112,13 @@ $(document).on('ready turbolinks:load', function(ev) {
 
         if( width == 800 && height == 400 ) {
           // form.submit();
+          $("#thumbnail_800_error").html("Please upload image with 800x400 size only").hide();
         }
         else {
             //fail
           console.log("invalid dimention==>",width,"--height-->",height)
           $("#thumbnail_800_error").html("Please upload image with 800x400 size only").show();
-          $('.sys-message').html('<div id="flash_error" class="error">Please upload thumbnail of image size 800 x 400</div>');
+          // $('.sys-message').html('<div id="flash_error" class="error">Please upload thumbnail of image size 800 x 400</div>');
           error = true;
         }
       };
@@ -123,7 +126,7 @@ $(document).on('ready turbolinks:load', function(ev) {
     else { //No file was input or browser doesn't support client side reading
       if (!haveExistedImage800) {
         $("#thumbnail_800_error").html("Please upload thumbnail image").show();
-        $('.sys-message').html('<div id="flash_error" class="error">Please upload thumbnail of image size 800 x 400</div>');
+        // $('.sys-message').html('<div id="flash_error" class="error">Please upload thumbnail of image size 800 x 400</div>');
         error = true;
       }
     }
@@ -135,10 +138,19 @@ $(document).on('ready turbolinks:load', function(ev) {
       } else{
         console.log("else", error)
         $('body').addClass('busy');
+        if ($('#upload_thumbnails').length > 0) {
+          $('#upload_thumbnails').text('Saving...');
+          $('#upload_thumbnails').attr('disable', true);
+          $('#upload_thumbnails').css('pointer-events', 'none');
+        }
         form.submit();
       }
     }, 1000)
   }
+
+  $('#upload_thumbnails').on('click', function() {
+    validate_thumbnails($('#frm_admin_movies_thumbnail'));
+  });
 
 });
 
