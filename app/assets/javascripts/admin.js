@@ -21,3 +21,4 @@
 //#= require lightbox-bootstrap
 
 //= require shared/add_screenshots
+//= require form_validations

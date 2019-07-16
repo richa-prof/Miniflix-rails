@@ -116,6 +116,12 @@
                   <i class="fa fa-circle-o"></i> <span><%= t('heading.freemium_users') %></span>
                 <% end %>
               </li>
+
+              <li class="<%= css_class_for_treeview_users_menu('film_school_users') %>">
+                <%= link_to admin_organizations_path, method: :get do %>
+                  <i class="fa fa-circle-o"></i> <span><%= t('heading.film_school_users') %></span>
+                <% end %>
+              </li>
             </ul>
           </li>
 

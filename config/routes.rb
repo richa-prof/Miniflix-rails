@@ -133,6 +133,8 @@ Rails.application.routes.draw do
         end
 
         resources :seo_metas, only: [:index]
+
+        resources :film_school_students_sessions, only: [:create, :index]
       end
     end
 
@@ -255,6 +257,11 @@ Rails.application.routes.draw do
       resources :free_members do
         collection do
           get 'check_email' => 'free_members#check_email'
+        end
+      end
+      resources :organizations do
+        collection do
+          get 'check_email' => 'organizations#check_email'
         end
       end
 

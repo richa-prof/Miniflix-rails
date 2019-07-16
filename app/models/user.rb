@@ -29,8 +29,9 @@ class User < ActiveRecord::Base
 
   has_one :user_email_notification, dependent: :destroy
   has_one :logged_in_user, dependent: :destroy
-  
+
   has_many :user_video_last_stops, as: :watcher,  dependent: :destroy
+  has_many :film_school_students_sessions, dependent: :destroy
   alias_method :recent_videos, :user_video_last_stops
 
   has_many :liked_things, dependent: :destroy
@@ -38,6 +39,9 @@ class User < ActiveRecord::Base
   has_many :liked_movies,   through: :liked_things, source: :thing, source_type: 'Movie'
   has_many :liked_episodes, through: :liked_things, source: :thing, source_type: 'Episode'
   has_many :liked_seasons,  through: :liked_things, source: :thing, source_type: 'Season'
+
+  has_many :organizations_users_infos, dependent: :destroy
+  has_many :organizations, through: :organizations_users_infos
 
   # associations for content provider
   has_one :rate, as: :entity
@@ -93,7 +97,7 @@ class User < ActiveRecord::Base
   phony_normalize :phone_number, :unconfirmed_phone_number
 
   # VALIDATIONS
-  validates_presence_of :name
+  validates_presence_of :name, unless: -> { film_school_user }
   validates_plausible_phone :phone_number,:unconfirmed_phone_number
   validates_presence_of :registration_plan, unless: -> { skip_registration_plan_validation }
   validates_presence_of :sign_up_from, unless: -> { skip_sign_up_from_validation }
@@ -103,7 +107,8 @@ class User < ActiveRecord::Base
     Educational: 'Educational',
     Monthly:'Monthly',
     Annually: 'Annually',
-    Freemium: 'Freemium'
+    Freemium: 'Freemium',
+    FilmSchool: 'FilmSchool'
   }
 
   enum sign_up_from: {
@@ -119,12 +124,12 @@ class User < ActiveRecord::Base
     twitter: 'twitter'
   }
 
-  enum role: { 
+  enum role: {
     admin: 'Admin',
     staff: 'Staff',
     user: 'User',
 #    provider: 'Content Provider',
-    marketing_staff: 'marketing_staff' 
+    marketing_staff: 'marketing_staff'
   }
 
   enum subscription_plan_status: {
@@ -177,6 +182,10 @@ class User < ActiveRecord::Base
 
   def content_provider?
     category == 'content_provider'
+  end
+
+  def film_school_user
+    self.registration_plan == 'FilmSchool'
   end
 
   def is_social_login?
@@ -717,7 +726,7 @@ class User < ActiveRecord::Base
 
   #set default values
   def set_default_subscription_plan
-    self.subscription_plan_status = User.subscription_plan_statuses['incomplete']
+    self.subscription_plan_status = self.registration_plan.eql?('FilmSchool') ? User.subscription_plan_statuses['activate'] : User.subscription_plan_statuses['incomplete']
   end
 
   def update_or_upgrade_payment_confirmation(agreement_id, upgrade_payment=nil)
