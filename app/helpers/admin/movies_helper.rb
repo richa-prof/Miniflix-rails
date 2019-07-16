@@ -13,7 +13,7 @@ module Admin::MoviesHelper
   end
 
   def render_thumbnail_image_for(is_edit_mode, thumbnail_type, thumbnail_screenshot)
-    target_image_url = 
+    target_image_url =
       if is_edit_mode && thumbnail_screenshot.present?
         CommonHelpers.cloud_front_url(thumbnail_screenshot.path)
       else
@@ -48,5 +48,33 @@ module Admin::MoviesHelper
     released_date = movie.released_date
     return t('label.not_available') unless released_date.present?
     released_date.to_s(:full_date_month_and_year_format)
+  end
+
+  def get_url_for_next_page(params)
+    case params['id'].to_sym
+    when :add_details
+      provider_movie_path(:add_video, slug: @provider_movie.slug)
+    when :add_video
+      provider_movie_path(:add_screenshots, slug: @provider_movie.slug)
+    when :add_screenshots
+      provider_movie_path(:add_thumbnails, slug: @provider_movie.slug)
+    when :add_thumbnails
+      provider_movie_path(:preview, slug: @provider_movie.slug)
+    when :edit
+      provider_movie_path(:add_video, slug: @provider_movie.slug)
+    end
+  end
+
+  def get_url_for_previous_page(params)
+    case params['id'].to_sym
+    when :add_video
+      edit_provider_movie_path(@provider_movie)
+    when :add_screenshots
+      provider_movie_path(:add_video, slug: @provider_movie.slug)
+    when :add_thumbnails
+      provider_movie_path(:add_screenshots, slug: @provider_movie.slug)
+    when :preview
+      provider_movie_path(:add_thumbnails, slug: @provider_movie.slug)
+    end
   end
 end

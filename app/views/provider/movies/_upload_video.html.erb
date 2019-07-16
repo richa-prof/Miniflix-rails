@@ -19,15 +19,16 @@
                button_class: 'video-submit-button m-t-15 hidden',
                button_text: 'Upload Movie',
                types: ["video/*"],
-               html: %Q{} ) 
+               html: %Q{} )
           %>
          <div class="dropbox-controls">Drag file here or <a>browse</a></div>
         </div>
       </div>
 
-        <div class="file-info" style="padding: 5px; <% unless movie&.film_video %> display: none; <% else %> margin-top: 10px; <% end %>">
+      <div class="file-info" style="padding: 5px; <% unless movie&.film_video %> display: none; <% else %> margin-top: 10px; <% end %>">
         <%= render partial: 'file_info', locals: {movie: movie, category: 'video'} %>
       </div>
+      <label id="video_file-error" class="error" for="video_file" style="display: none">Please upload a movie.</label>
 
     </div>
 

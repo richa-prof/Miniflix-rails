@@ -60,7 +60,8 @@ class Movie < ApplicationRecord
   # CALLBACKS
   before_save :create_bitly_url, if: -> { slug_changed? }
   before_validation :fix_attrs
-  after_create :write_file
+  # after_create :write_file
+  after_save :write_file, if: :saved_change_to_s3_multipart_upload_id?
   after_update :send_notification
 
 

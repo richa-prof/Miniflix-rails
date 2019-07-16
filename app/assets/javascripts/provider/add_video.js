@@ -8,12 +8,12 @@ $(document).on('ready turbolinks:load', function(ev) {
     return;
   }
 
-  if ($('body').data('add-video-components')) {return; } 
+  if ($('body').data('add-video-components')) {return; }
   $('body').data('add-video-components', 1);
 
   window.files = window.files || [];
   window.lockTimer = null;
-  window.videoCategories = window.videoCategories || []; //['trailer', 'video'];  
+  window.videoCategories = window.videoCategories || []; //['trailer', 'video'];
 
   function MiniflixFileSelect(selector) {
     var self = this;
@@ -25,7 +25,7 @@ $(document).on('ready turbolinks:load', function(ev) {
       //console.warn('skip MiniflixFileSelect init - already have an instance for specified container');
       return false; // avoid init errors with Turbolinks
     }
-    self.uploadZone.data('mfx-file-select', self.bid); 
+    self.uploadZone.data('mfx-file-select', self.bid);
     self.init();
     console.log('--- MiniflixFileSelect init passed, with selector: ' + selector + ' ----');
   }
@@ -118,7 +118,7 @@ $(document).on('ready turbolinks:load', function(ev) {
     var out = [];
     for (var i = 0, f; f = self.files[i]; i++) {
       out.push('<div><span class="js-file-name" data-file-attached="true"><strong>', escape(f.name), '</strong></span></div>','<div>' + self.formatBytes(f.size) + '</div>');
-      window.files.push(f)      
+      window.files.push(f)
     }
     self.uploadZone.parent().find('.about-file').html(out.join(''));
     self.uploadZone.parent().find('.file-info').show();
@@ -134,64 +134,73 @@ $(document).on('ready turbolinks:load', function(ev) {
 
 // ---------------- create file selectors for video objects  -----------------
   for(i=0; i < window.videoCategories.length; i++) {
-    new MiniflixFileSelect('.js-' + window.videoCategories[i] + '-upload-wrapper .dropbox-advanced-upload'); 
+    new MiniflixFileSelect('.js-' + window.videoCategories[i] + '-upload-wrapper .dropbox-advanced-upload');
   }
 
   $('#upload_videos').on('click', function(evt) {
-      if (window.lockTimer) {
-        return false;
-      }
-      window.lockTimer = 1;
-      var evt = evt || window.event;
-      evt.stopPropagation();
-      evt.preventDefault();
+    if ($('.add_video_form').valid()) {
+      $(this).text('Saving...');
+      $(this).attr('disable', true);
+      $(this).css('pointer-events', 'none');
+      upload_video_fn(evt);
+    }
+  });
 
-     // using recursion for handling dynamic list of videos!
-      function submitVideos(url) {
-        console.log('-- submitVideos', url);
-        console.log(window.videoCategories, window.videoCategories.length);
-        if (!window.videoCategories.length) {
-          window.lockTimer = null;
-          console.log('-- returning url from submitVideos', url);
-          return url;
-        }
-        var category = window.videoCategories.shift();
-        var selector = '.js-provider-video-upload-wrapper .js-' + category + '-upload-wrapper:first';
-        var ms = new Date().getMilliseconds();
-        $(selector).attr('id','video_' + ms);
-        console.log('-- creating uploader for ', category, $(selector)[0].id);
-        var uploader = new MiniflixVideosUploader('#' + $(selector)[0].id, category);
-        $(selector).removeClass('js-' + category + '-upload-wrapper');
-        uploader.submit().then((url) => {
-          var finalURL = submitVideos(url);
-          console.log('-- resolve URL', finalURL);
-          // the last video uploader should return redirect url via promise
-          if (finalURL && finalURL.length > 5) {
-            console.log('-- redirect to :', finalURL);
-            $('body').removeClass('busy');
-            window.lockTimer = null;
-            Turbolinks.visit(finalURL);
-          } else {
-            return finalURL;
-          }
-          console.log('-- finish');
-        }).catch((reason) => {
-           $('body').removeClass('busy');
-           window.lockTimer = null;
-           console.error('Promise to upload movie rejected with reason: ', reason);
-        });
-      };
-
-      $('body').addClass('busy');
-      var url = submitVideos('go');
+  function upload_video_fn(evt){
+    if (window.lockTimer) {
       return false;
-  })
+    }
+    window.lockTimer = 1;
+    var evt = evt || window.event;
+    evt.stopPropagation();
+    evt.preventDefault();
+
+   // using recursion for handling dynamic list of videos!
+    function submitVideos(url) {
+      console.log('-- submitVideos', url);
+      console.log(window.videoCategories, window.videoCategories.length);
+      if (!window.videoCategories.length) {
+        window.lockTimer = null;
+        console.log('-- returning url from submitVideos', url);
+        return url;
+      }
+      var category = window.videoCategories.shift();
+      var selector = '.js-provider-video-upload-wrapper .js-' + category + '-upload-wrapper:first';
+      var ms = new Date().getMilliseconds();
+      $(selector).attr('id','video_' + ms);
+      console.log('-- creating uploader for ', category, $(selector)[0].id);
+      var uploader = new MiniflixVideosUploader('#' + $(selector)[0].id, category);
+      $(selector).removeClass('js-' + category + '-upload-wrapper');
+      uploader.submit().then((url) => {
+        var finalURL = submitVideos(url);
+        console.log('-- resolve URL', finalURL);
+        // the last video uploader should return redirect url via promise
+        if (finalURL && finalURL.length > 5) {
+          console.log('-- redirect to :', finalURL);
+          $('body').removeClass('busy');
+          window.lockTimer = null;
+          Turbolinks.visit(finalURL);
+        } else {
+          return finalURL;
+        }
+        console.log('-- finish');
+      }).catch((reason) => {
+         $('body').removeClass('busy');
+         window.lockTimer = null;
+         console.error('Promise to upload movie rejected with reason: ', reason);
+      });
+    };
+
+    $('body').addClass('busy');
+    var url = submitVideos('go');
+    return false;
+  }
 
 
 
   $('#add_new_episode').on('click', function(evt) {
       if (window.lockTimer) {
-        return false; 
+        return false;
       }
       window.lockTimer = 1;
       var evt = evt || window.event;
@@ -205,7 +214,7 @@ $(document).on('ready turbolinks:load', function(ev) {
         $('#new_episodes_wrapper').append($('.js-episode-template').html());
         console.log('init new MiniflixFileSelect component');
         window.videoCategories.push('episode');
-        new MiniflixFileSelect('#new_episodes_wrapper .js-episode-upload-wrapper:last .dropbox-advanced-upload'); 
+        new MiniflixFileSelect('#new_episodes_wrapper .js-episode-upload-wrapper:last .dropbox-advanced-upload');
       } else {
         console.warn('skipping adding box for uploading video - use previous one!');
       }
@@ -243,7 +252,7 @@ $(document).on('ready turbolinks:load', function(ev) {
       console.warn('skipping MiniflixVideoUploader init - already have an instance');
       return false;
     }
-    self.wrapper.data('mfx-video-uploader', self.bid); 
+    self.wrapper.data('mfx-video-uploader', self.bid);
     self.init();
   }
 
@@ -259,7 +268,7 @@ $(document).on('ready turbolinks:load', function(ev) {
 
   MiniflixVideosUploader.prototype.setProgress = function(percent) {
     var self = this;
-    self.myLoadBar.set(percent, true); 
+    self.myLoadBar.set(percent, true);
   }
 
   MiniflixVideosUploader.prototype.s3InputBucketName = function() {
@@ -301,7 +310,7 @@ $(document).on('ready turbolinks:load', function(ev) {
       new window.S3MP({
         bucket: self.s3InputBucketName(),
         fileInputElement: self.inputName,
-        fileList: self.files, 
+        fileList: self.files,
 
         onStart: function(upload) {
           self.uploadWrapper.removeClass('.js-' + self.category + '-upload-wrapper'); //important
@@ -331,7 +340,7 @@ $(document).on('ready turbolinks:load', function(ev) {
               success: function(response) {
                 if (is_edit_page || is_edit_page == 'true') {
                   //$('.movie-trailer-submit-btn').attr("disabled", "disabled");
-                } 
+                }
                 var redirectUrl = $('#movie-id-container').data('redirect-path') ;
                 console.log('resolve ', redirectUrl);
                 resolve(redirectUrl);

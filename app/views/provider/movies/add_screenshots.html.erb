@@ -10,7 +10,7 @@
 
   <%= render partial: 'title_and_prev_link' %>
 
-  <%= form_for movie, scope: :movie, url: wizard_path(:add_screenshots, slug: movie.slug), method: :put, local: true, html: {id: "frm_admin_movie", class: 'pt40 edit_movie_frm add_movie_details_frm', multipart: true} do |f| %>
+<%= form_for movie, scope: :movie, url: provider_movie_path(:add_screenshots, slug: movie.slug), method: :put, local: true, html: {id: "frm_admin_movies", class: 'pt40', multipart: true} do |f| %>
 
     <%= f.hidden_field :kind, value: movie.kind %>
 
@@ -23,7 +23,7 @@
           <% end %>
 
             <div class="form-footer mt20">
-              <%= f.button 'Continue',  "data-disable-with": "Saving...", class: "btn btn-flat btn-black", type: 'submit' %>
+              <%= f.button 'Continue',  "data-disable-with": "Saving...", class: "btn btn-flat btn-black", id: 'add_movie_screenshot_frm', type: 'submit' %>
             </div>
 
           </div>
