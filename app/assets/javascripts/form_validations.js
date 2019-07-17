@@ -1,5 +1,13 @@
 $(document).on("ready turbolinks:load", function() {
 
+  //email format check
+  $.validator.addMethod("emailExt", function (value, element, param) {
+    if (this.optional(element)) {
+        return true;
+    }
+    return value.match(/^[a-zA-Z0-9_\.%\+\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}$/);
+  }, 'Please enter a valid email address.');
+
   $("#frm_admin_organization").validate({
       rules: {
         "organization[org_name]": {
@@ -10,16 +18,16 @@ $(document).on("ready turbolinks:load", function() {
           range: [1, 60]
         },
         "professor[email]": {
+          emailExt: true,
           required: true,
-          email: true,
           remote: "/admin/organizations/check_email?for_admin=true&id=" + $('#professor_id').val()
         },
         "professor[password]": {
           required: true,
         },
         "student[email]": {
+          emailExt: true,
           required: true,
-          email: true,
           remote: "/admin/organizations/check_email?for_admin=false&id=" + $('#student_id').val()
         },
         "student[password]": {
