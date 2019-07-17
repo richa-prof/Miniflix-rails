@@ -186,7 +186,7 @@ var initValidators = function() {
       "movie[directed_by]": { required: true },
       "movie[description]": { required: true },
       "movie[released_date]": { required: true },
-      "movie[rate_attributes][price]": { required: true }
+      "movie[rate_attributes][price]": { required: true, digits: true }
     };
 
     return rulesMap;
