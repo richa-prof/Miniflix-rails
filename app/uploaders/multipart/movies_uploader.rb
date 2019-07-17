@@ -1,7 +1,7 @@
 class MoviesUploader < ApplicationController
   extend S3Multipart::Uploader::Core
 
-  # Attaches the specified model to the uploader, creating a "has_one" 
+  # Attaches the specified model to the uploader, creating a "has_one"
   # relationship between the internal upload model and the given model.
   attach :movies
 
@@ -10,12 +10,12 @@ class MoviesUploader < ApplicationController
 
   # Define the minimum and maximum allowed file sizes (in bytes)
   # limit min: 5*1000*1000, max: 2*1000*1000*1000
-  limit min: 10, max: 4*1000*1000*1000
+  limit min: 10, max: 8*1000*1000*1000
 
-  # Takes in a block that will be evaluated when the upload has been 
-  # successfully initiated. The block will be passed an instance of 
-  # the upload object as well as the session hashwhen the callback is made. 
-  # 
+  # Takes in a block that will be evaluated when the upload has been
+  # successfully initiated. The block will be passed an instance of
+  # the upload object as well as the session hashwhen the callback is made.
+  #
   # The following attributes are available on the upload object:
   # - key:       A randomly generated unique key to replace the file
   #              name provided by the client
@@ -40,9 +40,9 @@ class MoviesUploader < ApplicationController
   # end
 
   on_complete do |upload, session|
-    # Code to be evaluated when upload completes   
+    # Code to be evaluated when upload completes
     puts "on_complete , upload ---> #{upload.to_json}"
-    puts "on_complete , session ---> #{session.to_json}"  
+    puts "on_complete , session ---> #{session.to_json}"
     # film_video = "https://d1jqh0kfebho7s.cloudfront.net/"+upload.key
 
     puts "-------------------"
