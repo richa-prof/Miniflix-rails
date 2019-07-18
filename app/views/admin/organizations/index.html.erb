@@ -55,7 +55,7 @@
                               <%= link_to edit_admin_organization_path(organization.id), class: "text-blue" do %>
                                 <i class="fa fa-fw fa-edit"></i>
                               <% end %>
-                              <%= link_to admin_organization_path(organization), class: "text-red", method: :delete do %>
+                              <%= link_to admin_organization_path(organization), class: "text-red", method: :delete, data: { confirm: 'Are you sure?' } do %>
                                 <i class="fa fa-fw fa-trash"></i>
                               <% end %>
                             </td>
