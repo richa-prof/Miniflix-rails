@@ -146,6 +146,23 @@ $(document).on('ready turbolinks:load', function(ev) {
     }
   });
 
+
+function setFileInfo(files) {
+  var myVideos = files[0];
+  var video = document.createElement('video');
+  video.preload = 'metadata';
+
+  video.onloadedmetadata = function() {
+    window.URL.revokeObjectURL(video.src);
+    var duration = video.duration;
+    // myVideos[myVideos.length - 1].duration = duration;
+    console.log('hiiii');
+    $('#video_file_duration').val(duration);
+  }
+
+  // video.src = URL.createObjectURL(files[0]);;
+}
+
   function upload_video_fn(evt){
     if (window.lockTimer) {
       return false;
@@ -170,6 +187,8 @@ $(document).on('ready turbolinks:load', function(ev) {
       $(selector).attr('id','video_' + ms);
       console.log('-- creating uploader for ', category, $(selector)[0].id);
       var uploader = new MiniflixVideosUploader('#' + $(selector)[0].id, category);
+      console.log('-- fetching video duration --')
+      setFileInfo($("#video_file").get(0).files)
       $(selector).removeClass('js-' + category + '-upload-wrapper');
       uploader.submit().then((url) => {
         var finalURL = submitVideos(url);

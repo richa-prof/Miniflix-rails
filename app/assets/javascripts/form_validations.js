@@ -15,7 +15,7 @@ $(document).on("ready turbolinks:load", function() {
         },
         "organization[no_of_students]": {
           required: true,
-          range: [1, 60]
+          range: [1, 9999]
         },
         "professor[email]": {
           emailExt: true,

@@ -124,6 +124,10 @@ class Provider::MoviesController < ApplicationController
       @success = @provider_movie.update!(fixed_movie_params)
     when :add_screenshots, :add_thumbnails
       begin
+        if params[:video_duration].present? && params[:video_duration] != 'Nan'
+          time =  Time.at(params[:video_duration].to_f).utc.strftime("%H:%M:%S")
+          @provider_movie.update(video_duration: time)
+        end
         thumb = save_movie_thumbnails(@provider_movie)
         if !thumb&.valid? && params[:movie_thumbnail].present?
           @success = false

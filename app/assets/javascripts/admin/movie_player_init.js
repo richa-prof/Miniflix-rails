@@ -10,7 +10,6 @@ $(document).on('ready turbolinks:load', function(ev) {
     self.bid = btoa(el.id);
     self.category = el.id.split('_')[0];
     self.wrapper = $('#' + el.id);
-    console.log('wrapper:', self.wrapper);
     // if ($(el).attr('data-mfx-video-player') == self.bid) {
     //   console.warn('skip MiniflixVideoPlayer init (already initialized) on event ', ev.type);
     //   return false;
@@ -41,19 +40,20 @@ $(document).on('ready turbolinks:load', function(ev) {
   MiniflixVideoPlayer.prototype.jwPlayerInit = function() { //container, type) {
     var self = this;
     var videoObject = self.wrapper.find('.jw-player')  //"#" + self.category + "_embed_cnt");  
-    console.log('videoObject:', videoObject);
-    console.log('jwPlayerInit called for ', self.category);
     var videoPlayerInstance = window.jwplayer(videoObject[0]);
     self.hlsUrl = self.config.data('hls-file');
-    console.log('hlsUrl', self.hlsUrl);
     self.originalFileUrl = self.config.data('original-file');
     self.trailerFileUrl = self.config.data('trailer-file');
     var opts;
     if (self.category != 'trailer') {
-      opts = {
-        file: self.originalFileUrl,
-        sources: [{ file: self.hlsUrl || self.originalFileUrl }]
-      };
+      fetch(self.hlsUrl).then(
+        function(response) {
+           movie_file = ((response.url == self.hlsUrl && response.status == 200) ? self.hlsUrl : self.originalFileUrl)
+           videoPlayerInstance.setup({
+              file: self.originalFileUrl,
+              sources: [{ file: movie_file }]
+           });
+        })
     } else {
       opts = {
 //      file: self.trailerFileUrl,
@@ -63,10 +63,9 @@ $(document).on('ready turbolinks:load', function(ev) {
         allowscriptaccess: 'always',
         allownetworking: 'all'
       };
+      videoPlayerInstance.setup(opts);
     }
     //console.log('jwPlayer options for ', self.category, opts)
-    videoPlayerInstance.setup(opts);
-    console.log('videoPlayerInstance', videoPlayerInstance.getContainer());
   }
 
 
