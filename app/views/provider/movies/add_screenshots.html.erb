@@ -13,7 +13,8 @@
 <%= form_for movie, scope: :movie, url: provider_movie_path(:add_screenshots, slug: movie.slug), method: :put, local: true, html: {id: "frm_admin_movies", class: 'pt40', multipart: true} do |f| %>
 
     <%= f.hidden_field :kind, value: movie.kind %>
-
+    <%= video_tag(movie.film_video, class: 'hide', id: 'movie_video_src') %>
+    <%= hidden_field_tag 'video_duration', '', id: 'video_file_duration' %>
     <div class="form-group">
         <div class="row">
           <div class="col-md-9 col-sm-12">

@@ -1,5 +1,7 @@
 $(document).on('ready turbolinks:load', function(ev) {
-
+  setTimeout(function(e) {
+    setVideoDuration();
+  }, 2000);
   // alt. way - analize body[data-page]
   var targetPages = [
    '/provider/serials/add_screenshots', '/provider/movies/add_screenshots', '/provider/serials/add_thumbnails', '/provider/movies/add_thumbnails',
@@ -154,4 +156,11 @@ $(document).on('ready turbolinks:load', function(ev) {
 
 });
 
-
+function setVideoDuration(e){
+  movieId = document.getElementById("movie_video_src")
+  if (movieId)
+  {
+    var duration = movieId.duration
+    $('#video_file_duration').val(duration);
+  }
+}

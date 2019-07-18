@@ -160,7 +160,7 @@ function setFileInfo(files) {
     $('#video_file_duration').val(duration);
   }
 
-  video.src = URL.createObjectURL(files[0]);;
+  // video.src = URL.createObjectURL(files[0]);;
 }
 
   function upload_video_fn(evt){

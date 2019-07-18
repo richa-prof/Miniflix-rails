@@ -37,7 +37,6 @@
 
         <div class="mt40">
           <%= form_with model: movie, scope: 'movie', url: provider_movies_path, method: :post, class: 'pt40 add_video_form', local: true, multipart: true do |f| %>
-            <%= hidden_field_tag 'video_duration', '', id: 'video_file_duration' %>
             <%= render( partial: 'upload_trailer', locals: { movie: movie } ) %>
             <%= render( partial: 'upload_video',   locals: { movie: movie } ) %>
             <div class="form-footer">
