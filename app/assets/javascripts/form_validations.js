@@ -58,6 +58,12 @@ $(document).on("ready turbolinks:load", function() {
       }
   });
 
+  $("#organization_no_of_students").bind('keypress', function(event){
+    if (event.which < 48 || event.which > 57) {
+        event.preventDefault();
+    }
+  });
+
   $(".toggle-password").click(function() {
 
     $(this).toggleClass("fa-eye fa-eye-slash");
