@@ -5,5 +5,6 @@ class Organization < ApplicationRecord
 
   #validations
   validates_presence_of :org_name, :no_of_students
+  validates :no_of_students, numericality: { only_integer: true }
 
 end

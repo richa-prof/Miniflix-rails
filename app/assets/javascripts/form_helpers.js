@@ -186,7 +186,7 @@ var initValidators = function() {
       "movie[directed_by]": { required: true },
       "movie[description]": { required: true },
       "movie[released_date]": { required: true },
-      "movie[rate_attributes][price]": { required: true, digits: true }
+      "movie[rate_attributes][price]": { required: true }
     };
 
     return rulesMap;
@@ -230,6 +230,12 @@ var initValidators = function() {
 
     return messagesMap;
   };
+
+  $("#movie_rate_attributes_price").bind('keypress', function(event){
+    if ((event.which < 48 || event.which > 57) && (event.which != 46)) {
+        event.preventDefault();
+    }
+  });
 
   $(".next-validation").on("click", function(event) {
     if ($('.add_movie_details_frm').length >= 1 && $('.add_movie_details_frm').valid()){

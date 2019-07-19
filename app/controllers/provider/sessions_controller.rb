@@ -1,6 +1,11 @@
 class Provider::SessionsController < Devise::SessionsController
   layout 'provider_login'
 
+  rescue_from ActionController::InvalidAuthenticityToken do |exception|
+    flash[:error] = 'Your session expired. Please try again!'
+    redirect_to new_provider_user_session_path
+  end
+
   prepend_before_action :require_no_authentication, only: :cancel
 
   def new
