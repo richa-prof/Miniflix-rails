@@ -19,7 +19,8 @@
                 thumb,
                 class: 'default movie-thumbnail-file-field',
                 id: thumb.to_s,
-                accept: "image/*" ) %>
+                accept: "image/*",
+                required: !thumbnail.try(thumb).path.present? ) %>
 
         <label id="<%= thumb.to_s.gsub('screenshot', 'error') %>" class="cust_error" style="color: red;"></label>
       </div>

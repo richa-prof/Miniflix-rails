@@ -18,7 +18,7 @@ var initValidators = function() {
     });
   };
 
-//  only for provider UI 
+//  only for provider UI
   if (window.location.pathname.indexOf('/provider/') > -1) {
     window.previewImageForInput = function(input) {
       if (input.files && input.files[0]) {
@@ -39,7 +39,7 @@ var initValidators = function() {
         var fileFieldId = $(this).attr("id");
         validFile(fileFieldId);
         if (window.location.pathname.indexOf('/provider/') > -1) {
-          previewImageForInput(this); 
+          previewImageForInput(this);
         }
         return false;
       });
@@ -151,7 +151,151 @@ var initValidators = function() {
     });
   };
 
+  providerAddMovieDetailsForm = function() {
+    return $("#frm_provider_movie");
+  };
+
+  applyValidationToProviderMovieForm = function() {
+    var formObject = providerAddMovieDetailsForm();
+
+    formObject.validate({
+      rules: providerMovieAndThumbnailValidationRulesMap(),
+
+      messages: providerMovieAndThumbnailValidationMessagesMap(),
+    });
+  };
+
+  providerMovieAndThumbnailValidationRulesMap = function() {
+    var rules1 = providerMovieFormValidationRules();
+    var rules2 = providerMovieThumbnailValidationRules();
+    return $.extend(rules1, rules2);
+  };
+
+  providerMovieAndThumbnailValidationMessagesMap = function() {
+    var messages1 = providerMovieFormValidationMessages();
+    var messages2 = providerMovieThumbnailValidationMessages();
+    return $.extend(messages1, messages2);
+  };
+
+  providerMovieFormValidationRules = function() {
+    var rulesMap = {
+      "movie[name]": { required: true },
+      "movie[language]": { required: true },
+      "movie[admin_genre_id]": { required: true },
+      "movie[star_cast]": { required: true },
+      "movie[directed_by]": { required: true },
+      "movie[description]": { required: true },
+      "movie[released_date]": { required: true },
+      "movie[rate_attributes][price]": { required: true }
+    };
+
+    return rulesMap;
+  };
+
+  providerMovieThumbnailValidationRules = function() {
+    var rulesMap = {
+      "movie_thumbnail[movie_screenshot_1]": { required: true },
+      "movie_thumbnail[movie_screenshot_2]": { required: true },
+      "movie_thumbnail[movie_screenshot_3]": { required: true }
+    };
+    return rulesMap;
+  };
+
+  providerMovieFormValidationMessages = function() {
+    var messagesMap = {
+      "movie[name]": { required: "Please enter a movie name." },
+      "movie[language]": { required: "Please enter a language." },
+      "movie[admin_genre_id]": { required: "Please select genre type." },
+      "movie[star_cast]": { required: "Please enter a star cast." },
+      "movie[directed_by]": { required: "Please enter a director name." },
+      "movie[description]": { required: "Please enter a movie description." },
+      "movie[released_date]": { required: "Please select a released date." },
+      "movie[rate_attributes][price]": { required: "Please enter an price." }
+    };
+    return messagesMap;
+  };
+
+  providerMovieThumbnailValidationMessages = function() {
+    var messagesMap = {
+      "movie_thumbnail[movie_screenshot_1]": {
+        required: "Please upload movie thumbnail."
+      },
+      "movie_thumbnail[movie_screenshot_2]": {
+        required: "Please upload movie thumbnail."
+      },
+      "movie_thumbnail[movie_screenshot_3]": {
+        required: "Please upload movie thumbnail."
+      }
+    };
+
+    return messagesMap;
+  };
+
+  $("#movie_rate_attributes_price").bind('keypress', function(event){
+    if ((event.which < 48 || event.which > 57) && (event.which != 46)) {
+        event.preventDefault();
+    }
+  });
+
+  $(".next-validation").on("click", function(event) {
+    if ($('.add_movie_details_frm').length >= 1 && $('.add_movie_details_frm').valid()){
+      $('.add_movie_details_frm').submit();
+    }
+    if ($('.add_video_form').length >= 1 && $('.add_video_form').valid()){
+      $('#upload_videos').trigger('click');
+    }
+    if ($('#frm_admin_movies').length >= 1 && $('#frm_admin_movies').valid()){
+      $('#add_movie_screenshot_frm').trigger('click');
+    }
+    if ($('#frm_admin_movies_thumbnail').length >= 1 && $('#frm_admin_movies_thumbnail').valid()){
+      validate_thumbnails($('#frm_admin_movies_thumbnail'));
+    }
+    if ($('.final-preview').length >= 1)
+    {
+      window.location = $('.next-validation').data('link');
+    }
+    adminAddMovieDetailsForm();
+  });
+
+
   adminAddMovieDetailsForm = function() {
+    $('.add_video_form').validate({
+      rules: {
+        'video_file': {
+          required: true
+        }
+      },
+      messages: {
+        'video_file': { required: "Please upload a movie."}
+      }
+
+    });
+    $('#frm_admin_movies').validate({
+      messages: {
+        "movie_thumbnail[movie_screenshot_1]": {
+          required: "Please upload movie thumbnail."
+        },
+        "movie_thumbnail[movie_screenshot_2]": {
+          required: "Please upload movie thumbnail."
+        },
+        "movie_thumbnail[movie_screenshot_3]": {
+          required: "Please upload movie thumbnail."
+        }
+      }
+    });
+    $('#frm_admin_movies_thumbnail').validate({
+      messages: {
+        "movie_thumbnail[thumbnail_screenshot]": {
+          required: "Please upload movie thumbnail."
+        },
+        "movie_thumbnail[thumbnail_640_screenshot]": {
+          required: "Please upload movie thumbnail."
+        },
+        "movie_thumbnail[thumbnail_800_screenshot]": {
+          required: "Please upload movie thumbnail."
+        }
+      }
+    });
     return $("#frm_admin_movie.add_movie_details_frm");
   };
 
@@ -190,7 +334,7 @@ var initValidators = function() {
       "movie[video_size]": { required: "Please enter a video size." },
       "movie[video_duration]": { required: "Please enter a video duration." },
       "movie[video_format]": { required: "Please enter a video format." },
-      "movie[directed_by]": { required: "Please enter a directer name." },
+      "movie[directed_by]": { required: "Please enter a director name." },
       "movie[released_date]": { required: "Please select a released date." },
       "movie[language]": { required: "Please enter a language." },
       "movie[posted_date]": { required: "Please select a posted date." },
@@ -351,6 +495,9 @@ var initValidators = function() {
     applyValidationToAdminMovieEditForm();
   }
 
+  if (providerAddMovieDetailsForm().length) {
+    applyValidationToProviderMovieForm();
+  }
 };
 
 

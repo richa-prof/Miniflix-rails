@@ -8,19 +8,19 @@
 
     <div id="movie-id-container"
          class="js-movie-paths"
-         style="display: none;" 
+         style="display: none;"
          data-stage="add_movie"
-         data-movie-id="<%= movie.id %>" 
+         data-movie-id="<%= movie.id %>"
          data-video-upload-success-path=""
-         data-trailer-upload-success-path="<%= save_uploaded_movie_trailer_provider_movies_path %>" 
-         data-next-stage-path="<%= wizard_path(:add_screenshots, slug: @provider_movie.slug) %>"
-         data-prev-stage-path="<%= wizard_path(:add_details, slug: @provider_movie.slug) %>"
+         data-trailer-upload-success-path="<%= save_uploaded_movie_trailer_provider_movies_path %>"
+         data-next-stage-path="<%= provider_movie_path(:add_screenshots, slug: @provider_movie.slug) %>"
+         data-prev-stage-path="<%= provider_movie_path(:add_details, slug: @provider_movie.slug) %>"
          data-is-edit-mode="true"
-         data-redirect-path="<%= next_wizard_path %>">
+         data-redirect-path="<%= provider_movie_path(:add_screenshots, slug: @provider_movie.slug) %>">
     </div>
 
 
-    <div id="s3-input-bucket-name-container" style="display: none;" 
+    <div id="s3-input-bucket-name-container" style="display: none;"
          data-s3-input-bucket="<%= ENV['S3_INPUT_BUCKET'] %>"
          data-kind="movie">
     </div>
@@ -36,11 +36,11 @@
         </div>
 
         <div class="mt40">
-          <%= form_with model: movie, scope: 'movie', url: provider_movies_path, method: :post, class: 'pt40', local: true, multipart: true do |f| %>
+          <%= form_with model: movie, scope: 'movie', url: provider_movies_path, method: :post, class: 'pt40 add_video_form', local: true, multipart: true do |f| %>
             <%= render( partial: 'upload_trailer', locals: { movie: movie } ) %>
             <%= render( partial: 'upload_video',   locals: { movie: movie } ) %>
             <div class="form-footer">
-              <a id="upload_videos" data-disable-with="Saving..." style="width: 95%; margin: 20px 12px;" class="btn btn-flat btn-black">Continue</a>
+              <a id="upload_videos" style="width: 95%; margin: 20px 12px;" class="btn btn-flat btn-black">Continue</a>
             </div>
           <% end %>
         </div>
@@ -54,7 +54,7 @@
 </section>
 
 <script>
-  window.videoCategories = ['trailer', 'video']; 
+  window.videoCategories = ['trailer', 'video'];
 </script>
 
 

@@ -14,7 +14,7 @@
 
       <% f_method, url = !@provider_movie.persisted? ? [:post, provider_movies_path] : [:put, provider_movies_path + "/add_details?slug=#{@provider_movie.slug}"] %>
 
-      <%= form_with model: @provider_movie, scope: 'movie', url: url, method: f_method, id: "frm_admin_movie", class: 'mt40 upload-form add_movie_details_frm' do |f| %>
+      <%= form_with model: @provider_movie, scope: 'movie', url: url, method: f_method, id: "frm_provider_movie", class: 'mt40 upload-form add_movie_details_frm' do |f| %>
 
         <% if @provider_movie.errors.any? %>
           <div class="row">
@@ -95,9 +95,9 @@
               </div>
 
               <div class="pull-right" style="width: 47%">
-                <%= f.fields_for :rate, @rate do |ff| %>
-                <%= ff.label :rent_price %>
-                <%= ff.text_field( :price,
+                <%= f.fields_for :rate, f.object.new_record? ? f.object.build_rate : f.object.rate do |rate| %>
+                  <%= rate.label :rent_price %>
+                  <%= rate.text_field( :price,
                                   class: "form-control",
                                   placeholder: "$23") %>
                 <% end %>

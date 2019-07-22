@@ -40,12 +40,16 @@ class Admin::OrganizationsController < ApplicationController
     end
   end
 
+  def show
+    redirect_to admin_organizations_path
+  end
+
   # PATCH/PUT /admin/organizations/1
   # PATCH/PUT /admin/organizations/1.json
   def update
     respond_to do |format|
-      professor_user = User.find(params[:professor][:id])
-      student_user = User.find(params[:student][:id])
+      professor_user = User.find_by(id: params[:professor][:id]) if params[:professor][:id].present?
+      student_user = User.find_by(id: params[:student][:id]) if params[:student][:id].present?
       if @organization.update(organization_params) && professor_user.update(professor_params) && student_user.update(student_params)
         format.html { redirect_to admin_organizations_path,
                       notice: I18n.t('flash.organization.successfully_updated') }
@@ -74,12 +78,17 @@ class Admin::OrganizationsController < ApplicationController
 
   # Email already exist validation.
   def check_email
-    target_email = params[:for_admin] == 'true' ? params[:professor][:email] : params[:student][:email]
+    user_email = params[:id] !=  "undefined" ? User.find_by(id: params[:id]).email : ''
+    if (user_email && ((params[:for_admin] == 'true' && user_email != params[:professor][:email]) ||
+        (params[:for_admin] == 'false' && user_email != params[:student][:email])))
+      target_email = params[:for_admin] == 'true' ? params[:professor][:email] : params[:student][:email]
 
-    if target_email.present?
-      @user = User.find_by_email(target_email)
+      if target_email.present?
+        @user = User.find_by_email(target_email)
+      end
+    else
+      @user = nil
     end
-
     respond_to do |format|
       format.json { render :json => !@user }
     end
