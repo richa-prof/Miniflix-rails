@@ -1,7 +1,7 @@
 $(document).on('ready turbolinks:load', function(ev) {
   setTimeout(function(e) {
     setVideoDuration();
-  }, 1000);
+  });
   // alt. way - analize body[data-page]
   var targetPages = [
    '/provider/serials/add_screenshots', '/provider/movies/add_screenshots', '/provider/serials/add_thumbnails', '/provider/movies/add_thumbnails',

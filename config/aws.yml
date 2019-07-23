@@ -4,6 +4,12 @@ development:
   bucket: "miniflix-development"
   revision: "0.0.10.6"
 
+qa:
+  access_key_id: "AKIAIJXUUTOS4BFWXDJA"
+  secret_access_key: "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"
+  bucket: "miniflix-qa"
+  revision: "0.0.10.6"
+
 production:
   access_key_id: "AKIAIJXUUTOS4BFWXDJA"
   secret_access_key: "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"
