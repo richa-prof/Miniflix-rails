@@ -6,7 +6,7 @@ class Api::V1::UserSerializer < ActiveModel::Serializer
   end
 
   def organization_name
-    if object.registration_plan['FilmSchool'] && object.activate? && object.organizations_users_infos.try(:take).organization.present?
+    if object.registration_plan.eql?('FilmSchool') && object.activate? && object.organizations_users_infos.try(:take).organization.present?
       object.organizations_users_infos.try(:take).organization.org_name
     end
   end
@@ -20,7 +20,7 @@ class Api::V1::UserSerializer < ActiveModel::Serializer
   end
 
   def film_school_student_info
-    object.registration_plan['FilmSchool'] && object.activate? &&
+    object.registration_plan.eql?('FilmSchool') && object.activate? &&
         object.organizations_users_infos.try(:take).present? &&
         object.organizations_users_infos.try(:take).role.eql?('student')
   end
@@ -62,7 +62,7 @@ class Api::V1::UserSerializer < ActiveModel::Serializer
   end
 
   def film_school_users_role
-    if (object.registration_plan['FilmSchool'] && object.activate?)
+    if (object.registration_plan.eql?('FilmSchool') && object.activate?)
       object.organizations_users_infos.try(:take).try(:role) if object.organizations_users_infos.present?
     end
   end

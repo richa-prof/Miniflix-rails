@@ -1,6 +1,6 @@
 class Api::V1::MovieSerializer < ActiveModel::Serializer
   attributes :id, :slug, :name, :title, :description, :festival_laureates, :directed_by, :language, 
-             :released_date, :video_duration, :video_file, :trailer_file, :genre_name, :click_count, :is_liked, :is_featured_film, :social_urls
+             :released_date, :video_duration, :video_file, :trailer_file, :genre_name, :click_count, :is_liked, :is_featured_film, :social_urls, :movie_file_url
   has_one :genre, serializer: Api::V1::GenreSerializer
   has_one :movie_thumbnail, serializer: Api::V1::MovieThumbnailSerializer
   has_many :user_video_last_stops, serializer: Api::V1::UserVideoLastStopSerializer
@@ -24,6 +24,10 @@ class Api::V1::MovieSerializer < ActiveModel::Serializer
 
   def movie_captions
     object.active_movie_captions if scope[:current_user]
+  end
+
+  def movie_file_url
+    object.film_video
   end
 
   def click_count
