@@ -9,6 +9,8 @@ module Constraints
         request.subdomain.present? && request.subdomain.start_with?('admin')
       when 'staging'
         request.subdomain.present? && request.subdomain.start_with?('stag-admin')
+      when 'qa'
+        request.subdomain.present? && request.subdomain.start_with?('qa-admin')
       when 'development'
         request.subdomain.present? && request.subdomain.start_with?('admin')
       end
