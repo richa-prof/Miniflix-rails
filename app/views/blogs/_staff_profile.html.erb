@@ -39,22 +39,24 @@
                 </li>
               </ul>
             </div>
-            <div class="up-user-name">
+            <!-- <div class="up-user-name">
               <h3> <%= staff.name %> </h3>
               <span><%= staff.role.titleize %></span>
-            </div>
+            </div> -->
           </div>
           <div class="usr-profile-detail-wrapper">
             <div class="upd-section">
               <ul class="row">
                 <li class="col-sm-6">
-                  <i class="fa fa-envelope-o"></i><%= staff.email %>
+                  <!-- <i class="fa fa-envelope-o"></i><%= staff.email %> -->
+                  <h4> <%= staff.name %> </h4>
+                  <%= staff.role.titleize %> . <%= staff.email %>
                 </li>
-                <li class="col-sm-6"><i class="fa fa-newspaper-o"></i><%= blogs.count %> Blogs</li>
+                <!-- <li class="col-sm-6"><i class="fa fa-newspaper-o"></i><%= blogs.count %> Blogs</li> -->
               </ul>
-              <ul class="row">
+              <!-- <ul class="row">
                 <li class="col-sm-12"><i class="fa fa-map-o"></i><%= staff_location(staff) %></li>
-              </ul>
+              </ul> -->
             </div>
           </div>
           <% if own_profile %>

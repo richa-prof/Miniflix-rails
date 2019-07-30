@@ -1,5 +1,5 @@
 <div class="comment-section" id="comm-section">
-  <h3 class="comm-heading">Add a Comment</h3>
+  <!-- <h3 class="comm-heading">Add a Comment</h3> -->
   <%= form_for comment, url: blog_comments_path(blog_id: @blog.id), method: :post, remote: true do |f| %>
     <% unless staff_user_signed_in? %>
     <div class="twoformGroups">

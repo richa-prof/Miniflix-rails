@@ -69,7 +69,7 @@
   height: 80px;
   overflow: hidden;
   border-radius: 100%;
-  border: 5px solid #fae902;
+  /* border: 5px solid #fae902; */
   position: absolute;
   right: 15px;
   background: #3e3e3e;
@@ -159,27 +159,27 @@
   bottom: 25px;
   left: 25px;
 }
-.blg-pagination .pagination>li>a, 
+.blg-pagination .pagination>li>a,
 .blg-pagination .pagination>li>span,
-.blg-pagination .pagination>.disabled>a, 
-.blg-pagination .pagination>.disabled>a:focus, 
-.blg-pagination .pagination>.disabled>a:hover, 
-.blg-pagination .pagination>.disabled>span, 
-.blg-pagination .pagination>.disabled>span:focus, 
+.blg-pagination .pagination>.disabled>a,
+.blg-pagination .pagination>.disabled>a:focus,
+.blg-pagination .pagination>.disabled>a:hover,
+.blg-pagination .pagination>.disabled>span,
+.blg-pagination .pagination>.disabled>span:focus,
 .blg-pagination .pagination>.disabled>span:hover {
   background: none;
   color: #fae902;
   border: 1px solid #fae902;
 }
-.blg-pagination .pagination>.active>a, 
-.blg-pagination .pagination>.active>a:focus, 
-.blg-pagination .pagination>.active>a:hover, 
-.blg-pagination .pagination>.active>span, 
-.blg-pagination .pagination>.active>span:focus, 
+.blg-pagination .pagination>.active>a,
+.blg-pagination .pagination>.active>a:focus,
+.blg-pagination .pagination>.active>a:hover,
+.blg-pagination .pagination>.active>span,
+.blg-pagination .pagination>.active>span:focus,
 .blg-pagination .pagination>.active>span:hover,
-.blg-pagination .pagination>li>a:focus, 
-.blg-pagination .pagination>li>a:hover, 
-.blg-pagination .pagination>li>span:focus, 
+.blg-pagination .pagination>li>a:focus,
+.blg-pagination .pagination>li>a:hover,
+.blg-pagination .pagination>li>span:focus,
 .blg-pagination .pagination>li>span:hover {
   color: #000;
   background-color: #fae902;
@@ -203,8 +203,8 @@
   background: none;
   color: #fff;
 }
-.blog-search-bar .btn:hover, 
-.blog-search-bar .btn:focus, 
+.blog-search-bar .btn:hover,
+.blog-search-bar .btn:focus,
 .blog-search-bar .btn:active {
   background: none;
   color: #fae902;
@@ -445,7 +445,7 @@ a.view-more {
 .start-trial .btn:hover, .comBtn:hover{
   color: #fff;
   border-color: #E00A7C;
-} 
+}
 .start-trial .btn:after, .comBtn:after{
   content: "";
   width: 110%;
@@ -566,7 +566,7 @@ a.view-more {
     height: 45px;
   }
   .usr-comment-sub {
-    padding-left: 60px; 
+    padding-left: 60px;
   }
 }
 /*profilepage*/
@@ -640,7 +640,7 @@ a.view-more {
 .usr-pro-header {
   display: inline-block;
   width: 100%;
-  background: #f3f3f3;
+  /* background: #f3f3f3; */
   border-radius: 10px;
   overflow: hidden;
   position: relative;
@@ -660,9 +660,9 @@ a.view-more {
 }
 .upd-section ul li {
   list-style: none;
-  color: #333;
+  color: #fff;
   padding: 15px 15px 15px 65px;
-  background: #fff;
+  /* background: #fff; */
   position: relative;
   margin-bottom: 10px;
   display: inline-block;
@@ -671,9 +671,9 @@ a.view-more {
 .upd-section ul li.col-sm-6:nth-child(even) {
   border-left: 5px solid #f3f3f3;
 }
-.upd-section ul li.col-sm-6:nth-child(odd) {
+/* .upd-section ul li.col-sm-6:nth-child(odd) {
   border-right: 5px solid #f3f3f3;
-}
+} */
 .upd-section ul li .fa {
   padding: 0 15px;
   position: absolute;
@@ -756,7 +756,7 @@ a.view-more {
 .edit-user-profile a:hover,
 .edit-user-profile a:focus {
   background:#fae902;
-  color: #000; 
+  color: #000;
 }
 @media (min-width: 992px) and (max-width: 1199px) {
   .user-blogs-view-edit .blog-inner-link .btn {
@@ -879,7 +879,7 @@ label.uploadfile-field {
 label.uploadfile-field .form-control {
   opacity: 0;
   display: none;
-} 
+}
 .upload-file-all {
   position: relative;
 }
@@ -935,15 +935,15 @@ label.uploadfile-field .form-control {
 .blg-pagination {
   position: relative;
 }
-.blg-pagination .pagination em, 
-.blg-pagination .pagination span, 
+.blg-pagination .pagination em,
+.blg-pagination .pagination span,
 .blg-pagination .pagination a{
   position: relative;
   float: left;
   padding: 6px 12px;
   margin-left: -1px;
   line-height: 1.42857143;
-  text-decoration: none; 
+  text-decoration: none;
   background: none;
   color: #fae902;
   border: 1px solid #fae902;
@@ -1079,4 +1079,15 @@ label.uploadfile-field .form-control {
   display: inline-block;
 }
 
+  .popup {
+    height: 50px;
+    width: 200px;
+    text-align: center;
+    vertical-align:middle;
+    background-color: cornflowerblue;
+    color: white;
+    display: none;
+    padding-top: 8px;
+    position: absolute;
+  }
 /* ======== Ends for Blog Subscribers Modal ======== */

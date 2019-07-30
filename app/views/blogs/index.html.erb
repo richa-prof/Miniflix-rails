@@ -42,24 +42,34 @@
                   <div class="blog-main-image">
                     <%= image_tag (blog.featured_image_large_url) %>
                     <div class="blog-upload-usr-dt">
-                      <div class="blg-dt">
+                      <!-- <div class="blg-dt">
                         <i class="fa fa-calendar"></i> <%= blog.created_at.strftime("%m/%d/%Y") %>
+                      </div> -->
+                      <div class="blg-dt">
+                        <%= blog.created_at.strftime("%m/%d/%Y") %>
                       </div>
                       <div class="blg-user">
+                          <div class='user'>I am a user. Move your mouse over me</div>
+                          <div class='popup'>
+                            Extended info about a user
+                            <%= blog_user.role.titleize %>
+                          </div>
                         <div class="blg-usr-pro-img">
-                          <%= image_tag staff_profile_image(blog_user) %>
+                            <%= image_tag staff_profile_image(blog_user) %>
                         </div>
                         <div class="blg-usr-nm">
                           <%= link_to( blog_user.name, profile_path_for(blog_user) ) %>
                         </div>
-                        <div class="blg-usr-desig"><%= blog_user.role.titleize %></div>
+
                       </div>
                     </div>
                   </div>
                   <div class="blog-short-msg blog-title">
-                    <h3><%= blog.title %></h3>
-
-                    <div class="share-video-btn">
+                    <%= link_to blog_path(id: blog.slug) do %>
+                      <h3><%= blog.title %></h3>
+                    <% end %>
+                    <p><%= truncate(blog.description, length: 100) %></p>
+                    <!-- <div class="share-video-btn">
                       <div class="blg-share-icons">
                         <% BlogsHelper::SHARE_ON.each do |share_on| %>
                             <%= link_to get_share_url(blog, share_on), target: '_blank' do %>
@@ -76,7 +86,7 @@
                         <i class="fa fa-plus"></i> Subscribe
                       <% end %>
                       <%= link_to('Continue Reading', blog_path(id: blog.slug), class: "btn btn-default") %>
-                    </div>
+                    </div> -->
                     <div class="blg-like-comm-counter">
                       <div class="blg-like-count" id="likes_<%= blog.id %>">
                         <%= render partial: 'likes/list', locals: { blog: blog } %>
