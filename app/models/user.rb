@@ -87,6 +87,7 @@ class User < ActiveRecord::Base
   before_update :make_migrate_user_false, if: :can_make_migrate_user_false?
   before_update :assign_subscription_cancel_date, if: :cancelled?
   before_save :set_job_for_annual_user_to_change_subscription_status, if: :user_choose_annual_plan?
+  before_update :set_expires_at, if: :expired?
 
   before_validation do
     self.uid = email if uid.blank?
@@ -202,6 +203,10 @@ class User < ActiveRecord::Base
 
   def assign_subscription_cancel_date
     self.cancelation_date = Time.now
+  end
+
+  def set_expires_at
+    self.expires_at = Time.now
   end
 
   def find_or_initialize_filmlist(movie_id)
