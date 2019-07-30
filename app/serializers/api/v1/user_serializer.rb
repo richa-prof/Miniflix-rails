@@ -1,12 +1,12 @@
 class Api::V1::UserSerializer < ActiveModel::Serializer
-  attributes :id, :name, :email, :provider, :registration_plan, :phone_number, :customer_id, :subscription_id, :cancelation_date, :receipt_data, :subscription_plan_status, :image, :sign_up_from, :cancelation_date, :payment_verified, :migrate_user, :valid_for_thankyou_page, :current_payment_method, :subscription_info, :film_school_users_role, :organization_name, :film_school_student_info, :fs_student_sessions
+  attributes :id, :name, :email, :provider, :registration_plan, :phone_number, :customer_id, :subscription_id, :cancelation_date, :receipt_data, :subscription_plan_status, :image, :sign_up_from, :cancelation_date, :payment_verified, :migrate_user, :valid_for_thankyou_page, :current_payment_method, :subscription_info, :film_school_users_role, :organization_name, :film_school_student_info, :fs_student_sessions, :expires_at
 
   def image
     { staff_medium: { url: object.profile_image_url } }
   end
 
   def organization_name
-    if object.registration_plan['FilmSchool'] && object.activate? && object.organizations_users_infos.try(:take).organization.present?
+    if object.registration_plan.eql?('FilmSchool') && object.activate? && object.organizations_users_infos.try(:take).organization.present?
       object.organizations_users_infos.try(:take).organization.org_name
     end
   end
@@ -20,7 +20,7 @@ class Api::V1::UserSerializer < ActiveModel::Serializer
   end
 
   def film_school_student_info
-    object.registration_plan['FilmSchool'] && object.activate? &&
+    object.registration_plan.eql?('FilmSchool') && object.activate? &&
         object.organizations_users_infos.try(:take).present? &&
         object.organizations_users_infos.try(:take).role.eql?('student')
   end
@@ -62,8 +62,12 @@ class Api::V1::UserSerializer < ActiveModel::Serializer
   end
 
   def film_school_users_role
-    if (object.registration_plan['FilmSchool'] && object.activate?)
+    if (object.registration_plan.eql?('FilmSchool') && object.activate?)
       object.organizations_users_infos.try(:take).try(:role) if object.organizations_users_infos.present?
     end
+  end
+
+  def expires_at
+    object.expires_at.strftime('%b %d, %Y') if object.expires_at.present?
   end
 end

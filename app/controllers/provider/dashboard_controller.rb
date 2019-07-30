@@ -1,5 +1,6 @@
 class Provider::DashboardController < ApplicationController
   #before_action :authenticate_admin_user!, only: [:index]  # FIXME!
+  before_action :authenticate_user!, only: [:index]
 
   layout "provider"
 
