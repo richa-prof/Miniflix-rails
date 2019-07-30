@@ -106,7 +106,8 @@ class Movie < ApplicationRecord
     def search(search_query)
       key = "%#{search_query}%"
 
-      Movie.where('name LIKE :search OR title LIKE :search OR festival_laureates LIKE :search', search: key).order(:name)
+      # Movie.where('name LIKE :search OR title LIKE :search OR festival_laureates LIKE :search', search: key).order(:name)
+      Movie.where('(name LIKE :search OR title LIKE :search OR festival_laureates LIKE :search) AND s3_multipart_upload_id IS NOT NULL', search: key).order(:name)
     end
 
     def battleship_movies_name_arr
