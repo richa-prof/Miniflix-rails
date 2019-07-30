@@ -110,6 +110,6 @@ Rails.application.configure do
     :email => {
       :email_prefix => "exception_mail Production ",
       :sender_address => %{"Production" <info@miniflix.tv>},
-      :exception_recipients => %w{dharin.rajgor@gmail.com }
+      :exception_recipients => %w{dharin.rajgor@gmail.com pt.priyadarshini.tc@gmail.com nikitashah.tc@gmail.com}
     }
 end
