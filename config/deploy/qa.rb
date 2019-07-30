@@ -11,6 +11,7 @@ server '18.237.56.169', user: 'ubuntu', roles: %w{app db web}
 set :deploy_to, "/var/www/qa/miniflix_rails"
 
 set :stage, "qa"
+set :rails_env, -> { fetch(:stage) }
 set :whenever_environment, -> { fetch(:stage) }
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 
