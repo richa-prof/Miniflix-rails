@@ -33,12 +33,11 @@ class Provider::MoviesController < ApplicationController
     sort_order = "#{sort_col} #{direction}"
     @provider_movies =
       if params[:search]
-        current_user.own_movies.where("admin_movies.name like :search", search: "%#{params[:search]}%")
+        current_user.own_movies.where("s3_multipart_upload_id IS NOT NULL AND admin_movies.name like :search", search: "%#{params[:search]}%")
       else
-        current_user.own_movies
+        current_user.own_movies.where("s3_multipart_upload_id IS NOT NULL")
       end
     @provider_movies = @provider_movies.joins(:genre, :rate).order(sort_order)
-    # @provider_movies = @provider_movies.joins(:genre).order(sort_order)
     count = @provider_movies.count
     @provider_movies = @provider_movies.limit(PER_PAGE)
     flash.now[:success] = "Found #{count} movies"

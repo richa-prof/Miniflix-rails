@@ -3,7 +3,7 @@ class Api::V1::MoviesController < Api::V1::ApplicationController
   before_action :authenticate_user!, except: [:index, :featured_movie, :search, :show, :battleship]
 
   def index
-    movies = @genre.movies.paginate(page: params[:page])
+    movies = @genre.movies.where("s3_multipart_upload_id IS NOT NULL").paginate(page: params[:page])
     seo_meta_data = serialize_seo_meta(@genre)
     movies_data = serialize_movie_response_with_pagination(movies)
     render json: movies_data.merge({seo_meta: seo_meta_data})
@@ -11,7 +11,7 @@ class Api::V1::MoviesController < Api::V1::ApplicationController
 
   def featured_movie
     featured_movie = Movie.featured.last
-    featured_movie ||= Movie.last
+    featured_movie ||= ((Movie.last.s3_multipart_upload_id != nil) ? Movie.last : Movie.where("s3_multipart_upload_id IS NOT NULL").last)
     render json: featured_movie, scope: {current_user: current_user}
   end
 
