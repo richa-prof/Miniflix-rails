@@ -56,6 +56,10 @@ ready = function() {
   }, function() {
     $(this).next().hide();
   });
+
+  $('.unauthorized_comment').click(function(){
+    $('#post-modal').modal('show');
+  })
 };
 
 $(document).ready(ready);
