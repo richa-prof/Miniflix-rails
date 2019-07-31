@@ -10,10 +10,10 @@ body {
 /*Header*/
 
 .main-header .navbar-default {
-  font-family: 'Roboto Condensed', sans-serif;
   font-weight: 600;
   height: 90px;
   padding: 15px 0;
+  font-family: 'Open Sans', sans-serif;
   background: #000;
 }
 
@@ -23,7 +23,6 @@ body {
 
 .main-header .navbar-default .navbar-nav>li>a {
   font-size: 18px;
-  color: #fae902;
   text-transform: uppercase;
   letter-spacing: 0.10px;
 }
@@ -33,7 +32,6 @@ body {
 }
 
 .main-header .navbar-default .navbar-nav>li>.btn {
-  background: #fae902;
   color: #000;
   border: none;
   height: 40px;
@@ -693,52 +691,19 @@ footer.main-footer {
   list-style: none;
 }
 
-.ftr-sub ul li a {
-  color: #fff;
-  font-size: 18px;
-  margin-bottom: 15px;
-  display: inline-block;
-  width: 100%;
-  font-weight: 400;
-  background: none;
-}
 
 .ftr-social ul li:first-child a, .ftr-social ul li:first-child a:hover, .ftr-social ul li:nth-child(2) a, .ftr-social ul li:nth-child(2) a:hover {
   background: none;
   color: #fff;
 }
 
-.ftr-social ul li a {
-  background: #2b2b2b;
-  transition: all .4s ease-in-out;
-  -webkit-transition: all .4s ease-in-out;
-  -moz-transition: all ease-in-out .4s;
-  -ms-transition: all ease-in-out .4s;
-  -o-transition: all ease-in-out .4s;
-}
 
-.ftr-sub ul li a .fa {
-  width: 40px;
-  height: 40px;
-  text-align: center;
-  font-size: 20px;
-  padding: 10px 0;
-}
 
 .ftr-social ul li {
   display: inline-block;
   margin-right: 10px;
 }
 
-.ftr-social ul li:first-child, .ftr-social ul li:nth-child(2) {
-  width: 100%;
-  background: none;
-}
-
-.ftr-social ul li a:hover {
-  background: #fff;
-  color: #333;
-}
 
 /* FOOTER CSS ENDS */
 
