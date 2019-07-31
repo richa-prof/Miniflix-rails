@@ -37,7 +37,7 @@
           <div class="row">
             <% sliced_blogs.each do |blog| %>
               <% blog_user = blog.user %>
-              <div class="col-md-4">
+              <div class="col-lg-4 col-md-6 col-sm-12">
                 <div class="blog-list-single">
                   <div class="blog-main-image">
                     <%= image_tag (blog.featured_image_large_url) %>
@@ -59,8 +59,16 @@
                           </div>
                         </div>
                         <div class='popup'>
-                          Extended info about a user
-                          <%= blog_user.role.titleize %>
+                          <div class="authorInfo">
+                            <p class="author_image"><%= image_tag staff_profile_image(blog_user) %></p>
+                            <p class="author_details">
+                                <span class="a_name">Tober</span>
+                                <span class="a_position"><%= blog_user.role.titleize %></span>
+                            </p>
+                          </div>
+                          <div class="btnDiv">
+                            <button class="comBtn following">Follow</button>
+                          </div>
                         </div>
 
                       </div>

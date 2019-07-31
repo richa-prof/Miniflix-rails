@@ -20,31 +20,34 @@
         <div class="row">
           <div class="col-sm-12">
             <div class="blog-single-bg">
-              <div class="blog-single-feat-img">
-                <%= image_tag (@blog.featured_image_large_url) %>
-              </div>
+              
               <div class="blog-upload-usr-dt">
-                <div class="blg-dt">
-                  <%= @blog.created_at.strftime("%B %d %Y") %>
-                </div>
 
                 <div class="blg-user">
                   <div class="blg-usr-pro-img">
                     <%= image_tag(staff_profile_image(@blog_user)) %>
                   </div>
                   <div class="blg-usr-nm">
-                      <div class='user'>I am a user. Move your mouse over me</div>
-                      <div class='popup'>
-                          <%= render partial: 'comment_form', locals: { comment: @comment } %>
+                      <div class='user'>
+                        <p class="blog_user_name">Lorem Ipsum</p>
+                        <button class="btn">Following</button>
                       </div>
-                    <%= link_to( @blog_user.name, profile_path_for(@blog_user) ) %>
-                  </div>
-                  <div class="blg-usr-desig">
-                    <%= @blog_user.role.titleize %>
+                      <div class="blg-usr-desig">
+                        <%= @blog_user.role.titleize %>
+                      </div>
+                      <!-- <div class='si_author_pos'>
+                          <%#= render partial: 'comment_form', locals: { comment: @comment } %>
+                      </div> -->
+                      <div class="blg-dt">
+                        <%= @blog.created_at.strftime("%B %d %Y") %>
+                      </div>
+                    <%#= link_to( @blog_user.name, profile_path_for(@blog_user) ) %>
                   </div>
                 </div>
               </div>
-
+              <div class="blog-single-feat-img">
+                <%= image_tag (@blog.featured_image_large_url) %>
+              </div>
               <div class="blog-content-single">
                 <hr>
                 <!-- <div class="blog-inner-add-btn add-blog-btn">
@@ -55,23 +58,26 @@
                 <h1><%= @blog.title %></h1>
                 <p><%= @blog.description.try(:html_safe) %></p>
                 <%= @blog.body.html_safe %>
-                <div class="blg-like-count" id="likes_<%= @blog.id %>">
-                    <%= render partial: 'likes/list', locals: { blog: @blog } %>
+                <div class="share_line_comment">
+                  <div class="blog_like_commnets blg-like-comm-counter">
+                    <div class="blg-like-count" id="likes_<%= @blog.id %>">
+                      <%= render partial: 'likes/list', locals: { blog: @blog } %>
+                    </div>
+                    <div class="blg-comm-count">
+                      <a href="javascript:void(0);"<i class="fa fa-comments-o"></i></a> <%= @blog.comments.count %>
+                    </div>
                   </div>
-                  <div class="blg-comm-count">
-                    <a href="javascript:void(0);"<i class="fa fa-comments-o"></i></a> <%= @blog.comments.count %>
-                  </div>
-
-                <div class="share-video-btn">
-                  <!-- <div class="blg-share-heading">
-                    <h4><i class="fa fa-share"></i> Share</h4>
-                  </div> -->
-                  <div class="blg-share-icons">
-                    <% BlogsHelper::SHARE_ON.each do |share_on| %>
-                        <%= link_to get_share_url(@blog, share_on), target: '_blank' do %>
-                          <%= get_share_button(share_on) %>
-                        <% end %>
-                    <% end %>
+                  <div class="share-video-btn">
+                    <!-- <div class="blg-share-heading">
+                      <h4><i class="fa fa-share"></i> Share</h4>
+                    </div> -->
+                    <div class="blg-share-icons">
+                      <% BlogsHelper::SHARE_ON.each do |share_on| %>
+                          <%= link_to get_share_url(@blog, share_on), target: '_blank' do %>
+                            <%= get_share_button(share_on) %>
+                          <% end %>
+                      <% end %>
+                    </div>
                   </div>
                 </div>
                 <hr>
