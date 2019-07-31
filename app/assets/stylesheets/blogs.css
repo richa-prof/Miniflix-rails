@@ -1355,6 +1355,7 @@ label.uploadfile-field .form-control {
   border-radius: 5px;
   font-size: 14px;
   font-family: 'Open Sans', sans-serif;
+  white-space: nowrap;
 }
 .navbar-brand > img{
   max-width: 150px;
