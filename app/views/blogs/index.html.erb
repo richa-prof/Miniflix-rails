@@ -45,20 +45,22 @@
                       <!-- <div class="blg-dt">
                         <i class="fa fa-calendar"></i> <%= blog.created_at.strftime("%m/%d/%Y") %>
                       </div> -->
-                      <div class="blg-dt">
-                        <%= blog.created_at.strftime("%m/%d/%Y") %>
-                      </div>
                       <div class="blg-user">
-                          <div class='user'>I am a user. Move your mouse over me</div>
-                          <div class='popup'>
-                            Extended info about a user
-                            <%= blog_user.role.titleize %>
-                          </div>
+                          <!-- <div class='user'>I am a user. Move your mouse over me</div> -->
                         <div class="blg-usr-pro-img">
                             <%= image_tag staff_profile_image(blog_user) %>
                         </div>
-                        <div class="blg-usr-nm">
-                          <%= link_to( blog_user.name, profile_path_for(blog_user) ) %>
+                        <div class="blog_user_Box">
+                          <div class="blg-usr-nm">
+                            <%= link_to( blog_user.name, profile_path_for(blog_user) ) %>
+                          </div>
+                          <div class="blg-dt">
+                            <%= blog.created_at.strftime("%m/%d/%Y") %>
+                          </div>
+                        </div>
+                        <div class='popup'>
+                          Extended info about a user
+                          <%= blog_user.role.titleize %>
                         </div>
 
                       </div>

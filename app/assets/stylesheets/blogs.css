@@ -47,53 +47,68 @@
 .blog-main-image img {
   width: 100%;
   min-height: 217px;
+  max-height: 217px;
   object-fit: cover;
 }
 .blog-upload-usr-dt {
   padding: 0 20px;
+  height: 60px;
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  background: #979797;
+  background: rgba(77, 77, 77, 0.97);
   width: 100%;
 }
 .blg-user {
-  float: right;
+  display: flex;
+  align-self: center;
   position: relative;
-  padding: 5px 105px 0px 0px;
-  text-align: right;
 }
 .blg-usr-pro-img {
   width: 80px;
   height: 80px;
   overflow: hidden;
   border-radius: 100%;
-  /* border: 5px solid #fae902; */
-  position: absolute;
-  right: 15px;
   background: #3e3e3e;
-  top: -40px;
+  position: relative;
+  top: -32px;
 }
 .blg-usr-pro-img::before {
-  content: "\f007";
-  position: absolute;
-  left: 26px;
-  top: 15px;
-  font-family: fontAwesome;
-  color: #8e8e8e;
-  font-size: 25px;
-  z-index: 0;
+    position: absolute;
+    content: "\f007";
+    font-family: fontAwesome;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    color: #8e8e8e;
+    font-size: 25px;
+    width: 20px;
+    height: 35px;
+    z-index: 0;
 }
-.blg-usr-pro-img img {
+.blg-user .blg-usr-pro-img img {
   width: 100%;
   height: 100%;
   position: relative;
+  min-height: inherit;
 }
-.blg-usr-nm a {
+.blog_user_Box{
+  padding-left: 15px;
+  padding-top: 5px;
+}
+.blog_user_Box .blg-usr-nm a{
   font-size: 16px;
   font-weight: 700;
-  color: #333;
+  color: #fff;
+}
+.blog_user_Box .blg-dt{
+  font-size: 12px;
+  color: #fff;
+  padding: 0;
+  padding-top: 3px;
 }
 .blg-usr-desig {
   font-size: 12px;
@@ -110,7 +125,6 @@
   letter-spacing: 0.3px;
   padding: 20px;
   background: #1a1a1a;
-  min-height: 300px;
 }
 .blog-short-msg h3 {
   margin: 0px 0px 0px;
@@ -119,10 +133,12 @@
   font-size: 16px !important;
   color: #fff;
   font-weight: 600;
+  min-height: 42px;
 }
 .blog-short-msg p {
   color: #778c92;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
+  margin-top: 5px;
 }
 .blog-inner-link {
   margin: 15px 0px 0px;
@@ -155,10 +171,17 @@
 }
 .blg-like-comm-counter {
   display: inline-block;
-  position: absolute;
   bottom: 25px;
   left: 25px;
 }
+/*.blg-like-comm-counter .blg-like-count .fa.fa-thumbs-up:before{
+  content: '';
+  background: url('/assets/images/like.png') no-repeat;;
+}
+.blg-like-comm-counter .blg-like-count .fa.fa-comments-o:before{
+  content: '';
+  background: url('/assets/images/comment.png') no-repeat;;
+}*/
 .blg-pagination .pagination>li>a,
 .blg-pagination .pagination>li>span,
 .blg-pagination .pagination>.disabled>a,
@@ -210,6 +233,54 @@
   color: #fae902;
   border-color: #fae902;
   outline: none;
+}
+.blog-list-main .blg-pagination .pagination *{
+  width: 48px;
+  height: 48px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: inherit;
+  color: #fff;
+  margin: 0 5px;
+}
+.blog-list-main .blg-pagination .pagination *:hover{
+  background:  #E00A7C;
+  border-color:  #E00A7C;
+  color: #fff;
+}
+.blog-list-main .blg-pagination .pagination .previous_page, .blg-pagination .pagination .next_page{
+  font-size: 0;
+  position: relative;
+}
+.blog-list-main .blg-pagination .pagination .previous_page:before, .blg-pagination .pagination .next_page:before{
+  position: absolute;
+  content: '\f105';
+  font-family: FontAwesome;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  color: #fff;
+  line-height: 12px;
+  font-size: 18px;
+  width: 7px;
+  height: 12px;
+}
+.blog-list-main .blg-pagination .pagination .previous_page:before{
+  content: '\f104' !important;
+}
+.blog-list-main .blg-pagination .pagination .disabled{
+  opacity: 0.5;
+  pointer-events: none;
+}
+.blog-list-main .blg-pagination .pagination .current{
+  background: #E00A7C;
+  border-color: #E00A7C;
 }
 @media screen and (max-width: 550px) {
   .blg-usr-pro-img {
@@ -1079,15 +1150,10 @@ label.uploadfile-field .form-control {
   display: inline-block;
 }
 
-  .popup {
-    height: 50px;
-    width: 200px;
-    text-align: center;
-    vertical-align:middle;
-    background-color: cornflowerblue;
-    color: white;
-    display: none;
-    padding-top: 8px;
-    position: absolute;
-  }
+.blg-user .popup {
+  position: absolute;
+  width: 215px;
+  background: #333;
+  left: -15px;
+}
 /* ======== Ends for Blog Subscribers Modal ======== */
