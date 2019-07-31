@@ -33,8 +33,8 @@
           <h2>Currently, no blogs available to show.</h2>
         </div>
       <% else %>
-        <% @blogs.each_slice(3) do |sliced_blogs| %>
-          <div class="row">
+        <div class="row">
+          <% @blogs.each_slice(3) do |sliced_blogs| %>
             <% sliced_blogs.each do |blog| %>
               <% blog_user = blog.user %>
               <div class="col-lg-4 col-md-6 col-sm-12">
@@ -62,7 +62,7 @@
                           <div class="authorInfo">
                             <p class="author_image"><%= image_tag staff_profile_image(blog_user) %></p>
                             <p class="author_details">
-                                <span class="a_name">Tober</span>
+                                <span class="a_name"><%= blog_user.name %></span>
                                 <span class="a_position"><%= blog_user.role.titleize %></span>
                             </p>
                           </div>
@@ -109,8 +109,8 @@
                 </div>
               </div>
             <% end %>
-          </div>
-        <% end %>
+          <% end %>
+        </div>
       <% end %>
       <div class="blg-pagination">
         <%= will_paginate @blogs %>
