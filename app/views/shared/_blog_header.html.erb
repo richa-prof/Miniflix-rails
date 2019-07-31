@@ -1,46 +1,34 @@
 <header class="main-header">
-  <nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
-    <div class="container">
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <%= link_to(ENV['Host'], class: "navbar-brand" ) do %>
-          <%= image_tag('logo.png') %>
-        <% end %>
+    <nav class="navbar-default navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">
+            <img src="data:image/png;base64,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" alt="not available">
+          </a>
+          <button type="button" class="navbar-toggle collapsed">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="search-home">
+              <div class="search-toggle">
+                <span aria-hidden="true" class="fa fa-fa-search fa fa-search"></span>
+              </div>
+            </li>
+            <li role="presentation" class="">
+              <%= link_to(t('links.sign_in'), "#{ENV['Host']}/sign_in") %>
+              <!-- <a href="#">Sign In</a> -->
+            </li>
+            <li role="presentation" class="signup-button">
+              <%= link_to(t('links.sign_up'),"#{ENV['Host']}/sign_up") %>
+              <!-- <a href="/sign_up">Sign Up</a> -->
+            </li>
+          </ul>
+        </div>
       </div>
-
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <!-- <ul class="nav navbar-nav">
-          <li>
-            <%#= link_to('Blogs', blogs_path, class: "") %>
-          </li>
-        </ul> -->
-        <ul class="nav navbar-nav navbar-right">
-          <% if staff_user_signed_in? %>
-            <li class="dropdown">
-               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> <%= current_staff_user.name %> <span class="caret"></span></a>
-               <ul class="dropdown-menu">
-                  <li>
-                    <%= link_to('Manage Profile', edit_staff_user_registration_path) %>
-                  </li>
-                  <li>
-                    <%= link_to('Sign Out', destroy_staff_user_session_path, method: :delete) %>
-                  </li>
-               </ul>
-            </li>
-          <% else %>
-            <li class="signup-button">
-              <%= link_to(t('links.sign_in'), root_path) %>
-            </li>
-          <% end %>
-        </ul>
-      </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-  </nav>
-</header>
+    </nav>
+  </header>
