@@ -28,7 +28,7 @@ class Api::V1::MovieSerializer < ActiveModel::Serializer
   end
 
   def movie_file_url
-    object.film_video
+    object.film_video.gsub('http://', 'https://') if object.film_video.present?
   end
 
   def click_count

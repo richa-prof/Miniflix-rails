@@ -575,10 +575,9 @@ footer.main-footer {
   border-radius: 5px;
   resize: none;
   height: 100px;
-  background: #050505;
-  border-radius: 0px;
+  background: #1a1a1a;
   box-shadow: none;
-  border-color: #1a1a1a;
+  border-color: #9d9d9d;
   border-radius: 5px;
 }
 .comment-section textarea.form-control:focus {
@@ -738,7 +737,14 @@ a.view-more {
   border-radius: 50%;
   opacity: 0.8;
   margin-top: 0;
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
   text-shadow: none;
+}
+.new_comment .modal-header .close:focus{
+  outline: none;
 }
 .new_comment .form-group{
   margin-bottom: 15px;
