@@ -6,7 +6,8 @@
   <% blogs.each_slice(3) do |sliced_blogs| %>
     <div class='row'>
       <% sliced_blogs.each do |blog| %>
-        <div class="col-md-4">
+        <% blog_user = blog.user %>
+        <div class="col-lg-4 col-md-6 col-sm-12">
           <div class="blog-list-single">
             <% if @own_profile %>
               <div class="edit-del-blog">
@@ -25,10 +26,26 @@
               </div>
             <% end %>
             <div class="blog-main-image">
-              <%= image_tag(blog.featured_image_medium_url) %>
-            </div>
-            <div class="blg-dt-user-profile">
-              <i class="fa fa-calendar"></i> <%= blog.created_at.strftime("%m/%d/%Y") %>
+              <%= image_tag (blog.featured_image_large_url) %>
+              <div class="blog-upload-usr-dt">
+                <!-- <div class="blg-dt">
+                  <i class="fa fa-calendar"></i> <%#= blog.created_at.strftime("%m/%d/%Y") %>
+                </div> -->
+                <div class="blg-user">
+                    <!-- <div class='user'>I am a user. Move your mouse over me</div> -->
+                  <div class="blg-usr-pro-img">
+                      <%= image_tag staff_profile_image(blog_user) %>
+                  </div>
+                  <div class="blog_user_Box">
+                    <div class="blg-usr-nm">
+                      <%= link_to( blog_user.name, profile_path_for(blog_user) ) %>
+                    </div>
+                    <div class="blg-dt">
+                      <%= blog.created_at.strftime("%m/%d/%Y") %>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="blog-short-msg blog-title">
                 <%= link_to blog_path(id: blog.slug) do %>

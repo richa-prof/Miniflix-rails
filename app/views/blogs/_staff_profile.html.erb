@@ -4,59 +4,47 @@
     <div class="container">
       <div class="profile-main-bg">
         <div class="usr-pro-header">
-          <div class="usr-profile-img-wrapper">
-            <div class="upi-pic">
-              <%= image_tag(staff_profile_image(staff)) %>
-              <% if own_profile %>
-                <div class="edit-user-profile">
-                  <%= link_to(edit_staff_user_registration_path) do %>
-                    <i class="fa fa-edit"></i>
-                  <% end %>
-                </div>
-              <% end %>
-            </div>
-            <div class="up-social-links">
-              <ul>
-                <li>
-                  <%= link_to( formatted_social_media_link(staff.social_media_link.try(:facebook) ), target: '_blank') do %>
-                    <i class="fa fa-facebook"></i>
-                  <% end %>
-                </li>
-                <li>
-                  <%= link_to( formatted_social_media_link(staff.social_media_link.try(:twitter) ), target: '_blank') do %>
-                    <i class="fa fa-twitter"></i>
-                  <% end %>
-                </li>
-                <li>
-                  <%= link_to( formatted_social_media_link(staff.social_media_link.try(:google_plus) ), target: '_blank') do %>
-                    <i class="fa fa-google-plus"></i>
-                  <% end %>
-                </li>
-                <li>
-                  <%= link_to( formatted_social_media_link(staff.social_media_link.try(:linkedin) ), target: '_blank') do %>
-                    <i class="fa fa-linkedin"></i>
-                  <% end %>
-                </li>
-              </ul>
-            </div>
-            <!-- <div class="up-user-name">
-              <h3> <%= staff.name %> </h3>
-              <span><%= staff.role.titleize %></span>
-            </div> -->
+          <div class="upi-pic">
+            <%= image_tag(staff_profile_image(staff)) %>
+            <% if own_profile %>
+              <div class="edit-user-profile">
+                <%= link_to(edit_staff_user_registration_path) do %>
+                  <i class="fa fa-edit"></i>
+                <% end %>
+              </div>
+            <% end %>
           </div>
           <div class="usr-profile-detail-wrapper">
             <div class="upd-section">
-              <ul class="row">
-                <li class="col-sm-6">
-                  <!-- <i class="fa fa-envelope-o"></i><%= staff.email %> -->
-                  <h4> <%= staff.name %> </h4>
-                  <%= staff.role.titleize %> . <%= staff.email %>
-                </li>
-                <!-- <li class="col-sm-6"><i class="fa fa-newspaper-o"></i><%= blogs.count %> Blogs</li> -->
-              </ul>
-              <!-- <ul class="row">
-                <li class="col-sm-12"><i class="fa fa-map-o"></i><%= staff_location(staff) %></li>
-              </ul> -->
+              <div class="name_follow">
+                <h4> <%= staff.name %> </h4>
+                <button class="btn">Following</button>
+              </div>
+              <p class="signle_author_position"><%= staff.role.titleize %> <span class="dot"></span> <%= staff.email %></p>
+              <div class="up-social-links">
+                <ul>
+                  <li>
+                    <%= link_to( formatted_social_media_link(staff.social_media_link.try(:twitter) ), target: '_blank') do %>
+                      <i class="fa fa-twitter"></i>
+                    <% end %>
+                  </li>
+                  <li>
+                    <%= link_to( formatted_social_media_link(staff.social_media_link.try(:facebook) ), target: '_blank') do %>
+                      <i class="fa fa-facebook"></i>
+                    <% end %>
+                  </li>
+                  <li>
+                    <%= link_to( formatted_social_media_link(staff.social_media_link.try(:google_plus) ), target: '_blank') do %>
+                      <i class="fa fa-google-plus"></i>
+                    <% end %>
+                  </li>
+                  <li>
+                    <%= link_to( formatted_social_media_link(staff.social_media_link.try(:linkedin) ), target: '_blank') do %>
+                      <i class="fa fa-linkedin"></i>
+                    <% end %>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
           <% if own_profile %>
