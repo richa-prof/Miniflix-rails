@@ -83,10 +83,9 @@
                 <hr>
                 <h3 class="comm-heading">Comments</h3>
               </div>
-              <%= link_to 'View Post', remote: true %>
               <% unless staff_user_signed_in? %>
               <div class="form-group">
-                <%= text_area_tag :comment, nil, class: "form-control unauthorized_comment", rows: "3", placeholder: "Type your comment here" %>
+                <%= text_area_tag :comment, nil, class: "form-control unauthorized_comment", rows: "3", placeholder: "Type your comment here", read_only: true %>
               </div>
               <%= render partial: 'comment_modal_form', locals: { comment: @comment } %>
               <% else %>

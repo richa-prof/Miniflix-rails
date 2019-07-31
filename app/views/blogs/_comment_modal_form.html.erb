@@ -1,10 +1,11 @@
 <div class="comment-section" id="comm-section">
   <!-- <h3 class="comm-heading">Add a Comment</h3> -->
-  <div id="post-modal" class="modal fade" role="dialog">
+  <div id="post-modal" class="modal fade commentModal new_comment" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <%= link_to '<button type="button" class="close" data-dismiss="modal">X</button>'.html_safe, blog_path(@blog) %>
+          <h2>Add a Comment</h2>
+          <%= link_to '<button type="button" class="close" data-dismiss="modal">x</button>'.html_safe, blog_path(@blog) %>
         </div>
         <div class="modal-body">
           <%= form_for comment, url: blog_comments_path(blog_id: @blog.id), method: :post, remote: true do |f| %>
