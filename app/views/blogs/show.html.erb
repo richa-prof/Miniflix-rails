@@ -33,10 +33,6 @@
                     <%= image_tag(staff_profile_image(@blog_user)) %>
                   </div>
                   <div class="blg-usr-nm">
-                      <div class='user'>I am a user. Move your mouse over me</div>
-                      <div class='popup'>
-                          <%= render partial: 'comment_form', locals: { comment: @comment } %>
-                      </div>
                     <%= link_to( @blog_user.name, profile_path_for(@blog_user) ) %>
                   </div>
                   <div class="blg-usr-desig">
@@ -77,7 +73,15 @@
                 <hr>
                 <h3 class="comm-heading">Comments</h3>
               </div>
-              <%= render partial: 'comment_form', locals: { comment: @comment } %>
+              <%= link_to 'View Post', remote: true %>
+              <% unless staff_user_signed_in? %>
+              <div class="form-group">
+                <%= text_area_tag :comment, nil, class: "form-control unauthorized_comment", rows: "3", placeholder: "Type your comment here" %>
+              </div>
+              <%= render partial: 'comment_modal_form', locals: { comment: @comment } %>
+              <% else %>
+                <%= render partial: 'comment_form', locals: { comment: @comment } %>
+              <% end %>
               <div class="user-comments" id="comments_<%= @blog.id %>">
                 <%= render partial: 'comments', locals: { comments: @comments } %>
               </div>
