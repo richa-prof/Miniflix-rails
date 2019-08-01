@@ -10,7 +10,7 @@
 # server '52.33.20.12', user: 'deploy', roles: %w{app db web}
 # set :deploy_to, "/data/apps/production/miniflix-rails"
 
-server '18.236.82.163', user: 'ubuntu', roles: %w{app db web}
+server '35.167.86.202', user: 'ubuntu', roles: %w{app db web}
 set :deploy_to, "/var/www/production/miniflix_rails"
 
 set :stage, "production"
