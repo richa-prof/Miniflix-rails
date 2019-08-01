@@ -50,7 +50,7 @@ class Movie < ApplicationRecord
   has_many :movie_versions, dependent: :destroy
 
   # associations for content provider
-  has_one :own_film, as: :film
+  has_one :own_film, as: :film, dependent: :destroy
   has_one :owner, through: :own_film, source: :user
   has_one :rate, as: :entity, inverse_of: :entity # inverse_of important here! to save associated object
 
