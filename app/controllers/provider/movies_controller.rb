@@ -33,9 +33,9 @@ class Provider::MoviesController < ApplicationController
     sort_order = "#{sort_col} #{direction}"
     @provider_movies =
       if params[:search]
-        current_user.own_movies.where("s3_multipart_upload_id IS NOT NULL AND admin_movies.name like :search", search: "%#{params[:search]}%")
+        current_user.own_movies.where("s3_multipart_upload_id IS NOT NULL AND admin_movies.name like :search", search: "%#{params[:search]}%").distinct
       else
-        current_user.own_movies.where("s3_multipart_upload_id IS NOT NULL")
+        current_user.own_movies.where("s3_multipart_upload_id IS NOT NULL").distinct
       end
     @provider_movies = @provider_movies.joins(:genre, :rate).order(sort_order)
     count = @provider_movies.count
@@ -192,6 +192,7 @@ class Provider::MoviesController < ApplicationController
     @provider_movie ||= Movie.friendly.find_by(id: params[:id]) ||
       Movie.find_by_s3_multipart_upload_id(params[:id]) ||
       Movie.find_by(slug: params[:slug] || params[:id])
+      redirect_to provider_movies_url, notice: I18n.t('flash.error.record_not_found') unless @provider_movie.present?
   end
 
   def movie_params
