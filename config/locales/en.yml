@@ -167,6 +167,8 @@ en:
       directed_by: Directed [by]
       genre: Genre
   flash:
+    error:
+      record_not_found: 'Record not found'
     organization:
       successfully_created: 'Organization was successfully created.'
       successfully_updated: 'Organization was successfully updated.'
