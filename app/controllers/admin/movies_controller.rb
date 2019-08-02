@@ -10,7 +10,7 @@ class Admin::MoviesController < ApplicationController
 
   # GET /admin/movies
   def index
-    @admin_movies = Movie.all
+    @admin_movies = Movie.where("s3_multipart_upload_id IS NOT NULL").distinct
   end
 
   # GET /admin/movies/1
@@ -30,7 +30,7 @@ class Admin::MoviesController < ApplicationController
 
   # GET /admin/movies/1/edit
   def edit
-    @s3_multipart = S3Multipart::Upload.find(@admin_movie.s3_multipart_upload_id)
+    @s3_multipart = S3Multipart::Upload.find_by(id: @admin_movie.s3_multipart_upload_id)
 
     @movie_thumbnail = @admin_movie.movie_thumbnail || @admin_movie.build_movie_thumbnail
   end
@@ -57,7 +57,7 @@ class Admin::MoviesController < ApplicationController
     Rails.logger.error "Movie #{@admin_movie.inspect} don't have s3_multipart_upload_id!"
     if @admin_movie.has_trailer? && s3_multipart
       movie_trailer = @admin_movie.movie_trailer
-      s3_multipart_obj = S3Multipart::Upload.find(movie_trailer.s3_multipart_upload_id)
+      s3_multipart_obj = S3Multipart::Upload.find_by(id: movie_trailer.s3_multipart_upload_id)
     end
     version_file = @admin_movie.version_file
     @admin_movie.destroy
