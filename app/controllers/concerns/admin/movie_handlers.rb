@@ -72,8 +72,12 @@ module Admin::MovieHandlers
     @admin_movie ||= video_klass.friendly.find_by(id: params[:id]) ||
       video_klass.find_by_s3_multipart_upload_id(params[:id]) ||
       video_klass.find_by(slug: params[:id]) || video_klass.find_by(id: params[:id])
-    session[:movie_kind] = @admin_movie.kind
-    session[:serial_id] = params[:serial_id]
+      session[:serial_id] = params[:serial_id]
+      if @admin_movie.present?
+        session[:movie_kind] = @admin_movie.kind
+      else
+        redirect_to admin_movies_path, notice: I18n.t('flash.error.record_not_found')
+      end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

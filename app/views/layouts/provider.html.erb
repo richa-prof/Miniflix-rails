@@ -71,8 +71,8 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-flat custom-modal-cancel-btn" data-dismiss="modal">Cancel</button>
-              <%= link_to "Delete", '#', 
-                    onclick: "$(this).parent().parent().find('.js-video-delete-link').click(); return false;",
+              <%= link_to "Delete", '#',
+                    onclick: "$(this).parent().parent().find('.js-video-delete-link').click(); $(this).text('Deleting...'); $(this).attr('disable', true); $(this).css('pointer-events', 'none'); return false;",
                     class: "btn btn-flat btn-red js-video-delete-ctrl custom-modal-approve-btn" %>
             </div>
           </div>
