@@ -89,6 +89,7 @@ Rails.application.routes.draw do
             get :my_playlist
             get :popular_movies
             get :battleship
+            get :suggested_movies
           end
           member do
             get :add_and_remove_to_my_playlist
@@ -109,6 +110,7 @@ Rails.application.routes.draw do
           get :make_invalid_for_thankyou_page
           get :billing_details
           get :stripe_card_details
+          get :check_email, :defaults => { :format => 'json' }
         end
         resources :paypal_payments, only: [] do
           collection do
