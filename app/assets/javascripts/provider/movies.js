@@ -12,30 +12,44 @@ $(document).on('ready turbolinks:load', function(ev) {
 
   window.lockTimer = 0;
 
+  if($('#tbl_provider_movies').length > 0) {
+    summarizetable = $('#tbl_provider_movies').DataTable({
+      "bPaginate": false,
+      "searching": true,
+      "bInfo" : false,
+      "bSort" : false
+    });
+    $(".dataTables_filter").addClass("hide");
+     $(".js-film-search").on('keyup', function (){
+        $('#tbl_provider_movies').dataTable().fnFilter(this.value);
+        $('#flash_success').text('Found '+ $('#tbl_provider_movies').find('tbody tr').length +' movies')
+    });
+  }
+
   //$('.js-film-search').focus();
 
-  $('.js-film-search').on('keyup', function(ev) {
-    var el = $(ev.target);
-    console.log(ev);
+  // $('.js-film-search').on('keyup', function(ev) {
+  //   var el = $(ev.target);
+  //   console.log(ev);
 
-    if (el.val().length < 3 && !el.val().length) {
-      return false;
-    }
-    window.lockTimer += 1
-    setTimeout(function() {
-      window.lockTimer -= 1;
-      if (window.lockTimer > 0 ) {
-        return false;
-      }
-      window.lockTimer = 0;
-      var path = window.location.pathname;
-      var params = $.deparam(window.location.search.replace('?',''));
-      console.log('params', params);
-      params['search'] = el.val();
-      Turbolinks.visit(path + '?' + $.param(params));
-    }, 400);
+  //   if (el.val().length < 3 && !el.val().length) {
+  //     return false;
+  //   }
+  //   window.lockTimer += 1
+  //   setTimeout(function() {
+  //     window.lockTimer -= 1;
+  //     if (window.lockTimer > 0 ) {
+  //       return false;
+  //     }
+  //     window.lockTimer = 0;
+  //     var path = window.location.pathname;
+  //     var params = $.deparam(window.location.search.replace('?',''));
+  //     console.log('params', params);
+  //     params['search'] = el.val();
+  //     Turbolinks.visit(path + '?' + $.param(params));
+  //   }, 400);
 
-  });
+  // });
 
   $('.js-sort-dir').on('click', function(ev) {
     var el = $(ev.target);

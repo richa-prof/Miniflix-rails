@@ -50,7 +50,7 @@
                           <td><%= admin_genre.id %></td>
                           <td><%= admin_genre.name %></td>
                           <th><%= admin_genre.color %></th>
-                          <td><%= admin_genre.movies.count %></td>
+                          <td><%= admin_genre.movies.where("s3_multipart_upload_id IS NOT NULL").count %></td>
                           <td width="150px">
                             <%= link_to admin_genre_path(admin_genre), class: "text-green" do %>
                               <i class="fa fa-fw fa-eye"></i>

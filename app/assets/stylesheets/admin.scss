@@ -20,3 +20,10 @@
 @import 'bootstrap';
 /*@import "lightbox-bootstrap";*/
 @import 'ionicons';
+
+
+#tbl_admin_movies_wrapper, #tbl_admin_series_wrapper{
+	width: 100%;
+    overflow-x: auto;
+    height: calc(100vh - 180px);
+}
