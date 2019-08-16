@@ -63,7 +63,7 @@
                             <%= user.subscription_plan_status %>
                           </td>
                           <td data-title="Registration Date"><%= user.created_at.to_s(:full_date_abbr_month_and_year_format) %></td>
-                          <td data-title="<%= t('table.admin_side_users.paid_amount')%>"><%= formatted_total_paid_amount(user.total_amount_paid) %></td>
+                          <td data-title="<%= t('table.admin_side_users.paid_amount')%>"> <%= formatted_total_paid_amount(user.total_amount_paid) %></td>
                           <td data-title="Action">
                             <%= link_to( admin_user_path(user),
                                          class: "text-red",
@@ -91,6 +91,18 @@
 <!-- /.content -->
 
 <script type="text/javascript">
+  jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+    "my-currency-pre": function(a) {
+        return parseFloat(a.replace('$', ''));
+    },
+    "my-currency-asc": function(a,b) {
+        return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+    },
+    "my-currency-desc": function(a,b) {
+        return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+    }
+});
+
   $('#tbl_admin_users').dataTable({
     "paging": true,
     "lengthChange": true,
@@ -99,7 +111,8 @@
     "info": true,
     "autoWidth": false,
     "aoColumnDefs": [
-      { 'bSortable': false, 'aTargets': [ 7 ] }
-    ]
+      { 'bSortable': false, 'aTargets': [ 7 ] },
+      {"sType": "my-currency", "aTargets": [ 6]}
+    ],
   });
 </script>
