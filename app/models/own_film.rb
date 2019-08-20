@@ -8,5 +8,4 @@ class OwnFilm < ApplicationRecord
     old_data = OwnFilm.find_by(user_id: self.user_id, film_id: self.film_id)
     old_data.destroy if old_data.present?
   end
-
 end
