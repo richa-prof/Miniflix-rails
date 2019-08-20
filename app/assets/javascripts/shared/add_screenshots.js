@@ -158,9 +158,11 @@ $(document).on('ready turbolinks:load', function(ev) {
 
   function setVideoDuration(e){
     movieId = document.getElementById("movie_video_src");
-    movieId.preload = 'metadata';
-    movieId.onloadedmetadata = function() {
-      var duration = movieId.duration
-      $('#video_file_duration').val(duration);
+    if (movieId != null){
+      movieId.preload = 'metadata';
+      movieId.onloadedmetadata = function() {
+        var duration = movieId.duration
+        $('#video_file_duration').val(duration);
+      }
     }
   }

@@ -51,6 +51,15 @@ ready = function() {
   if (blogSubscribeBtn().length) {
     bindClickEventOnBlogSubscribeBtn();
   }
+  $('.user').hover(function() {
+    $(this).next().show();
+  }, function() {
+    $(this).next().hide();
+  });
+
+  $('.unauthorized_comment').click(function(){
+    $('#post-modal').modal('show');
+  })
 };
 
 $(document).ready(ready);

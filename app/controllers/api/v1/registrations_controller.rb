@@ -5,6 +5,10 @@ class Api::V1::RegistrationsController < DeviseTokenAuth::RegistrationsControlle
     params.permit([:email, :password, :password_confirmation, :registration_plan, :name, :sign_up_from, :payment_type, :battleship])
   end
 
+  def account_update_params
+    params.permit([:email, :name])
+  end
+
   def render_create_success
     if @resource.Monthly? || @resource.Annually?
       if @resource.payment_type == User::PAYMENT_TYPE_PAYPAL
@@ -22,6 +26,23 @@ class Api::V1::RegistrationsController < DeviseTokenAuth::RegistrationsControlle
       success: true,
       user:   serialize_user
     } and return
+  end
+
+  def update
+    if params[:email_password].present?
+      if current_user.valid_password?(params[:email_password])
+        @old_password = params[:old_email]
+        super
+      else
+        render json: {
+          success: false,
+          user: serialize_user,
+          error: 'Invalid password'
+        }
+      end
+    else
+      super
+    end
   end
 
   def render_create_error
@@ -44,7 +65,8 @@ class Api::V1::RegistrationsController < DeviseTokenAuth::RegistrationsControlle
   def render_update_success
     render json: {
       status: 'success',
-      user:   serialize_user
+      user:   serialize_user,
+      old_email: @old_password.present? ? @old_password : ''
     }
   end
 
