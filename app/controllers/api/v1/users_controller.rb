@@ -1,7 +1,7 @@
 class Api::V1::UsersController < Api::V1::ApplicationController
   include Api::V1::Concerns::UserSerializeDataConcern
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: :check_email
   before_action :check_current_password, only: [:send_verification_code]
   before_action :check_verification_code, only: [:verify_verification_code]
 
@@ -63,6 +63,19 @@ class Api::V1::UsersController < Api::V1::ApplicationController
     response = current_user.fetch_stripe_card_number
 
     render json: response
+  end
+
+  # Email already exist validation.
+  def check_email
+    user = User.find_by(email: params[:email])
+    target_email = current_user.present? ? (current_user.email ==  params[:email] ? nil : user) : user
+
+    if target_email.present?
+      render json: { success: false,
+                     message: 'Email has already been registered' }
+    else
+      render json: { success: true}
+    end
   end
 
   private

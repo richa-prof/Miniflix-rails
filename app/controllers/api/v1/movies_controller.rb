@@ -3,7 +3,7 @@ class Api::V1::MoviesController < Api::V1::ApplicationController
   before_action :authenticate_user!, except: [:index, :featured_movie, :search, :show, :battleship]
 
   def index
-    movies = @genre.movies.where("s3_multipart_upload_id IS NOT NULL").paginate(page: params[:page])
+    movies = @genre.movies.where("s3_multipart_upload_id IS NOT NULL").paginate(page: params[:page], per_page: 5)
     seo_meta_data = serialize_seo_meta(@genre)
     movies_data = serialize_movie_response_with_pagination(movies)
     render json: movies_data.merge({seo_meta: seo_meta_data})
@@ -37,6 +37,12 @@ class Api::V1::MoviesController < Api::V1::ApplicationController
     render json: response
   end
 
+  def suggested_movies
+    genre = Movie.find_by(slug: params[:movie_slug]).genre
+    movies = genre.movies.where("s3_multipart_upload_id IS NOT NULL AND slug != ?", params[:movie_slug]).limit(8)
+    render json: serialize_movie_response(movies)
+  end
+
   def my_playlist
     movies = current_user.my_list_movies.paginate(page: params[:page])
     render json: serialize_movie_response_with_pagination(movies)
@@ -65,6 +71,12 @@ class Api::V1::MoviesController < Api::V1::ApplicationController
       serialize_movies = ActiveModelSerializers::SerializableResource.new(movies, scope: {current_user: current_user},
           each_serializer: Api::V1::MovieSerializer)
       {total_page: movies.total_pages, current_page: movies.current_page, movies: serialize_movies}
+    end
+
+    def serialize_movie_response(movies)
+      serialize_movies = ActiveModelSerializers::SerializableResource.new(movies, scope: {current_user: current_user},
+          each_serializer: Api::V1::MovieSerializer)
+      {movies: serialize_movies}
     end
 
     def serialize_seo_meta(genre)
